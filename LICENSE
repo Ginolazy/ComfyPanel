@@ -1,0 +1,63 @@
+ComfyPanel Dual License
+Copyright (c) 2026 Ginolazy / LAZYet (https://lazyet.com)
+
+This repository contains two distinct components governed by different license terms.
+
+═══════════════════════════════════════════════════════════════
+ Part 1 — ComfyUI Custom Nodes (Python)
+ Paths: /modules/  /__init__.py  /web/  /custom/  /default/
+ License: MIT License
+═══════════════════════════════════════════════════════════════
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+  1. The above copyright notice and this permission notice shall be included
+     in all copies or substantial portions of the Software.
+
+  2. You may NOT use these components as the basis for a competing
+     Photoshop-to-ComfyUI integration product sold commercially, without
+     prior written permission from the copyright holder.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+THE SOFTWARE.
+
+═══════════════════════════════════════════════════════════════
+ Part 2 — Photoshop Plugin (UXP / JavaScript)
+ Path: /photoshop_plugin/
+ License: Proprietary — All Rights Reserved
+═══════════════════════════════════════════════════════════════
+
+This component is distributed in obfuscated, compiled form to protect
+proprietary logic and commercial features.
+
+PERMITTED:
+  - Install and use the Free Community Edition for personal and commercial
+    creative workflows, free of charge, forever.
+  - Install and use the Pro Edition with a valid license purchased at:
+    https://lazyet.com/products/comfypanel-pro
+
+PROHIBITED:
+  - Redistribution, mirroring, or republishing this component in any form.
+  - Reverse engineering, decompiling, or attempting to extract source code.
+  - Bypassing, disabling, or circumventing any license enforcement mechanism.
+  - Using this component as the basis for a competing product or service.
+
+THIS COMPONENT IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND. THE
+COPYRIGHT HOLDER SHALL NOT BE LIABLE FOR ANY DAMAGES ARISING FROM ITS USE.
+
+═══════════════════════════════════════════════════════════════
+ Contact
+═══════════════════════════════════════════════════════════════
+
+For licensing inquiries: comfypanel@lazyet.com, https://lazyet.com
+Bug reports & feedback:  https://github.com/Ginolazy/ComfyPanel/issues

@@ -1,0 +1,54 @@
+{
+    "default_apps": {
+        "image": [
+            {
+                "id": "modelzoo_generator",
+                "name": "ModelZoo (All-in-one)"
+            },
+            {
+                "id": "48487",
+                "name": "NanoBanna 2"
+            },
+            {
+                "id": "48515",
+                "name": "NanoBanna Pro"
+            },
+            {
+                "id": "51176",
+                "name": "GPT Image 2 (Third-part)"
+            },
+            {
+                "id": "52815",
+                "name": "GPT Image 2 (Official)"
+            },
+            {
+                "id": "51728",
+                "name": "双图编辑 (Flux.2_Klein)"
+            },
+            {
+                "id": "43769",
+                "name": "全能编辑 (Flux.2_Inpainting)"
+            },
+            {
+                "id": "43768",
+                "name": "图片扩展 (Flux.2_Outpainting)"
+            },
+            {
+                "id": "43694",
+                "name": "局部编辑 (Flux.1_In/Outpainting)"
+            },
+            {
+                "id": "43854",
+                "name": "产品迁移 (Flux.1)"
+            },
+            {
+                "id": "43881",
+                "name": "场景融合 (Flux.1_Kontext)"
+            },
+            {
+                "id": "52030",
+                "name": "高精换脸 (SDXL_InstandID)"
+            }
+        ]
+    }
+}
