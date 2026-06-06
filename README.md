@@ -34,7 +34,7 @@ ComfyPanel is a professional-grade, high-performance integration for **Adobe Pho
 *   **Plugin Setup**: 
     *   **Auto**: Run `comfypanel.ccx` (recommended).
     *   **Manual**: Copy the plugin folder to the UXP plugins directory.
-    *   *Need help? See the [Full Setup Guide](https://lazyet.com/blogs/comfypanel/setup).*
+    *   *Need help? See the [Full Setup Guide](https://lazyet.com/blogs/labs/comfypanel-tutorial).*
 
 ---
 
@@ -61,7 +61,7 @@ ComfyPanel 是一套专为 **Adobe Photoshop** 开发的高灵敏度、专业级
 *   **插件安装**：
     *   **自动安装**：直接运行 `comfypanel.ccx`（推荐）。
     *   **手动安装**：将插件文件夹复制到系统 UXP 插件目录。
-    *   *安装遇到问题？查看[完整中文教程](https://lazyet.com/blogs/lab/comfypanel-tutorial)。*
+    *   *安装遇到问题？查看[完整中文教程](https://lazyet.com/blogs/labs/comfypanel-tutorial)。*
 
 ---
 
@@ -87,7 +87,7 @@ ComfyPanel is an independent tool hand-crafted by **[Gino @ LAZYet](https://lazy
 ComfyPanel 是由 **[Gino @ LAZYet](https://lazyet.com)** 独立开发与精心打磨的设计师级 AI 整合方案，旨在将专业的 AI 工作流无缝融入 Adobe Photoshop。
 
 - 💎 **[Upgrade to ComfyPanel Pro / 升级至 Pro 专业版](https://lazyet.com/products/comfypanel-pro)**
-- 🛍️ **[Explore our Physical Designs at LAZYet Studio / 探索我们的物理设计产品](https://lazyet.com/blogs/lab/comfypanel-tutorial)**
+- 🛍️ **[Explore our Physical Designs at LAZYet Studio / 探索我们的物理设计产品](https://lazyet.com)**
 - 🐛 **[Submit Feedback & Bug Reports / 提交反馈与 Bug 报告 (GitHub)](https://github.com/ginolazy/ComfyPanel/issues)**
 
 <p align="center">
