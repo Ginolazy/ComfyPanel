@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg id="Layer_2" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" viewBox="0 0 1000 1000">
+  <!-- Generator: Adobe Illustrator 29.1.0, SVG Export Plug-In . SVG Version: 2.1.0 Build 142)  -->
+  <defs>
+    <style>
+      .st0 {
+        fill: #f7cd47;
+      }
+
+      .st1 {
+        fill: url(#linear-gradient);
+      }
+
+      .st2 {
+        fill: #4f76a1;
+      }
+    </style>
+    <linearGradient id="linear-gradient" x1="677.1" y1="305.6" x2="999" y2="305.6" gradientTransform="translate(0 1000.8) scale(1 -1)" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#f8cd46" stop-opacity="0"/>
+      <stop offset=".8" stop-color="#f8cd46"/>
+    </linearGradient>
+  </defs>
+  <g id="Layer_1-2">
+    <g id="ComfyPanel">
+      <path class="st0" d="M466.9,212.1c-34.3,42.2-58.5,91.7-70.6,144.7-79.1-40.5-176.1-9.1-216.6,70-40.5,79.1-9.1,176.1,70,216.6,79.1,40.5,176.1,9.1,216.6-70,11.6-22.7,17.7-47.8,17.7-73.3v278.8c-93.6,54.1-208.1,57.5-304.8,9.2C20.1,708.5-44.4,515.2,35,356.1c79.5-159,272.8-223.5,431.9-144.1Z"/>
+      <path class="st2" d="M741.5,693.2h-64.4v-161h64.4c53.3,0,96.6-43.2,96.6-96.6s-43.2-96.6-96.6-96.6-96.6,43.2-96.6,96.6v386.3h-161v-386.3c0-142.2,115.3-257.5,257.5-257.5s257.5,115.3,257.5,257.5-115.3,257.5-257.5,257.5h0Z"/>
+      <path class="st1" d="M745.4,821.9c140,0,253.6-113.5,253.6-253.6-49.7,96.4-149.1,157-257.5,157h-64.4v96.6h68.3Z"/>
+    </g>
+  </g>
+</svg>

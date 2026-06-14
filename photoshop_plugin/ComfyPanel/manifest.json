@@ -1,0 +1,108 @@
+{
+    "id": "ComfyPanel",
+    "name": "ComfyPanel",
+    "version": "1.1.0",
+    "main": "index.html",
+    "manifestVersion": 5,
+    "host": {
+        "app": "PS",
+        "minVersion": "25.0.0"
+    },
+    "featureFlags": {
+        "enableAlerts": true,
+        "enableDeveloperTools": true,
+        "enableRemoteInspection": true
+    },
+    "requiredPermissions": {
+        "allowCodeGenerationFromStrings": true,
+        "localFileSystem": "fullAccess",
+        "launchProcess": {
+            "schemes": [
+                "http",
+                "https"
+            ],
+            "extensions": [
+                ".svg",
+                ".png",
+                ".jpg"
+            ]
+        },
+        "network": {
+            "domains": "all"
+        },
+        "clipboard": "readAndWrite",
+        "webview": {
+            "allow": "yes",
+            "allowLocalRendering": "yes",
+            "domains": "all",
+            "enableMessageBridge": "localAndRemote"
+        },
+        "photoshop": {
+            "allowOpen": true,
+            "allowModify": true,
+            "allowExecuteAsModal": true
+        }
+    },
+    "icons": [
+        {
+            "width": 24,
+            "height": 24,
+            "path": "icons/ComfyPanel.svg",
+            "scale": [
+                1,
+                2
+            ],
+            "theme": [
+                "darkest",
+                "dark",
+                "medium",
+                "light",
+                "lightest"
+            ]
+        }
+    ],
+    "entrypoints": [
+        {
+            "type": "panel",
+            "id": "comfyPanel",
+            "main": "index.html",
+            "label": {
+                "default": "ComfyPanel 1.0"
+            },
+            "minimumSize": {
+                "width": 256,
+                "height": 512
+            },
+            "maximumSize": {
+                "width": 2000,
+                "height": 2000
+            },
+            "preferredDockedSize": {
+                "width": 320,
+                "height": 900
+            },
+            "preferredFloatingSize": {
+                "width": 320,
+                "height": 900
+            },
+            "icons": [
+                {
+                    "width": 24,
+                    "height": 24,
+                    "path": "icons/ComfyPanel.png",
+                    "scale": [
+                        1,
+                        2
+                    ],
+                    "theme": [
+                        "darkest",
+                        "dark",
+                        "medium",
+                        "light",
+                        "lightest"
+                    ]
+                }
+            ]
+        }
+    ]
+}

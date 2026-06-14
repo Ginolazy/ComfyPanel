@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="#ffffff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+  <!-- Card rounded rectangle -->
+  <rect x="1.5" y="4.5" width="21" height="15" rx="2.5" />
+  
+  <!-- Sleeker magnetic stripe -->
+  <line x1="1.5" y1="9.5" x2="22.5" y2="9.5" stroke="#ffffff" stroke-width="2.2" />
+  
+  <!-- Refined chip -->
+  <rect x="4.5" y="13.5" width="3" height="2" rx="0.5" fill="#ffffff" stroke="none" />
+  
+  <!-- Delicate security lock symbol -->
+  <path d="M16.5 15v-1a1.2 1.2 0 0 1 2.4 0v1" stroke="#ffffff" stroke-width="1.2" />
+  <rect x="15" y="15" width="5.4" height="3.5" rx="0.8" fill="#ffffff" stroke="none" />
+</svg>

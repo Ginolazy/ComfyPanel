@@ -1,0 +1,86 @@
+{
+    "default_apps": {
+        "image": [
+            {
+                "id": "48487",
+                "name": "NanoBanna 2"
+            },
+            {
+                "id": "48515",
+                "name": "NanoBanna Pro"
+            },
+            {
+                "id": "51176",
+                "name": "GPT Image 2 (Third-part)"
+            },
+            {
+                "id": "51728",
+                "name": "双图编辑 (Flux.2_Klein)"
+            },
+            {
+                "id": "43769",
+                "name": "全能编辑 (Flux.2_Inpainting)"
+            },
+            {
+                "id": "43768",
+                "name": "图片扩展 (Flux.2_Outpainting)"
+            },
+            {
+                "id": "43694",
+                "name": "局部编辑 (Flux.1_In/Outpainting)"
+            },
+            {
+                "id": "43854",
+                "name": "产品迁移 (Flux.1)"
+            },
+            {
+                "id": "43881",
+                "name": "场景融合 (Flux.1_Kontext)"
+            },
+            {
+                "id": "52030",
+                "name": "高精换脸 (SDXL_InstandID)"
+            },
+            {
+                "id": "44244",
+                "name": "高清放大"
+            },
+            {
+                "id": "49936",
+                "name": "XL图生图"
+            },
+            {
+                "id": "44618",
+                "name": "万物精修"
+            },
+            {
+                "id": "38896",
+                "name": "RMBG2.0抠图"
+            }
+        ],
+        "video": [
+            {
+                "id": "43663",
+                "name": "图音转视频 Wan 2.2 S2V"
+            },
+            {
+                "id": "39762",
+                "name": "Veo3.1首尾帧视频V1"
+            },
+            {
+                "id": "43700",
+                "name": "三图生视频（带音频）- Veo3.1"
+            }
+        ],
+        "audio": [
+            {
+                "id": "49933",
+                "name": "indexTTS2-有声书制作 多人语音模仿"
+            },
+            {
+                "id": "43131",
+                "name": "10秒出音频 ACE Step Model"
+            }
+        ]
+    }
+}
