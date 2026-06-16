@@ -20,10 +20,19 @@ With the latest **v1.1.0** ecosystem upgrade, ComfyPanel expands beyond 2D canva
 ### 🚀 Key Features
 - **Multi-Cloud & Local Engine Ecosystem**: Seamlessly switch compute backends between **Local ComfyUI** (Maximum Privacy), **BizyAir Cloud**, and the newly integrated **RunningHub Cloud API** (Maximum Power), with native support for the dedicated **NanoBanana Engine**.
 - **ModelZoo API with Instant Live Sync**: Real-time cloud model library integration for BizyAir and RunningHub. New models added to official cloud repositories become immediately available in ComfyPanel without any plugin updates. Features dynamic parameter UI generation, **Smart-Loader** grouping, and transparent billing references.
+<p align="center">
+  <img width="900" alt="ComfyPanel cloud engine ModelZoo" src="https://github.com/user-attachments/assets/cf93c7a5-2e51-4725-b9b7-61300c3f49df" />
+</p>
 - **Immersive Multi-Dimensional Previews (New)**: The result preview box goes beyond flat images:
   - **360° VR Panoramic View**: Fully interactive, equirectangular panoramic viewer built directly into the Photoshop sidebar.
+<p align="center">
+  <img width="900" alt="ComfyPanel pano_viewer" src="https://github.com/user-attachments/assets/bead3fdb-3f33-4ade-93ec-1ebc293dc70c" />
+</p>
   - **Native 3D Mesh Viewer**: Smooth interactive rendering for 3D assets (supports `.glb` and `.obj` files) generated from backend nodes (e.g., SV3D / Tripo3D workflows).
 - **Integrated Split-View (App + Graph)**: No need to switch between browser and Photoshop. Open the full ComfyUI workflow graph directly inside the Photoshop panel side-by-side with your "App" controls.
+<p align="center">
+  <img width="900" alt="ComfyPanel model3d_viewer" src="https://github.com/user-attachments/assets/67c8da0c-b95a-41e0-906b-6037685ce6dd" />
+</p>
 - **Interactive Control (Pause & Preview)**: Integrated `AnyPreviewPause` node allows you to stop and preview intermediate latents directly in the Photoshop panel. Tweak parameters or continue only when you're satisfied.
 - **Infinite Offline Recovery**: Never lose a masterpiece. If Photoshop crashes or closes, ComfyPanel automatically retrieves and renders your asynchronous cloud results (RunningHub / BizyAir) upon the next launch.
 - **Deep Canvas Awareness**: Real-time synchronization of layer visibility, transparency, masks, and sub-pixel selections via Photoshop UXP core.
@@ -71,9 +80,18 @@ ComfyPanel 是一套专为 **Adobe Photoshop** 开发的高灵敏度、专业级
 ### ✨ 核心特性
 - **云/地多算力与引擎矩阵**：支持**本地运行**（极致隐私）、**BizyAir 云端加速**、全新集成的 **RunningHub 算力云/API 工作流调度**以及 **NanoBanana 专属引擎**一键无缝切换。
 - **ModelZoo API 实时同步模型库**：完美整合 RunningHub 与 BizyAir 的云端海量模型库。云端官方库新增模型无需更新插件即可**即时全自动同步**，在 Photoshop 内直接解析模型参数并自动生成 UI 控制项，支持智能加载器（Smart-Loader）自动分组及云端计费参考。
+<p align="center">
+  <img width="900" alt="ComfyPanel cloud engine ModelZoo" src="https://github.com/user-attachments/assets/cf93c7a5-2e51-4725-b9b7-61300c3f49df" />
+</p>
 - **沉浸式多维资产预览 (全新升级)**：结果预览框打破平面图层限制，迎来空间维度的全面跃升：
   - **360° VR 全景视图**：在 Photoshop 侧边栏内直接嵌入全交互式、等距柱状投影全景图渲染视口。
+<p align="center">
+  <img width="900" alt="ComfyPanel pano_viewer" src="https://github.com/user-attachments/assets/bead3fdb-3f33-4ade-93ec-1ebc293dc70c" />
+</p>
   - **原生 3D 模型视口**：支持由后端节点（如 SV3D / Tripo3D 工作流）生成的 3D 资产（支持 `.glb` 和 `.obj` 格式文件）在面板内进行平滑的 3D 轨道交互旋转与预览。
+<p align="center">
+  <img width="900" alt="ComfyPanel model3d_viewer" src="https://github.com/user-attachments/assets/67c8da0c-b95a-41e0-906b-6037685ce6dd" />
+</p>
 - **全功能双分栏模式 (App + Graph)**：无需在浏览器和 PS 之间切换。直接在 Photoshop 插件面板内打开完整的 ComfyUI 工作流连线图，与 App 操作面板并排显示，实时联动。
 - **交互式过程控制**：内置 `AnyPreviewPause` 节点，支持在 PS 面板中直接预览中间层潜空间结果（Latent Preview）。暂停、微调或继续，确保生成过程完全可控。
 - **离线断点找回**：首创云端任务持久化机制。即便中途关闭 PS 或遇到程序崩溃，重启后系统也会自动抓回并渲染来自 RunningHub / BizyAir 已完成的算力任务，绝不丢失灵感。
