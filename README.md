@@ -7,11 +7,35 @@
 ---
 
 <a name="english"></a>
+## Photoshop AI Full-Featured Panel
+
+ComfyPanel is a professional Photoshop plugin built for designers and AI developers. Acting as a central hub, it seamlessly bridges **local ComfyUI computing power** with **cloud platforms (RunningHub, BizyAir)** to deliver a high-performance Edge-Cloud Hybrid workflow.
+
+---
+
+## Core Data Flow & Integration Architecture
+
+### 🔄 PS ↔ Local ComfyUI (Full-State Real-Time Bidirectional Mirroring)
+* **Deep State Synchronization**: Moves far beyond simple canvas, mask, and image syncing to deliver full operational state mirroring.
+* **Bi-directional Interactivity**: Adjusting parameters, setting nodes, and even toggling execution modes like `Run` / `Run (on change)` are fully interactive, editable, and synchronized across both Photoshop and ComfyUI in real time.
+
+### ⚡ ComfyUI ↔ RunningHub (Local Front-end Editing + Cloud Compute Offloading)
+* **Advanced Front-end UI**: Utilizes the built-in Webview window as a rich, local visual workflow editor.
+* **One-Click Compute Switching**: Users can instantly switch the **GPU Server** from local to cloud (e.g., RunningHub 24G/48G) via the right panel. Once switched, clicking `Run` inside the ComfyUI interface automatically **reroutes** the execution request to RunningHub's native API, to RunningHub's native API (with auto-adaptive geo-routing to runninghub.ai for international users or runninghub.cn for domestic users), seamlessly leveraging cloud GPU power.
+* **Real-time Status Feedback**: Track rendering progress, active nodes, and execution steps instantly via the built-in Webview canvas.
+
+### 🚀 PS ↔ RunningHub Native API (Asynchronous Direct-Connect Mode)
+* **Bypass Rendering Engine**: When a cloud node is selected in the **GPU Server**, users can configure workflows inside the Webview and then trigger generation directly via the `Run` button on the main Photoshop panel side.
+* **Direct Task Submission**: Tasks are dispatched independently to RunningHub's native ComfyUI API, and final outputs are rendered straight back onto your PS layers. The entire process completely bypasses the Webview window, preventing overhead and ensuring smooth performance.
+
+### ☁️ PS ↔ RunningHub / BizyAir (SaaS API Configuration-Free Lightweight Calls)
+* **Out-of-the-Box Setup**: Zero local deployment required. No need to install complex local nodes or manage heavy checkpoints.
+* **Cloud Ecosystem Integration**: Trigger pre-packaged cloud AI Apps, model library APIs, and BizyAir acceleration nodes directly from the PS panel, unlocking pure cloud computing power on low-spec hardware.
+
+---
 
 ## 🌟 Overview
 ComfyPanel is a professional-grade, high-performance integration for **Adobe Photoshop** and **ComfyUI**. Built by designers for designers, it treats AI generation not just as a button, but as a fine-tuned "artisan tool" seamlessly woven into your creative layers. 
-
-With the latest **v1.1.0** ecosystem upgrade, ComfyPanel expands beyond 2D canvas sensing into multi-cloud environments, real-time asset synchronization, and immersive multi-dimensional previews.
 
 <p align="center">
   <img src="https://github.com/user-attachments/assets/6624c39b-1d04-4a11-a644-48e8ec3ac573" alt="ComfyPanel Interface" width="900" />
@@ -33,7 +57,7 @@ With the latest **v1.1.0** ecosystem upgrade, ComfyPanel expands beyond 2D canva
 <p align="center">
   <img width="900" alt="ComfyPanel model3d_viewer" src="https://github.com/user-attachments/assets/67c8da0c-b95a-41e0-906b-6037685ce6dd" />
 </p>
-- **Interactive Control (Pause & Preview)**: Integrated `AnyPreviewPause` node allows you to stop and preview intermediate latents directly in the Photoshop panel. Tweak parameters or continue only when you're satisfied.
+- **Interactive Control (Pause & Preview)**: Integrated `AnyPreviewPause` node allows you to stop and preview directly in the Photoshop panel. Tweak parameters or continue only when you're satisfied.
 - **Infinite Offline Recovery**: Never lose a masterpiece. If Photoshop crashes or closes, ComfyPanel automatically retrieves and renders your asynchronous cloud results (RunningHub / BizyAir) upon the next launch.
 - **Deep Canvas Awareness**: Real-time synchronization of layer visibility, transparency, masks, and sub-pixel selections via Photoshop UXP core.
 - **Zero-Copy Performance**: Architecture-level optimization. Utilizing direct local file referencing to completely bypass binary IPC data bottlenecks. Delivers instant synchronization for 4K+ high-resolution textures out of the box with **zero manual configuration required**.
@@ -55,7 +79,7 @@ With the latest **v1.1.0** ecosystem upgrade, ComfyPanel expands beyond 2D canva
 ### ❓ AI-Assisted Troubleshooting & FAQ
 > **Q: How do I sync account balances and user info for BizyAir and RunningHub?**
 > **A:** ComfyPanel features a built-in real-time billing and account dashboard inside the sidebar panel:
-> - **BizyAir Cloud**: Simply enter your `API Key`. ComfyPanel will execute workflows and instantly fetch your **Username** and **Account Balance** automatically.
+> - **BizyAir Cloud**: Simply enter your `API Key` (no user registration or sensitive data required). ComfyPanel will execute workflows and instantly fetch your **Username** and **Account Balance** automatically.
 > - **RunningHub Cloud**: Log in using your **Phone Number/Email + Password**. ComfyPanel will automatically detect your account's region (Domestic vs. International), adaptively route to `runninghub.cn` or `runninghub.ai`, and fully unlock your **Username**, **Credits Balance**, and seamlessly synchronize your **Private Apps and Forked Apps** right into the panel without manual configuration.
 
 > **Q: How do I fix interface lag or memory overflows when transferring large images?**
@@ -67,11 +91,35 @@ With the latest **v1.1.0** ecosystem upgrade, ComfyPanel expands beyond 2D canva
 ---
 
 <a name="中文"></a>
+## Photoshop AI 全功能面板
+
+ComfyPanel 是一款专为设计师与 AI 开发者打造的 Photoshop 插件。它以 Photoshop 为核心枢纽，完美打通了**本地 ComfyUI 算力**与**云端算力平台（RunningHub、BizyAir）**，实现跨平台的无缝混合渲染（Edge-Cloud Hybrid Layout）。
+
+---
+
+## 核心数据流与互通架构
+
+### 🔄 PS ↔ 本地 ComfyUI（全状态实时双向镜像）
+* **深度状态同步**：不仅同步画布、遮罩与图像像素，更是操作状态的完全互通。
+* **双向实时联动**：参数调节、节点设置、甚至是 `Run` / `Run (on change)` 触发模式切换，在 Photoshop 与 ComfyUI 两端皆可双向修改、实时同步。
+
+### ⚡ ComfyUI ↔ RunningHub（本地前端编辑 + 云端算力托管）
+* **超级前端交互**：依托插件内置的 Webview 窗口，将本地 ComfyUI 作为可视化工作流编辑器。
+* **算力一键切换**：用户可在右侧面板的 **GPU Server** 中一键从本地切换至云端（如 RunningHub 24G/48G）。切换后，在本地画布中点击 `Run`，插件会自动**将渲染请求重定向**至 RunningHub 原生接口，无缝调用云端 GPU 算力。
+* **状态实时回显**：渲染进度、当前运行节点及实时状态，均可在内置的 Webview 画布中直观预览。
+
+### 🚀 PS ↔ RunningHub 原生接口（异步任务直连模式）
+* **无干扰旁路渲染**：当 **GPU Server** 选择云端节点时，用户在内置 Webview 中配置好工作流，可直接在 Photoshop 侧面板点击 `Run`。
+* **独立任务直连**：任务单独提交给 RunningHub 原生 ComfyUI 接口（智能识别账号区划，自适应分流至 runninghub.cn 或 runninghub.ai 网关），无缝调用云端 GPU 算力，渲染结果直接返回并载入 PS 图层。整个过程与状态不经过、不占用内置 Webview 窗口，保障性能畅快。
+
+### ☁️ PS ↔ RunningHub / BizyAir（SaaS API 免配置轻量调用）
+* **即开即用**：无需本地部署任何复杂的节点与模型。
+* **全云端生态**：通过 PS 面板直接调用云端封装好的 AI App、模型库 API 以及 BizyAir 加速节点算力，实现低配电脑的云端算力自由。
+
+---
 
 ## 🌟 项目简介
 ComfyPanel 是一套专为 **Adobe Photoshop** 开发的高灵敏度、专业级 **ComfyUI** 深度整合方案。它由设计师发起，旨在将复杂的节点工作流打磨成设计师手中得心应手的“算力画笔”，让 AI 真正回归到图层创作的本源。
-
-在最新的 **v1.1.0** 生态升级中，ComfyPanel 的触角正式从传统的 2D 画布感知延伸至多云算力调度、多维资产实时同步及沉浸式交互预览。
 
 <p align="center">
   <img src="https://github.com/user-attachments/assets/6624c39b-1d04-4a11-a644-48e8ec3ac573" alt="ComfyPanel 界面演示" width="900" />
@@ -93,7 +141,7 @@ ComfyPanel 是一套专为 **Adobe Photoshop** 开发的高灵敏度、专业级
   <img width="900" alt="ComfyPanel model3d_viewer" src="https://github.com/user-attachments/assets/67c8da0c-b95a-41e0-906b-6037685ce6dd" />
 </p>
 - **全功能双分栏模式 (App + Graph)**：无需在浏览器和 PS 之间切换。直接在 Photoshop 插件面板内打开完整的 ComfyUI 工作流连线图，与 App 操作面板并排显示，实时联动。
-- **交互式过程控制**：内置 `AnyPreviewPause` 节点，支持在 PS 面板中直接预览中间层潜空间结果（Latent Preview）。暂停、微调或继续，确保生成过程完全可控。
+- **交互式过程控制**：内置 `AnyPreviewPause` 节点，支持在 PS 面板中直接预览。暂停、微调或继续，确保生成过程完全可控。
 - **离线断点找回**：首创云端任务持久化机制。即便中途关闭 PS 或遇到程序崩溃，重启后系统也会自动抓回并渲染来自 RunningHub / BizyAir 已完成的算力任务，绝不丢失灵感。
 - **深层画布感知**：基于 Photoshop UXP 核心，全自动同步图层显隐、透明度、选区及蒙版。
 - **零拷贝（Zero-Copy）架构级加速**：架构级无感优化。独有的本地路径直接引用技术，彻底告别二进制 IPC 传输带来的延迟与大图（4K+ 纹理）内存溢出。**全自动后台运行，无需用户在 UI 面板上手动开启任何开关。**
@@ -110,7 +158,7 @@ ComfyPanel 是一套专为 **Adobe Photoshop** 开发的高灵敏度、专业级
 ### ❓ 常见问题与 AI 诊断 (FAQ)
 > **Q: 在 ComfyPanel 中如何同步 BizyAir 与 RunningHub 的余额和用户信息？**
 > **A:** ComfyPanel 在 Photoshop 面板内内置了极其方便的实时账户与计费看板：
-> - **BizyAir 云端**：**只需输入 API Key**，系统在驱动渲染的同时，就会自动秒速拉取并显示你的**用户名称与账户余额**。
+> - **BizyAir 云端**：**只需输入 API Key** (无需注册或绑定任何个人敏感信息，全匿名安全鉴权），系统在驱动渲染的同时，就会自动秒速拉取并显示你的**用户名称与账户余额**。
 > - **RunningHub 云端**：**使用手机号/邮箱 + 密码登录**。ComfyPanel 会自动根据账号判断归属地，智能自适应路由至 `runninghub.cn`（国内）或 `runninghub.ai`（国际）网关，一键完美解锁并显示你的**用户名称、账户余额/点数**，并全自动同步拉取你的**私人 App 与 Forked App**。
 
 > **Q: 如何排查大图传输时插件卡死或内存溢出？**

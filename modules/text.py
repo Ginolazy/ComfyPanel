@@ -1,4 +1,4 @@
-## ComfyUI/custom_nodes/ComfyPanel/py/text.py
+## ComfyUI/custom_nodes/ComfyPanel/modules/text.py
 
 import re, shlex, subprocess
 from .utility.math_utility import math_operation_calc

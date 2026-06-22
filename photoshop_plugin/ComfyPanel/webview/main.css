@@ -419,7 +419,7 @@ body {
 }
 
 /* Local Engine Settings Hiding in Express Mode */
-.mode-express .local-only-settings {
+.mode-express .comfyui-only-settings {
     display: none !important;
 }
 
@@ -432,6 +432,75 @@ body {
 .mode-express[data-backend="bizyair"] #bizyairAccountSection {
     display: block !important;
 }
+
+.server-selection-bar {
+    display: none;
+    align-items: center;
+    justify-content: space-between;
+    padding: 6px;
+    background: var(--bg-secondary);
+    border-bottom: 1px solid var(--border-color);
+    gap: 6px;
+    flex-shrink: 0;
+    width: 100%;
+    white-space: nowrap;
+}
+
+
+/* Active Workflow Bar — pinned at top of workflow list */
+.active-workflow-bar {
+    display: none;
+    align-items: center;
+    justify-content: space-between;
+    background: var(--bg-secondary);
+    border-bottom: 1px solid var(--border-color);
+    gap: 6px;
+    flex-shrink: 0;
+    width: 100%;
+    cursor: pointer;
+}
+
+.active-workflow-bar .cw-info:hover,
+.active-workflow-bar .cw-actions:hover {
+    background: var(--bg-hover);
+}
+
+.active-workflow-bar .cw-info {
+    padding: 10px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    min-width: 0;
+    flex: 1;
+    overflow: hidden;
+    transition: all var(--transition-fast);
+}
+
+.active-workflow-bar .cw-label {
+    color: var(--accent-success, #2da042);
+    font-size: 9px;
+    font-weight: 600;
+    flex-shrink: 0;
+    opacity: 0.9;
+}
+
+.active-workflow-bar .cw-name {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    min-width: 0;
+}
+
+.active-workflow-bar .cw-actions {
+    display: flex;
+    align-items: center;
+    padding: 9px 18px;
+    gap: 4px;
+    flex-shrink: 0;
+    transition: all var(--transition-fast);
+}
+
+
 
 /* Engine Action Visibility Logic */
 /* 1. Hide Delete NanoBanana button when not on Engine tab or not using NanoBanana */
@@ -538,7 +607,7 @@ body[data-active-tab="global"] #deleteNanoBananaBtn {
     text-align: center;
 }
 
-.mode-express[data-backend="local"] #engineSettingsTabBtn {
+.mode-express[data-backend="comfyui"] #engineSettingsTabBtn {
     display: none !important;
 }
 
@@ -1068,6 +1137,10 @@ body[data-active-tab="global"] #deleteNanoBananaBtn {
 .mz-price-table .mz-th {
     padding: 4px;
     font-weight: 500;
+}
+
+.mz-price-table .mz-th:last-of-type {
+    text-align: right;
 }
 
 /* Price table: th — price column (right-aligned) */
@@ -1867,24 +1940,45 @@ input:focus {
 
 /* Result Text Container */
 .result-text-container {
-    padding: var(--spacing-md);
+    padding: var(--spacing-sm);
     background: var(--bg-secondary);
-    border-top: 1px solid var(--border-color);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-md);
+    display: none;
+    flex-direction: column;
 }
 
 .result-text-area {
     width: 100%;
-    min-height: 100px;
-    max-height: 300px;
+    min-height: 80px;
+    max-height: 200px;
     background: transparent;
     border: none;
     color: var(--text-primary);
     font-size: 13px;
-    line-height: 1.6;
-    padding: 8px;
     resize: vertical;
+    line-height: 1.6;
     outline: none;
-    font-family: inherit;
+    padding: 0;
+    margin: 0;
+}
+
+.result-text-area::selection {
+    background: var(--accent-primary);
+    color: #fff;
+}
+
+.result-preview-container {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 180px;
+}
+
+.result-preview-container .media-preview-container {
+    height: 100% !important;
+    background: var(--icon-btn-bg-color);
 }
 
 .result-text-area::placeholder {
@@ -2346,6 +2440,7 @@ textarea.tool-param-input:focus {
     background: var(--bg-input);
     position: relative;
     width: 100%;
+    min-width: 0;
     z-index: 1;
     /* [FIX] Lower z-index to prevent blocking dropdowns */
 }
@@ -2550,6 +2645,7 @@ textarea.tool-param-input:focus {
 .label-tiny {
     display: flex;
     align-items: center;
+    white-space: nowrap;
 }
 
 .label-tiny-second {
@@ -2602,6 +2698,7 @@ textarea.tool-param-input:focus {
 .log-time {
     color: var(--text-muted);
     flex-shrink: 0;
+    letter-spacing: -0.7px;
 }
 
 .log-message {
@@ -2625,55 +2722,6 @@ textarea.tool-param-input:focus {
 
 .log-entry.warning .log-message {
     color: #ff9800;
-}
-
-/* Result Preview (New Position: Top)
-.result-preview-area {
-    margin-bottom: 8px;
-} */
-
-.result-text-container {
-    margin-top: 8px;
-    padding: 8px;
-    background: var(--bg-secondary);
-    border: 1px solid var(--border-color);
-    border-radius: var(--radius-md);
-    display: none;
-    flex-direction: column;
-}
-
-.result-text-area {
-    width: 100%;
-    min-height: 80px;
-    max-height: 200px;
-    background: transparent;
-    border: none;
-    color: var(--text-primary);
-    font-size: 13px;
-    font-family: var(--font-mono), monospace;
-    resize: vertical;
-    line-height: 1.6;
-    outline: none;
-    padding: 0;
-    margin: 0;
-}
-
-.result-text-area::selection {
-    background: var(--accent-primary);
-    color: #fff;
-}
-
-.result-preview-container {
-    position: relative;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 180px;
-}
-
-.result-preview-container .media-preview-container {
-    height: 100% !important;
-    background: var(--icon-btn-bg-color);
 }
 
 .toggle-icon-btn {
@@ -3099,6 +3147,7 @@ textarea.tool-param-input:focus {
     align-items: center;
     justify-content: space-between;
     margin: 6px 0;
+    gap: 6px;
     flex-wrap: wrap;
     z-index: revert-layer;
 }
@@ -4203,7 +4252,7 @@ body:not([data-engine="nanobanana"]) .nanobanana-only-settings {
     display: none !important;
 }
 
-body:not([data-backend="local"]) .local-only-settings {
+body:not([data-backend="comfyui"]) .comfyui-only-settings {
     display: none !important;
 }
 
@@ -4222,7 +4271,7 @@ body[data-backend][data-active-tab="engine"] div.engine-only-settings {
     display: block !important;
 }
 
-body.mode-express[data-backend="local"] .engine-only-settings {
+body.mode-express[data-backend="comfyui"] .engine-only-settings {
     display: none !important;
 }
 

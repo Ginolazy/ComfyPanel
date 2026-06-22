@@ -1,3 +1,6 @@
+## ComfyUI/custom_nodes/ComfyPanel/modules/utility/comfypanel_tunnel.py
+
+import re
 import os
 import subprocess
 import platform

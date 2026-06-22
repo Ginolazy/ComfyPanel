@@ -1,4 +1,4 @@
-/** ComfyUI/custom_nodes/ComfyPanel/js/dynamic_ports_register.js **/
+/** ComfyUI/custom_nodes/ComfyPanel/web/dynamic_ports_register.js **/
 
 import { app } from "../../../scripts/app.js";
 import { DynamicPorts } from "./dynamic_ports.js";

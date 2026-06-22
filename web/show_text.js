@@ -1,4 +1,5 @@
-/** ComfyUI/custom_nodes/ComfyPanel/js/show_text.js **/
+/** ComfyUI/custom_nodes/ComfyPanel/web/show_text.js **/
+
 import { app } from "../../../scripts/app.js";
 import { ComfyWidgets } from "../../scripts/widgets.js";
 

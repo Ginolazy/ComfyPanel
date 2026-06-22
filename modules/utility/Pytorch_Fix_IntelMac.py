@@ -1,4 +1,5 @@
-## ComfyUI/custom_nodes/ComfyPanel/py/utility/Pytorch_Fix_IntelMac.py
+## ComfyUI/custom_nodes/ComfyPanel/modules/utility/Pytorch_Fix_IntelMac.py
+
 import torch
 import torch.nn as nn
 import sys

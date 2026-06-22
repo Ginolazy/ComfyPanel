@@ -1,3 +1,5 @@
+/** ComfyUI/custom_nodes/ComfyPanel/web/flux_kontext.js **/
+
 import { app } from "../../scripts/app.js";
 
 /**

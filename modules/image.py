@@ -1,4 +1,5 @@
-## ComfyUI/custom_nodes/ComfyPanel/py/image.py
+## ComfyUI/custom_nodes/ComfyPanel/modules/image.py
+
 import torch
 import torch.nn.functional as F
 import cv2

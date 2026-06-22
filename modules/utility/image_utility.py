@@ -1,4 +1,5 @@
-## ComfyUI/custom_nodes/ComfyPanel/py/utility/image_utility.py
+## ComfyUI/custom_nodes/ComfyPanel/modules/utility/image_utility.py
+
 import re
 import numpy as np
 import torch

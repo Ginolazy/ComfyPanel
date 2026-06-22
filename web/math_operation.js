@@ -1,4 +1,5 @@
-/** ComfyUI/custom_nodes/ComfyPanel/js/math_operation.js **/
+/** ComfyUI/custom_nodes/ComfyPanel/web/math_operation.js **/
+
 import { app } from "../../../scripts/app.js";
 
 app.registerExtension({

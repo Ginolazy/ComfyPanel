@@ -1,4 +1,4 @@
-/** ComfyUI/custom_nodes/ComfyPanel/js/switch_any_combo.js **/
+/** ComfyUI/custom_nodes/ComfyPanel/web/switch_any_combo.js **/
 
 export function setupSwitchAnyCombo(nodeType) {
     nodeType.prototype.updateSwitchAnyComboOptions = function () {

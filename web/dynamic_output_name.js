@@ -1,4 +1,5 @@
-/** ComfyUI/custom_nodes/ComfyPanel/js/dynamic_output_name.js **/
+/** ComfyUI/custom_nodes/ComfyPanel/web/dynamic_output_name.js **/
+
 import { app } from "../../../scripts/app.js";
 
 function updateNodeAnyTypeOutput(node, newType) {

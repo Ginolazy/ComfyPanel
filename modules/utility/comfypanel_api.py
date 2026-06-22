@@ -1,3 +1,5 @@
+## ComfyUI/custom_nodes/ComfyPanel/modules/utility/comfypanel_api.py
+
 import shutil
 import os
 import io
@@ -635,5 +637,92 @@ async def runninghub_proxy(request):
                         return web.Response(body=text, status=resp.status, content_type=resp.content_type)
     except Exception as e:
         logging.error(f"[ComfyPanel Proxy] Proxy exception: {e}", exc_info=True)
+        return web.json_response({"success": False, "error": str(e)}, status=500)
+
+
+@PromptServer.instance.routes.post("/comfypanel/runninghub/upload_proxy")
+async def runninghub_upload_proxy(request):
+    try:
+        body = await request.json()
+        filename = body.get("filename", "")
+        base_url = body.get("baseUrl", "https://www.runninghub.cn")
+        api_key = body.get("apiKey", "")
+
+        if not filename:
+            return web.json_response({"success": False, "error": "No filename provided"}, status=400)
+
+        # 1. Resolve path in input directory
+        input_dir = folder_paths.get_input_directory()
+        file_path = os.path.abspath(os.path.join(input_dir, filename))
+        if not file_path.startswith(os.path.abspath(input_dir)) or not os.path.isfile(file_path):
+            return web.json_response({"success": False, "error": f"File not found: {filename}"}, status=404)
+
+        # 2. Upload to RunningHub
+        url = f"{base_url}/openapi/v2/media/upload/binary"
+        import aiohttp
+        async with aiohttp.ClientSession() as session:
+            with open(file_path, 'rb') as f:
+                data = aiohttp.FormData()
+                data.add_field('file', f, filename=filename)
+                headers = {}
+                if api_key:
+                    headers['Authorization'] = f"Bearer {api_key}"
+                async with session.post(url, data=data, headers=headers) as resp:
+                    resp_json = await resp.json()
+                    return web.json_response(resp_json, status=resp.status)
+    except Exception as e:
+        logging.error(f"[ComfyPanel Proxy] Upload proxy exception: {e}", exc_info=True)
+        return web.json_response({"success": False, "error": str(e)}, status=500)
+
+
+@PromptServer.instance.routes.post("/comfypanel/runninghub/download_image")
+async def runninghub_download_image(request):
+    try:
+        body = await request.json()
+        image_url = body.get("imageUrl", "")
+        filename = body.get("filename", "")
+        subfolder = body.get("subfolder", "")
+        img_type = body.get("type", "output")
+        api_key = body.get("apiKey", "")
+
+        if not image_url or not filename:
+            return web.json_response({"success": False, "error": "Missing parameters"}, status=400)
+
+        if img_type == "temp":
+            base_dir = folder_paths.get_temp_directory()
+        else:
+            base_dir = folder_paths.get_output_directory()
+
+        # If subfolder is empty for output, default to comfypanel_results
+        if not subfolder and img_type != "temp":
+            subfolder = "comfypanel_results"
+
+        target_dir = os.path.abspath(os.path.join(base_dir, subfolder))
+        os.makedirs(target_dir, exist_ok=True)
+        
+        file_path = os.path.abspath(os.path.join(target_dir, filename))
+        if not file_path.startswith(os.path.abspath(base_dir)):
+            return web.json_response({"success": False, "error": "Access denied"}, status=403)
+
+        headers = {}
+        if api_key:
+            headers['Authorization'] = f"Bearer {api_key}"
+            headers['token'] = api_key
+
+        import aiohttp
+        async with aiohttp.ClientSession() as session:
+            async with session.get(image_url, headers=headers) as resp:
+                if resp.status == 200:
+                    data = await resp.read()
+                    with open(file_path, "wb") as f:
+                        f.write(data)
+                    logging.info(f"[RH] Successfully downloaded {img_type} image to {file_path}")
+                    return web.json_response({"success": True, "localPath": file_path})
+                else:
+                    err_msg = f"Cloud download returned HTTP {resp.status}"
+                    logging.error(f"[RH] Download failed: {err_msg}")
+                    return web.json_response({"success": False, "error": err_msg}, status=400)
+    except Exception as e:
+        logging.error(f"[ComfyPanel] Download image exception: {e}", exc_info=True)
         return web.json_response({"success": False, "error": str(e)}, status=500)
 

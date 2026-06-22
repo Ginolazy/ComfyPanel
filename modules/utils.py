@@ -1,4 +1,5 @@
-## ComfyUI/custom_nodes/ComfyPanel/py/utils.py
+## ComfyUI/custom_nodes/ComfyPanel/modules/utils.py
+
 import torch
 import numpy as np
 import folder_paths

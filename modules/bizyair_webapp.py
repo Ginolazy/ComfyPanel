@@ -1,3 +1,5 @@
+## ComfyUI/custom_nodes/ComfyPanel/modules/bizyair_webapp.py
+
 import base64
 import configparser
 import datetime
@@ -19,19 +21,17 @@ from server import PromptServer
 import comfy.model_management
 from .utility.type_utility import any_type
 
-# Get BizyAir official plugin path
-BIZYAIR_PATH = os.path.join(folder_paths.get_folder_paths("custom_nodes")[0], "BizyAir")
-API_KEY_FILE = os.path.join(BIZYAIR_PATH, "api_key.ini")
-
 def get_api_key():
-    if not os.path.exists(API_KEY_FILE):
-        return None
-    config = configparser.ConfigParser()
-    config.read(API_KEY_FILE)
     try:
-        return config.get("auth", "api_key")
-    except:
-        return None
+        user_dir = folder_paths.get_user_directory()
+        settings_file = os.path.join(user_dir, "default", "comfy.settings.json")
+        if os.path.exists(settings_file):
+            with open(settings_file, "r", encoding="utf-8") as f:
+                settings = json.load(f)
+                return settings.get("BizyAir.BizyAirPlus.apikey")
+    except Exception as e:
+        print(f"[BizyAirWebApp] Error reading API key from comfy.settings.json: {e}")
+    return None
 
 # Expose interface to get API Key for frontend
 @PromptServer.instance.routes.get("/bizyair_webapp/get_api_key")
@@ -216,7 +216,7 @@ class BizyAirWebApp:
         
     def execute_app(self, APP, input_values_json="{}", prompt=None, extra_pnginfo=None, unique_id=None, **kwargs):
         api_key = get_api_key()
-        if not api_key: raise Exception("BizyAir API Key not found in api_key.ini")
+        if not api_key: raise Exception("BizyAir API Key not found in comfy.settings.json")
         if not APP or APP == "None": raise Exception("No App selected")
 
         web_app_id = None

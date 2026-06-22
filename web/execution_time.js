@@ -1,4 +1,5 @@
-/** ComfyUI/custom_nodes/ComfyPanel/js/execution_time.js **/
+/** ComfyUI/custom_nodes/ComfyPanel/web/execution_time.js **/
+
 import { api } from "../../../scripts/api.js";
 import { app } from "../../../scripts/app.js";
 

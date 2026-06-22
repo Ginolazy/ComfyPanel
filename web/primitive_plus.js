@@ -1,4 +1,5 @@
-/** ComfyUI/custom_nodes/ComfyPanel/js/primitive_plus.js **/
+/** ComfyUI/custom_nodes/ComfyPanel/web/primitive_plus.js **/
+
 import { app } from "../../scripts/app.js";
 import { ComfyWidgets } from "../../scripts/widgets.js";
 
