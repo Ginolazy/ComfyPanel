@@ -449,6 +449,7 @@ body {
 
 /* Active Workflow Bar — pinned at top of workflow list */
 .active-workflow-bar {
+    position: fixed;
     display: none;
     align-items: center;
     justify-content: space-between;
@@ -466,6 +467,7 @@ body {
 }
 
 .active-workflow-bar .cw-info {
+    font-weight: 600;
     padding: 10px;
     display: flex;
     align-items: center;

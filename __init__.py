@@ -23,7 +23,7 @@ sys.path.append(plugin_dir)
 NODE_CLASS_MAPPINGS = {} 
 NODE_DISPLAY_NAME_MAPPINGS = {}
 WEB_DIRECTORY = "./web"
-__version__ = "1.2.0"
+__version__ = "1.2.1"
 
 def check_dependencies():
     required_packages = {
