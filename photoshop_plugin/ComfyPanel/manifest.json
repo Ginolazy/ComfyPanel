@@ -1,7 +1,7 @@
 {
     "id": "ComfyPanel",
     "name": "ComfyPanel",
-    "version": "1.2.1",
+    "version": "1.2.2",
     "main": "index.html",
     "manifestVersion": 5,
     "host": {
@@ -67,7 +67,7 @@
             "id": "comfyPanel",
             "main": "index.html",
             "label": {
-                "default": "ComfyPanel 1.2.1"
+                "default": "ComfyPanel 1.2.2"
             },
             "minimumSize": {
                 "width": 256,

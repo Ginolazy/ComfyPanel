@@ -496,12 +496,14 @@ body {
 .active-workflow-bar .cw-actions {
     display: flex;
     align-items: center;
-    padding: 9px 18px;
     gap: 4px;
     flex-shrink: 0;
     transition: all var(--transition-fast);
 }
 
+.active-workflow-bar .cw-actions .icon-btn {
+    padding: 9px 18px;
+}
 
 
 /* Engine Action Visibility Logic */
@@ -2720,6 +2722,7 @@ textarea.tool-param-input:focus {
 
 .log-entry.error .log-message {
     color: var(--accent-error);
+    white-space: unset;
 }
 
 .log-entry.warning .log-message {
