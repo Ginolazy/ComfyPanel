@@ -1,7 +1,7 @@
 {
-    "id": "ComfyPanel",
+    "id": "comfypanel",
     "name": "ComfyPanel",
-    "version": "1.2.2",
+    "version": "1.2.3",
     "main": "index.html",
     "manifestVersion": 5,
     "host": {
@@ -17,15 +17,8 @@
         "allowCodeGenerationFromStrings": true,
         "localFileSystem": "fullAccess",
         "launchProcess": {
-            "schemes": [
-                "http",
-                "https"
-            ],
-            "extensions": [
-                ".svg",
-                ".png",
-                ".jpg"
-            ]
+            "schemes": [ "http", "https" ],
+            "extensions": [ ".svg", ".png", ".jpg" ]
         },
         "network": {
             "domains": "all"
@@ -48,17 +41,8 @@
             "width": 24,
             "height": 24,
             "path": "icons/ComfyPanel.svg",
-            "scale": [
-                1,
-                2
-            ],
-            "theme": [
-                "darkest",
-                "dark",
-                "medium",
-                "light",
-                "lightest"
-            ]
+            "scale": [ 1, 2 ],
+            "theme": [ "darkest", "dark", "medium", "light", "lightest" ]
         }
     ],
     "entrypoints": [
@@ -67,7 +51,7 @@
             "id": "comfyPanel",
             "main": "index.html",
             "label": {
-                "default": "ComfyPanel 1.2.2"
+                "default": "ComfyPanel 1.2.3"
             },
             "minimumSize": {
                 "width": 256,
@@ -90,17 +74,8 @@
                     "width": 24,
                     "height": 24,
                     "path": "icons/ComfyPanel.png",
-                    "scale": [
-                        1,
-                        2
-                    ],
-                    "theme": [
-                        "darkest",
-                        "dark",
-                        "medium",
-                        "light",
-                        "lightest"
-                    ]
+                    "scale": [ 1, 2 ],
+                    "theme": [ "darkest", "dark", "medium", "light", "lightest" ]
                 }
             ]
         }

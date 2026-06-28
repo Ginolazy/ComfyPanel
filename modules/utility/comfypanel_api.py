@@ -345,7 +345,44 @@ async def open_user_config(request):
         if system == "Darwin":
             subprocess.call(["open", config_path])
         elif system == "Windows":
-            os.startfile(config_path)
+            editor_cmd = None
+            if shutil.which("code"):
+                editor_cmd = ["code", config_path]
+            elif shutil.which("notepad++"):
+                editor_cmd = ["notepad++", config_path]
+            
+            if editor_cmd:
+                try:
+                    subprocess.Popen(editor_cmd, shell=True)
+                except Exception:
+                    editor_cmd = None
+            
+            if not editor_cmd:
+                common_paths = [
+                    (os.path.expandvars(r"%LocalAppData%\Programs\Microsoft VS Code\bin\code.cmd"), True),
+                    (os.path.expandvars(r"%ProgramFiles%\Microsoft VS Code\bin\code.cmd"), True),
+                    (os.path.expandvars(r"%ProgramFiles(x86)%\Notepad++\notepad++.exe"), False),
+                    (os.path.expandvars(r"%ProgramFiles%\Notepad++\notepad++.exe"), False),
+                ]
+                opened = False
+                for path, use_shell in common_paths:
+                    if os.path.exists(path):
+                        try:
+                            subprocess.Popen([path, config_path], shell=use_shell)
+                            opened = True
+                            break
+                        except Exception:
+                            continue
+                if not opened:
+                    try:
+                        with open(config_path, "rb") as f:
+                            content = f.read()
+                        if not content.startswith(b"\xef\xbb\xbf"):
+                            with open(config_path, "wb") as f:
+                                f.write(b"\xef\xbb\xbf" + content)
+                    except Exception:
+                        pass
+                    subprocess.Popen(["notepad.exe", config_path])
         else:
             subprocess.call(["xdg-open", config_path])
             

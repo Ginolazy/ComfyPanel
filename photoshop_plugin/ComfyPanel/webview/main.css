@@ -4238,6 +4238,18 @@ video.strip-thumb-img {
     flex: 1;
     font-size: 11px;
     min-width: 0;
+    padding: 3px 6px;
+    border: 1px solid var(--bg-hover);
+    border-radius: var(--radius-sm);
+    color: var(--text-primary);
+    background: var(--bg-input);
+    transition: all var(--transition-normal);
+}
+
+.prompt-save-input:focus {
+    border-color: var(--accent-primary);
+    background-color: var(--bg-primary);
+    color: var(--text-primary);
 }
 
 /* --- Decoupled Engine Settings Visibility --- */

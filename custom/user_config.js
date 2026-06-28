@@ -74,6 +74,7 @@ window.userConfig = {
         },
         'SwitchAny': { widgets: '*' },
         'SwitchOutput': { widgets: '*' },
+        'KSampler': { widgets: '*' },
         'TextMultiline': { widgets: [{ widgetName: 'text' }] }
     }
 };
