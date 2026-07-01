@@ -33,6 +33,29 @@
     flex: 1 !important;
 }
 
+/* TEMPORARY: disable BizyAir engine selection while service is unavailable
+.engine-card[data-action="select-engine"][data-engine="engine_bizyair"] {
+    cursor: not-allowed;
+    border-color: var(--border-color);
+    background: var(--bg-secondary);
+    pointer-events: none;
+}
+
+.engine-card[data-action="select-engine"][data-engine="engine_bizyair"]::after {
+    content: 'BizyAir service temporarily unavailable. Waiting for official recovery.';
+    position: absolute;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+    font-weight: 700;
+    background: rgba(126, 126, 126, 0.9);
+    border-radius: 6px;
+    pointer-events: none;
+}
+END TEMPORARY: disable BizyAir engine selection */
+
 /* Loading Overlay */
 body.is-loading::after {
     content: '';

@@ -641,7 +641,9 @@ async def runninghub_proxy(request):
         method = body.get("method", "POST").upper()
         payload = body.get("body")
         headers = body.get("headers", {})
-        base_url = body.get("baseUrl", "https://www.runninghub.cn")
+        base_url = body.get("baseUrl", "")
+        if not base_url:
+            return web.json_response({"success": False, "error": "Missing baseUrl"})
 
         if not endpoint.startswith('/'):
             endpoint = '/' + endpoint
@@ -682,8 +684,10 @@ async def runninghub_upload_proxy(request):
     try:
         body = await request.json()
         filename = body.get("filename", "")
-        base_url = body.get("baseUrl", "https://www.runninghub.cn")
+        base_url = body.get("baseUrl", "")
         api_key = body.get("apiKey", "")
+        if not base_url:
+            return web.json_response({"success": False, "error": "Missing baseUrl"})
 
         if not filename:
             return web.json_response({"success": False, "error": "No filename provided"}, status=400)

@@ -2,10 +2,6 @@
     "bizyair": {
         "image": [
             {
-                "id": "bizyair_models",
-                "name": "ModelZoo API (All-in-one)⚡"
-            },
-            {
                 "id": "48487",
                 "name": "NanoBanana 2"
             },
@@ -57,10 +53,6 @@
     },
     "runninghub": {
         "image": [
-            {
-                "id": "runninghub_models",
-                "name": "ModelZoo API (All-in-one)⚡"
-            },
             {
                 "id": "2070762861495934977",
                 "name": "NanoBanana (channel)"
