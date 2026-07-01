@@ -33,7 +33,7 @@
     flex: 1 !important;
 }
 
-/* TEMPORARY: disable BizyAir engine selection while service is unavailable
+/* TEMPORARY: disable BizyAir engine selection while service is unavailable */
 .engine-card[data-action="select-engine"][data-engine="engine_bizyair"] {
     cursor: not-allowed;
     border-color: var(--border-color);
@@ -50,11 +50,11 @@
     width: 100%;
     height: 100%;
     font-weight: 700;
-    background: rgba(126, 126, 126, 0.9);
+    background: var(--icon-btn-bg-color);
     border-radius: 6px;
     pointer-events: none;
 }
-END TEMPORARY: disable BizyAir engine selection */
+/* END TEMPORARY: disable BizyAir engine selection */
 
 /* Loading Overlay */
 body.is-loading::after {
@@ -248,7 +248,7 @@ svg.icon-tw-24 {
     --text-muted: #555555;
     --border-color: #8c8c8c;
     --icon-btn-color: #333333;
-    --icon-btn-bg-color: #cdcdcd;
+    --icon-btn-bg-color: rgba(157, 157, 157, 0.85);
 }
 
 [data-theme="lightest"] {
@@ -262,7 +262,7 @@ svg.icon-tw-24 {
     --text-muted: #555555;
     --border-color: #d1d1d1;
     --icon-btn-color: #222222;
-    --icon-btn-bg-color: #e0e0e0;
+    --icon-btn-bg-color: rgba(157, 157, 157, 0.85);
 }
 
 

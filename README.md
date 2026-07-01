@@ -71,9 +71,9 @@ ComfyPanel is a professional-grade, high-performance integration for **Adobe Pho
 ### 🛠️ Installation
 * **Photoshop**: Adobe Photoshop 2025 (v26.0) or higher.
 * **ComfyUI**: Clone this repo to `custom_nodes/` and restart.
-* **Plugin Setup**: 
+* **PS Plugin Setup**: 
     * **Auto**: Run `comfypanel.ccx` (recommended).
-    * **Manual**: Copy the plugin folder to the UXP plugins directory.
+    * **Manual**: Copy the plugin folder to `Adobe Photoshop */Plug-ins/` directory.
     * *Need help? See the [Full Setup Guide](https://lazyet.com/blogs/labs/comfypanel-tutorial).*
 
 ### ❓ AI-Assisted Troubleshooting & FAQ
@@ -150,9 +150,9 @@ ComfyPanel 是一套专为 **Adobe Photoshop** 开发的高灵敏度、专业级
 ### 🛠️ 快速安装
 * **Photoshop 要求**：Adobe Photoshop 2025 (v26.0) 或更高版本。
 * **ComfyUI 端**：克隆本仓库至 `custom_nodes/` 目录并重启。
-* **插件安装**：
+* **PS插件安装**：
     * **自动安装**：直接运行 `comfypanel.ccx`（推荐）。
-    * **手动安装**：将插件文件夹复制到系统 UXP 插件目录。
+    * **手动安装**：将插件文件夹复制到`Adobe Photoshop */Plug-ins/`插件目录。
     * *安装遇到问题？查看[完整中文教程](https://lazyet.com/blogs/labs/comfypanel-tutorial)。*
 
 ### ❓ 常见问题与 AI 诊断 (FAQ)
