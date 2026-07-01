@@ -13,7 +13,7 @@ Documentation = "https://github.com/Ginolazy/ComfyPanel/wiki"
 "Bug Tracker" = "https://github.com/Ginolazy/ComfyPanel/issues"
 
 [tool.comfy]
-PublisherId = "gino"
+PublisherId = "ginolazy"
 DisplayName = "ComfyPanel"
 Icon = "https://raw.githubusercontent.com/Ginolazy/ComfyPanel/refs/heads/main/photoshop_plugin/ComfyPanel/icons/ComfyPanel.svg"
 includes = []
