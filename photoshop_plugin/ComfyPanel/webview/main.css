@@ -2098,6 +2098,15 @@ input:focus {
     height: 10px;
 }
 
+.log-drawer-header .icon-btn {
+    width: unset;
+    height: unset;
+}
+
+.log-drawer-header .icon-btn:hover {
+    background: unset;
+}
+
 .log-drawer .icon-tw-12 {
     transform: rotate(0deg);
     /* Rotated when expanded */
