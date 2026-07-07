@@ -1,5 +1,3 @@
-## ComfyUI/custom_nodes/ComfyPanel/modules/utility/math_utility.py
-
 import math
 
 def math_operation_calc(operation, A, B, precision=-1):

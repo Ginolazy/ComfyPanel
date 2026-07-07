@@ -54,6 +54,7 @@
     border-radius: 6px;
     pointer-events: none;
 }
+
 /* END TEMPORARY: disable BizyAir engine selection */
 
 /* Loading Overlay */
@@ -472,13 +473,13 @@ body {
 
 /* Active Workflow Bar — pinned at top of workflow list */
 .active-workflow-bar {
-    position: fixed;
+    position: sticky;
+    top: 0;
+    z-index: 10;
     display: none;
     align-items: center;
     justify-content: space-between;
     background: var(--bg-secondary);
-    border-bottom: 1px solid var(--border-color);
-    gap: 6px;
     flex-shrink: 0;
     width: 100%;
     cursor: pointer;
@@ -864,7 +865,7 @@ body[data-active-tab="global"] #deleteNanoBananaBtn {
 .nav-links {
     display: flex;
     align-items: center;
-    gap: 4px;
+    gap: 2px;
     flex-shrink: 0;
 }
 
@@ -964,7 +965,6 @@ body[data-active-tab="global"] #deleteNanoBananaBtn {
 
 .header-flex-row {
     display: flex;
-    gap: 10px;
     align-items: center;
 }
 
@@ -1117,6 +1117,8 @@ body[data-active-tab="global"] #deleteNanoBananaBtn {
 }
 
 .icon-btn {
+    width: 28px;
+    height: 28px;
     background: transparent;
     border: none;
     display: flex;
@@ -1124,7 +1126,7 @@ body[data-active-tab="global"] #deleteNanoBananaBtn {
     justify-content: center;
     color: var(--text-muted);
     cursor: pointer;
-    border-radius: 50%;
+    border-radius: 6px;
     transition: all var(--transition-fast);
     z-index: 10;
 }
@@ -1210,6 +1212,7 @@ body[data-active-tab="global"] #deleteNanoBananaBtn {
 .icon-btn:hover,
 .icon-btn.active {
     color: var(--text-primary);
+    background: var(--bg-hover);
 }
 
 input[type="text"],
@@ -1515,6 +1518,7 @@ input:focus {
     max-width: 100%;
     max-height: 100%;
     width: auto;
+    height: 100%;
     object-fit: contain;
     position: relative;
     z-index: 1;
@@ -1547,6 +1551,7 @@ input:focus {
     transform: translate(-50%, -50%);
     max-width: 100%;
     max-height: 100%;
+    height: 100%;
     object-fit: contain;
     z-index: 5;
     pointer-events: none;
@@ -3075,6 +3080,7 @@ textarea.tool-param-input:focus {
 
 .dropdown-item {
     padding: 5px 10px;
+    gap: 3px;
     font-size: 11px;
     color: var(--text-secondary);
     cursor: pointer;

@@ -1,5 +1,3 @@
-## ComfyUI/custom_nodes/ComfyPanel/modules/image.py
-
 import torch
 import torch.nn.functional as F
 import cv2
@@ -9,16 +7,13 @@ import os
 import folder_paths
 import kornia
 from kornia.feature import LoFTR
-from kornia.geometry.transform import warp_perspective   
+from kornia.geometry.transform import warp_perspective
 from PIL import Image
 from typing import Tuple
 from .utility.type_utility import (any_type, handle_error)
 from .utility.image_utility import (parse_color, pil2tensor, tensor2pil, validate_mask_dimensions, apply_image_filters,
     calculate_scale_with_mode, scale_to_match, CropData, hwc_to_bchw, bchw_to_hwc, hw_to_b1hw, b1hw_to_hw)
- 
 
-## ---------------------- ComfyPanel / Image or Mask ---------------------- ##
-# BlendByMask
 class BlendByMask:
     @classmethod
     def INPUT_TYPES(cls):
@@ -44,15 +39,14 @@ class BlendByMask:
         bg_img = (background_image[0].cpu().numpy() * 255).astype(np.uint8)
         bg_mask = (background_mask[0].cpu().numpy() * 255).astype(np.uint8)
         blend_img_data = (blend_image[0].cpu().numpy() * 255).astype(np.uint8)
-        
-        # Check if blend_image has alpha channel (RGBA)
+
         if blend_img_data.shape[2] == 4:
-            src_blend = blend_img_data[:, :, :3]  # Extract RGB channels
-            blend_msk = blend_img_data[:, :, 3].astype(np.float32) / 255.0  # Extract alpha channel as mask
+            src_blend = blend_img_data[:, :, :3]
+            blend_msk = blend_img_data[:, :, 3].astype(np.float32) / 255.0
         else:
             src_blend = blend_img_data
             blend_msk = np.ones((src_blend.shape[0], src_blend.shape[1]), np.float32)
-        
+
         if kw["mask_blur"] > 0:
             k = int(kw["mask_blur"] * 2 + 1)
             bg_mask = cv2.GaussianBlur(bg_mask, (k, k), kw["mask_blur"])
@@ -67,8 +61,7 @@ class BlendByMask:
             center = (bg_img.shape[1] // 2, bg_img.shape[0] // 2)
             bx, by = 0, 0
             bw, bh = bg_img.shape[1], bg_img.shape[0]
-        
-        # Override blend_msk if an explicit blend_mask is provided
+
         if kw.get("blend_mask") is not None:
             blend_msk = kw["blend_mask"][0].cpu().numpy()
             blend_msk = np.clip(blend_msk, 0.0, 1.0)
@@ -119,8 +112,7 @@ class BlendByMask:
             torch.from_numpy(final_img.astype(np.float32) / 255.0).unsqueeze(0),
             torch.from_numpy(final_mask.astype(np.float32) / 255.0).unsqueeze(0)
         )
-        
-# Image Batch To Image List
+
 class ImageBatchToImageList:
     @classmethod
     def INPUT_TYPES(s):
@@ -133,7 +125,6 @@ class ImageBatchToImageList:
         images = [image[i:i + 1, ...] for i in range(image.shape[0])]
         return (images, )
 
-# = ImageBlank
 class ImageBlank:
     @classmethod
     def INPUT_TYPES(cls):
@@ -159,7 +150,6 @@ class ImageBlank:
         except Exception as e:
             handle_error(e, "Blank image creation failed")
 
-# Image List To Image Batch
 class ImageListToImageBatch:
     @classmethod
     def INPUT_TYPES(s):
@@ -179,7 +169,6 @@ class ImageListToImageBatch:
                 image1 = torch.cat((image1, image2), dim=0)
             return (image1,)
 
-# = ImageFilterAdjustments
 class ImageFilterAdjustments:
     @classmethod
     def INPUT_TYPES(cls):
@@ -212,7 +201,6 @@ class ImageFilterAdjustments:
         except Exception as e:
             handle_error(e, "Filter adjustment failed")
 
-# = ImageRemoveAlpha
 class ImageRemoveAlpha:
     @classmethod
     def INPUT_TYPES(cls):
@@ -250,7 +238,6 @@ class ImageRemoveAlpha:
         except Exception as e:
             handle_error(e, "Alpha removal failed")
 
-# Image Swap
 class ImageSwap:
     @classmethod
     def INPUT_TYPES(s):
@@ -271,7 +258,6 @@ class ImageSwap:
         else:
             return image_a, image_b
 
-# MakeBatch (image or mask)
 class MakeBatch:
     @classmethod
     def INPUT_TYPES(cls):
@@ -282,7 +268,7 @@ class MakeBatch:
     def doit(self, **kwargs):
         first_key = next(iter(kwargs))
         first_item = kwargs[first_key]
-        dtype = first_item.dtype  # torch.float32 / torch.uint8
+        dtype = first_item.dtype
         is_mask = (dtype == torch.uint8 or first_item.max() <= 1.0)
         base = first_item
         for k, v in list(kwargs.items())[1:]:
@@ -298,7 +284,6 @@ class MakeBatch:
             base = torch.cat((base, v), dim=0)
         return (base,)
 
-# ScaleAny (image or mask)
 class ScaleAny:
     @classmethod
     def INPUT_TYPES(cls):
@@ -315,8 +300,8 @@ class ScaleAny:
     FUNCTION = "scale_any"
     CATEGORY = "ComfyPanel/Image or Mask"
     def scale_any(self, input, target_size, scale_mode, reference_side):
-        is_image = (input.ndim == 4)  # [B,H,W,C]
-        is_mask = (input.ndim == 3)   # [B,H,W]
+        is_image = (input.ndim == 4)
+        is_mask = (input.ndim == 3)
 
         if not (is_image or is_mask):
             raise ValueError(f"Unsupported input shape: {input.shape}")
@@ -346,7 +331,6 @@ class ScaleAny:
 
         return (scaled,)
 
-# SwitchMaskAuto
 class SwitchMaskAuto:
     @classmethod
     def INPUT_TYPES(s):
@@ -361,7 +345,7 @@ class SwitchMaskAuto:
     RETURN_NAMES = ("mask",)
     FUNCTION = "switch_mask"
     CATEGORY = "ComfyPanel/Image or Mask"
-    
+
     def is_mask_edited(self, mask: torch.Tensor) -> bool:
         if mask is None:
             return False
@@ -379,8 +363,6 @@ class SwitchMaskAuto:
             return (mask_b,)
         return (mask_a,)
 
-## ---------------------- ComfyPanel / Image and Mask ---------------------- ##
-# ImageMask_Constrain
 class ImageMask_Constrain:
     @classmethod
     def INPUT_TYPES(cls):
@@ -402,8 +384,8 @@ class ImageMask_Constrain:
     FUNCTION = "constrain_image"
     CATEGORY = "ComfyPanel/Image & Mask"
     def constrain_image(self, image, max_width, max_height, min_width, min_height, crop, mask=None):
-        image_np = image[0].numpy()  # Take the first image in the batch
-        image_np = (image_np * 255).astype(np.uint8)  # Convert to 0-255 range
+        image_np = image[0].numpy()
+        image_np = (image_np * 255).astype(np.uint8)
         pil_image = Image.fromarray(image_np)
         original_width, original_height = pil_image.size
         target_width = original_width
@@ -437,7 +419,6 @@ class ImageMask_Constrain:
             mask_tensor = torch.zeros((1, target_height, target_width), dtype=torch.float32)
         return (image_tensor, mask_tensor)
 
-# Image & Mask Boolean Swap
 class ImageMask_Swap:
     @classmethod
     def INPUT_TYPES(s):
@@ -460,7 +441,6 @@ class ImageMask_Swap:
         else:
             return image_a, mask_a, image_b, mask_b
 
-# Image & Mask Boolean Switch
 class ImageMask_Switch:
     @classmethod
     def INPUT_TYPES(s):
@@ -501,11 +481,10 @@ class ImageMask_Switch:
             output_mask = mask_false
         return (output_image, output_mask)
 
-# Image & Mask Auto Switch
 class ImageMask_SwitchAuto:
     @classmethod
     def INPUT_TYPES(cls):
-        return {# image_*,mask_* Input groups are added dynamically by JS
+        return {
         }
     RETURN_TYPES = ("IMAGE", "MASK",)
     FUNCTION = "switch"
@@ -531,7 +510,6 @@ class ImageMask_SwitchAuto:
         min_index = min(images.keys())
         return (images[min_index], masks.get(min_index))
 
-#Image and Mask Transform
 class ImageMask_Transform:
     @classmethod
     def INPUT_TYPES(s):
@@ -567,8 +545,6 @@ class ImageMask_Transform:
             mask = torch.rot90(mask, k=rotate, dims=[1, 2])
         return (image, mask)
 
-## ---------------------- ComfyPanel / Process & Restore ---------------------- ##
-#CropByMask
 class CropByMask:
     @classmethod
     def INPUT_TYPES(cls):
@@ -702,7 +678,7 @@ class CropByMask:
                             source_msk = hw_to_b1hw(mask_region)
                             scaled_mask_region = b1hw_to_hw(scale_to_match(target_msk, source_msk, is_mask=True))
                             final_mask[canvas_y1:canvas_y2, canvas_x1:canvas_x2] = scaled_mask_region
-                    
+
                     crop_data = CropData(
                         int(ideal_x1), int(ideal_y1), int(ideal_x2), int(ideal_y2),
                         canvas_x1, canvas_y1, canvas_x2 - canvas_x1, canvas_y2 - canvas_y1,
@@ -763,7 +739,6 @@ class CropByMask:
         except Exception as e:
             handle_error(e, "CropByMask failed")
 
-# CropByMaskRestore
 class CropByMaskRestore:
     @classmethod
     def INPUT_TYPES(cls):
@@ -852,7 +827,6 @@ class CropByMaskRestore:
                 results.append(original_image[i])
         return (torch.stack(results),)
 
-# Image & Mask Concat
 class ImageConcat:
     @classmethod
     def INPUT_TYPES(cls):
@@ -863,7 +837,7 @@ class ImageConcat:
             "optional": {
                 "image_L": ("IMAGE", {"default": None}),
                 "mask_L": ("MASK", {"default": None}),
-                "image_R": ("IMAGE", {"default": None}), 
+                "image_R": ("IMAGE", {"default": None}),
                 "mask_R": ("MASK", {"default": None}),
             },
         }
@@ -918,7 +892,6 @@ class ImageConcat:
         except Exception as e:
             raise RuntimeError(f"Image concatenation failed: {str(e)}")
 
-# Image Concat Restore
 class ImageConcatRestore:
     @classmethod
     def INPUT_TYPES(cls):
@@ -950,7 +923,6 @@ class ImageConcatRestore:
         result = torch.cat([pil2tensor(img) for img in restored], dim=0)
         return result,
 
-# ImageMask_Scale  (image or mask, Call scale_any())
 class ImageMask_Scale:
     @classmethod
     def INPUT_TYPES(cls):
@@ -992,7 +964,6 @@ class ImageMask_Scale:
         }
         return scaled_image, scaled_mask, scale_data
 
-# Image & Mask Scale Restore
 class ImageMask_ScaleRestore:
     @classmethod
     def INPUT_TYPES(cls):
@@ -1025,14 +996,14 @@ class ImageMask_ScaleRestore:
             h, w = tensor.shape[1:3]
             if h == orig_h and w == orig_w:
                 return tensor
-            if tensor.ndim == 4 and tensor.shape[-1] == 3:  # image
+            if tensor.ndim == 4 and tensor.shape[-1] == 3:
                 tensor = F.interpolate(
                     tensor.permute(0, 3, 1, 2),
                     size=(orig_h, orig_w),
                     mode="bicubic",
                     align_corners=False
                 ).permute(0, 2, 3, 1)
-            else:  # mask
+            else:
                 tensor = F.interpolate(
                     tensor.unsqueeze(1),
                     size=(orig_h, orig_w),
@@ -1077,19 +1048,19 @@ class FluxKontextImageCompensate:
         img = image.permute(0, 3, 1, 2)
         mode_map = {"Mirror": "reflect", "Replicate": "replicate", "Solid Color": "constant"}
         pt_pad_mode = mode_map.get(comp_mode, "reflect")
-        
+
         old_h, old_w = img.shape[2], img.shape[3]
-        
+
         new_h = int(round(old_h * k_factor / 16)) * 16
         pad_total_y = new_h - old_h
         pad_top = pad_total_y // 2
         pad_bottom = pad_total_y - pad_top
-        
+
         new_w = int(round(old_w * k_factor / 16)) * 16
         pad_total_x = new_w - old_w
         pad_left = pad_total_x // 2
         pad_right = pad_total_x - pad_left
-        
+
         try:
             if comp_mode == "Solid Color":
                 r, g, b, a = parse_color(solid_color)
@@ -1102,12 +1073,12 @@ class FluxKontextImageCompensate:
                 img_out = canvas
             else:
                 img_out = F.pad(img, (pad_left, pad_right, pad_top, pad_bottom), mode=pt_pad_mode)
-        except: 
+        except:
             img_out = F.pad(img, (pad_left, pad_right, pad_top, pad_bottom), mode='constant', value=1.0)
-        
+
         data = {
-            "orig_h": old_h, 
-            "orig_w": old_w, 
+            "orig_h": old_h,
+            "orig_w": old_w,
             "new_h": new_h,
             "new_w": new_w,
             "pad_top": pad_top,
@@ -1115,7 +1086,7 @@ class FluxKontextImageCompensate:
             "pad_left": pad_left,
             "pad_right": pad_right,
         }
-        
+
         output_image = img_out.permute(0, 2, 3, 1)
         return (output_image, data, new_w, new_h)
 
@@ -1124,17 +1095,16 @@ class FluxKontextImageRestore:
     Flux Kontext Stretch Restore Node.
     Restores image aspect ratio/composition using Kornia LoFTR or Template Matching alignment.
     """
-    
-    # LoFTR matcher singleton (lazy loaded)
+
     _loftr_matcher = None
-    
+
     @classmethod
     def INPUT_TYPES(s):
         return {
             "required": {
                 "comp_image": ("IMAGE",),
                 "comp_data": ("COMPENSATION_DATA",),
-                "original_image": ("IMAGE",), 
+                "original_image": ("IMAGE",),
             }
         }
 
@@ -1150,63 +1120,63 @@ class FluxKontextImageRestore:
         Model will be stored in: ComfyUI/models/loftr/loftr_outdoor.ckpt
         """
         if cls._loftr_matcher is None:
-            # Set up model path in ComfyUI models directory
+
             loftr_model_dir = os.path.join(folder_paths.models_dir, "loftr")
             os.makedirs(loftr_model_dir, exist_ok=True)
-            
+
             model_path = os.path.join(loftr_model_dir, "loftr_outdoor.ckpt")
-            
+
             if os.path.exists(model_path):
-                # Load from local path
+
                 cls._loftr_matcher = LoFTR(pretrained=model_path)
             else:
-                # Download and save to local path
+
                 import urllib.request
                 url = "http://cmp.felk.cvut.cz/~mishkdmy/models/loftr_outdoor.ckpt"
                 print(f"[ComfyPanel] Downloading LoFTR model to {model_path}...")
                 urllib.request.urlretrieve(url, model_path)
                 print(f"[ComfyPanel] LoFTR model downloaded successfully.")
                 cls._loftr_matcher = LoFTR(pretrained=model_path)
-        
+
         return cls._loftr_matcher.to(device).eval()
 
     def align_image_kornia(self, generated_img: torch.Tensor, reference_img: torch.Tensor, orig_h: int, orig_w: int):
         """Kornia LoFTR alignment."""
         device = generated_img.device
         ref_bchw = reference_img.permute(0, 3, 1, 2).to(device)
-        
+
         gen_h, gen_w = generated_img.shape[2], generated_img.shape[3]
         ref_resized = F.interpolate(ref_bchw, size=(gen_h, gen_w), mode='bilinear', align_corners=False)
-        
+
         gen_gray = kornia.color.rgb_to_grayscale(generated_img)
         ref_gray = kornia.color.rgb_to_grayscale(ref_resized)
-        
+
         matcher = self.get_loftr_matcher(device)
         with torch.no_grad():
             correspondences = matcher({"image0": gen_gray, "image1": ref_gray})
-        
+
         kpts0 = correspondences['keypoints0']
         kpts1 = correspondences['keypoints1']
         confidence = correspondences['confidence']
-        
+
         mask = confidence > 0.5
         kpts0_filtered = kpts0[mask]
         kpts1_filtered = kpts1[mask]
-        
+
         if len(kpts0_filtered) < 4:
             return None
-        
+
         kpts0_np = kpts0_filtered.cpu().numpy()
         kpts1_np = kpts1_filtered.cpu().numpy()
-        
+
         H, inliers = cv2.findHomography(kpts0_np, kpts1_np, cv2.RANSAC, 5.0)
-        
+
         if H is None or np.sum(inliers) < 4:
             return None
-        
+
         H_tensor = torch.from_numpy(H).float().to(device).unsqueeze(0)
         aligned = warp_perspective(generated_img, H_tensor, (gen_h, gen_w), mode='bilinear', padding_mode='border')
-        
+
         aligned_final = F.interpolate(aligned, size=(orig_h, orig_w), mode='bicubic', align_corners=False)
         return aligned_final
 
@@ -1214,65 +1184,65 @@ class FluxKontextImageRestore:
         """Legacy template matching alignment."""
         main_gray = cv2.cvtColor(main_img_np, cv2.COLOR_RGB2GRAY)
         ref_gray = cv2.cvtColor(ref_img_np, cv2.COLOR_RGB2GRAY)
-        
+
         ref_h, ref_w = ref_gray.shape[:2]
         main_h, main_w = main_gray.shape[:2]
-        
+
         best_score = -1
         best_scale = 1.0
         best_y = 0
         best_x = 0
-        
+
         base_ratio = ref_h / main_h
         search_scales = np.linspace(base_ratio * 0.9, 1.1, 40)
-        
+
         crop_h = int(ref_h * 0.5)
         crop_w = int(ref_w * 0.5)
         crop_y = (ref_h - crop_h) // 2
         crop_x = (ref_w - crop_w) // 2
-        
+
         ref_template = ref_gray[crop_y:crop_y+crop_h, crop_x:crop_x+crop_w]
-        
+
         for s in search_scales:
             target_h = int(main_h * s)
             if target_h < crop_h: continue
-            
+
             resized_main = cv2.resize(main_gray, (main_w, target_h), interpolation=cv2.INTER_LINEAR)
-            
+
             res = cv2.matchTemplate(resized_main, ref_template, cv2.TM_CCOEFF_NORMED)
             _, max_val, _, max_loc = cv2.minMaxLoc(res)
-            
+
             if max_val > best_score:
                 best_score = max_val
                 best_scale = s
                 found_x, found_y = max_loc
                 best_y = found_y - crop_y
                 best_x = found_x - crop_x
-                
+
         return best_scale, best_y, best_x
 
     def restore(self, comp_image, comp_data, original_image):
         img = comp_image.permute(0, 3, 1, 2)
         orig_h, orig_w = comp_data["orig_h"], comp_data["orig_w"]
-        
+
         try:
             aligned = self.align_image_kornia(img, original_image, orig_h, orig_w)
             if aligned is not None:
                 return (aligned.permute(0, 2, 3, 1),)
         except Exception:
             pass
-        
-        final_scale_y = orig_h / img.shape[2] 
+
+        final_scale_y = orig_h / img.shape[2]
         final_scale_x = orig_w / img.shape[3]
         final_offset_y = 0
         final_offset_x = 0
-        
+
         try:
             ref_np = (original_image[0].cpu().numpy() * 255).astype(np.uint8)
             main_np = (img[0].permute(1, 2, 0).cpu().numpy() * 255).astype(np.uint8)
-            
+
             scale_found, off_y, off_x = self.align_image_template(main_np, ref_np)
-            
+
             final_scale_y = scale_found
             final_scale_x = 1.0
             final_offset_y = off_y
@@ -1284,14 +1254,14 @@ class FluxKontextImageRestore:
         target_w = int(img.shape[3] * final_scale_x)
         if target_h < 1: target_h = 1
         if target_w < 1: target_w = 1
-        
+
         img_scaled = F.interpolate(img, size=(target_h, target_w), mode='bicubic', align_corners=False)
-        
+
         y_start = int(final_offset_y)
         x_start = int(final_offset_x)
         y_end = y_start + orig_h
         x_end = x_start + orig_w
-        
+
         pad_l, pad_r, pad_t, pad_b = 0, 0, 0, 0
         if y_start < 0:
             pad_t = -y_start
@@ -1305,15 +1275,13 @@ class FluxKontextImageRestore:
             x_end += pad_l
         if x_end > img_scaled.shape[3]:
             pad_r = x_end - img_scaled.shape[3]
-            
+
         if any([pad_l, pad_r, pad_t, pad_b]):
             img_scaled = F.pad(img_scaled, (pad_l, pad_r, pad_t, pad_b), mode='replicate')
-            
+
         img_out = img_scaled[:, :, y_start:y_end, x_start:x_end]
-        
+
         if img_out.shape[2] != orig_h or img_out.shape[3] != orig_w:
             img_out = F.interpolate(img_out, size=(orig_h, orig_w), mode='bicubic')
-        
+
         return (img_out.permute(0, 2, 3, 1),)
-
-

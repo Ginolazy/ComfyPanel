@@ -1,5 +1,3 @@
-## ComfyUI/custom_nodes/ComfyPanel/modules/utility/type_utility.py
-
 class AnyType(str):
     def __ne__(self, __value: object) -> bool:
         return False

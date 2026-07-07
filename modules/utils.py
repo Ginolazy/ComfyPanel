@@ -1,5 +1,3 @@
-## ComfyUI/custom_nodes/ComfyPanel/modules/utils.py
-
 import torch
 import numpy as np
 import folder_paths
@@ -59,7 +57,7 @@ class PauseMixin:
         input_dir = folder_paths.get_input_directory()
         clipspace_dir = os.path.join(input_dir, "clipspace")
         existing_files = set()
-        
+
         if os.path.exists(clipspace_dir):
             try:
                 for f in os.listdir(clipspace_dir):
@@ -74,10 +72,9 @@ class PauseMixin:
                 "action": "continue",
                 "existing_files": existing_files
             }
-        
-        # Always update existing_files when entering pause
+
         PAUSE_REQUESTS[unique_id_str]["existing_files"] = existing_files
-        
+
         pause_data = PAUSE_REQUESTS[unique_id_str]
         pause_data["event"].clear()
 
@@ -89,21 +86,18 @@ class PauseMixin:
             **event_data
         })
 
-        # [FIX] Use ComfyUI's standard interrupt check during wait loop
-        # This allows the "Interrupt" button in ComfyUI to release this node immediately.
         while not pause_data["event"].is_set():
             comfy.model_management.throw_exception_if_processing_interrupted()
             pause_data["event"].wait(timeout=0.2)
 
         action = pause_data["action"]
         edited_text = pause_data.get("edited_text", None)
-        # Pass image data to caller
+
         kwargs["pause_data"] = pause_data
 
         if process_text_edit and edited_text:
             result_data = self._apply_text_edits(result_data, edited_text, **kwargs)
 
-        # Inject images into result_data if present (critical for mask updates)
         if "images" in pause_data:
             result_data["images"] = pause_data["images"]
 
@@ -227,10 +221,8 @@ class AnyPreview(SaveImage):
         input_values = [kwargs[k] for k in input_keys]
         actual_returns = list(input_values)
 
-        # Flatten input values using utility function
         flat_input_values = flatten_input_values(input_values)
 
-        # Generate preview images and save using utility function
         preview_images_list = generate_preview_images(flat_input_values)
         frontend_data = {}
 
@@ -238,17 +230,15 @@ class AnyPreview(SaveImage):
             all_saved_images, _ = save_images_for_preview(self, preview_images_list, "ComfyPanel_preview")
             frontend_data["images"] = all_saved_images
 
-        # Generate text previews using utility function
         text_previews = generate_text_previews(input_values)
         if text_previews:
             frontend_data["text"] = text_previews
 
-        # Generate audio previews
         preview_audios_list = []
         for val in flat_input_values:
             if isinstance(val, dict) and "waveform" in val and "sample_rate" in val:
                 preview_audios_list.append(val)
-        
+
         if preview_audios_list:
             import folder_paths
             import os
@@ -260,7 +250,7 @@ class AnyPreview(SaveImage):
                     if waveform.ndim == 3:
                         waveform = waveform.squeeze(0)
                     sample_rate = audio_dict["sample_rate"]
-                    
+
                     try:
                         filename = f"PreviewAudio_{self.prefix_append}_{i}.mp3"
                         full_output_folder, filename, _, subfolder, _ = folder_paths.get_save_image_path(filename, folder_paths.get_temp_directory(), 1, 1)
@@ -272,7 +262,7 @@ class AnyPreview(SaveImage):
                         full_output_folder, filename, _, subfolder, _ = folder_paths.get_save_image_path(filename, folder_paths.get_temp_directory(), 1, 1)
                         file = os.path.join(full_output_folder, filename)
                         torchaudio.save(file, waveform, sample_rate, format="flac")
-                    
+
                     audio_data = {
                         "filename": filename,
                         "subfolder": subfolder,
@@ -284,14 +274,12 @@ class AnyPreview(SaveImage):
             except ImportError:
                 print("[ComfyPanel] torchaudio not installed, skipping audio preview")
 
-
         padding_count = MAX_FLOW_PORTS - len(actual_returns)
         if padding_count > 0:
             result_tuple = tuple(actual_returns) + ([],) * padding_count
         else:
             result_tuple = tuple(actual_returns[:MAX_FLOW_PORTS])
 
-        # Send preview event using utility function
         send_preview_event(unique_id_str, frontend_data, "preview")
 
         return {"ui": frontend_data, "result": result_tuple}
@@ -313,39 +301,34 @@ class AnyPreviewPause(AnyPreview, PauseMixin):
     def process_any(self, prompt=None, extra_pnginfo=None, unique_id=None, **kwargs):
         unique_id_str = str(unique_id[0] if isinstance(unique_id, list) and unique_id else unique_id)
 
-        # Do not use process_preview of parent class, implement manually to support RGBA preview
         input_keys = sorted([k for k in kwargs.keys() if k.startswith("input_")], key=lambda x: int(x.split("_")[1]))
         input_values = [kwargs[k] for k in input_keys]
         actual_returns = list(input_values)
 
-        # Flatten input values using utility function
         flat_input_values = flatten_input_values(input_values)
 
-        # Generate editable RGBA images and save using utility function
         editable_images_list = generate_editable_images(flat_input_values)
         frontend_data = {}
         saved_filenames = []
-        
+
         if editable_images_list:
             all_saved_images, saved_filenames = save_images_for_preview(
                 self, editable_images_list, "ComfyPanel_mask", collect_filenames=True
             )
             frontend_data["images"] = all_saved_images
 
-        # Generate text previews using utility function
         text_previews = generate_text_previews(input_values)
         if text_previews:
             frontend_data["text"] = text_previews
 
-        # Generate audio previews
         import folder_paths
         import os
-        
+
         preview_audios_list = []
         for val in flat_input_values:
             if isinstance(val, dict) and "waveform" in val and "sample_rate" in val:
                 preview_audios_list.append(val)
-        
+
         if preview_audios_list:
             try:
                 import torchaudio
@@ -355,7 +338,7 @@ class AnyPreviewPause(AnyPreview, PauseMixin):
                     if waveform.ndim == 3:
                         waveform = waveform.squeeze(0)
                     sample_rate = audio_dict["sample_rate"]
-                    
+
                     try:
                         filename = f"PreviewAudio_pause_{self.prefix_append}_{i}.mp3"
                         full_output_folder, filename, _, subfolder, _ = folder_paths.get_save_image_path(filename, folder_paths.get_temp_directory(), 1, 1)
@@ -367,7 +350,7 @@ class AnyPreviewPause(AnyPreview, PauseMixin):
                         full_output_folder, filename, _, subfolder, _ = folder_paths.get_save_image_path(filename, folder_paths.get_temp_directory(), 1, 1)
                         file = os.path.join(full_output_folder, filename)
                         torchaudio.save(file, waveform, sample_rate, format="flac")
-                    
+
                     audio_data = {
                         "filename": filename,
                         "subfolder": subfolder,
@@ -379,7 +362,6 @@ class AnyPreviewPause(AnyPreview, PauseMixin):
                     frontend_data["comfypanel_audio"] = all_saved_audios
             except ImportError:
                 print("[ComfyPanel] torchaudio not installed, skipping audio preview")
-
 
         padding_count = MAX_FLOW_PORTS - len(actual_returns)
         if padding_count > 0:
@@ -401,90 +383,80 @@ class AnyPreviewPause(AnyPreview, PauseMixin):
         if action == "cancel":
             return result
 
-        # Check if we have updated image information from frontend
-        # Priority: Check top-level 'images' key first (populated by resume_pause)
         updated_images = result.get("images", None)
         if updated_images is None:
              updated_images = result.get("ui", {}).get("images", None)
-        
-        # If frontend provided image list, use it to update masks
+
         if updated_images and isinstance(updated_images, list):
             mask_updated = False
             updated_returns = list(actual_returns)
-            
-            # Map flattened image list to port indices
-            # First pass: Identify which ports contain images and masks to map array index to port index
+
             current_img_idx = 0
-            port_structure = [] # List of {img_idx, port_idx, val_idx, has_mask}
-            
+            port_structure = []
+
             for i, port_vals in enumerate(updated_returns):
                 vals = port_vals if isinstance(port_vals, list) else [port_vals]
                 for j, val in enumerate(vals):
                     is_img = isinstance(val, torch.Tensor) and val.ndim == 4
                     if is_img:
-                        # Check if this image has a corresponding mask in the next port or value
+
                         has_mask = False
                         if i + 1 < len(updated_returns):
                              next_port_vals = updated_returns[i+1]
                              next_vals = next_port_vals if isinstance(next_port_vals, list) else [next_port_vals]
                              if len(next_vals) > 0 and isinstance(next_vals[0], torch.Tensor) and next_vals[0].ndim in (2, 3):
                                  has_mask = True
-                        
+
                         port_structure.append({
                             "img_idx": current_img_idx,
                             "port_idx": i,
-                            "val_idx": j, 
+                            "val_idx": j,
                             "has_mask": has_mask
                         })
                         current_img_idx += 1
-            
-            # Process updated images from frontend
+
             input_dir = folder_paths.get_input_directory()
             clipspace_dir = os.path.join(input_dir, "clipspace")
 
             for idx, img_info in enumerate(updated_images):
                 if idx >= len(port_structure):
                     break
-                # Check if this image points to a clipspace file (meaning it was edited)
+
                 if img_info.get("subfolder") == "clipspace":
                     filename = img_info.get("filename")
                     full_path = os.path.join(clipspace_dir, filename)
-                    
+
                     if os.path.exists(full_path):
                         try:
-                            # Load edited image directly from the file specified by frontend
+
                             from PIL import Image, ImageOps
                             import node_helpers
-                            
+
                             i = node_helpers.pillow(Image.open, full_path)
                             i = node_helpers.pillow(ImageOps.exif_transpose, i)
-                            
+
                             if i.mode == 'I':
                                 i = i.point(lambda i: i * (1 / 255))
-                            
-                            # Extract alpha channel as mask
+
                             mask = None
                             if 'A' in i.getbands():
                                 mask = np.array(i.getchannel('A')).astype(np.float32) / 255.0
                                 mask = 1. - torch.from_numpy(mask)
                             else:
-                                # Fallback: No alpha, assume the image content itself is the mask (grayscale)
+
                                 i_l = i.convert('L')
                                 mask = np.array(i_l).astype(np.float32) / 255.0
                                 mask = torch.from_numpy(mask)
-                                # Usually grayscale masks are White=Masked(1), Black=Clear(0).
-                                # But LoadImageMask inverts. We should check convention.
 
                             if mask is not None:
                                 if mask.ndim == 2:
-                                    mask = mask.unsqueeze(0) # [1, H, W]
+                                    mask = mask.unsqueeze(0)
 
-                                # Apply mask to the correct port based on our mapping
                                 struct = port_structure[idx]
                                 port_idx = struct["port_idx"]
-                                
+
                                 if struct["has_mask"]:
-                                    # Update existing mask in next port
+
                                     next_port_idx = port_idx + 1
                                     next_port_vals = updated_returns[next_port_idx]
                                     if isinstance(next_port_vals, list):
@@ -494,32 +466,30 @@ class AnyPreviewPause(AnyPreview, PauseMixin):
                                     mask_updated = True
                         except Exception as e:
                             print(f"[AnyPreviewPause] Error loading clipspace mask: {e}")
-            
+
             if mask_updated:
-                # Update result
+
                 padding_count = MAX_FLOW_PORTS - len(updated_returns)
                 if padding_count > 0:
                     result_tuple = tuple(updated_returns) + ([],) * padding_count
                 else:
                     result_tuple = tuple(updated_returns[:MAX_FLOW_PORTS])
-                
+
                 result["result"] = result_tuple
-                
-                # Regenerate ALL preview images to reflect edited mask
+
                 try:
-                    # Flatten updated values
+
                     flat_updated_values = []
                     for port_vals in updated_returns:
                         if isinstance(port_vals, list):
                             flat_updated_values.extend(port_vals)
                         else:
                             flat_updated_values.append(port_vals)
-                    
-                    # Regenerate all RGBA images using updated mask data
+
                     all_editable_images = generate_editable_images(flat_updated_values)
-                    
+
                     if all_editable_images:
-                        # Save all preview images
+
                         all_saved_images, _ = save_images_for_preview(
                             self, all_editable_images, "ComfyPanel_mask"
                         )
@@ -527,7 +497,6 @@ class AnyPreviewPause(AnyPreview, PauseMixin):
                 except Exception:
                     pass
 
-        # Process audio edits if present
         updated_audio_edits = result.get("audio_edits", None)
         if updated_audio_edits and isinstance(updated_audio_edits, list):
             current_audio_idx = 0
@@ -544,13 +513,13 @@ class AnyPreviewPause(AnyPreview, PauseMixin):
                                     end = float(edit.get("end", 0))
                                     sr = val["sample_rate"]
                                     wf = val["waveform"]
-                                    
+
                                     start_s = max(0, int(start * sr))
                                     if end > 0:
                                         end_s = min(wf.shape[-1], int(end * sr))
                                     else:
                                         end_s = wf.shape[-1]
-                                    
+
                                     if start_s < end_s:
                                         new_wf = wf[..., start_s:end_s].clone()
                                         new_val = val.copy()
@@ -563,7 +532,7 @@ class AnyPreviewPause(AnyPreview, PauseMixin):
                     updated_returns[i] = vals
                 else:
                     updated_returns[i] = vals[0]
-            
+
             padding_count = MAX_FLOW_PORTS - len(updated_returns)
             if padding_count > 0:
                 result["result"] = tuple(updated_returns) + ([],) * padding_count
@@ -586,13 +555,13 @@ class AutoMute:
             "required": {},
             "hidden": {}
         }
-    
+
     RETURN_TYPES = ()
     FUNCTION = "noop"
     CATEGORY = "ComfyPanel/Utils"
     OUTPUT_NODE = True
     DESCRIPTION = "AutoMute 🎛: Automatically mutes/unmutes target groups/nodes based on monitored nodes. Works like workflow autopilot! 🚀"
-    
+
     def noop(self, **kwargs):
         """No-op, all logic is implemented in frontend. No return value"""
         return ()
@@ -637,34 +606,29 @@ class ImageMask_Composite(SaveImage):
 
         if mask is not None and is_empty_mask(mask):
             mask = None
-            
+
         if mask is not None and mask_outline:
-            # Normalize to B, C, H, W
+
             m = mask
             if m.ndim == 2:
                 m = m.unsqueeze(0).unsqueeze(0)
             elif m.ndim == 3:
                 m = m.unsqueeze(1)
-            
+
             B, C, H, W = m.shape
-            # 1% of long edge
+
             thickness = int(max(H, W) * 0.005)
             if thickness < 1: thickness = 1
-            
-            # Kernel size must be odd
+
             kernel_size = thickness if thickness % 2 != 0 else thickness + 1
             padding = kernel_size // 2
-            
-            # Dilation (Max Pooling)
+
             dilated = torch.nn.functional.max_pool2d(m, kernel_size=kernel_size, stride=1, padding=padding)
-            
-            # Erosion (-Max Pooling of negative)
+
             eroded = -torch.nn.functional.max_pool2d(-m, kernel_size=kernel_size, stride=1, padding=padding)
-            
-            # Outline
+
             mask = dilated - eroded
-            
-            # Restore shape to [B, H, W]
+
             if mask.shape[1] == 1:
                 mask = mask.squeeze(1)
 
@@ -675,7 +639,7 @@ class ImageMask_Composite(SaveImage):
         else:
             r, g, b, _ = parse_color(mask_color)
             result = composite_image_with_color(image, mask, (r, g, b), mask_opacity)
-        
+
         all_saved_images, _ = save_images_for_preview(self, [result], "ComfyPanel_preview")
         frontend_data = {"images": all_saved_images} if all_saved_images else {}
         send_preview_event(unique_id_str, frontend_data, "preview")
@@ -733,15 +697,14 @@ class PrimitivePlus:
             for key, value in kwargs.items():
                 if key.startswith("connect_to_widget_input"):
                     input_values[key] = self.normalize_value(value)
-            
-            # Fallback to prompt if inputs not in kwargs (though usually they are)
+
             if not input_values and prompt and unique_id:
                 node_info = prompt.get(str(unique_id), {})
                 if node_info and 'inputs' in node_info:
                     for key, value in node_info['inputs'].items():
                         if key.startswith("connect_to_widget_input"):
                             input_values[key] = self.normalize_value(value)
-                            
+
             output_values = []
             for i in range(MAX_FLOW_PORTS):
                 port_key = f"connect_to_widget_input_{i+1}"
@@ -771,7 +734,7 @@ class SwitchAny:
 
     def switch(self, switch, true=None, false=None):
         return (true if switch else false,)
-        
+
 class SwitchAnyMute:
     @classmethod
     def INPUT_TYPES(cls):
@@ -842,7 +805,7 @@ class SwitchAnyCombo:
                 "unique_id": "UNIQUE_ID",
             }
         }
-        
+
         inputs["optional"] = {}
         for i in range(1, MAX_FLOW_PORTS + 1):
             inputs["optional"][f"input_{i}"] = (any_type, {"lazy": True})
@@ -857,25 +820,25 @@ class SwitchAnyCombo:
     FUNCTION = "switch"
     CATEGORY = "ComfyPanel/Utils"
     DESCRIPTION = "Select one connected input via dropdown (by node name). Unselected inputs stay lazy and will not execute."
-    
+
     def _resolve_port(self, selected):
         if "\u200B" in selected:
             return selected.split("\u200B")[-1]
 
         if ":" in selected:
              return selected.split(":")[0].strip()
-        
+
         return selected
 
     def check_lazy_status(self, selected="input_1", unique_id=None, **kwargs):
         port_name = self._resolve_port(selected)
         return [port_name]
-    
+
     def switch(self, selected="input_1", unique_id=None, **kwargs):
         port_name = self._resolve_port(selected)
         if port_name in kwargs:
             return (kwargs[port_name],)
-        
+
         print(f"[SwitchAnyCombo] Warning: Port '{port_name}' selected but no input connected.")
         return (None,)
 
@@ -909,4 +872,3 @@ class SwitchOutput:
         elif route == "output2":
             out2 = input_data
         return (out1, out2)
-

@@ -58,16 +58,36 @@
                 "name": "NanoBanana (channel)"
             },
             {
+                "id": "2073439241622867969",
+                "name": "NanoBanana 2 Lite (channel)"
+            },
+            {
                 "id": "2070782907018469377",
                 "name": "NanoBanana 2 (channel)"
+            },
+            {
+                "id": "2073261324313907201",
+                "name": "NanoBanana 2 (Official)"
+            },
+            {
+                "id": "2073352722279124994",
+                "name": "NanoBanana Pro (Channel / Official)"
             },
             {
                 "id": "2070868537354317826",
                 "name": "GPT Image 2 (channel)"
             },
             {
+                "id": "2073444968953376770",
+                "name": "GPT Image 2 (Official)"
+            },
+            {
                 "id": "2061261381885845506",
-                "name": "全能编辑 (Flux.2_Inpainting)"
+                "name": "Flux.2 Inpaint"
+            },
+            {
+                "id": "2073455314866892801",
+                "name": "360Panorama"
             }
         ]
     }

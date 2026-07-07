@@ -1,5 +1,3 @@
-## ComfyUI/custom_nodes/ComfyPanel/modules/utility/comfypanel_api.py
-
 import shutil
 import os
 import io
@@ -14,13 +12,6 @@ from server import PromptServer
 from PIL import Image, ImageOps
 from .comfypanel_tunnel import tunnel_manager
 
-
-# ─── Origin Middleware Patch ────────────────────────────────────────────────────
-# ComfyUI's origin_only_middleware compares Host (127.0.0.1) vs Origin hostname.
-# UXP webview <img> tags send "Origin: file://localhost", where "localhost" != "127.0.0.1",
-# causing a blanket 403 that prevents /comfypanel/thumbnail from ever executing.
-# This patch whitelists /comfypanel/ routes so the thumbnail handler can run.
-# ────────────────────────────────────────────────────────────────────────────────
 def _patch_origin_middleware():
     app = PromptServer.instance.app
     for i, mw in enumerate(app.middlewares):
@@ -36,14 +27,14 @@ def _patch_origin_middleware():
                         resp = web.Response()
                     else:
                         resp = await handler(request)
-                    
+
                     req_origin = request.headers.get('Origin')
                     if req_origin:
                         resp.headers['Access-Control-Allow-Origin'] = req_origin
                         resp.headers['Access-Control-Allow-Credentials'] = 'true'
                     else:
                         resp.headers['Access-Control-Allow-Origin'] = '*'
-                    
+
                     resp.headers['Access-Control-Allow-Headers'] = 'Content-Type, Authorization, token'
                     resp.headers['Access-Control-Allow-Methods'] = 'GET, POST, OPTIONS'
                     return resp
@@ -59,7 +50,6 @@ try:
 except Exception as e:
     logging.warning(f"[ComfyPanel] Failed to patch origin middleware: {e}")
 
-
 def _get_uxp_dir(plugin_root):
     """
     Dynamically find the UXP assets directory by looking for manifest.json.
@@ -73,7 +63,7 @@ def _get_uxp_dir(plugin_root):
                     return item_path
     except Exception:
         pass
-    # No fallback: raise error if no UXP directory containing manifest.json is found
+
     raise FileNotFoundError(f"Could not find UXP assets directory containing manifest.json in {plugin_root}")
 
 @PromptServer.instance.routes.post("/comfypanel/upload_from_path")
@@ -94,25 +84,22 @@ async def upload_from_local_path(request):
             return web.json_response({"success": False, "error": f"Source file not found: {src_path}"}, status=400)
 
         input_dir = folder_paths.get_input_directory()
-        
+
         abs_src = os.path.abspath(src_path)
         abs_input = os.path.abspath(input_dir)
-        
-        # [v2.12] True Origin-Level Zero Copy: If file is already anywhere inside the input directory, DO NOT copy or rename.
-        # Just return its relative path from the input directory.
+
         if abs_src.startswith(abs_input) and os.path.isfile(abs_src):
             rel_name = os.path.relpath(abs_src, abs_input).replace("\\", "/")
             return web.json_response({"success": True, "fileName": rel_name, "optimization": "zero_copy"})
 
         if not dest_name:
             dest_name = os.path.basename(src_path)
-            
+
         dest_path = os.path.join(abs_input, dest_name)
         shutil.copy2(src_path, dest_path)
         return web.json_response({"success": True, "fileName": dest_name, "optimization": "copy"})
     except Exception as e:
         return web.json_response({"success": False, "error": str(e)}, status=500)
-
 
 @PromptServer.instance.routes.get("/comfypanel/dirs")
 async def get_comfy_dirs(request):
@@ -126,7 +113,6 @@ async def get_comfy_dirs(request):
         "temp": folder_paths.get_temp_directory(),
     })
 
-
 @PromptServer.instance.routes.get("/comfypanel/output_files")
 async def list_output_files(request):
     """
@@ -137,13 +123,12 @@ async def list_output_files(request):
     IMAGE_EXTS = {'.png', '.jpg', '.jpeg', '.webp', '.gif'}
     VIDEO_EXTS = {'.mp4', '.webm', '.mov', '.avi'}
     AUDIO_EXTS = {'.mp3', '.wav', '.ogg', '.flac'}
-    MODEL3D_EXTS = {'.glb', '.gltf', '.obj', '.fbx', '.usdz'}  # [NEW] 3D model support
+    MODEL3D_EXTS = {'.glb', '.gltf', '.obj', '.fbx', '.usdz'}
     ALL_EXTS = IMAGE_EXTS | VIDEO_EXTS | AUDIO_EXTS | MODEL3D_EXTS
 
     output_dir = folder_paths.get_output_directory()
     files = []
 
-    # Scan root output dir AND all subdirectories (audio/, video/, comfypanel_results/, etc.)
     dirs_to_scan = [output_dir]
     try:
         for entry in os.scandir(output_dir):
@@ -160,21 +145,19 @@ async def list_output_files(request):
                     ext = os.path.splitext(entry.name)[1].lower()
                     if ext in ALL_EXTS:
                         seen_paths.add(entry.path)
-                        # Return relative to output folder for ComfyUI's /view API compatibility
+
                         rel_name = os.path.relpath(entry.path, output_dir).replace("\\", "/")
                         files.append({
                             "name": rel_name,
                             "nativePath": entry.path,
                             "mtime": entry.stat().st_mtime,
                         })
-        
-        # Sort all aggregated files by modified time descending
+
         files.sort(key=lambda x: x["mtime"], reverse=True)
     except Exception as e:
         return web.json_response({"success": False, "error": str(e)}, status=500)
 
     return web.json_response({"success": True, "files": files})
-
 
 @PromptServer.instance.routes.get("/comfypanel/thumbnail")
 async def get_thumbnail(request):
@@ -194,7 +177,7 @@ async def get_thumbnail(request):
         output_dir = folder_paths.get_output_directory()
 
         if path_param:
-            # Absolute path mode — whitelist check
+
             file_path = os.path.abspath(path_param)
             allowed_roots = [
                 os.path.abspath(output_dir),
@@ -214,50 +197,46 @@ async def get_thumbnail(request):
         if not os.path.isfile(file_path):
             return web.Response(status=404, text="File not found")
 
-        # [CACHE] Check thumbnail cache in ComfyUI temp
         mtime = os.path.getmtime(file_path)
-        # Use a more searchable cache key: {path_hash}_{params_hash}.webp
+
         path_hash = hashlib.md5(file_path.encode()).hexdigest()
         params_hash = hashlib.md5(f"{mtime}_{size}".encode()).hexdigest()
-        
+
         temp_dir = folder_paths.get_temp_directory()
         cache_dir = os.path.join(temp_dir, "comfypanel_thumbs")
         if not os.path.exists(cache_dir):
             os.makedirs(cache_dir, exist_ok=True)
-        
+
         cache_path = os.path.join(cache_dir, f"{path_hash}_{params_hash}.webp")
 
         if os.path.exists(cache_path):
             return web.FileResponse(cache_path)
 
-        # [GENERATE] Use Pillow to resize
         try:
             img = Image.open(file_path)
         except Exception:
-            # Fallback for non-image files or corrupted images
+
             return web.Response(status=415, text="Unsupported file type")
 
         img = ImageOps.exif_transpose(img)
         img.thumbnail((size, size))
-        
+
         output = io.BytesIO()
         img.save(output, format="WEBP", quality=85)
         img.close()
-        
+
         webp_data = output.getvalue()
-        
-        # Save to cache
+
         try:
             with open(cache_path, "wb") as f:
                 f.write(webp_data)
         except Exception:
-            pass # Ignore cache write errors
+            pass
 
         return web.Response(body=webp_data, content_type="image/webp")
 
     except Exception as e:
         return web.Response(status=500, text=str(e))
-
 
 @PromptServer.instance.routes.post("/comfypanel/delete_output_file")
 async def delete_output_file(request):
@@ -274,12 +253,11 @@ async def delete_output_file(request):
         output_dir = folder_paths.get_output_directory()
         file_path = os.path.abspath(os.path.join(output_dir, name))
 
-        # Security: Ensure the file is within the output directory
         if not file_path.startswith(os.path.abspath(output_dir)):
             return web.json_response({"success": False, "error": "Access denied"}, status=403)
 
         if os.path.isfile(file_path):
-            # [CLEANUP] Remove associated thumbnails first
+
             try:
                 path_hash = hashlib.md5(file_path.encode()).hexdigest()
                 temp_dir = folder_paths.get_temp_directory()
@@ -295,8 +273,7 @@ async def delete_output_file(request):
                 pass
 
             os.remove(file_path)
-            
-            # Clean up the parent directory if it's empty and it's our comfypanel_results dir
+
             parent_dir = os.path.dirname(file_path)
             if parent_dir != os.path.abspath(output_dir):
                 try:
@@ -304,7 +281,7 @@ async def delete_output_file(request):
                         os.rmdir(parent_dir)
                 except Exception:
                     pass
-                    
+
             return web.json_response({"success": True})
         else:
             return web.json_response({"success": False, "error": f"File not found: {name}"}, status=404)
@@ -316,17 +293,16 @@ async def get_comfypanel_static_file(request):
     try:
         folder = request.match_info.get("folder")
         filepath = request.match_info.get("filepath")
-        
-        # Only allow serving from specific safe directories
+
         if not filepath or ".." in filepath or folder not in ["custom", "default"]:
             return web.Response(status=403)
-            
+
         plugin_root = os.path.dirname(os.path.dirname(os.path.dirname(os.path.realpath(__file__))))
         file_path = os.path.join(plugin_root, folder, filepath)
 
         if os.path.exists(file_path):
              return web.FileResponse(file_path)
-            
+
         return web.Response(status=404)
     except Exception as e:
         return web.json_response({"success": False, "error": str(e)}, status=500)
@@ -334,13 +310,13 @@ async def get_comfypanel_static_file(request):
 @PromptServer.instance.routes.post("/comfypanel/open_user_config")
 async def open_user_config(request):
     try:
-        # Get plugin root path accurately
+
         plugin_root = os.path.dirname(os.path.dirname(os.path.dirname(os.path.realpath(__file__))))
         config_path = os.path.abspath(os.path.join(plugin_root, "custom", "user_config.js"))
-        
+
         if not os.path.exists(config_path):
             return web.json_response({"success": False, "error": f"custom/user_config.js not found at {config_path}"}, status=404)
-        
+
         system = platform.system()
         if system == "Darwin":
             subprocess.call(["open", config_path])
@@ -350,13 +326,13 @@ async def open_user_config(request):
                 editor_cmd = ["code", config_path]
             elif shutil.which("notepad++"):
                 editor_cmd = ["notepad++", config_path]
-            
+
             if editor_cmd:
                 try:
                     subprocess.Popen(editor_cmd, shell=True)
                 except Exception:
                     editor_cmd = None
-            
+
             if not editor_cmd:
                 common_paths = [
                     (os.path.expandvars(r"%LocalAppData%\Programs\Microsoft VS Code\bin\code.cmd"), True),
@@ -385,20 +361,19 @@ async def open_user_config(request):
                     subprocess.Popen(["notepad.exe", config_path])
         else:
             subprocess.call(["xdg-open", config_path])
-            
+
         return web.json_response({"success": True})
     except Exception as e:
         return web.json_response({"success": False, "error": str(e)}, status=500)
-
 
 @PromptServer.instance.routes.get("/comfypanel/prompt_templates")
 async def get_prompt_templates(request):
     try:
         plugin_root = os.path.dirname(os.path.dirname(os.path.dirname(os.path.realpath(__file__))))
         templates_path = os.path.abspath(os.path.join(plugin_root, "default", "prompt_templates.json"))
-        
+
         if not os.path.exists(templates_path):
-            # Return empty scaffold if file does not yet exist
+
             return web.json_response({})
         with open(templates_path, "r", encoding="utf-8") as f:
             data = json.load(f)
@@ -406,21 +381,19 @@ async def get_prompt_templates(request):
     except Exception as e:
         return web.json_response({"error": str(e)}, status=500)
 
-
 @PromptServer.instance.routes.post("/comfypanel/save_prompt_templates")
 async def save_prompt_templates(request):
     try:
         body = await request.json()
         plugin_root = os.path.dirname(os.path.dirname(os.path.dirname(os.path.realpath(__file__))))
         templates_path = os.path.abspath(os.path.join(plugin_root, "default", "prompt_templates.json"))
-        
+
         os.makedirs(os.path.dirname(templates_path), exist_ok=True)
         with open(templates_path, "w", encoding="utf-8") as f:
             json.dump(body, f, ensure_ascii=False, indent=2)
         return web.json_response({"success": True})
     except Exception as e:
         return web.json_response({"success": False, "error": str(e)}, status=500)
-
 
 @PromptServer.instance.routes.get("/comfypanel/userdata")
 async def get_userdata_list(request):
@@ -431,16 +404,14 @@ async def get_userdata_list(request):
     try:
         directory = request.query.get("dir", "workflows")
         recurse = request.query.get("recurse", "false").lower() == "true"
-        
+
         plugin_root = os.path.dirname(os.path.dirname(os.path.dirname(os.path.realpath(__file__))))
-        
-        # [ARCH] Support reading user workflows (if any custom directory mapping is needed)
-        # Natively ComfyUI has /userdata, but if the webview explicitly calls /comfypanel/userdata, we serve it from a safe user directory.
+
         target_dir = folder_paths.get_user_directory() if hasattr(folder_paths, 'get_user_directory') else os.path.join(folder_paths.base_path, "user", "default")
         target_dir = os.path.join(target_dir, directory)
 
         if not os.path.exists(target_dir):
-            # Fallback to ComfyPanel local folder if user dir doesn't exist just in case
+
             target_dir = os.path.join(plugin_root, directory)
             if not os.path.exists(target_dir):
                 return web.json_response([])
@@ -456,11 +427,10 @@ async def get_userdata_list(request):
             for filename in os.listdir(target_dir):
                 if filename.endswith(".json"):
                     files.append(filename)
-                    
+
         return web.json_response(files)
     except Exception as e:
         return web.json_response({"error": str(e)}, status=500)
-
 
 @PromptServer.instance.routes.get("/comfypanel/userdata/{filename:.*}")
 async def get_userdata_file(request):
@@ -472,29 +442,27 @@ async def get_userdata_file(request):
         path = request.match_info.get("filename", "")
         if "%" in path:
             path = urllib.parse.unquote(path)
-            
+
         if not path:
             return web.json_response({"error": "No filename specified"}, status=400)
-            
+
         plugin_root = os.path.dirname(os.path.dirname(os.path.dirname(os.path.realpath(__file__))))
-        
-        # Try user directory first
+
         user_dir = folder_paths.get_user_directory() if hasattr(folder_paths, 'get_user_directory') else os.path.join(folder_paths.base_path, "user", "default")
         full_path = os.path.abspath(os.path.join(user_dir, path))
-        
+
         if not os.path.exists(full_path):
-            # Fallback to plugin root
+
             full_path = os.path.abspath(os.path.join(plugin_root, path))
-            
+
         if not os.path.exists(full_path):
             return web.json_response({"error": f"File not found: {path}"}, status=404)
-            
+
         with open(full_path, "r", encoding="utf-8") as f:
             data = json.load(f)
         return web.json_response(data)
     except Exception as e:
         return web.json_response({"error": str(e)}, status=500)
-
 
 @PromptServer.instance.routes.post("/comfypanel/userdata/{filename:.*}")
 async def save_userdata_file(request):
@@ -504,19 +472,18 @@ async def save_userdata_file(request):
     try:
         path = request.match_info.get("filename", "")
         body = await request.json()
-        
+
         plugin_root = os.path.dirname(os.path.dirname(os.path.dirname(os.path.realpath(__file__))))
-        # Saving always goes to the root plugin directory for persistence across updates
+
         full_path = os.path.abspath(os.path.join(plugin_root, path))
-        
+
         os.makedirs(os.path.dirname(full_path), exist_ok=True)
         with open(full_path, "w", encoding="utf-8") as f:
             json.dump(body, f, ensure_ascii=False, indent=2)
-            
+
         return web.json_response({"success": True})
     except Exception as e:
         return web.json_response({"success": False, "error": str(e)}, status=500)
-
 
 @PromptServer.instance.routes.get("/comfypanel/builtin_workflows")
 async def get_builtin_workflows(request):
@@ -527,7 +494,7 @@ async def get_builtin_workflows(request):
     try:
         plugin_root = os.path.dirname(os.path.dirname(os.path.dirname(os.path.realpath(__file__))))
         target_dir = os.path.join(plugin_root, "default", "workflows")
-        
+
         if not os.path.exists(target_dir):
             return web.json_response({"success": True, "workflows": []})
 
@@ -535,18 +502,17 @@ async def get_builtin_workflows(request):
         for filename in os.listdir(target_dir):
             if filename.endswith(".json"):
                 full_path = os.path.join(target_dir, filename)
-                base_name = filename[:-5]  # Strip .json
+                base_name = filename[:-5]
                 try:
                     cover_urls = []
-                    # Prioritize SVG -> -cover.webp -> raw .webp
+
                     svg_path = os.path.join(target_dir, f"{base_name}-cover.svg")
                     webp_cover_path = os.path.join(target_dir, f"{base_name}-cover.webp")
                     webp_path = os.path.join(target_dir, f"{base_name}.webp")
-                    
-                    # Convert backslashes to forward slashes to prevent CSS escape issues on Windows (e.g. \t, \U)
+
                     def to_file_uri(path):
                         clean_path = path.replace("\\", "/")
-                        # Ensure proper file:/// format for Windows (C:/...) and Mac (/Users/...)
+
                         if not clean_path.startswith("/"):
                             clean_path = "/" + clean_path
                         return f"file://{clean_path}"
@@ -557,30 +523,29 @@ async def get_builtin_workflows(request):
                         cover_urls.append(to_file_uri(webp_cover_path))
                     elif os.path.exists(webp_path):
                         cover_urls.append(to_file_uri(webp_path))
-                        
+
                     workflows.append({
                         "name": filename,
                         "path": "default/workflows/" + filename,
-                        "workflow": None, # [ARCH] Switched to lazy loading, will fetch via API when clicked
+                        "workflow": None,
                         "cover_urls": cover_urls
                     })
                 except Exception as e:
                     pass
-                    
+
         return web.json_response({"success": True, "workflows": workflows})
     except Exception as e:
         return web.json_response({"success": False, "error": str(e)}, status=500)
-
 
 @PromptServer.instance.routes.post("/comfypanel/open_prompt_templates")
 async def open_prompt_templates(request):
     try:
         plugin_root = os.path.dirname(os.path.dirname(os.path.dirname(os.path.realpath(__file__))))
         templates_path = os.path.abspath(os.path.join(plugin_root, "default", "prompt_templates.json"))
-        
+
         if not os.path.exists(templates_path):
             return web.json_response({"success": False, "error": f"prompt_templates.json not found at {templates_path}"}, status=404)
-        
+
         system = platform.system()
         if system == "Darwin":
             subprocess.call(["open", templates_path])
@@ -591,7 +556,6 @@ async def open_prompt_templates(request):
         return web.json_response({"success": True})
     except Exception as e:
         return web.json_response({"success": False, "error": str(e)}, status=500)
-
 
 @PromptServer.instance.routes.post("/comfypanel/tunnel/start")
 async def start_tunnel(request):
@@ -612,7 +576,6 @@ async def start_tunnel(request):
     except Exception as e:
         return web.json_response({"success": False, "error": str(e)}, status=500)
 
-
 @PromptServer.instance.routes.post("/comfypanel/tunnel/stop")
 async def stop_tunnel(request):
     try:
@@ -620,7 +583,6 @@ async def stop_tunnel(request):
         return web.json_response({"success": success})
     except Exception as e:
         return web.json_response({"success": False, "error": str(e)}, status=500)
-
 
 @PromptServer.instance.routes.get("/comfypanel/tunnel/status")
 async def get_tunnel_status(request):
@@ -647,6 +609,28 @@ async def runninghub_proxy(request):
 
         if not endpoint.startswith('/'):
             endpoint = '/' + endpoint
+
+        if endpoint == '/prompt' and method == 'POST' and isinstance(payload, dict):
+            prompt = payload.get("prompt", {})
+            has_bridge = any(
+                isinstance(n, dict) and n.get("class_type") == "RHWorkflowBridge"
+                for n in prompt.values()
+            )
+            if has_bridge:
+                try:
+                    from ..rh_workflow_bridge import expand_bridge_nodes
+
+                    api_key = (
+                        headers.get("Authorization", "").removeprefix("Bearer ").strip()
+                        or headers.get("token", "")
+                    )
+                    expanded = await expand_bridge_nodes(prompt, base_url, api_key)
+                    payload = dict(payload)
+                    payload["prompt"] = expanded
+                except Exception as expand_err:
+                    logging.error(f"[ComfyPanel Proxy] Bridge expand failed: {expand_err}", exc_info=True)
+                    return web.json_response({"success": False, "error": f"Bridge expand error: {expand_err}"}, status=500)
+
         url = f"{base_url}{endpoint}"
 
         proxy_headers = {
@@ -671,13 +655,12 @@ async def runninghub_proxy(request):
                     try:
                         resp_json = await resp.json()
                         return web.json_response(resp_json, status=resp.status)
-                    except Exception:
+                    except Exception as je:
                         text = await resp.text()
                         return web.Response(body=text, status=resp.status, content_type=resp.content_type)
     except Exception as e:
         logging.error(f"[ComfyPanel Proxy] Proxy exception: {e}", exc_info=True)
         return web.json_response({"success": False, "error": str(e)}, status=500)
-
 
 @PromptServer.instance.routes.post("/comfypanel/runninghub/upload_proxy")
 async def runninghub_upload_proxy(request):
@@ -692,13 +675,11 @@ async def runninghub_upload_proxy(request):
         if not filename:
             return web.json_response({"success": False, "error": "No filename provided"}, status=400)
 
-        # 1. Resolve path in input directory
         input_dir = folder_paths.get_input_directory()
         file_path = os.path.abspath(os.path.join(input_dir, filename))
         if not file_path.startswith(os.path.abspath(input_dir)) or not os.path.isfile(file_path):
             return web.json_response({"success": False, "error": f"File not found: {filename}"}, status=404)
 
-        # 2. Upload to RunningHub
         url = f"{base_url}/openapi/v2/media/upload/binary"
         import aiohttp
         async with aiohttp.ClientSession() as session:
@@ -714,7 +695,6 @@ async def runninghub_upload_proxy(request):
     except Exception as e:
         logging.error(f"[ComfyPanel Proxy] Upload proxy exception: {e}", exc_info=True)
         return web.json_response({"success": False, "error": str(e)}, status=500)
-
 
 @PromptServer.instance.routes.post("/comfypanel/runninghub/download_image")
 async def runninghub_download_image(request):
@@ -734,13 +714,12 @@ async def runninghub_download_image(request):
         else:
             base_dir = folder_paths.get_output_directory()
 
-        # If subfolder is empty for output, default to comfypanel_results
         if not subfolder and img_type != "temp":
             subfolder = "comfypanel_results"
 
         target_dir = os.path.abspath(os.path.join(base_dir, subfolder))
         os.makedirs(target_dir, exist_ok=True)
-        
+
         file_path = os.path.abspath(os.path.join(target_dir, filename))
         if not file_path.startswith(os.path.abspath(base_dir)):
             return web.json_response({"success": False, "error": "Access denied"}, status=403)
@@ -767,3 +746,335 @@ async def runninghub_download_image(request):
         logging.error(f"[ComfyPanel] Download image exception: {e}", exc_info=True)
         return web.json_response({"success": False, "error": str(e)}, status=500)
 
+@PromptServer.instance.routes.post("/comfypanel/runninghub/scan_workflow")
+async def runninghub_scan_workflow(request):
+    try:
+        body = await request.json()
+        workflow_file = body.get("workflow_file", "")
+        if not workflow_file:
+            return web.json_response({"success": False, "error": "Missing workflow_file parameter"}, status=400)
+
+        possible_paths = [
+            workflow_file,
+            os.path.join(folder_paths.get_input_directory(), "workflows", workflow_file),
+            os.path.join(folder_paths.get_input_directory(), workflow_file),
+        ]
+
+        resolved_path = None
+        for p in possible_paths:
+            if os.path.exists(p) and os.path.isfile(p):
+                resolved_path = p
+                break
+
+        if not resolved_path:
+            return web.json_response({"success": False, "error": f"Workflow file not found: {workflow_file}"}, status=404)
+        with open(resolved_path, "r", encoding="utf-8") as f:
+            data = json.load(f)
+
+        WHITELIST_TYPES = {"INT", "FLOAT", "STRING", "BOOLEAN", "BOOL", "NUMBER"}
+
+        EXCLUDE_WIDGET_KEYWORDS = {
+            "name", "model", "ckpt", "lora", "vae", "unet", "clip", "device",
+            "dtype", "scheduler", "sampler", "file", "path", "upscale", "save_prefix"
+        }
+
+        widgets = []
+
+        if "nodes" in data and isinstance(data["nodes"], list):
+            for node in data["nodes"]:
+                node_id = node.get("id")
+                node_type = node.get("type")
+
+                node_mode = node.get("mode", 0)
+                if node_mode in [2, 4]:
+                    continue
+
+                lower_type = node_type.lower()
+                node_title = node.get("title", "").strip()
+
+                if "loadimage" in lower_type or "load_image" in lower_type:
+
+                    has_link = False
+                    outputs = node.get("outputs", [])
+                    for out in outputs:
+                        links = out.get("links")
+                        if links and any(x is not None for x in links):
+                            has_link = True
+                            break
+                    if not has_link:
+                        continue
+
+                    is_mask = "mask" in lower_type
+                    widgets.append({
+                        "nodeId": node_id,
+                        "nodeType": node_type,
+                        "nodeTitle": node_title,
+                        "name": "mask" if is_mask else "image",
+                        "type": "MASK_INPUT_SLOT" if is_mask else "IMAGE_INPUT_SLOT",
+                        "value": ""
+                    })
+                    continue
+                elif "loadvideo" in lower_type or "load_video" in lower_type:
+                    has_link = False
+                    outputs = node.get("outputs", [])
+                    for out in outputs:
+                        links = out.get("links")
+                        if links and any(x is not None for x in links):
+                            has_link = True
+                            break
+                    if not has_link:
+                        continue
+
+                    widgets.append({
+                        "nodeId": node_id,
+                        "nodeType": node_type,
+                        "nodeTitle": node_title,
+                        "name": "video",
+                        "type": "VIDEO_INPUT_SLOT",
+                        "value": ""
+                    })
+                    continue
+                elif "loadaudio" in lower_type or "load_audio" in lower_type:
+                    has_link = False
+                    outputs = node.get("outputs", [])
+                    for out in outputs:
+                        links = out.get("links")
+                        if links and any(x is not None for x in links):
+                            has_link = True
+                            break
+                    if not has_link:
+                        continue
+
+                    widgets.append({
+                        "nodeId": node_id,
+                        "nodeType": node_type,
+                        "nodeTitle": node_title,
+                        "name": "audio",
+                        "type": "AUDIO_INPUT_SLOT",
+                        "value": ""
+                    })
+                    continue
+
+                if "saveimage" in lower_type or "save_image" in lower_type:
+
+                    has_link = False
+                    inputs = node.get("inputs", [])
+                    for inp in inputs:
+                        if inp.get("link") is not None:
+                            has_link = True
+                            break
+                    if not has_link:
+                        continue
+
+                    widgets.append({
+                        "nodeId": node_id,
+                        "nodeType": node_type,
+                        "nodeTitle": node_title,
+                        "name": "image",
+                        "type": "IMAGE_OUTPUT_SLOT",
+                        "value": ""
+                    })
+                    continue
+                elif "savevideo" in lower_type or "save_video" in lower_type:
+                    has_link = False
+                    inputs = node.get("inputs", [])
+                    for inp in inputs:
+                        if inp.get("link") is not None:
+                            has_link = True
+                            break
+                    if not has_link:
+                        continue
+
+                    widgets.append({
+                        "nodeId": node_id,
+                        "nodeType": node_type,
+                        "nodeTitle": node_title,
+                        "name": "video",
+                        "type": "VIDEO_OUTPUT_SLOT",
+                        "value": ""
+                    })
+                    continue
+                elif "saveaudio" in lower_type or "save_audio" in lower_type:
+                    has_link = False
+                    inputs = node.get("inputs", [])
+                    for inp in inputs:
+                        if inp.get("link") is not None:
+                            has_link = True
+                            break
+                    if not has_link:
+                        continue
+
+                    widgets.append({
+                        "nodeId": node_id,
+                        "nodeType": node_type,
+                        "nodeTitle": node_title,
+                        "name": "audio",
+                        "type": "AUDIO_OUTPUT_SLOT",
+                        "value": ""
+                    })
+                    continue
+
+                if any(kw in lower_type for kw in ["loader", "checkpoint", "loraloader", "vaeloader", "model"]):
+                    continue
+
+                widget_slots_inputs = []
+                if "inputs" in node and isinstance(node["inputs"], list):
+                    for inp in node["inputs"]:
+                        if not isinstance(inp, dict):
+                            continue
+                        if inp.get("widget") or inp.get("type") == "COMBO":
+                            widget_slots_inputs.append(inp)
+                            w_name = inp.get("widget", {}).get("name") or inp.get("name")
+                            if w_name in ["seed", "noise_seed"]:
+                                widget_slots_inputs.append({"name": "control_after_generate", "type": "COMBO", "virtual": True})
+
+                widget_slots_outputs = []
+                if "outputs" in node and isinstance(node["outputs"], list):
+                    for out in node["outputs"]:
+                        if isinstance(out, dict) and out.get("widget"):
+                            widget_slots_outputs.append(out)
+
+                widget_slots = widget_slots_inputs + widget_slots_outputs
+
+                if "inputs" in node and isinstance(node["inputs"], list):
+                    for inp in node["inputs"]:
+                        w_info = inp.get("widget")
+                        if w_info and isinstance(w_info, dict):
+                            widget_name = w_info.get("name")
+                            widget_type = str(inp.get("type", "STRING")).upper()
+
+                            if widget_type not in WHITELIST_TYPES:
+                                continue
+
+                            lower_name = widget_name.lower()
+                            if any(kw in lower_name for kw in EXCLUDE_WIDGET_KEYWORDS):
+                                continue
+
+                            is_linked = False
+                            if "link" in inp and inp["link"] is not None:
+                                if inp["link"]:
+                                    is_linked = True
+
+                            if not is_linked:
+                                value = None
+                                try:
+                                    val_idx = widget_slots.index(inp)
+                                    if "widgets_values" in node and len(node["widgets_values"]) > val_idx:
+                                        value = node["widgets_values"][val_idx]
+                                except Exception:
+                                    pass
+
+                                widgets.append({
+                                    "nodeId": node_id,
+                                    "nodeType": node_type,
+                                    "name": widget_name,
+                                    "type": widget_type,
+                                    "value": value
+                                })
+
+                if "outputs" in node and isinstance(node["outputs"], list):
+                    for out in node["outputs"]:
+                        w_info = out.get("widget")
+                        if w_info and isinstance(w_info, dict):
+                            widget_name = w_info.get("name")
+                            widget_type = str(out.get("type", "STRING")).upper()
+
+                            if widget_type not in WHITELIST_TYPES:
+                                continue
+
+                            lower_name = widget_name.lower()
+                            if any(kw in lower_name for kw in EXCLUDE_WIDGET_KEYWORDS):
+                                continue
+
+                            value = None
+                            try:
+                                val_idx = widget_slots.index(out)
+                                if "widgets_values" in node and len(node["widgets_values"]) > val_idx:
+                                    value = node["widgets_values"][val_idx]
+                            except Exception:
+                                pass
+
+                            widgets.append({
+                                "nodeId": node_id,
+                                "nodeType": node_type,
+                                "name": widget_name,
+                                "type": widget_type,
+                                "value": value
+                            })
+        return web.json_response({"success": True, "widgets": widgets})
+    except Exception as e:
+        logging.error(f"[ComfyPanel Linker API] Scan workflow exception: {e}", exc_info=True)
+        return web.json_response({"success": False, "error": str(e)}, status=500)
+
+@PromptServer.instance.routes.post("/comfypanel/runninghub/save_config")
+async def runninghub_save_config(request):
+    try:
+        body = await request.json()
+        api_key = body.get("apiKey", "").strip()
+        base_url = body.get("baseUrl", "").strip()
+
+        config_dir = os.path.dirname(os.path.dirname(os.path.dirname(os.path.realpath(__file__))))
+        config_path = os.path.join(config_dir, "runninghub_config.json")
+
+        config = {}
+        if os.path.exists(config_path):
+            try:
+                with open(config_path, "r", encoding="utf-8") as f:
+                    config = json.load(f)
+            except Exception:
+                pass
+
+        if api_key:
+            config["runninghub_api_key"] = api_key
+        if base_url:
+            config["runninghub_base_url"] = base_url
+
+        with open(config_path, "w", encoding="utf-8") as f:
+            json.dump(config, f, indent=4, ensure_ascii=False)
+
+        return web.json_response({"success": True})
+    except Exception as e:
+        return web.json_response({"success": False, "error": str(e)}, status=500)
+
+@PromptServer.instance.routes.get("/comfypanel/runninghub/get_config")
+async def runninghub_get_config(request):
+    try:
+        config_dir = os.path.dirname(os.path.dirname(os.path.dirname(os.path.realpath(__file__))))
+        config_path = os.path.join(config_dir, "runninghub_config.json")
+        api_key = ""
+        base_url = "https://www.runninghub.cn"
+        if os.path.exists(config_path):
+            with open(config_path, "r", encoding="utf-8") as f:
+                config = json.load(f)
+                api_key = config.get("runninghub_api_key", "")
+                base_url = config.get("runninghub_base_url", "https://www.runninghub.cn")
+        return web.json_response({"success": True, "apiKey": api_key, "baseUrl": base_url})
+    except Exception as e:
+        return web.json_response({"success": False, "error": str(e)}, status=500)
+
+@PromptServer.instance.routes.post("/comfypanel/runninghub/upload_workflow")
+async def runninghub_upload_workflow(request):
+    try:
+        post_data = await request.post()
+        file_field = post_data.get("file")
+        if not file_field:
+            return web.json_response({"success": False, "error": "No file uploaded"}, status=400)
+
+        filename = file_field.filename
+        if not filename.endswith('.json'):
+            return web.json_response({"success": False, "error": "Only JSON files are allowed"}, status=400)
+
+        input_dir = folder_paths.get_input_directory()
+
+        workflows_dir = os.path.join(input_dir, "workflows")
+        os.makedirs(workflows_dir, exist_ok=True)
+        target_path = os.path.join(workflows_dir, filename)
+
+        file_data = file_field.file.read()
+        with open(target_path, 'wb') as f:
+            f.write(file_data)
+
+        logging.info(f"[Linker] Uploaded workflow file saved to: {target_path}")
+        return web.json_response({"success": True, "filename": filename})
+    except Exception as e:
+        return web.json_response({"success": False, "error": str(e)}, status=500)

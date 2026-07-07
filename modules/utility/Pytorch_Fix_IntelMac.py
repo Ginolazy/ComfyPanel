@@ -1,24 +1,8 @@
-## ComfyUI/custom_nodes/ComfyPanel/modules/utility/Pytorch_Fix_IntelMac.py
-
 import torch
 import torch.nn as nn
 import sys
 
-# --- PyTorch Fix for Intel Mac (MPS compatibility) ------------------------
-# PyTorch 2.2.x on Intel Mac often fails on MPS with BF16 and RMSNorm ops.
-# Symptoms include:
-#   - "BFloat16 is not supported on MPS"
-#   - RMSNorm runtime errors despite BF16 being defined
-#
-# Strategy:
-# - Force-map torch.bfloat16 -> torch.float16 on suspected MPS environments
-# - Apply RMSNorm auto-replacement to avoid unsupported kernels
-#
-# Note:
-# - hasattr(torch, "bfloat16") is not sufficient; ops may still fail at runtime
-# - This patch runs before any custom nodes are loaded
-# - Best-effort workaround, not an official PyTorch fix
-# -------------------------------------------------------------------------
+
 
 patched = []
 
@@ -39,14 +23,14 @@ try:
         torch.bfloat16 = torch.float16
         patched.append('bfloat16->float16')
 except Exception:
-    pass # fallback safely
+    pass
 
 if patched:
     print(f"[Pytorch_IntelMac_Fix] Patched torch types for Intel Mac compatibility: {', '.join(patched)} (MPS fixed) ✅")
 else:
     print("[Pytorch_IntelMac_Fix] No patches needed (types already exist).")
 
-## RMSNorm
+
 class RMSNorm(nn.Module):
     def __init__(self, normalized_shape, eps=1e-8, elementwise_affine=True):
         super().__init__()

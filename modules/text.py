@@ -1,10 +1,7 @@
-## ComfyUI/custom_nodes/ComfyPanel/modules/text.py
-
 import re, shlex, subprocess
 from .utility.math_utility import math_operation_calc
 from .utility.type_utility import handle_error
 
-# Float
 class Float:
     @classmethod
     def INPUT_TYPES(cls):
@@ -22,7 +19,6 @@ class Float:
     def get_value(self, value):
         return (value,)
 
-# Int
 class Int:
     @classmethod
     def INPUT_TYPES(cls):
@@ -40,13 +36,12 @@ class Int:
     def get_value(self, value):
         return (value,)
 
-# MathOperation
 class MathOperation:
     INPUT_TYPE_A = "FLOAT"
     INPUT_TYPE_B = "FLOAT"
     RETURN_TYPE_ORDER = ("FLOAT", "INT")
     RETURN_NAMES = ("float_result", "int_result")
-    
+
     @classmethod
     def INPUT_TYPES(cls):
         return {
@@ -69,8 +64,7 @@ class MathOperation:
     def calculate(self, operation, A, B, precision=0):
         float_result, int_result = math_operation_calc(operation, A, B, precision)
         return float_result, int_result
-        
-# StringListToString
+
 class StringListToString:
     @classmethod
     def INPUT_TYPES(s):
@@ -94,7 +88,6 @@ class StringListToString:
 
         return (joined_text,)
 
-# Text Concat
 class TextConcat:
     @classmethod
     def INPUT_TYPES(s):
@@ -103,11 +96,11 @@ class TextConcat:
                 "separator": ("STRING", {"default": "\\n"}),
             },
         }
-    
+
     RETURN_TYPES = ("STRING",)
     FUNCTION = "concatenate"
     CATEGORY = "ComfyPanel/Text"
-    
+
     def concatenate(self, separator, **kwargs):
         if separator == "\\n":
             separator = "\n"
@@ -117,9 +110,9 @@ class TextConcat:
             separator = "\r"
         elif separator == "\\s":
             separator = " "
-        
+
         texts = []
-        
+
         for key, value in kwargs.items():
             if key.startswith("text_") and value is not None:
                 index = int(key.split("_")[1])
@@ -128,7 +121,6 @@ class TextConcat:
         result = separator.join(text for _, text in texts if text)
         return (result,)
 
-# Text Multiline note
 class TextMultiline:
     @classmethod
     def INPUT_TYPES(cls):
@@ -179,8 +171,6 @@ class TextMultiline:
         except Exception as e:
             return (handle_error(e, "Unexpected error during translation"),)
 
-## -------------------------- Third-party -------------------------- ##
-# ShowText
 class ShowText:
     @classmethod
     def INPUT_TYPES(cls):

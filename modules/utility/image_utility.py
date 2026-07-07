@@ -1,5 +1,3 @@
-## ComfyUI/custom_nodes/ComfyPanel/modules/utility/image_utility.py
-
 import re
 import numpy as np
 import torch
@@ -56,7 +54,7 @@ def apply_image_filters(
 def parse_color(color_str: str) -> Tuple[int, int, int, int]:
     try:
         s = str(color_str).strip().lower()
-        if s.startswith("#"): # Hex colors
+        if s.startswith("#"):
             hex_str = s[1:]
             if len(hex_str) in (3, 4):
                 hex_str = "".join(c*2 for c in hex_str)
@@ -87,7 +85,7 @@ def tensor2pil(tensor: torch.Tensor, clamp: bool = True) -> List[Image.Image]:
     if clamp:
         arr = np.clip(arr, 0, 1)
     return [Image.fromarray((img * 255).astype(np.uint8)) for img in arr]
-    
+
 def validate_mask_dimensions(mask_np: np.ndarray) -> np.ndarray:
     if mask_np.ndim > 2:
         return mask_np[0] if mask_np.ndim == 3 else mask_np[0, 0]
@@ -135,16 +133,16 @@ def scale_to_match(target: torch.Tensor, source: torch.Tensor, is_mask: bool = F
     )
     return out.squeeze(0)
 
-def hwc_to_bchw(tensor: torch.Tensor) -> torch.Tensor: # [H,W,C] -> [1,C,H,W]
+def hwc_to_bchw(tensor: torch.Tensor) -> torch.Tensor:
     return tensor.permute(2, 0, 1).unsqueeze(0)
 
-def bchw_to_hwc(tensor: torch.Tensor) -> torch.Tensor: # [1,C,H,W] -> [H,W,C]
+def bchw_to_hwc(tensor: torch.Tensor) -> torch.Tensor:
     return tensor.squeeze(0).permute(1, 2, 0)
 
-def hw_to_b1hw(tensor: torch.Tensor) -> torch.Tensor: # [H,W] -> [1,1,H,W]
+def hw_to_b1hw(tensor: torch.Tensor) -> torch.Tensor:
     return tensor.unsqueeze(0).unsqueeze(0)
 
-def b1hw_to_hw(tensor: torch.Tensor) -> torch.Tensor: # [1,1,H,W] -> [H,W]
+def b1hw_to_hw(tensor: torch.Tensor) -> torch.Tensor:
     return tensor.squeeze(0).squeeze(0)
 
 def generate_preview_images(input_values: List[Any]) -> List[torch.Tensor]:
@@ -152,8 +150,8 @@ def generate_preview_images(input_values: List[Any]) -> List[torch.Tensor]:
     i = 0
     while i < len(input_values):
         val = input_values[i]
-        is_img = isinstance(val, torch.Tensor) and val.ndim == 4 
-        is_mask = isinstance(val, torch.Tensor) and val.ndim in (2, 3) 
+        is_img = isinstance(val, torch.Tensor) and val.ndim == 4
+        is_mask = isinstance(val, torch.Tensor) and val.ndim in (2, 3)
         if is_img:
             next_val = input_values[i+1] if i + 1 < len(input_values) else None
             next_is_mask = isinstance(next_val, torch.Tensor) and next_val.ndim in (2, 3)
@@ -170,14 +168,14 @@ def generate_preview_images(input_values: List[Any]) -> List[torch.Tensor]:
                     if mask_tensor.shape[-3:-1] != img_tensor.shape[-3:-1]:
                         mask_for_resize = mask_tensor.permute(0, 3, 1, 2)
                         mask_resized = F.interpolate(
-                            mask_for_resize, 
-                            size=(img_tensor.shape[1], img_tensor.shape[2]), 
+                            mask_for_resize,
+                            size=(img_tensor.shape[1], img_tensor.shape[2]),
                             mode="nearest"
                         )
                         mask_tensor = mask_resized.permute(0, 2, 3, 1)
                     mask_opacity = 0.5
                     red_overlay = torch.zeros_like(img_tensor)
-                    red_overlay[:, :, :, 0] = 1.0 # R channel = 1
+                    red_overlay[:, :, :, 0] = 1.0
                     alpha = mask_tensor * mask_opacity
                     if alpha.shape[0] != img_tensor.shape[0]:
                         alpha = alpha.repeat(img_tensor.shape[0], 1, 1, 1)
@@ -191,11 +189,11 @@ def generate_preview_images(input_values: List[Any]) -> List[torch.Tensor]:
         elif is_mask:
             prev_val = input_values[i-1] if i > 0 else None
             prev_is_img = isinstance(prev_val, torch.Tensor) and prev_val.ndim == 4
-            
+
             if not prev_is_img:
                 mask_preview = val
                 if mask_preview.ndim == 2:
-                    mask_preview = mask_preview.unsqueeze(0) # [B, H, W]
+                    mask_preview = mask_preview.unsqueeze(0)
                 mask_preview = mask_preview.reshape((-1, 1, mask_preview.shape[-2], mask_preview.shape[-1]))
                 mask_preview = mask_preview.movedim(1, -1).expand(-1, -1, -1, 3)
                 preview_images_list.append(mask_preview)
@@ -238,22 +236,22 @@ def is_empty_mask(mask_tensor: torch.Tensor) -> bool:
         return unique_vals[0].item() in (0.0, 1.0)
     return False
 
-def normalize_mask_tensor(mask_tensor: torch.Tensor) -> torch.Tensor: # mask [B, H, W, 1]
+def normalize_mask_tensor(mask_tensor: torch.Tensor) -> torch.Tensor:
     if mask_tensor.ndim == 2:
-        mask_tensor = mask_tensor.unsqueeze(0).unsqueeze(-1) # [H, W] -> [1, H, W, 1]
+        mask_tensor = mask_tensor.unsqueeze(0).unsqueeze(-1)
     elif mask_tensor.ndim == 3:
-        mask_tensor = mask_tensor.unsqueeze(-1) # [B, H, W] -> [B, H, W, 1]
+        mask_tensor = mask_tensor.unsqueeze(-1)
     return mask_tensor
 
 def resize_mask_to_image(mask_tensor: torch.Tensor, img_tensor: torch.Tensor) -> torch.Tensor:
     if mask_tensor.shape[-3:-1] != img_tensor.shape[-3:-1]:
-        mask_for_resize = mask_tensor.permute(0, 3, 1, 2)  # [B, 1, H, W]
+        mask_for_resize = mask_tensor.permute(0, 3, 1, 2)
         mask_resized = F.interpolate(
             mask_for_resize,
             size=(img_tensor.shape[1], img_tensor.shape[2]),
             mode="nearest"
         )
-        mask_tensor = mask_resized.permute(0, 2, 3, 1)  # [B, H, W, 1]
+        mask_tensor = mask_resized.permute(0, 2, 3, 1)
     if mask_tensor.shape[0] != img_tensor.shape[0]:
         mask_tensor = mask_tensor.repeat(img_tensor.shape[0], 1, 1, 1)
     return mask_tensor
@@ -261,7 +259,7 @@ def resize_mask_to_image(mask_tensor: torch.Tensor, img_tensor: torch.Tensor) ->
 def create_rgba_from_image_mask(img_tensor: torch.Tensor, mask_tensor: torch.Tensor) -> torch.Tensor:
     mask_tensor = normalize_mask_tensor(mask_tensor)
     mask_tensor = resize_mask_to_image(mask_tensor, img_tensor)
-    alpha = 1.0 - mask_tensor # alpha = 1.0 - mask
+    alpha = 1.0 - mask_tensor
     if img_tensor.shape[-1] == 1:
         img_tensor = img_tensor.repeat(1, 1, 1, 3)
     elif img_tensor.shape[-1] > 3:
@@ -269,7 +267,7 @@ def create_rgba_from_image_mask(img_tensor: torch.Tensor, mask_tensor: torch.Ten
     img_rgba = torch.cat((img_tensor, alpha), dim=-1)
     return img_rgba
 
-def generate_editable_images(input_values: List[Any]) -> List[torch.Tensor]: # RGBA list
+def generate_editable_images(input_values: List[Any]) -> List[torch.Tensor]:
     editable_images_list = []
     i = 0
     while i < len(input_values):
@@ -293,19 +291,19 @@ def generate_editable_images(input_values: List[Any]) -> List[torch.Tensor]: # R
             if not prev_is_img:
                 mask_preview = val
                 if mask_preview.ndim == 2:
-                    mask_preview = mask_preview.unsqueeze(0)  # [B, H, W]
+                    mask_preview = mask_preview.unsqueeze(0)
                 mask_preview = mask_preview.reshape((-1, 1, mask_preview.shape[-2], mask_preview.shape[-1]))
                 mask_preview = mask_preview.movedim(1, -1).expand(-1, -1, -1, 3)
                 editable_images_list.append(mask_preview)
         i += 1
     return editable_images_list
 
-def save_images_for_preview(save_image_instance, images_list: List[torch.Tensor], 
+def save_images_for_preview(save_image_instance, images_list: List[torch.Tensor],
                             filename_prefix: str = "ComfyPanel_preview",
                             collect_filenames: bool = False) -> Tuple[List[dict], List[Tuple[str, str]]]:
     all_saved_images = []
     saved_filenames = []
-    
+
     for img_tensor in images_list:
         res = save_image_instance.save_images(img_tensor, filename_prefix=filename_prefix)
         if 'ui' in res and 'images' in res['ui']:
@@ -317,7 +315,7 @@ def save_images_for_preview(save_image_instance, images_list: List[torch.Tensor]
                     saved_filenames.append((img_data.get('subfolder', ''), img_data['filename']))
     return all_saved_images, saved_filenames
 
-def send_preview_event(unique_id_str: str, frontend_data: dict, node_type: str = "preview", 
+def send_preview_event(unique_id_str: str, frontend_data: dict, node_type: str = "preview",
                        action: str = None, extra_data: dict = None):
     import server
     event_data = {
@@ -331,15 +329,15 @@ def send_preview_event(unique_id_str: str, frontend_data: dict, node_type: str =
         event_data.update(extra_data)
     server.PromptServer.instance.send_sync("ComfyPanel.node_event", event_data)
 
-def composite_image_with_color(image: torch.Tensor, mask: torch.Tensor, 
+def composite_image_with_color(image: torch.Tensor, mask: torch.Tensor,
                                 color: Tuple[int, int, int], opacity: float = 1.0) -> torch.Tensor:
     color_normalized = (color[0] / 255.0, color[1] / 255.0, color[2] / 255.0)
     mask_tensor = normalize_mask_tensor(mask)
     mask_tensor = resize_mask_to_image(mask_tensor, image)
     color_overlay = torch.zeros_like(image)
-    color_overlay[:, :, :, 0] = color_normalized[0]  # R
-    color_overlay[:, :, :, 1] = color_normalized[1]  # G
-    color_overlay[:, :, :, 2] = color_normalized[2]  # B
+    color_overlay[:, :, :, 0] = color_normalized[0]
+    color_overlay[:, :, :, 1] = color_normalized[1]
+    color_overlay[:, :, :, 2] = color_normalized[2]
     alpha = mask_tensor * opacity
     composite = image * (1 - alpha) + color_overlay * alpha
     if composite.shape[-1] > 3:

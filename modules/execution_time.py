@@ -1,5 +1,3 @@
-## ComfyUI/custom_nodes/ComfyPanel/modules/execution_time.py
-
 import time
 import execution
 import server
