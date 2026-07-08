@@ -1,3 +1,5 @@
+REQUIRED_DEPENDENCIES = ("torch", "numpy", "folder_paths", "server", "aiohttp")
+
 import torch
 import numpy as np
 import folder_paths

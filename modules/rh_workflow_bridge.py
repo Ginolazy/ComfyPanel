@@ -1,3 +1,5 @@
+REQUIRED_DEPENDENCIES = ("requests", "torch", "numpy", "folder_paths", "PIL")
+
 import os
 import json
 import logging

@@ -2,8 +2,18 @@
 ComfyPanel Serves the web UI and provides local file upload endpoint to bypass binary IPC.
 """
 
-import folder_paths
-from .modules.utility import (Pytorch_Fix_IntelMac, comfypanel_api)
+try:
+    import folder_paths
+except Exception as e:
+    folder_paths = None
+    print(f"[ComfyPanel] folder_paths unavailable during import: {e}")
+
+try:
+    from .modules.utility import (Pytorch_Fix_IntelMac, comfypanel_api)
+except Exception as e:
+    Pytorch_Fix_IntelMac = None
+    comfypanel_api = None
+    print(f"[ComfyPanel] Optional utility import failed during startup: {e}")
 
 """
 ComfyPanel Custom Node for comfyui
@@ -11,10 +21,15 @@ ComfyPanel Custom Node for comfyui
 import os
 import importlib.util
 import inspect
+import re
 import sys
-import pkg_resources
 from collections import defaultdict
-from .modules.utility import Pytorch_Fix_IntelMac
+from importlib import metadata as importlib_metadata
+
+try:
+    from packaging.version import Version as _Version
+except Exception:
+    _Version = None
 
 plugin_dir = os.path.dirname(os.path.realpath(__file__))
 sys.path.append(plugin_dir)
@@ -22,7 +37,45 @@ sys.path.append(plugin_dir)
 NODE_CLASS_MAPPINGS = {}
 NODE_DISPLAY_NAME_MAPPINGS = {}
 WEB_DIRECTORY = "./web"
-__version__ = "1.2.6"
+__version__ = "1.2.7"
+
+def _parse_version(version):
+    if _Version is not None:
+        return _Version(str(version))
+    return tuple(int(part) for part in re.findall(r"\d+", str(version)))
+
+def _get_installed_version(package):
+    candidates = [package, package.lower(), package.replace("_", "-"), package.replace("_", "-").lower()]
+    for candidate in candidates:
+        try:
+            return importlib_metadata.version(candidate)
+        except importlib_metadata.PackageNotFoundError:
+            continue
+    raise importlib_metadata.PackageNotFoundError(package)
+
+def _module_dependency_available(module_name):
+    try:
+        return importlib.util.find_spec(module_name) is not None
+    except Exception:
+        return False
+
+def _dependencies_available(dependencies):
+    if not dependencies:
+        return True
+    if isinstance(dependencies, str):
+        dependencies = [dependencies]
+    return all(_module_dependency_available(dep) for dep in dependencies)
+
+def _get_required_dependencies(module_obj, node_cls):
+    for candidate in (
+        getattr(node_cls, "REQUIRED_DEPENDENCIES", None),
+        getattr(module_obj, "REQUIRED_DEPENDENCIES", None),
+    ):
+        if candidate:
+            if isinstance(candidate, str):
+                return [candidate]
+            return list(candidate)
+    return []
 
 def check_dependencies():
     required_packages = {
@@ -45,19 +98,19 @@ def check_dependencies():
 
     for package, min_version in required_packages.items():
         try:
-            installed_version = pkg_resources.get_distribution(package).version
-            if pkg_resources.parse_version(installed_version) < pkg_resources.parse_version(min_version):
+            installed_version = _get_installed_version(package)
+            if _parse_version(installed_version) < _parse_version(min_version):
                 outdated_packages.append(package)
-        except pkg_resources.DistributionNotFound:
+        except importlib_metadata.PackageNotFoundError:
             missing_packages.append(package)
 
     for package, min_version in optional_packages.items():
         try:
             if package == "fitz":
-                pkg_resources.get_distribution("PyMuPDF")
+                _get_installed_version("PyMuPDF")
             else:
-                pkg_resources.get_distribution(package)
-        except pkg_resources.DistributionNotFound:
+                _get_installed_version(package)
+        except importlib_metadata.PackageNotFoundError:
             missing_optional.append(package)
 
     if missing_packages or outdated_packages:
@@ -83,15 +136,25 @@ if os.path.isdir(py_dir):
             spec = importlib.util.spec_from_file_location(module_name, module_path)
             if spec and (module := importlib.util.module_from_spec(spec)):
                 module.__package__ = "modules"
+
+                module_required_dependencies = getattr(module, "REQUIRED_DEPENDENCIES", None)
+                if module_required_dependencies and not _dependencies_available(module_required_dependencies):
+                    missing = [dep for dep in ([module_required_dependencies] if isinstance(module_required_dependencies, str) else module_required_dependencies) if not _module_dependency_available(dep)]
+                    print(f"[ComfyPanel] Skipping module {module_name}: missing {', '.join(missing)}")
+                    continue
+
                 spec.loader.exec_module(module)
                 for name, obj in inspect.getmembers(module, inspect.isclass):
                     if hasattr(obj, "INPUT_TYPES") and hasattr(obj, "FUNCTION"):
+                        required_dependencies = _get_required_dependencies(module, obj)
+                        if required_dependencies and not _dependencies_available(required_dependencies):
+                            missing = [dep for dep in required_dependencies if not _module_dependency_available(dep)]
+                            print(f"[ComfyPanel] Skipping node {name}: missing {', '.join(missing)}")
+                            continue
                         NODE_CLASS_MAPPINGS[name] = obj
                         NODE_DISPLAY_NAME_MAPPINGS[name] = getattr(obj, "DISPLAY_NAME", name)
         except Exception as e:
             print(f"[ComfyPanel] Failed to load module {module_name}: {str(e)}")
-            import traceback
-            traceback.print_exc()
 else:
     print(f"[ComfyPanel] Directory not found: {py_dir}")
 

@@ -1,3 +1,5 @@
+REQUIRED_DEPENDENCIES = ("torch", "cv2", "numpy", "comfy", "kornia", "PIL", "folder_paths")
+
 import torch
 import torch.nn.functional as F
 import cv2
