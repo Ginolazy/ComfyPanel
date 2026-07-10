@@ -35,15 +35,24 @@ class RHWorkflowBridge:
 
     def execute_workflow(self, workflow_file, params_json="{}", **kwargs):
 
-        config_path = os.path.join(os.path.dirname(os.path.dirname(os.path.realpath(__file__))), "runninghub_config.json")
+        config_dir = os.path.dirname(os.path.dirname(os.path.realpath(__file__)))
+        config_path = os.path.join(config_dir, ".runninghub_config")
         api_key = ""
         runninghub_base_url = "https://www.runninghub.cn"
         if os.path.exists(config_path):
             try:
                 with open(config_path, "r", encoding="utf-8") as f:
-                    config = json.load(f)
-                    api_key = config.get("runninghub_api_key", "").strip()
-                    runninghub_base_url = config.get("runninghub_base_url", "https://www.runninghub.cn").strip()
+                    for line in f:
+                        line = line.strip()
+                        if not line or line.startswith("#") or "=" not in line:
+                            continue
+                        key, val = line.split("=", 1)
+                        key = key.strip()
+                        val = val.strip()
+                        if key == "runninghub_api_key":
+                            api_key = val
+                        elif key == "runninghub_base_url":
+                            runninghub_base_url = val
             except Exception as e:
                 logging.error(f"[RHWorkflowBridge] Failed to read config: {e}")
 

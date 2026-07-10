@@ -37,7 +37,7 @@ sys.path.append(plugin_dir)
 NODE_CLASS_MAPPINGS = {}
 NODE_DISPLAY_NAME_MAPPINGS = {}
 WEB_DIRECTORY = "./web"
-__version__ = "1.2.7"
+__version__ = "1.2.8"
 
 def _parse_version(version):
     if _Version is not None:
@@ -88,13 +88,8 @@ def check_dependencies():
         "requests": "2.28.0"
     }
 
-    optional_packages = {
-        "fitz": "1.23.0",
-    }
-
     missing_packages = []
     outdated_packages = []
-    missing_optional = []
 
     for package, min_version in required_packages.items():
         try:
@@ -104,23 +99,11 @@ def check_dependencies():
         except importlib_metadata.PackageNotFoundError:
             missing_packages.append(package)
 
-    for package, min_version in optional_packages.items():
-        try:
-            if package == "fitz":
-                _get_installed_version("PyMuPDF")
-            else:
-                _get_installed_version(package)
-        except importlib_metadata.PackageNotFoundError:
-            missing_optional.append(package)
-
     if missing_packages or outdated_packages:
         for package in missing_packages:
             print(f"[\033[91mComfyPanel\033[0m] Cannot import core module: '{package}'")
         if outdated_packages:
             print(f"[\033[91mComfyPanel\033[0m] Requires newer versions of: {', '.join(outdated_packages)}")
-
-    if missing_optional:
-        print(f"[\033[93mComfyPanel\033[0m] Optional modules missing: {', '.join(missing_optional)}")
 
     return True
 

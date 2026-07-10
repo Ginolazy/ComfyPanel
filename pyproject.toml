@@ -1,7 +1,7 @@
 [project]
 name = "comfypanel"
 description = "ComfyPanel — a Photoshop and ComfyUI plugin (including custom ComfyUI nodes) that brings local and cloud AI workflows into your creative workspace. Supports RunningHub and BizyAir, offers bidirectional sync between Photoshop and ComfyUI, and automatic recovery of asynchronous cloud results."
-version = "1.2.7"
+version = "1.2.8"
 license = { file = "LICENSE" }
 
 dependencies = ["torch>=2.0.0", "torchvision", "numpy>=1.24.0", "Pillow>=9.0.0", "opencv-python>=4.8.0", "scipy>=1.10.0", "kornia>=0.7.0", "requests>=2.28.0", "aiohttp>=3.8.0", "typing-extensions>=4.0.0"]

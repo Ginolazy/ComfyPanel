@@ -3,6 +3,7 @@ import os
 import io
 import hashlib
 import logging
+import urllib.parse
 import folder_paths
 import platform
 import subprocess
@@ -22,20 +23,24 @@ def _patch_origin_middleware():
             @web.middleware
             async def patched(request, handler, _orig=original):
                 normalized = request.path.lstrip('/')
-                if normalized.startswith('comfypanel/') or normalized == 'comfypanel':
+                req_origin = request.headers.get('Origin', '')
+                is_file_origin = req_origin.startswith('file://')
+                allowed_prefixes = ['comfypanel/', 'comfypanel', 'view', 'api/view']
+                const_match = any(normalized == prefix or normalized.startswith(prefix + '/') or normalized.startswith(prefix)
+                                  for prefix in allowed_prefixes)
+                if is_file_origin or const_match:
                     if request.method == "OPTIONS":
                         resp = web.Response()
                     else:
                         resp = await handler(request)
 
-                    req_origin = request.headers.get('Origin')
                     if req_origin:
                         resp.headers['Access-Control-Allow-Origin'] = req_origin
                         resp.headers['Access-Control-Allow-Credentials'] = 'true'
                     else:
                         resp.headers['Access-Control-Allow-Origin'] = '*'
 
-                    resp.headers['Access-Control-Allow-Headers'] = 'Content-Type, Authorization, token'
+                    resp.headers['Access-Control-Allow-Headers'] = 'Content-Type, Authorization, token, PS-UXP-Client, ps-uxp-client'
                     resp.headers['Access-Control-Allow-Methods'] = 'GET, POST, OPTIONS'
                     return resp
                 return await _orig(request, handler)
@@ -178,20 +183,32 @@ async def get_thumbnail(request):
 
         if path_param:
 
-            file_path = os.path.abspath(path_param)
-            allowed_roots = [
-                os.path.abspath(output_dir),
-                os.path.abspath(folder_paths.get_temp_directory()),
-            ]
-            is_allowed = any(file_path.startswith(r) for r in allowed_roots) or \
-                         ("Adobe" in file_path and "UXP" in file_path and "PluginsStorage" in file_path)
+            try:
+                decoded = urllib.parse.unquote(path_param)
+            except Exception:
+                decoded = path_param
+            file_path = os.path.abspath(decoded)
+            output_abs = os.path.abspath(output_dir)
+            temp_abs = os.path.abspath(folder_paths.get_temp_directory())
+            is_allowed = any(file_path == root or file_path.startswith(root + os.sep)
+                             for root in [output_abs, temp_abs]) or (
+                         "Adobe" in file_path and "UXP" in file_path and "PluginsStorage" in file_path)
             if not is_allowed:
                 return web.Response(status=403, text="Access denied")
         else:
             if not filename:
                 return web.Response(status=400, text="No filename")
-            file_path = os.path.abspath(os.path.join(output_dir, subfolder, filename))
-            if not file_path.startswith(os.path.abspath(output_dir)):
+            temp_dir = folder_paths.get_temp_directory()
+            output_abs = os.path.abspath(output_dir)
+            temp_abs = os.path.abspath(temp_dir)
+
+            candidate_path = os.path.abspath(os.path.join(output_dir, subfolder, filename))
+            if not (candidate_path == output_abs or candidate_path.startswith(output_abs + os.sep)):
+                candidate_path = os.path.abspath(os.path.join(temp_dir, subfolder, filename))
+
+            file_path = candidate_path
+            if not ((file_path == output_abs or file_path.startswith(output_abs + os.sep)) or
+                    (file_path == temp_abs or file_path.startswith(temp_abs + os.sep))):
                 return web.Response(status=403, text="Access denied")
 
         if not os.path.isfile(file_path):
@@ -641,23 +658,29 @@ async def runninghub_proxy(request):
             proxy_headers[k] = v
 
         import aiohttp
-        async with aiohttp.ClientSession(trust_env=True) as session:
-            if method == "POST":
-                async with session.post(url, json=payload, headers=proxy_headers, timeout=30) as resp:
-                    try:
-                        resp_json = await resp.json()
-                        return web.json_response(resp_json, status=resp.status)
-                    except Exception:
-                        text = await resp.text()
-                        return web.Response(body=text, status=resp.status, content_type=resp.content_type)
-            else:
-                async with session.get(url, params=payload, headers=proxy_headers, timeout=30) as resp:
-                    try:
-                        resp_json = await resp.json()
-                        return web.json_response(resp_json, status=resp.status)
-                    except Exception as je:
-                        text = await resp.text()
-                        return web.Response(body=text, status=resp.status, content_type=resp.content_type)
+        from aiohttp import ClientError
+        import asyncio
+        try:
+            async with aiohttp.ClientSession(trust_env=True) as session:
+                if method == "POST":
+                    async with session.post(url, json=payload, headers=proxy_headers, timeout=30) as resp:
+                        try:
+                            resp_json = await resp.json()
+                            return web.json_response(resp_json, status=resp.status)
+                        except Exception:
+                            text = await resp.text()
+                            return web.Response(body=text, status=resp.status, content_type=resp.content_type)
+                else:
+                    async with session.get(url, params=payload, headers=proxy_headers, timeout=30) as resp:
+                        try:
+                            resp_json = await resp.json()
+                            return web.json_response(resp_json, status=resp.status)
+                        except Exception:
+                            text = await resp.text()
+                            return web.Response(body=text, status=resp.status, content_type=resp.content_type)
+        except (ClientError, ConnectionResetError, asyncio.TimeoutError) as net_err:
+            logging.error(f"[ComfyPanel Proxy] Network error: {net_err}", exc_info=True)
+            return web.json_response({"success": False, "error": f"Network request failed: {net_err}"}, status=502)
     except Exception as e:
         logging.error(f"[ComfyPanel Proxy] Proxy exception: {e}", exc_info=True)
         return web.json_response({"success": False, "error": str(e)}, status=500)
@@ -682,16 +705,25 @@ async def runninghub_upload_proxy(request):
 
         url = f"{base_url}/openapi/v2/media/upload/binary"
         import aiohttp
-        async with aiohttp.ClientSession() as session:
-            with open(file_path, 'rb') as f:
-                data = aiohttp.FormData()
-                data.add_field('file', f, filename=filename)
-                headers = {}
-                if api_key:
-                    headers['Authorization'] = f"Bearer {api_key}"
-                async with session.post(url, data=data, headers=headers) as resp:
-                    resp_json = await resp.json()
-                    return web.json_response(resp_json, status=resp.status)
+        from aiohttp import ClientError
+        import asyncio
+        try:
+            async with aiohttp.ClientSession() as session:
+                with open(file_path, "rb") as f:
+                    data = aiohttp.FormData()
+                    data.add_field("file", f, filename=filename)
+                    headers = {}
+                    if api_key:
+                        headers["Authorization"] = f"Bearer {api_key}"
+                    async with session.post(url, data=data, headers=headers) as resp:
+                        resp_json = await resp.json()
+                        return web.json_response(resp_json, status=resp.status)
+        except (ClientError, ConnectionResetError, asyncio.TimeoutError) as net_err:
+            logging.error(f"[ComfyPanel Proxy] Upload proxy network error: {net_err}", exc_info=True)
+            return web.json_response({"success": False, "error": f"Upload network error: {net_err}"}, status=502)
+        except Exception as e:
+            logging.error(f"[ComfyPanel Proxy] Upload proxy exception: {e}", exc_info=True)
+            return web.json_response({"success": False, "error": str(e)}, status=500)
     except Exception as e:
         logging.error(f"[ComfyPanel Proxy] Upload proxy exception: {e}", exc_info=True)
         return web.json_response({"success": False, "error": str(e)}, status=500)
@@ -719,29 +751,37 @@ async def runninghub_download_image(request):
 
         target_dir = os.path.abspath(os.path.join(base_dir, subfolder))
         os.makedirs(target_dir, exist_ok=True)
-
         file_path = os.path.abspath(os.path.join(target_dir, filename))
         if not file_path.startswith(os.path.abspath(base_dir)):
             return web.json_response({"success": False, "error": "Access denied"}, status=403)
 
         headers = {}
         if api_key:
-            headers['Authorization'] = f"Bearer {api_key}"
-            headers['token'] = api_key
+            headers["Authorization"] = f"Bearer {api_key}"
+            headers["token"] = api_key
 
         import aiohttp
-        async with aiohttp.ClientSession() as session:
-            async with session.get(image_url, headers=headers) as resp:
-                if resp.status == 200:
-                    data = await resp.read()
-                    with open(file_path, "wb") as f:
-                        f.write(data)
-                    logging.info(f"[RH] Successfully downloaded {img_type} image to {file_path}")
-                    return web.json_response({"success": True, "localPath": file_path})
-                else:
-                    err_msg = f"Cloud download returned HTTP {resp.status}"
-                    logging.error(f"[RH] Download failed: {err_msg}")
-                    return web.json_response({"success": False, "error": err_msg}, status=400)
+        from aiohttp import ClientError
+        import asyncio
+        try:
+            async with aiohttp.ClientSession() as session:
+                async with session.get(image_url, headers=headers) as resp:
+                    if resp.status == 200:
+                        data = await resp.read()
+                        with open(file_path, "wb") as f:
+                            f.write(data)
+                        logging.info(f"[RH] Successfully downloaded {img_type} image to {file_path}")
+                        return web.json_response({"success": True, "localPath": file_path})
+                    else:
+                        err_msg = f"Cloud download returned HTTP {resp.status}"
+                        logging.error(f"[RH] Download failed: {err_msg}")
+                        return web.json_response({"success": False, "error": err_msg}, status=400)
+        except (ClientError, ConnectionResetError, asyncio.TimeoutError) as net_err:
+            logging.error(f"[ComfyPanel] Download image network error: {net_err}", exc_info=True)
+            return web.json_response({"success": False, "error": f"Download network error: {net_err}"}, status=502)
+        except Exception as e:
+            logging.error(f"[ComfyPanel] Download image exception: {e}", exc_info=True)
+            return web.json_response({"success": False, "error": str(e)}, status=500)
     except Exception as e:
         logging.error(f"[ComfyPanel] Download image exception: {e}", exc_info=True)
         return web.json_response({"success": False, "error": str(e)}, status=500)
@@ -1014,13 +1054,22 @@ async def runninghub_save_config(request):
         base_url = body.get("baseUrl", "").strip()
 
         config_dir = os.path.dirname(os.path.dirname(os.path.dirname(os.path.realpath(__file__))))
-        config_path = os.path.join(config_dir, "runninghub_config.json")
+        config_path = os.path.join(config_dir, ".runninghub_config")
 
         config = {}
+        allowed_keys = {"runninghub_api_key", "runninghub_base_url"}
+
         if os.path.exists(config_path):
             try:
                 with open(config_path, "r", encoding="utf-8") as f:
-                    config = json.load(f)
+                    for line in f:
+                        line = line.strip()
+                        if not line or line.startswith("#") or "=" not in line:
+                            continue
+                        key, val = line.split("=", 1)
+                        key = key.strip()
+                        if key in allowed_keys:
+                            config[key] = val.strip()
             except Exception:
                 pass
 
@@ -1029,8 +1078,14 @@ async def runninghub_save_config(request):
         if base_url:
             config["runninghub_base_url"] = base_url
 
+        if not config:
+            return web.json_response({"success": False, "error": "No valid configuration values provided."}, status=400)
+
+        os.makedirs(os.path.dirname(config_path), exist_ok=True)
+
         with open(config_path, "w", encoding="utf-8") as f:
-            json.dump(config, f, indent=4, ensure_ascii=False)
+            for key in sorted(config.keys()):
+                f.write(f"{key}={config[key]}\n")
 
         return web.json_response({"success": True})
     except Exception as e:
@@ -1040,14 +1095,25 @@ async def runninghub_save_config(request):
 async def runninghub_get_config(request):
     try:
         config_dir = os.path.dirname(os.path.dirname(os.path.dirname(os.path.realpath(__file__))))
-        config_path = os.path.join(config_dir, "runninghub_config.json")
+        config_path = os.path.join(config_dir, ".runninghub_config")
         api_key = ""
         base_url = "https://www.runninghub.cn"
+
         if os.path.exists(config_path):
-            with open(config_path, "r", encoding="utf-8") as f:
-                config = json.load(f)
-                api_key = config.get("runninghub_api_key", "")
-                base_url = config.get("runninghub_base_url", "https://www.runninghub.cn")
+            try:
+                with open(config_path, "r", encoding="utf-8") as f:
+                    for line in f:
+                        line = line.strip()
+                        if not line or line.startswith("#") or "=" not in line:
+                            continue
+                        key, val = line.split("=", 1)
+                        if key.strip() == "runninghub_api_key":
+                            api_key = val.strip()
+                        elif key.strip() == "runninghub_base_url":
+                            base_url = val.strip()
+            except Exception:
+                pass
+
         return web.json_response({"success": True, "apiKey": api_key, "baseUrl": base_url})
     except Exception as e:
         return web.json_response({"success": False, "error": str(e)}, status=500)

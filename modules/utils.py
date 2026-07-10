@@ -198,10 +198,12 @@ class AnyPreview(SaveImage):
     @classmethod
     def INPUT_TYPES(s):
         return {
-            "required": {
-                "preview_text": ("STRING", {"default": "", "multiline": True, "forceInput": False}),
+            "required": {},
+            "hidden": {
+                "prompt": "PROMPT",
+                "extra_pnginfo": "EXTRA_PNGINFO",
+                "unique_id": "UNIQUE_ID",
             },
-            "hidden": {"prompt": "PROMPT", "extra_pnginfo": "EXTRA_PNGINFO", "unique_id": "UNIQUE_ID"},
         }
 
     RETURN_TYPES = (any_type,) * MAX_FLOW_PORTS

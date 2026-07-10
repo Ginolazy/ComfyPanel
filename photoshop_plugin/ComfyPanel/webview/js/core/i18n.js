@@ -640,7 +640,7 @@
             'log_switching_engine': '正在切换引擎，请稍候...',
             'log_zero_copy_success': '零拷贝已成功启用！',
             'log_engine_switched': '已切换至 {engine} 引擎 {status}',
-            'log_applying_result': '正在置回结果 ({mode}){suffix}...',
+            'log_applying_result': '置回结果 ({mode}){suffix}...',
             'log_error_no_target_path': '错误：未找到结果目标路径',
             'log_op_complete': '操作成功！',
             'log_action_failed': '操作失败: {error}',
