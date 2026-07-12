@@ -25,6 +25,74 @@ from .utility.image_utility import (
 PAUSE_REQUESTS = {}
 MAX_FLOW_PORTS = 10
 
+def save_audio_preview_native(audio_dict, prefix_append):
+    import folder_paths
+    import random
+
+    try:
+        from comfy_api.latest import UI
+        from comfy_api.latest._io import FolderType
+        try:
+            res = UI.AudioSaveHelper.save_audio(audio_dict, "PreviewAudio", FolderType.temp, None, format="mp3")
+        except Exception:
+            res = UI.AudioSaveHelper.save_audio(audio_dict, "PreviewAudio", FolderType.temp, None, format="flac")
+        if res:
+            return res
+    except Exception:
+        pass
+
+    try:
+        from comfy_api.latest import UI
+        preview_instance = UI.PreviewAudio(audio_dict)
+        res_dict = preview_instance.as_dict()
+        if res_dict and "audio" in res_dict:
+            return res_dict["audio"]
+    except Exception:
+        pass
+
+    try:
+        from comfy_extras.nodes_audio import save_audio
+
+        class TempAudioSaver:
+            def __init__(self):
+                self.output_dir = folder_paths.get_temp_directory()
+                self.type = "temp"
+                self.prefix_append = prefix_append
+
+        saver = TempAudioSaver()
+        try:
+            res = save_audio(saver, audio_dict, filename_prefix="PreviewAudio", format="mp3")
+        except Exception:
+            res = save_audio(saver, audio_dict, filename_prefix="PreviewAudio", format="flac")
+
+        if res and "ui" in res and "audio" in res["ui"]:
+            return res["ui"]["audio"]
+    except Exception:
+        pass
+
+    try:
+        import torchaudio
+        import os
+        waveform = audio_dict["waveform"]
+        if waveform.ndim == 3:
+            waveform = waveform.squeeze(0)
+        sample_rate = audio_dict["sample_rate"]
+
+        filename = f"PreviewAudio_fallback_{prefix_append}.flac"
+        full_output_folder, filename, _, subfolder, _ = folder_paths.get_save_image_path(filename, folder_paths.get_temp_directory(), 1, 1)
+        file = os.path.join(full_output_folder, filename)
+        torchaudio.save(file, waveform, sample_rate, format="flac")
+
+        return [{
+            "filename": filename,
+            "subfolder": subfolder,
+            "type": "temp"
+        }]
+    except Exception as e:
+        print(f"[ComfyPanel] All audio preview methods failed: {e}")
+
+    return None
+
 @server.PromptServer.instance.routes.post("/ComfyPanel/resume_pause")
 async def resume_pause(request):
     post = await request.json()
@@ -63,7 +131,7 @@ class PauseMixin:
         if os.path.exists(clipspace_dir):
             try:
                 for f in os.listdir(clipspace_dir):
-                    if f.startswith("clipspace-mask-") and f.endswith(".png"):
+                    if (f.startswith("clipspace-mask-") or f.startswith("clipspace-painted-masked-")) and f.endswith(".png"):
                         existing_files.add(f)
             except Exception:
                 pass
@@ -244,39 +312,13 @@ class AnyPreview(SaveImage):
                 preview_audios_list.append(val)
 
         if preview_audios_list:
-            import folder_paths
-            import os
-            try:
-                import torchaudio
-                all_saved_audios = []
-                for i, audio_dict in enumerate(preview_audios_list):
-                    waveform = audio_dict["waveform"]
-                    if waveform.ndim == 3:
-                        waveform = waveform.squeeze(0)
-                    sample_rate = audio_dict["sample_rate"]
-
-                    try:
-                        filename = f"PreviewAudio_{self.prefix_append}_{i}.mp3"
-                        full_output_folder, filename, _, subfolder, _ = folder_paths.get_save_image_path(filename, folder_paths.get_temp_directory(), 1, 1)
-                        file = os.path.join(full_output_folder, filename)
-                        torchaudio.save(file, waveform, sample_rate, format="mp3")
-                    except Exception as e:
-                        print(f"[ComfyPanel] Note: MP3 encoding failed ({e}), falling back to FLAC format for preview.")
-                        filename = f"PreviewAudio_{self.prefix_append}_{i}.flac"
-                        full_output_folder, filename, _, subfolder, _ = folder_paths.get_save_image_path(filename, folder_paths.get_temp_directory(), 1, 1)
-                        file = os.path.join(full_output_folder, filename)
-                        torchaudio.save(file, waveform, sample_rate, format="flac")
-
-                    audio_data = {
-                        "filename": filename,
-                        "subfolder": subfolder,
-                        "type": "temp"
-                    }
-                    all_saved_audios.append(audio_data)
-                if all_saved_audios:
-                    frontend_data["comfypanel_audio"] = all_saved_audios
-            except ImportError:
-                print("[ComfyPanel] torchaudio not installed, skipping audio preview")
+            all_saved_audios = []
+            for audio_dict in preview_audios_list:
+                saved = save_audio_preview_native(audio_dict, self.prefix_append)
+                if saved:
+                    all_saved_audios.extend(saved)
+            if all_saved_audios:
+                frontend_data["comfypanel_audio"] = all_saved_audios
 
         padding_count = MAX_FLOW_PORTS - len(actual_returns)
         if padding_count > 0:
@@ -325,47 +367,20 @@ class AnyPreviewPause(AnyPreview, PauseMixin):
         if text_previews:
             frontend_data["text"] = text_previews
 
-        import folder_paths
-        import os
-
         preview_audios_list = []
         for val in flat_input_values:
             if isinstance(val, dict) and "waveform" in val and "sample_rate" in val:
                 preview_audios_list.append(val)
 
         if preview_audios_list:
-            try:
-                import torchaudio
-                all_saved_audios = []
-                for i, audio_dict in enumerate(preview_audios_list):
-                    waveform = audio_dict["waveform"]
-                    if waveform.ndim == 3:
-                        waveform = waveform.squeeze(0)
-                    sample_rate = audio_dict["sample_rate"]
-
-                    try:
-                        filename = f"PreviewAudio_pause_{self.prefix_append}_{i}.mp3"
-                        full_output_folder, filename, _, subfolder, _ = folder_paths.get_save_image_path(filename, folder_paths.get_temp_directory(), 1, 1)
-                        file = os.path.join(full_output_folder, filename)
-                        torchaudio.save(file, waveform, sample_rate, format="mp3")
-                    except Exception as e:
-                        print(f"[ComfyPanel] Note: MP3 encoding failed ({e}), falling back to FLAC format for preview.")
-                        filename = f"PreviewAudio_pause_{self.prefix_append}_{i}.flac"
-                        full_output_folder, filename, _, subfolder, _ = folder_paths.get_save_image_path(filename, folder_paths.get_temp_directory(), 1, 1)
-                        file = os.path.join(full_output_folder, filename)
-                        torchaudio.save(file, waveform, sample_rate, format="flac")
-
-                    audio_data = {
-                        "filename": filename,
-                        "subfolder": subfolder,
-                        "type": "temp"
-                    }
-                    all_saved_audios.append(audio_data)
-                if all_saved_audios:
-                    print(f"[ComfyPanel] AnyPreviewPause audio ready, count: {len(all_saved_audios)}")
-                    frontend_data["comfypanel_audio"] = all_saved_audios
-            except ImportError:
-                print("[ComfyPanel] torchaudio not installed, skipping audio preview")
+            all_saved_audios = []
+            for audio_dict in preview_audios_list:
+                saved = save_audio_preview_native(audio_dict, self.prefix_append)
+                if saved:
+                    all_saved_audios.extend(saved)
+            if all_saved_audios:
+                print(f"[ComfyPanel] AnyPreviewPause audio ready, count: {len(all_saved_audios)}")
+                frontend_data["comfypanel_audio"] = all_saved_audios
 
         padding_count = MAX_FLOW_PORTS - len(actual_returns)
         if padding_count > 0:
@@ -452,12 +467,23 @@ class AnyPreviewPause(AnyPreview, PauseMixin):
                                 mask = np.array(i_l).astype(np.float32) / 255.0
                                 mask = torch.from_numpy(mask)
 
+                            i_rgb = i.convert('RGB')
+                            img_tensor = np.array(i_rgb).astype(np.float32) / 255.0
+                            img_tensor = torch.from_numpy(img_tensor).unsqueeze(0)
+
+                            struct = port_structure[idx]
+                            port_idx = struct["port_idx"]
+                            val_idx = struct["val_idx"]
+
+                            if isinstance(updated_returns[port_idx], list):
+                                updated_returns[port_idx] = list(updated_returns[port_idx])
+                                updated_returns[port_idx][val_idx] = img_tensor
+                            else:
+                                updated_returns[port_idx] = img_tensor
+
                             if mask is not None:
                                 if mask.ndim == 2:
                                     mask = mask.unsqueeze(0)
-
-                                struct = port_structure[idx]
-                                port_idx = struct["port_idx"]
 
                                 if struct["has_mask"]:
 
@@ -467,7 +493,7 @@ class AnyPreviewPause(AnyPreview, PauseMixin):
                                         updated_returns[next_port_idx] = [mask]
                                     else:
                                         updated_returns[next_port_idx] = mask
-                                    mask_updated = True
+                            mask_updated = True
                         except Exception as e:
                             print(f"[AnyPreviewPause] Error loading clipspace mask: {e}")
 
@@ -517,15 +543,22 @@ class AnyPreviewPause(AnyPreview, PauseMixin):
                                     end = float(edit.get("end", 0))
                                     sr = val["sample_rate"]
                                     wf = val["waveform"]
+                                    audio_length = wf.shape[-1]
 
-                                    start_s = max(0, int(start * sr))
-                                    if end > 0:
-                                        end_s = min(wf.shape[-1], int(end * sr))
+                                    if start < 0:
+                                        start_frame = audio_length + int(round(start * sr))
                                     else:
-                                        end_s = wf.shape[-1]
+                                        start_frame = int(round(start * sr))
+                                    start_frame = max(0, min(start_frame, audio_length - 1))
 
-                                    if start_s < end_s:
-                                        new_wf = wf[..., start_s:end_s].clone()
+                                    if end > 0:
+                                        end_frame = int(round(end * sr))
+                                    else:
+                                        end_frame = audio_length
+                                    end_frame = max(0, min(end_frame, audio_length))
+
+                                    if start_frame < end_frame:
+                                        new_wf = wf[..., start_frame:end_frame].clone()
                                         new_val = val.copy()
                                         new_val["waveform"] = new_wf
                                         vals[j] = new_val

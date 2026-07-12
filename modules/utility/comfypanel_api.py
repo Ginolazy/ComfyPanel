@@ -85,6 +85,9 @@ async def upload_from_local_path(request):
         src_path = body.get("filePath", "")
         dest_name = body.get("fileName", "")
 
+        if src_path and len(src_path) >= 3 and src_path[0] == '/' and src_path[2] == ':':
+            src_path = src_path[1:]
+
         if not src_path or not os.path.isfile(src_path):
             return web.json_response({"success": False, "error": f"Source file not found: {src_path}"}, status=400)
 
