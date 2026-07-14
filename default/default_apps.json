@@ -1,17 +1,21 @@
 {
-    "default_apps": {
+    "bizyair": {
         "image": [
             {
                 "id": "48487",
-                "name": "NanoBanna 2"
+                "name": "NanoBanana 2"
             },
             {
                 "id": "48515",
-                "name": "NanoBanna Pro"
+                "name": "NanoBanana Pro"
             },
             {
                 "id": "51176",
                 "name": "GPT Image 2 (Third-part)"
+            },
+            {
+                "id": "52815",
+                "name": "GPT Image 2 (Official)"
             },
             {
                 "id": "51728",
@@ -42,44 +46,48 @@
                 "name": "高精换脸 (SDXL_InstandID)"
             },
             {
-                "id": "44244",
-                "name": "高清放大"
-            },
-            {
-                "id": "49936",
-                "name": "XL图生图"
-            },
-            {
-                "id": "44618",
-                "name": "万物精修"
-            },
-            {
-                "id": "38896",
-                "name": "RMBG2.0抠图"
+                "id": "54564",
+                "name": "360° Panorama Generator"
             }
-        ],
-        "video": [
+        ]
+    },
+    "runninghub": {
+        "image": [
             {
-                "id": "43663",
-                "name": "图音转视频 Wan 2.2 S2V"
+                "id": "2070762861495934977",
+                "name": "NanoBanana (channel)"
             },
             {
-                "id": "39762",
-                "name": "Veo3.1首尾帧视频V1"
+                "id": "2073439241622867969",
+                "name": "NanoBanana 2 Lite (channel)"
             },
             {
-                "id": "43700",
-                "name": "三图生视频（带音频）- Veo3.1"
-            }
-        ],
-        "audio": [
-            {
-                "id": "49933",
-                "name": "indexTTS2-有声书制作 多人语音模仿"
+                "id": "2070782907018469377",
+                "name": "NanoBanana 2 (channel)"
             },
             {
-                "id": "43131",
-                "name": "10秒出音频 ACE Step Model"
+                "id": "2073261324313907201",
+                "name": "NanoBanana 2 (Official)"
+            },
+            {
+                "id": "2073352722279124994",
+                "name": "NanoBanana Pro (Channel / Official)"
+            },
+            {
+                "id": "2070868537354317826",
+                "name": "GPT Image 2 (channel)"
+            },
+            {
+                "id": "2073444968953376770",
+                "name": "GPT Image 2 (Official)"
+            },
+            {
+                "id": "2061261381885845506",
+                "name": "Flux.2 Inpaint"
+            },
+            {
+                "id": "2073455314866892801",
+                "name": "360Panorama"
             }
         ]
     }

@@ -75,7 +75,7 @@ window.userConfig = {
         'SwitchAny': { widgets: '*' },
         'SwitchOutput': { widgets: '*' },
         'KSampler': { widgets: '*' },
-        'RHWorkflowBridge': {
+        'RHWorkflow': {
             widgets: [
                 { widgetName: '*' } // Allow all other widgets so they aren't hidden by the whitelist / 允许所有其他小部件，以免被白名单隐藏
             ],

@@ -638,7 +638,7 @@ async def runninghub_proxy(request):
             )
             if has_bridge:
                 try:
-                    from ..rh_workflow_bridge import expand_bridge_nodes
+                    from ..runninghub_bridge import expand_bridge_nodes
 
                     api_key = (
                         headers.get("Authorization", "").removeprefix("Bearer ").strip()
@@ -794,25 +794,97 @@ async def runninghub_scan_workflow(request):
     try:
         body = await request.json()
         workflow_file = body.get("workflow_file", "")
+        source_type = body.get("source_type", "local_json")
+        workflow_val = workflow_file.strip()
+        is_api_mode = workflow_val.isdigit() and len(workflow_val) == 19
         if not workflow_file:
             return web.json_response({"success": False, "error": "Missing workflow_file parameter"}, status=400)
 
-        possible_paths = [
-            workflow_file,
-            os.path.join(folder_paths.get_input_directory(), "workflows", workflow_file),
-            os.path.join(folder_paths.get_input_directory(), workflow_file),
-        ]
+        data = None
+        if is_api_mode or source_type == "runninghub_api":
+            config_dir = os.path.dirname(os.path.dirname(os.path.dirname(os.path.realpath(__file__))))
+            config_path = os.path.join(config_dir, ".runninghub_config")
+            api_key = ""
+            base_url = "https://www.runninghub.cn"
+            if os.path.exists(config_path):
+                try:
+                    with open(config_path, "r", encoding="utf-8") as f:
+                        for line in f:
+                            line = line.strip()
+                            if not line or line.startswith("#") or "=" not in line:
+                                continue
+                            key, val = line.split("=", 1)
+                            if key.strip() == "runninghub_api_key":
+                                api_key = val.strip()
+                            elif key.strip() == "runninghub_base_url":
+                                base_url = val.strip()
+                except Exception:
+                    pass
+            if not api_key:
+                return web.json_response({"success": False, "error": "RunningHub API Key is not configured!"}, status=400)
 
-        resolved_path = None
-        for p in possible_paths:
-            if os.path.exists(p) and os.path.isfile(p):
-                resolved_path = p
-                break
+            import requests
+            headers = {
+                "Authorization": f"Bearer {api_key}",
+                "Content-Type": "application/json"
+            }
+            clean_base_domain = base_url.strip().rstrip("/")
+            if not clean_base_domain.startswith("http"):
+                clean_base_domain = "https://www.runninghub.cn"
 
-        if not resolved_path:
-            return web.json_response({"success": False, "error": f"Workflow file not found: {workflow_file}"}, status=404)
-        with open(resolved_path, "r", encoding="utf-8") as f:
-            data = json.load(f)
+            fetch_url = f"{clean_base_domain}/api/openapi/getJsonApiFormat"
+            payload = {
+                "apiKey": api_key,
+                "workflowId": workflow_file.strip()
+            }
+            try:
+                resp = requests.post(fetch_url, json=payload, headers=headers, timeout=15)
+                if resp.status_code != 200:
+                    return web.json_response({"success": False, "error": f"RunningHub API returned HTTP {resp.status_code}"}, status=resp.status_code)
+                res_json = resp.json()
+                if res_json.get("code") != 0:
+                    msg = res_json.get("msg") or res_json.get("message") or "Unknown error"
+                    return web.json_response({"success": False, "error": msg}, status=400)
+
+                data_val = res_json.get("data")
+                if isinstance(data_val, str):
+                    try:
+                        parsed = json.loads(data_val)
+                        if isinstance(parsed, dict) and "prompt" in parsed:
+                            prompt_val = parsed.get("prompt")
+                            data = json.loads(prompt_val) if isinstance(prompt_val, str) else prompt_val
+                        else:
+                            data = parsed
+                    except Exception:
+                        data = data_val
+                elif isinstance(data_val, dict):
+                    if "prompt" in data_val:
+                        prompt_val = data_val.get("prompt")
+                        data = json.loads(prompt_val) if isinstance(prompt_val, str) else prompt_val
+                    else:
+                        data = data_val
+                else:
+                    data = res_json
+            except Exception as e:
+                return web.json_response({"success": False, "error": f"Failed to fetch workflow from API: {str(e)}"}, status=500)
+        else:
+
+            possible_paths = [
+                workflow_file,
+                os.path.join(folder_paths.get_input_directory(), "workflows", workflow_file),
+                os.path.join(folder_paths.get_input_directory(), workflow_file),
+            ]
+
+            resolved_path = None
+            for p in possible_paths:
+                if os.path.exists(p) and os.path.isfile(p):
+                    resolved_path = p
+                    break
+
+            if not resolved_path:
+                return web.json_response({"success": False, "error": f"Workflow file not found: {workflow_file}"}, status=404)
+            with open(resolved_path, "r", encoding="utf-8") as f:
+                data = json.load(f)
 
         WHITELIST_TYPES = {"INT", "FLOAT", "STRING", "BOOLEAN", "BOOL", "NUMBER"}
 
@@ -1044,6 +1116,99 @@ async def runninghub_scan_workflow(request):
                                 "type": widget_type,
                                 "value": value
                             })
+        else:
+
+            for node_id, node in data.items():
+                if not isinstance(node, dict):
+                    continue
+                class_type = node.get("class_type", "")
+                lower_type = class_type.lower()
+                inputs = node.get("inputs", {})
+                if not isinstance(inputs, dict):
+                    continue
+
+                if "loadimage" in lower_type or "load_image" in lower_type:
+                    widgets.append({
+                        "nodeId": node_id,
+                        "nodeType": class_type,
+                        "name": "mask" if "mask" in lower_type else "image",
+                        "type": "MASK_INPUT_SLOT" if "mask" in lower_type else "IMAGE_INPUT_SLOT",
+                        "value": ""
+                    })
+                    continue
+                elif "loadvideo" in lower_type or "load_video" in lower_type:
+                    widgets.append({
+                        "nodeId": node_id,
+                        "nodeType": class_type,
+                        "name": "video",
+                        "type": "VIDEO_INPUT_SLOT",
+                        "value": ""
+                    })
+                    continue
+                elif "loadaudio" in lower_type or "load_audio" in lower_type:
+                    widgets.append({
+                        "nodeId": node_id,
+                        "nodeType": class_type,
+                        "name": "audio",
+                        "type": "AUDIO_INPUT_SLOT",
+                        "value": ""
+                    })
+                    continue
+
+                if "saveimage" in lower_type or "save_image" in lower_type:
+                    widgets.append({
+                        "nodeId": node_id,
+                        "nodeType": class_type,
+                        "name": "image",
+                        "type": "IMAGE_OUTPUT_SLOT",
+                        "value": ""
+                    })
+                    continue
+                elif "savevideo" in lower_type or "save_video" in lower_type:
+                    widgets.append({
+                        "nodeId": node_id,
+                        "nodeType": class_type,
+                        "name": "video",
+                        "type": "VIDEO_OUTPUT_SLOT",
+                        "value": ""
+                    })
+                    continue
+                elif "saveaudio" in lower_type or "save_audio" in lower_type:
+                    widgets.append({
+                        "nodeId": node_id,
+                        "nodeType": class_type,
+                        "name": "audio",
+                        "type": "AUDIO_OUTPUT_SLOT",
+                        "value": ""
+                    })
+                    continue
+
+                if any(kw in lower_type for kw in ["loader", "checkpoint", "loraloader", "vaeloader", "model"]):
+                    continue
+
+                for param_name, param_val in inputs.items():
+                    if isinstance(param_val, list) and len(param_val) == 2 and (isinstance(param_val[0], (str, int)) or str(param_val[0]).isdigit()):
+                        continue
+
+                    lower_name = param_name.lower()
+                    if any(kw in lower_name for kw in EXCLUDE_WIDGET_KEYWORDS):
+                        continue
+
+                    w_type = "STRING"
+                    if isinstance(param_val, bool):
+                        w_type = "BOOLEAN"
+                    elif isinstance(param_val, int):
+                        w_type = "INT"
+                    elif isinstance(param_val, float):
+                        w_type = "FLOAT"
+
+                    widgets.append({
+                        "nodeId": node_id,
+                        "nodeType": class_type,
+                        "name": param_name,
+                        "type": w_type,
+                        "value": param_val
+                    })
         return web.json_response({"success": True, "widgets": widgets})
     except Exception as e:
         logging.error(f"[ComfyPanel Linker API] Scan workflow exception: {e}", exc_info=True)
