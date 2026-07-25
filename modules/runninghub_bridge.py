@@ -41,21 +41,42 @@ def get_rh_config():
 
 def upload_image_to_runninghub(image_tensor, api_key, base_url):
 
-    if isinstance(image_tensor, list):
-        if len(image_tensor) == 0:
+    return upload_media_to_runninghub(image_tensor, api_key, base_url)
+
+def upload_media_to_runninghub(val, api_key, base_url):
+    import io
+    import folder_paths
+
+    if isinstance(val, list):
+        if len(val) == 0:
             return ""
-        image_tensor = image_tensor[0]
+        val = val[0]
 
-    if len(image_tensor.shape) == 4:
-        image_tensor = image_tensor[0]
+    if not isinstance(val, str):
+        raise ValueError(f"Upload value must be a filename string, got: {type(val)}")
 
-    img_np = image_tensor.cpu().numpy()
-    img_np = (img_np * 255.0).astype(np.uint8)
-    img = Image.fromarray(img_np)
+    input_dir = folder_paths.get_input_directory()
+    file_path = os.path.join(input_dir, val)
+    if not os.path.isfile(file_path):
+        file_path = val
+        if not os.path.isfile(file_path):
+            raise FileNotFoundError(f"File not found in ComfyUI input directory: {val}")
 
     bio = io.BytesIO()
-    img.save(bio, format="PNG")
+    with open(file_path, "rb") as f:
+        bio.write(f.read())
     bio.seek(0)
+
+    filename = os.path.basename(file_path)
+
+    mime_type = "application/octet-stream"
+    lower_fn = filename.lower()
+    if lower_fn.endswith((".png", ".jpg", ".jpeg")):
+        mime_type = "image/png"
+    elif lower_fn.endswith((".wav", ".mp3", ".flac", ".ogg")):
+        mime_type = "audio/wav"
+    elif lower_fn.endswith((".mp4", ".avi", ".mov", ".webm")):
+        mime_type = "video/mp4"
 
     url = f"{base_url.strip().rstrip('/')}/openapi/v2/media/upload/binary"
     headers = {}
@@ -63,15 +84,15 @@ def upload_image_to_runninghub(image_tensor, api_key, base_url):
         headers["Authorization"] = f"Bearer {api_key}"
         headers["User-Language"] = "zh_CN"
 
-    files = {"file": ("uxp_upload.png", bio, "image/png")}
+    files = {"file": (filename, bio, mime_type)}
     resp = requests.post(url, files=files, headers=headers)
     if resp.status_code == 200:
         res_data = resp.json()
         if res_data.get("code") == 0 and "data" in res_data:
             file_name = res_data["data"].get("fileName")
-            logging.info(f"[RunningHub] Image uploaded successfully. Cloud Filename: {file_name}")
+            logging.info(f"[RunningHub] Media uploaded successfully. Cloud Filename: {file_name}")
             return file_name
-    raise ConnectionError(f"Failed to upload image to RunningHub: {resp.text}")
+    raise ConnectionError(f"Failed to upload media to RunningHub: {resp.text}")
 
 @PromptServer.instance.routes.get("/rh_webapp/get_config")
 async def get_rh_webapp_config(request):
@@ -141,13 +162,13 @@ class RHWorkflow:
 
             },
             "hidden": {
-
                 "params_json": ("STRING", {"default": "{}"}),
                 "unique_id": "UNIQUE_ID",
+                "prompt": "PROMPT",
             }
         }
 
-    RETURN_TYPES = (any_type,)
+    RETURN_TYPES = (any_type,) * 30
     DISPLAY_NAME = "☁️RunningHub Workflow"
     FUNCTION = "execute_workflow"
     CATEGORY = "ComfyPanel"
@@ -161,7 +182,7 @@ class RHWorkflow:
                 "msg": log_msg or status_str
             })
 
-    def execute_workflow(self, workflow_file, params_json="{}", unique_id=None, **kwargs):
+    def execute_workflow(self, workflow_file, params_json="{}", unique_id=None, prompt=None, **kwargs):
         api_key, runninghub_base_url = get_rh_config()
 
         workflow_id = workflow_file.strip()
@@ -189,7 +210,6 @@ class RHWorkflow:
                 "workflowId": workflow_id
             }
 
-            logging.info(f"[RHWorkflow] Fetching workflow {workflow_id} from {fetch_url}...")
             try:
                 resp = requests.post(fetch_url, json=payload, headers=headers, timeout=15)
                 if resp.status_code != 200:
@@ -221,17 +241,7 @@ class RHWorkflow:
             except Exception as e:
                 raise ValueError(f"Failed to retrieve or parse workflow from RunningHub API: {e}")
         else:
-            possible_paths = [
-                workflow_file,
-                os.path.join(folder_paths.get_input_directory(), workflow_file)
-            ]
-
-            resolved_path = None
-            for p in possible_paths:
-                if os.path.exists(p) and os.path.isfile(p):
-                    resolved_path = p
-                    break
-
+            resolved_path = _find_workflow_file_path(workflow_file)
             if not resolved_path:
                 raise FileNotFoundError(f"Workflow file not found: {workflow_file}")
 
@@ -256,7 +266,6 @@ class RHWorkflow:
                         continue
                     param_name = parts[2]
                     workflow_data = self._override_workflow_parameter(workflow_data, target_node_id, param_name, val)
-                    logging.info(f"[RHWorkflow] Applied param override: node={target_node_id} name='{param_name}' value={val}")
 
         for k, val in kwargs.items():
             if k.startswith("param_") and val is not None:
@@ -268,7 +277,6 @@ class RHWorkflow:
                         continue
                     param_name = parts[2]
                     workflow_data = self._override_workflow_parameter(workflow_data, target_node_id, param_name, val)
-                    logging.info(f"[RHWorkflow] Applied linked param override: node={target_node_id} name='{param_name}' value={val}")
 
         if kwargs:
             for k, val in kwargs.items():
@@ -276,12 +284,136 @@ class RHWorkflow:
                     parts = k.rsplit("_", 1)
                     if len(parts) == 2 and parts[1].isdigit():
                         target_node_id = int(parts[1])
-                        if isinstance(val, torch.Tensor) or (isinstance(val, list) and len(val) > 0 and isinstance(val[0], torch.Tensor)):
-                            logging.info(f"[RHWorkflow] Uploading dynamic image input for slot '{k}'...")
-                            uploaded_fn = upload_image_to_runninghub(val, api_key, runninghub_base_url)
+
+                        uploaded_fn = None
+                        try:
+                            if prompt and unique_id in prompt:
+                                node_inputs = prompt[unique_id].get("inputs", {})
+                                if k in node_inputs and isinstance(node_inputs[k], list) and len(node_inputs[k]) == 2:
+                                    src_nid = str(node_inputs[k][0])
+                                    src_node = prompt.get(src_nid)
+                                    if src_node:
+                                        src_inputs = src_node.get("inputs", {})
+                                        raw_fn = src_inputs.get("image") or src_inputs.get("audio") or src_inputs.get("video") or src_inputs.get("upload")
+                                        if raw_fn and isinstance(raw_fn, str):
+                                            uploaded_fn = upload_media_to_runninghub(raw_fn, api_key, runninghub_base_url)
+                        except Exception as trace_err:
+                            logging.warning(f"[RHWorkflow] Failed to trace parent raw file: {trace_err}")
+
+                        if not uploaded_fn:
+                            try:
+
+                                temp_val = val
+                                if isinstance(temp_val, list) and len(temp_val) > 0:
+                                    if isinstance(temp_val[0], (torch.Tensor, np.ndarray)):
+                                        temp_val = temp_val[0]
+                                    elif isinstance(temp_val[0], str):
+                                        temp_val = temp_val[0]
+                                    elif isinstance(temp_val[0], dict):
+                                        temp_val = temp_val[0]
+
+                                if isinstance(temp_val, dict) and "waveform" in temp_val and "sample_rate" in temp_val:
+                                    waveform = temp_val["waveform"]
+                                    sample_rate = temp_val["sample_rate"]
+                                    if isinstance(waveform, torch.Tensor):
+                                        waveform = waveform.cpu().numpy()
+                                    if waveform.ndim == 3:
+                                        waveform = waveform[0]
+
+                                    import wave
+                                    import uuid
+                                    temp_fn = f"rh_temp_{uuid.uuid4().hex}.wav"
+                                    temp_dir = folder_paths.get_input_directory()
+                                    temp_path = os.path.join(temp_dir, temp_fn)
+
+                                    audio_data = np.clip(waveform, -1.0, 1.0)
+                                    audio_data = (audio_data * 32767).astype(np.int16)
+
+                                    with wave.open(temp_path, "wb") as wav_file:
+                                        nchannels = audio_data.shape[0] if audio_data.ndim > 1 else 1
+                                        sampwidth = 2
+                                        wav_file.setnchannels(nchannels)
+                                        wav_file.setsampwidth(sampwidth)
+                                        wav_file.setframerate(sample_rate)
+                                        if nchannels > 1:
+                                            frames = audio_data.T.tobytes()
+                                        else:
+                                            frames = audio_data.tobytes()
+                                        wav_file.writeframes(frames)
+
+                                    try:
+                                        uploaded_fn = upload_media_to_runninghub(temp_fn, api_key, runninghub_base_url)
+                                    finally:
+                                        if os.path.exists(temp_path):
+                                            try:
+                                                os.remove(temp_path)
+                                            except Exception as clean_err:
+                                                logging.warning(f"[RHWorkflow] Failed to remove temp file: {clean_err}")
+
+                                if isinstance(temp_val, dict) and not uploaded_fn:
+                                    temp_val = temp_val.get("filename") or temp_val.get("image") or temp_val.get("video") or temp_val.get("audio")
+
+                                if isinstance(temp_val, str) and not uploaded_fn:
+                                    uploaded_fn = upload_media_to_runninghub(temp_val, api_key, runninghub_base_url)
+
+                                elif isinstance(temp_val, (torch.Tensor, np.ndarray)) and not uploaded_fn:
+                                    val_np = temp_val.cpu().numpy() if isinstance(temp_val, torch.Tensor) else temp_val
+
+                                    is_video_slot = k.lower().startswith("video")
+                                    if is_video_slot and val_np.ndim == 4 and val_np.shape[0] > 1:
+
+                                        import cv2
+                                        import uuid
+                                        temp_fn = f"rh_temp_{uuid.uuid4().hex}.mp4"
+                                        temp_dir = folder_paths.get_input_directory()
+                                        temp_path = os.path.join(temp_dir, temp_fn)
+
+                                        height, width = val_np.shape[1], val_np.shape[2]
+                                        fourcc = cv2.VideoWriter_fourcc(*'mp4v')
+                                        out = cv2.VideoWriter(temp_path, fourcc, 25.0, (width, height))
+                                        for frame in val_np:
+                                            frame_bgr = cv2.cvtColor((np.clip(frame, 0, 1) * 255).astype(np.uint8), cv2.COLOR_RGB2BGR)
+                                            out.write(frame_bgr)
+                                        out.release()
+
+                                        try:
+                                            logging.info(f"[RHWorkflow] Converted video tensor to temporary MP4 file '{temp_fn}'. Uploading...")
+                                            uploaded_fn = upload_media_to_runninghub(temp_fn, api_key, runninghub_base_url)
+                                        finally:
+                                            if os.path.exists(temp_path):
+                                                try:
+                                                    os.remove(temp_path)
+                                                except Exception as clean_err:
+                                                    logging.warning(f"[RHWorkflow] Failed to remove temp file: {clean_err}")
+                                    else:
+
+                                        if val_np.ndim == 4:
+                                            val_np = val_np[0]
+                                        val_np = np.clip(val_np, 0, 1)
+                                        img_data = (val_np * 255).astype(np.uint8)
+                                        img = Image.fromarray(img_data)
+
+                                        import uuid
+                                        temp_fn = f"rh_temp_{uuid.uuid4().hex}.png"
+                                        temp_dir = folder_paths.get_input_directory()
+                                        temp_path = os.path.join(temp_dir, temp_fn)
+                                        img.save(temp_path)
+                                        try:
+                                            uploaded_fn = upload_media_to_runninghub(temp_fn, api_key, runninghub_base_url)
+                                        finally:
+                                            if os.path.exists(temp_path):
+                                                try:
+                                                    os.remove(temp_path)
+                                                except Exception as clean_err:
+                                                    logging.warning(f"[RHWorkflow] Failed to remove temp file: {clean_err}")
+                            except Exception as fallback_err:
+                                logging.error(f"[RHWorkflow] Fallback processing failed: {fallback_err}", exc_info=True)
+
+                        if not uploaded_fn:
+                            raise ValueError(f"Failed to trace or process media file for input slot '{k}'")
+
+                        if uploaded_fn:
                             workflow_data = self._rewrite_single_media_input(workflow_data, target_node_id, uploaded_fn)
-                        else:
-                            logging.warning(f"[RHWorkflow] Dynamic slot '{k}' received non-tensor value: {type(val)}")
 
         prompt_json = {}
         if "nodes" in workflow_data and isinstance(workflow_data["nodes"], list):
@@ -301,7 +433,6 @@ class RHWorkflow:
             comfy_headers = {
                 "Content-Type": "application/json"
             }
-            logging.info(f"[RHWorkflow] Submission URL: {run_url}")
             resp = requests.post(run_url, json={"prompt": prompt_json}, headers=comfy_headers)
             if resp.status_code != 200:
                 raise ConnectionError(f"RunningHub ComfyUI Proxy /prompt failed with HTTP {resp.status_code}: {resp.text}")
@@ -321,8 +452,8 @@ class RHWorkflow:
             else:
                 history_url = f"{clean_base}/proxy/{api_key}/history/{task_id}"
 
-            outputs = []
-            max_retries = 120
+            outputs_by_node = {}
+            max_retries = 360
             self._send_progress(unique_id, 0.1, "Submitted", "Submitted, polling status...")
             for step in range(max_retries):
                 time.sleep(5)
@@ -347,6 +478,7 @@ class RHWorkflow:
                             if "audio" in node_out:
                                 media_files.extend(node_out["audio"])
 
+                            node_urls = []
                             for m_info in media_files:
                                 filename_out = m_info.get("filename")
                                 subfolder_out = m_info.get("subfolder", "")
@@ -357,35 +489,112 @@ class RHWorkflow:
                                         media_url = f"{clean_base}/view?filename={filename_out}&subfolder={subfolder_out}&type={img_type_out}"
                                     else:
                                         media_url = f"{clean_base}/proxy/{api_key}/view?filename={filename_out}&subfolder={subfolder_out}&type={img_type_out}"
-                                    outputs.append(media_url)
+                                    node_urls.append(media_url)
+                            if node_urls:
+                                outputs_by_node[node_id] = node_urls
                         break
                     else:
                         logging.info(f"[RHWorkflow] Task {task_id} is still in progress...")
                 else:
                     logging.warning(f"[RHWorkflow] Failed to poll history (HTTP {status_resp.status_code}), retrying...")
 
-            if not outputs:
+            if not outputs_by_node:
                 raise TimeoutError("RunningHub task timed out or returned no outputs")
 
             self._send_progress(unique_id, 0.95, "Downloading results...")
-            downloaded_tensors = []
-            for img_url in outputs:
-                logging.info(f"[RHWorkflow] Downloading output image: {img_url}")
-                img_resp = requests.get(img_url)
-                if img_resp.status_code == 200:
-                    img = Image.open(io.BytesIO(img_resp.content)).convert("RGB")
-                    img_np = np.array(img).astype(np.float32) / 255.0
-                    img_tensor = torch.from_numpy(img_np)[None, :]
-                    downloaded_tensors.append(img_tensor)
-                else:
-                    logging.warning(f"[RHWorkflow] Failed to download image from {img_url}")
 
-            if not downloaded_tensors:
-                raise ValueError("No images were successfully downloaded from task results")
+            output_results = []
+            sorted_output_node_ids = sorted(outputs_by_node.keys(), key=lambda x: int(x) if x.isdigit() else 99999)
 
-            out_tensor = torch.cat(downloaded_tensors, dim=0)
+            for node_id in sorted_output_node_ids:
+                urls = outputs_by_node[node_id]
+                node_files = []
+
+                for media_url in urls:
+                    logging.info(f"[RHWorkflow] Downloading output media: {media_url}")
+                    import urllib.parse
+                    parsed_url = urllib.parse.urlparse(media_url)
+                    query_params = urllib.parse.parse_qs(parsed_url.query)
+                    filename = query_params.get("filename", [""])[0]
+                    if not filename:
+                        filename = os.path.basename(parsed_url.path)
+
+                    ext = os.path.splitext(filename)[1].lower()
+
+                    media_resp = requests.get(media_url)
+                    if media_resp.status_code == 200:
+                        media_bytes = media_resp.content
+
+                        if ext in [".png", ".jpg", ".jpeg", ".webp"]:
+
+                            img = Image.open(io.BytesIO(media_bytes)).convert("RGB")
+                            img_np = np.array(img).astype(np.float32) / 255.0
+                            img_tensor = torch.from_numpy(img_np)[None, :]
+                            node_files.append(img_tensor)
+
+                        elif ext in [".wav", ".mp3", ".flac", ".ogg", ".aac", ".m4a"]:
+
+                            import uuid
+                            temp_fn = f"rh_out_{uuid.uuid4().hex}{ext}"
+                            temp_dir = folder_paths.get_input_directory()
+                            temp_path = os.path.join(temp_dir, temp_fn)
+
+                            try:
+
+                                with open(temp_path, "wb") as f:
+                                    f.write(media_bytes)
+
+                                try:
+                                    from comfy_extras.nodes_audio import load as load_audio
+                                    waveform, sample_rate = load_audio(temp_path)
+
+                                    audio_dict = {"waveform": waveform.unsqueeze(0), "sample_rate": sample_rate}
+                                    node_files.append(audio_dict)
+                                    logging.info(f"[RHWorkflow] Successfully loaded output audio: {filename}")
+                                except Exception as load_err:
+                                    logging.error(f"[RHWorkflow] Failed to load audio via comfy_extras: {load_err}")
+                            finally:
+                                if os.path.exists(temp_path):
+                                    try:
+                                        os.remove(temp_path)
+                                    except Exception:
+                                        pass
+
+                        elif ext in [".mp4", ".avi", ".mov", ".webm", ".gif"]:
+
+                            import uuid
+                            dest_fn = f"rh_out_{uuid.uuid4().hex}{ext}"
+                            dest_path = os.path.join(folder_paths.get_input_directory(), dest_fn)
+                            with open(dest_path, "wb") as f:
+                                f.write(media_bytes)
+                            node_files.append(dest_fn)
+                            logging.info(f"[RHWorkflow] Saved output video/gif to input directory: {dest_fn}")
+
+                        else:
+
+                            node_files.append(media_bytes)
+                    else:
+                        logging.warning(f"[RHWorkflow] Failed to download media from {media_url}")
+
+                if node_files:
+                    if all(isinstance(x, torch.Tensor) for x in node_files):
+
+                        grouped_node_tensor = torch.cat(node_files, dim=0)
+                        output_results.append(grouped_node_tensor)
+                    elif len(node_files) == 1:
+                        output_results.append(node_files[0])
+                    else:
+                        output_results.append(node_files)
+
+            if not output_results:
+                raise ValueError("No media files were successfully downloaded from task results")
+
+            res_tuple = tuple(output_results)
+            padding_len = len(self.RETURN_TYPES) - len(res_tuple)
+            if padding_len > 0:
+                res_tuple = res_tuple + (None,) * padding_len
             self._send_progress(unique_id, 1.0, "Success", "Success!")
-            return (out_tensor,)
+            return res_tuple
 
         except Exception as e:
             self._send_progress(unique_id, 0.0, "Failed", str(e))
@@ -403,46 +612,63 @@ class RHWorkflow:
 
             inputs = {}
 
-            if "widgets_values" in node and isinstance(node["widgets_values"], list):
-                widget_slots_inputs = []
+            widgets = scan_standard_node_widgets(node, class_type)
+
+            if not widgets:
+
+                ui_widgets = []
                 if "inputs" in node and isinstance(node["inputs"], list):
                     for inp in node["inputs"]:
-                        if isinstance(inp, dict) and (inp.get("widget") or inp.get("type") == "COMBO"):
-                            widget_slots_inputs.append(inp)
-                            w_name = inp.get("widget", {}).get("name") or inp.get("name")
-                            if w_name in ["seed", "noise_seed"]:
-                                widget_slots_inputs.append({"name": "control_after_generate", "type": "COMBO", "virtual": True})
+                        if isinstance(inp, dict) and "widget" in inp:
+                            w_name = inp["widget"].get("name") or inp.get("name")
+                            if w_name:
+                                ui_widgets.append(w_name)
 
-                widget_slots_outputs = []
-                if "outputs" in node and isinstance(node["outputs"], list):
-                    for out in node["outputs"]:
-                        if isinstance(out, dict) and out.get("widget"):
-                            widget_slots_outputs.append(out)
+                widgets_values = node.get("widgets_values", [])
+                for idx, w_name in enumerate(ui_widgets):
+                    val = None
+                    if idx < len(widgets_values):
+                        val = widgets_values[idx]
+                    if val is None:
+                        val = ""
+                    inputs[w_name] = val
+            else:
+                for w in widgets:
+                    w_name = w["name"]
+                    val = w["value"]
 
-                widget_slots = widget_slots_inputs + widget_slots_outputs
+                    if w_name == "audioUI":
+                        if not val:
 
-                for idx, val in enumerate(node["widgets_values"]):
-                    if idx < len(widget_slots):
-                        slot = widget_slots[idx]
-                        if slot.get("virtual"):
-                            continue
-                        name = slot.get("name")
-                        if slot.get("widget") and isinstance(slot["widget"], dict):
-                            name = slot["widget"].get("name") or name
-                        inputs[name] = val
+                            audio_val = inputs.get("audio")
+                            if audio_val and isinstance(audio_val, str):
+                                import urllib.parse
+                                import random
+                                rand_val = random.random()
+                                encoded_fn = urllib.parse.quote(audio_val)
+                                val = f"/api/view?filename={encoded_fn}&type=input&subfolder=&rand={rand_val:.15f}"
+                            else:
+                                val = ""
+
+                    if val is None:
+                        val = ""
+
+                    inputs[w_name] = val
 
             if "inputs" in node and isinstance(node["inputs"], list):
-                for inp_idx, inp in enumerate(node["inputs"]):
-                    link_id = inp.get("link")
-                    if link_id is not None:
-                        src_node_id, src_slot = self._find_link_source(workflow_data, link_id)
-                        if src_node_id is not None:
-                            inputs[inp.get("name")] = [str(src_node_id), src_slot]
+                for inp in node["inputs"]:
+                    if isinstance(inp, dict):
+                        link_id = inp.get("link")
+                        if link_id is not None:
+                            src_node_id, src_slot = self._find_link_source(workflow_data, link_id)
+                            if src_node_id is not None:
+                                inputs[inp.get("name")] = [str(src_node_id), src_slot]
 
             prompt_api[node_id] = {
                 "class_type": class_type,
                 "inputs": inputs
             }
+
         return prompt_api
 
     def _find_link_source(self, workflow_data, link_id):
@@ -458,7 +684,6 @@ class RHWorkflow:
                 if node.get("id") == target_node_id:
                     if "widgets_values" in node and isinstance(node["widgets_values"], list):
                         node["widgets_values"][0] = filename
-                        logging.info(f"[RHWorkflow] Rewrote media node {target_node_id} widget value to: {filename}")
                     break
         elif isinstance(workflow_data, dict):
             node_key = str(target_node_id)
@@ -468,54 +693,41 @@ class RHWorkflow:
                     for k in ["image", "video", "audio", "upload"]:
                         if k in node["inputs"]:
                             node["inputs"][k] = filename
-                            logging.info(f"[RHWorkflow] Rewrote API media node {target_node_id} input '{k}' to: {filename}")
                             break
                     else:
                         node["inputs"]["image"] = filename
-                        logging.info(f"[RHWorkflow] Fallback rewrote API media node {target_node_id} image to: {filename}")
         return workflow_data
 
     def _override_workflow_parameter(self, workflow_data, target_node_id, param_name, value):
         if "nodes" in workflow_data and isinstance(workflow_data["nodes"], list):
             for node in workflow_data["nodes"]:
                 if node.get("id") == target_node_id:
-                    widget_slots_inputs = []
-                    if "inputs" in node and isinstance(node["inputs"], list):
-                        for inp in node["inputs"]:
-                            if isinstance(inp, dict) and (inp.get("widget") or inp.get("type") == "COMBO"):
-                                widget_slots_inputs.append(inp)
-                                w_name = inp.get("widget", {}).get("name") or inp.get("name")
-                                if w_name in ["seed", "noise_seed"]:
-                                    widget_slots_inputs.append({"name": "control_after_generate", "type": "COMBO", "virtual": True})
-
-                    widget_slots_outputs = []
-                    if "outputs" in node and isinstance(node["outputs"], list):
-                        for out in node["outputs"]:
-                            if isinstance(out, dict) and out.get("widget"):
-                                widget_slots_outputs.append(out)
-
-                    widget_slots = widget_slots_inputs + widget_slots_outputs
-
-                    target_slot = None
-                    for slot in widget_slots:
-                        slot_name = slot.get("name")
-                        if slot.get("widget") and isinstance(slot["widget"], dict):
-                            slot_name = slot["widget"].get("name") or slot_name
-                        if slot_name == param_name:
-                            target_slot = slot
-                            break
-
-                    if target_slot is not None:
-                        try:
-                            widget_idx = widget_slots.index(target_slot)
+                    widgets = scan_standard_node_widgets(node, node.get("type"))
+                    for w in widgets:
+                        if w["name"] == param_name:
+                            idx = w["idx"]
                             if "widgets_values" not in node or not isinstance(node["widgets_values"], list):
                                 node["widgets_values"] = []
-                            while len(node["widgets_values"]) <= widget_idx:
+                            while len(node["widgets_values"]) <= idx:
                                 node["widgets_values"].append(None)
-                            node["widgets_values"][widget_idx] = value
-                            logging.info(f"[RHWorkflow] Overrode UI node {target_node_id} parameter '{param_name}' = {value}")
-                        except Exception as e:
-                            logging.error(f"[RHWorkflow] Failed to override parameter: {e}")
+
+                            try:
+                                orig_val = node["widgets_values"][idx]
+                                if orig_val is not None:
+                                    if isinstance(orig_val, int):
+                                        node["widgets_values"][idx] = int(value)
+                                    elif isinstance(orig_val, float):
+                                        node["widgets_values"][idx] = float(value)
+                                    elif isinstance(orig_val, bool):
+                                        node["widgets_values"][idx] = bool(value)
+                                    else:
+                                        node["widgets_values"][idx] = value
+                                else:
+                                    node["widgets_values"][idx] = value
+                            except Exception:
+                                node["widgets_values"][idx] = value
+
+                            break
                     break
         elif isinstance(workflow_data, dict):
             node_key = str(target_node_id)
@@ -523,7 +735,6 @@ class RHWorkflow:
                 node = workflow_data[node_key]
                 if "inputs" in node and isinstance(node["inputs"], dict):
                     node["inputs"][param_name] = value
-                    logging.info(f"[RHWorkflow] Overrode API node {target_node_id} parameter '{param_name}' = {value}")
         return workflow_data
 
 class RHWebApp:
@@ -540,7 +751,7 @@ class RHWebApp:
                 "prompt": "PROMPT",
                 "extra_pnginfo": "EXTRA_PNGINFO",
                 "unique_id": "UNIQUE_ID",
-                "input_values_json": ("STRING", {"default": "{}"}),
+                "params_json": ("STRING", {"default": "{}"}),
             }
         }
 
@@ -564,7 +775,7 @@ class RHWebApp:
                 "msg": log_msg or status_str
             })
 
-    def execute_app(self, APP, input_values_json="{}", prompt=None, extra_pnginfo=None, unique_id=None, **kwargs):
+    def execute_app(self, APP, params_json="{}", prompt=None, extra_pnginfo=None, unique_id=None, **kwargs):
         api_key, base_url = get_rh_config()
         if not api_key:
             raise Exception("RunningHub API Key is not configured. Please configure it in ComfyPanel settings.")
@@ -575,8 +786,8 @@ class RHWebApp:
         input_values = {}
         mapping_dict = {}
         try:
-            if input_values_json:
-                payload_data = json.loads(input_values_json)
+            if params_json:
+                payload_data = json.loads(params_json)
                 if "_port_map" in payload_data:
                     mapping_dict = payload_data.pop("_port_map")
                 input_values = payload_data
@@ -896,6 +1107,9 @@ async def expand_bridge_nodes(outer_prompt: dict, base_url: str, api_key: str) -
         for k, v in inputs.items():
             if not k.startswith("param_") and not k.startswith("Param_"):
                 continue
+
+            if not (isinstance(v, list) and len(v) == 2):
+                continue
             k_lower = k.lower()
             if not k_lower.startswith("param_"):
                 continue
@@ -987,3 +1201,95 @@ async def expand_bridge_nodes(outer_prompt: dict, base_url: str, api_key: str) -
         result.update(inner_prompt)
 
     return result
+
+def scan_standard_node_widgets(node, class_type):
+    import nodes
+    node_class = nodes.NODE_CLASS_MAPPINGS.get(class_type)
+    if not node_class:
+        return []
+    try:
+        input_types = node_class.INPUT_TYPES()
+    except Exception:
+        return []
+
+    linked_input_names = set()
+    if "inputs" in node and isinstance(node["inputs"], list):
+        for inp in node["inputs"]:
+            if isinstance(inp, dict) and inp.get("link") is not None:
+                linked_input_names.add(inp.get("name"))
+
+    widgets_values = node.get("widgets_values", [])
+
+    expected_slots = []
+    widget_val_idx = 0
+
+    def process_section_inputs(inputs_dict, prefix=""):
+        nonlocal widget_val_idx
+        for name, config in inputs_dict.items():
+            if name in linked_input_names:
+                continue
+            if not isinstance(config, (list, tuple)) or len(config) == 0:
+                continue
+
+            w_type = str(config[0])
+            full_name = f"{prefix}.{name}" if prefix else name
+            expected_slots.append({"name": full_name, "type": w_type})
+
+            val = None
+            if widget_val_idx < len(widgets_values):
+                val = widgets_values[widget_val_idx]
+
+            widget_val_idx += 1
+
+            if name in ["seed", "noise_seed"]:
+                expected_slots.append({"name": f"{prefix}.control_after_generate" if prefix else "control_after_generate", "type": "COMBO", "virtual": True})
+                widget_val_idx += 1
+
+            if w_type == "COMFY_DYNAMICCOMBO_V3" and isinstance(val, str) and len(config) > 1 and isinstance(config[1], dict):
+                options = config[1].get("options", [])
+                for opt in options:
+                    if isinstance(opt, dict) and opt.get("key") == val:
+                        opt_inputs = opt.get("inputs", {})
+                        for sub_sec in ["required", "optional"]:
+                            if sub_sec in opt_inputs and isinstance(opt_inputs[sub_sec], dict):
+                                process_section_inputs(opt_inputs[sub_sec], prefix=full_name)
+
+    for section in ["required", "optional"]:
+        if section in input_types and isinstance(input_types[section], dict):
+            process_section_inputs(input_types[section])
+
+    ui_widgets = []
+    if "inputs" in node and isinstance(node["inputs"], list):
+        for inp in node["inputs"]:
+            if isinstance(inp, dict) and "widget" in inp:
+                w_name = inp["widget"].get("name") or inp.get("name")
+                if w_name and w_name not in linked_input_names:
+                    ui_widgets.append(w_name)
+
+    expected_names = [slot["name"] for slot in expected_slots if not slot.get("virtual")]
+
+    final_slots = []
+    for slot in expected_slots:
+        if not slot.get("virtual"):
+            final_slots.append(slot)
+
+    for ui_w in ui_widgets:
+        if ui_w not in expected_names:
+            final_slots.append({"name": ui_w, "type": "STRING"})
+
+    widgets_list = []
+    for idx, slot in enumerate(final_slots):
+        val = None
+        if idx < len(widgets_values):
+            val = widgets_values[idx]
+
+        widgets_list.append({
+            "nodeId": node.get("id"),
+            "nodeType": class_type,
+            "name": slot["name"],
+            "type": slot["type"],
+            "value": val,
+            "idx": idx
+        })
+
+    return widgets_list

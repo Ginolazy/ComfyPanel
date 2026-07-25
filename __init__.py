@@ -9,9 +9,8 @@ except Exception as e:
     print(f"[ComfyPanel] folder_paths unavailable during import: {e}")
 
 try:
-    from .modules.utility import (Pytorch_Fix_IntelMac, comfypanel_api)
+    from .modules.utility import comfypanel_api
 except Exception as e:
-    Pytorch_Fix_IntelMac = None
     comfypanel_api = None
     print(f"[ComfyPanel] Optional utility import failed during startup: {e}")
 
@@ -37,7 +36,7 @@ sys.path.append(plugin_dir)
 NODE_CLASS_MAPPINGS = {}
 NODE_DISPLAY_NAME_MAPPINGS = {}
 WEB_DIRECTORY = "./web"
-__version__ = "1.3.2"
+__version__ = "1.4.0"
 
 def _parse_version(version):
     if _Version is not None:

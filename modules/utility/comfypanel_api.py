@@ -633,7 +633,7 @@ async def runninghub_proxy(request):
         if endpoint == '/prompt' and method == 'POST' and isinstance(payload, dict):
             prompt = payload.get("prompt", {})
             has_bridge = any(
-                isinstance(n, dict) and n.get("class_type") == "RHWorkflowBridge"
+                isinstance(n, dict) and n.get("class_type") == "RHWorkflow"
                 for n in prompt.values()
             )
             if has_bridge:
@@ -666,7 +666,7 @@ async def runninghub_proxy(request):
         try:
             async with aiohttp.ClientSession(trust_env=True) as session:
                 if method == "POST":
-                    async with session.post(url, json=payload, headers=proxy_headers, timeout=30) as resp:
+                    async with session.post(url, json=payload, headers=proxy_headers, timeout=30, ssl=False) as resp:
                         try:
                             resp_json = await resp.json()
                             return web.json_response(resp_json, status=resp.status)
@@ -674,7 +674,7 @@ async def runninghub_proxy(request):
                             text = await resp.text()
                             return web.Response(body=text, status=resp.status, content_type=resp.content_type)
                 else:
-                    async with session.get(url, params=payload, headers=proxy_headers, timeout=30) as resp:
+                    async with session.get(url, params=payload, headers=proxy_headers, timeout=30, ssl=False) as resp:
                         try:
                             resp_json = await resp.json()
                             return web.json_response(resp_json, status=resp.status)
@@ -1032,90 +1032,28 @@ async def runninghub_scan_workflow(request):
                 if any(kw in lower_type for kw in ["loader", "checkpoint", "loraloader", "vaeloader", "model"]):
                     continue
 
-                widget_slots_inputs = []
-                if "inputs" in node and isinstance(node["inputs"], list):
-                    for inp in node["inputs"]:
-                        if not isinstance(inp, dict):
-                            continue
-                        if inp.get("widget") or inp.get("type") == "COMBO":
-                            widget_slots_inputs.append(inp)
-                            w_name = inp.get("widget", {}).get("name") or inp.get("name")
-                            if w_name in ["seed", "noise_seed"]:
-                                widget_slots_inputs.append({"name": "control_after_generate", "type": "COMBO", "virtual": True})
+                from ..runninghub_bridge import scan_standard_node_widgets
+                node_widgets = scan_standard_node_widgets(node, node_type)
+                for w in node_widgets:
+                    widget_name = w["name"]
+                    widget_type = w["type"]
+                    value = w["value"]
 
-                widget_slots_outputs = []
-                if "outputs" in node and isinstance(node["outputs"], list):
-                    for out in node["outputs"]:
-                        if isinstance(out, dict) and out.get("widget"):
-                            widget_slots_outputs.append(out)
+                    if widget_type not in WHITELIST_TYPES:
+                        continue
 
-                widget_slots = widget_slots_inputs + widget_slots_outputs
+                    lower_name = widget_name.lower()
+                    if any(kw in lower_name for kw in EXCLUDE_WIDGET_KEYWORDS):
+                        continue
 
-                if "inputs" in node and isinstance(node["inputs"], list):
-                    for inp in node["inputs"]:
-                        w_info = inp.get("widget")
-                        if w_info and isinstance(w_info, dict):
-                            widget_name = w_info.get("name")
-                            widget_type = str(inp.get("type", "STRING")).upper()
-
-                            if widget_type not in WHITELIST_TYPES:
-                                continue
-
-                            lower_name = widget_name.lower()
-                            if any(kw in lower_name for kw in EXCLUDE_WIDGET_KEYWORDS):
-                                continue
-
-                            is_linked = False
-                            if "link" in inp and inp["link"] is not None:
-                                if inp["link"]:
-                                    is_linked = True
-
-                            if not is_linked:
-                                value = None
-                                try:
-                                    val_idx = widget_slots.index(inp)
-                                    if "widgets_values" in node and len(node["widgets_values"]) > val_idx:
-                                        value = node["widgets_values"][val_idx]
-                                except Exception:
-                                    pass
-
-                                widgets.append({
-                                    "nodeId": node_id,
-                                    "nodeType": node_type,
-                                    "name": widget_name,
-                                    "type": widget_type,
-                                    "value": value
-                                })
-
-                if "outputs" in node and isinstance(node["outputs"], list):
-                    for out in node["outputs"]:
-                        w_info = out.get("widget")
-                        if w_info and isinstance(w_info, dict):
-                            widget_name = w_info.get("name")
-                            widget_type = str(out.get("type", "STRING")).upper()
-
-                            if widget_type not in WHITELIST_TYPES:
-                                continue
-
-                            lower_name = widget_name.lower()
-                            if any(kw in lower_name for kw in EXCLUDE_WIDGET_KEYWORDS):
-                                continue
-
-                            value = None
-                            try:
-                                val_idx = widget_slots.index(out)
-                                if "widgets_values" in node and len(node["widgets_values"]) > val_idx:
-                                    value = node["widgets_values"][val_idx]
-                            except Exception:
-                                pass
-
-                            widgets.append({
-                                "nodeId": node_id,
-                                "nodeType": node_type,
-                                "name": widget_name,
-                                "type": widget_type,
-                                "value": value
-                            })
+                    widgets.append({
+                        "nodeId": node_id,
+                        "nodeType": node_type,
+                        "nodeTitle": node_title,
+                        "name": widget_name,
+                        "type": widget_type,
+                        "value": value
+                    })
         else:
 
             for node_id, node in data.items():

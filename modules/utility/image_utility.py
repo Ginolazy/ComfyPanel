@@ -145,61 +145,6 @@ def hw_to_b1hw(tensor: torch.Tensor) -> torch.Tensor:
 def b1hw_to_hw(tensor: torch.Tensor) -> torch.Tensor:
     return tensor.squeeze(0).squeeze(0)
 
-def generate_preview_images(input_values: List[Any]) -> List[torch.Tensor]:
-    preview_images_list = []
-    i = 0
-    while i < len(input_values):
-        val = input_values[i]
-        is_img = isinstance(val, torch.Tensor) and val.ndim == 4
-        is_mask = isinstance(val, torch.Tensor) and val.ndim in (2, 3)
-        if is_img:
-            next_val = input_values[i+1] if i + 1 < len(input_values) else None
-            next_is_mask = isinstance(next_val, torch.Tensor) and next_val.ndim in (2, 3)
-            if next_is_mask and is_empty_mask(next_val):
-                next_is_mask = False
-            if next_is_mask:
-                try:
-                    img_tensor = val
-                    mask_tensor = next_val
-                    if mask_tensor.ndim == 2:
-                        mask_tensor = mask_tensor.unsqueeze(0).unsqueeze(-1)
-                    elif mask_tensor.ndim == 3:
-                        mask_tensor = mask_tensor.unsqueeze(-1)
-                    if mask_tensor.shape[-3:-1] != img_tensor.shape[-3:-1]:
-                        mask_for_resize = mask_tensor.permute(0, 3, 1, 2)
-                        mask_resized = F.interpolate(
-                            mask_for_resize,
-                            size=(img_tensor.shape[1], img_tensor.shape[2]),
-                            mode="nearest"
-                        )
-                        mask_tensor = mask_resized.permute(0, 2, 3, 1)
-                    mask_opacity = 0.5
-                    red_overlay = torch.zeros_like(img_tensor)
-                    red_overlay[:, :, :, 0] = 1.0
-                    alpha = mask_tensor * mask_opacity
-                    if alpha.shape[0] != img_tensor.shape[0]:
-                        alpha = alpha.repeat(img_tensor.shape[0], 1, 1, 1)
-                    composite = img_tensor * (1 - alpha) + red_overlay * alpha
-                    preview_images_list.append(composite)
-                except Exception as e:
-                    handle_error(e, "Overlay utility error")
-                    preview_images_list.append(val)
-            else:
-                preview_images_list.append(val)
-        elif is_mask:
-            prev_val = input_values[i-1] if i > 0 else None
-            prev_is_img = isinstance(prev_val, torch.Tensor) and prev_val.ndim == 4
-
-            if not prev_is_img:
-                mask_preview = val
-                if mask_preview.ndim == 2:
-                    mask_preview = mask_preview.unsqueeze(0)
-                mask_preview = mask_preview.reshape((-1, 1, mask_preview.shape[-2], mask_preview.shape[-1]))
-                mask_preview = mask_preview.movedim(1, -1).expand(-1, -1, -1, 3)
-                preview_images_list.append(mask_preview)
-        i += 1
-    return preview_images_list
-
 def flatten_input_values(input_values: List[Any]) -> List[Any]:
     flat_values = []
     def _flatten(items):

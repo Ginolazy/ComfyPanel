@@ -1,0 +1,189 @@
+/* ComfyUI/custom_nodes/ComfyPanel/web/ui/comfypanel_ui.css */
+
+.cp-modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(0, 0, 0, 0.65);
+    backdrop-filter: blur(4px);
+    z-index: 99999;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-family: system-ui, -apple-system, sans-serif;
+}
+
+.cp-modal {
+    width: 420px;
+    background-color: #1e1e24;
+    border: 1px solid #333340;
+    border-radius: 10px;
+    box-shadow: 0 12px 32px rgba(0, 0, 0, 0.5);
+    padding: 20px;
+    color: #e0e0e0;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.cp-modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid #2a2a35;
+    padding-bottom: 10px;
+}
+
+.cp-modal-title {
+    font-weight: 600;
+    font-size: 15px;
+    color: #4facfe;
+}
+
+.cp-modal-badge {
+    background: #2a2a35;
+    padding: 2px 8px;
+    border-radius: 4px;
+    font-size: 11px;
+    color: #aaa;
+}
+
+.cp-modal-body {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+}
+
+.cp-form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.cp-form-label {
+    display: block;
+    font-size: 12px;
+    font-weight: 500;
+    color: #bbb;
+}
+
+.cp-input-group {
+    display: flex;
+    gap: 6px;
+}
+
+.cp-input,
+.cp-select,
+.cp-textarea {
+    width: 100%;
+    background: #121215;
+    border: 1px solid #3a3a44;
+    border-radius: 4px;
+    color: #fff;
+    padding: 8px;
+    font-size: 12px;
+    outline: none;
+    box-sizing: border-box;
+}
+
+.cp-input:focus,
+.cp-select:focus,
+.cp-textarea:focus {
+    border-color: #4facfe;
+}
+
+.cp-toggle-btn {
+    background: #2a2a35;
+    border: 1px solid #3a3a44;
+    color: #fff;
+    padding: 0 10px;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.cp-form-tip {
+    font-size: 10px;
+    color: #777;
+    margin-top: 2px;
+}
+
+.cp-modal-footer {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+    margin-top: 6px;
+}
+
+.cp-btn-cancel {
+    background: #2a2a35;
+    border: none;
+    color: #ccc;
+    padding: 8px 16px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 12px;
+}
+
+.cp-btn-save {
+    background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+    border: none;
+    color: #fff;
+    padding: 8px 18px;
+    border-radius: 6px;
+    font-weight: 600;
+    cursor: pointer;
+    font-size: 12px;
+}
+
+/* --- AnyPreviewPause Audio Trim Controls --- */
+.cp-audio-trim-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 2px;
+    padding: 0 2px;
+}
+
+.cp-audio-trim-group {
+    display: flex;
+    flex: 1;
+    align-items: center;
+    gap: 4px;
+    min-width: 0;
+}
+
+.cp-audio-trim-group-end {
+    display: flex;
+    flex: 1;
+    align-items: center;
+    gap: 4px;
+    min-width: 0;
+    margin-left: 8px;
+}
+
+.cp-audio-trim-label {
+    font-size: 10px;
+    color: #888;
+    font-family: sans-serif;
+    white-space: nowrap;
+}
+
+.cp-audio-trim-input {
+    flex: 1;
+    min-width: 0;
+    background: #121215;
+    color: #fff;
+    border: 1px solid #3a3a44;
+    border-radius: 4px;
+    font-size: 11px;
+    padding: 2px;
+    text-align: center;
+    box-sizing: border-box;
+}
+
+.cp-audio-trim-input:focus {
+    border-color: #4facfe;
+    outline: none;
+}

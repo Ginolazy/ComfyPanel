@@ -55,15 +55,15 @@
         "image": [
             {
                 "id": "2070762861495934977",
-                "name": "NanoBanana (channel)"
+                "name": "NanoBanana (Channel)"
             },
             {
                 "id": "2073439241622867969",
-                "name": "NanoBanana 2 Lite (channel)"
+                "name": "NanoBanana 2 Lite (Channel)"
             },
             {
                 "id": "2070782907018469377",
-                "name": "NanoBanana 2 (channel)"
+                "name": "NanoBanana 2 (Channel)"
             },
             {
                 "id": "2073261324313907201",
@@ -75,7 +75,7 @@
             },
             {
                 "id": "2070868537354317826",
-                "name": "GPT Image 2 (channel)"
+                "name": "GPT Image 2 (Channel)"
             },
             {
                 "id": "2073444968953376770",
@@ -88,6 +88,54 @@
             {
                 "id": "2073455314866892801",
                 "name": "360Panorama"
+            },
+            {
+                "id": "2077932829194940417",
+                "name": "360Panorama V2"
+            }
+        ]
+    },
+    "runninghubEn": {
+        "image": [
+            {
+                "id": "2077244013190942721",
+                "name": "NanoBanana (Channel)"
+            },
+            {
+                "id": "2077243902486482946",
+                "name": "NanoBanana 2 Lite (Channel)"
+            },
+            {
+                "id": "2077243904281645057",
+                "name": "NanoBanana 2 (Channel)"
+            },
+            {
+                "id": "2077244019519873025",
+                "name": "NanoBanana 2 (Official)"
+            },
+            {
+                "id": "2077244018963456001",
+                "name": "NanoBanana Pro (Channel / Official)"
+            },
+            {
+                "id": "2077243903857745922",
+                "name": "GPT Image 2 (Channel)"
+            },
+            {
+                "id": "2077243902947856385",
+                "name": "GPT Image 2 (Official)"
+            },
+            {
+                "id": "2077244019965894657",
+                "name": "Flux.2 Inpaint"
+            },
+            {
+                "id": "2077243903429926914",
+                "name": "360Panorama"
+            },
+            {
+                "id": "2077933460735766530",
+                "name": "360Panorama V2"
             }
         ]
     }

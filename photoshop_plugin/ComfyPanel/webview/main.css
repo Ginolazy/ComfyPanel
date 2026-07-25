@@ -375,7 +375,7 @@ body {
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    width: 28px;
+    width: 20px;
     height: 20px;
     border-radius: 4px;
     border: 1px solid var(--border-color);
@@ -865,7 +865,7 @@ body[data-active-tab="global"] #deleteNanoBananaBtn {
 .nav-links {
     display: flex;
     align-items: center;
-    gap: 2px;
+    gap: 1px;
     flex-shrink: 0;
 }
 
@@ -1117,8 +1117,8 @@ body[data-active-tab="global"] #deleteNanoBananaBtn {
 }
 
 .icon-btn {
-    width: 28px;
-    height: 28px;
+    width: 22px;
+    height: 22px;
     background: transparent;
     border: none;
     display: flex;
@@ -1231,7 +1231,7 @@ input[type="password"] {
 /* [NEW] Configurable Grid Layout */
 .node-group.is-grid-layout {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(90px, 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
     gap: 0 8px;
     align-items: start;
 }

@@ -12,7 +12,6 @@ from aiohttp import web
 from nodes import SaveImage
 from .utility.type_utility import (any_type, handle_error, handle_error_safe)
 from .utility.image_utility import (
-    generate_preview_images,
     flatten_input_values,
     generate_text_previews,
     create_rgba_from_image_mask,
@@ -26,49 +25,17 @@ PAUSE_REQUESTS = {}
 MAX_FLOW_PORTS = 10
 
 def save_audio_preview_native(audio_dict, prefix_append):
-    import folder_paths
-    import random
 
     try:
         from comfy_api.latest import UI
         from comfy_api.latest._io import FolderType
         try:
-            res = UI.AudioSaveHelper.save_audio(audio_dict, "PreviewAudio", FolderType.temp, None, format="mp3")
+            return UI.AudioSaveHelper.save_audio(audio_dict, "PreviewAudio", FolderType.temp, None, format="mp3", quality="128k")
         except Exception:
-            res = UI.AudioSaveHelper.save_audio(audio_dict, "PreviewAudio", FolderType.temp, None, format="flac")
-        if res:
-            return res
-    except Exception:
-        pass
-
-    try:
-        from comfy_api.latest import UI
-        preview_instance = UI.PreviewAudio(audio_dict)
-        res_dict = preview_instance.as_dict()
-        if res_dict and "audio" in res_dict:
-            return res_dict["audio"]
-    except Exception:
-        pass
-
-    try:
-        from comfy_extras.nodes_audio import save_audio
-
-        class TempAudioSaver:
-            def __init__(self):
-                self.output_dir = folder_paths.get_temp_directory()
-                self.type = "temp"
-                self.prefix_append = prefix_append
-
-        saver = TempAudioSaver()
-        try:
-            res = save_audio(saver, audio_dict, filename_prefix="PreviewAudio", format="mp3")
-        except Exception:
-            res = save_audio(saver, audio_dict, filename_prefix="PreviewAudio", format="flac")
-
-        if res and "ui" in res and "audio" in res["ui"]:
-            return res["ui"]["audio"]
-    except Exception:
-        pass
+            return UI.AudioSaveHelper.save_audio(audio_dict, "PreviewAudio", FolderType.temp, None, format="flac")
+    except Exception as e:
+        print(f"[ComfyPanel] save_audio failed: {e}")
+        return None
 
     try:
         import torchaudio
@@ -131,8 +98,14 @@ class PauseMixin:
         if os.path.exists(clipspace_dir):
             try:
                 for f in os.listdir(clipspace_dir):
-                    if (f.startswith("clipspace-mask-") or f.startswith("clipspace-painted-masked-")) and f.endswith(".png"):
-                        existing_files.add(f)
+                    if f.endswith(".png"):
+                        if f.startswith("clipspace-painted-masked-"):
+                            existing_files.add(f)
+                        elif f.startswith("clipspace-mask-"):
+                            suffix = f[len("clipspace-mask-"):]
+                            corresponding_painted = "clipspace-painted-masked-" + suffix
+                            if not os.path.exists(os.path.join(clipspace_dir, corresponding_painted)):
+                                existing_files.add(f)
             except Exception:
                 pass
 
@@ -295,7 +268,7 @@ class AnyPreview(SaveImage):
 
         flat_input_values = flatten_input_values(input_values)
 
-        preview_images_list = generate_preview_images(flat_input_values)
+        preview_images_list = generate_editable_images(flat_input_values)
         frontend_data = {}
 
         if preview_images_list:
