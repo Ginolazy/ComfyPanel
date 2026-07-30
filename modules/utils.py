@@ -1,24 +1,32 @@
 REQUIRED_DEPENDENCIES = ("torch", "numpy", "folder_paths", "server", "aiohttp")
 
-import torch
-import numpy as np
+import comfy.model_management
 import folder_paths
 import json
+import node_helpers
+import numpy as np
 import os
 import random
 import server
 import threading
+import torch
+import torchaudio
 from aiohttp import web
+from comfy_api.latest import UI
+from comfy_api.latest._io import FolderType
 from nodes import SaveImage
+from PIL import Image, ImageOps
 from .utility.type_utility import (any_type, handle_error, handle_error_safe)
 from .utility.image_utility import (
+    composite_image_with_color,
+    create_rgba_from_image_mask,
     flatten_input_values,
     generate_text_previews,
-    create_rgba_from_image_mask,
+    is_empty_mask,
     generate_editable_images,
+    parse_color,
     save_images_for_preview,
-    send_preview_event,
-    composite_image_with_color
+    send_preview_event
 )
 
 PAUSE_REQUESTS = {}
@@ -27,8 +35,6 @@ MAX_FLOW_PORTS = 10
 def save_audio_preview_native(audio_dict, prefix_append):
 
     try:
-        from comfy_api.latest import UI
-        from comfy_api.latest._io import FolderType
         try:
             return UI.AudioSaveHelper.save_audio(audio_dict, "PreviewAudio", FolderType.temp, None, format="mp3", quality="128k")
         except Exception:
@@ -38,8 +44,6 @@ def save_audio_preview_native(audio_dict, prefix_append):
         return None
 
     try:
-        import torchaudio
-        import os
         waveform = audio_dict["waveform"]
         if waveform.ndim == 3:
             waveform = waveform.squeeze(0)
@@ -120,8 +124,6 @@ class PauseMixin:
 
         pause_data = PAUSE_REQUESTS[unique_id_str]
         pause_data["event"].clear()
-
-        import comfy.model_management
 
         server.PromptServer.instance.send_sync("ComfyPanel.node_event", {
             "node_id": unique_id_str,
@@ -421,9 +423,6 @@ class AnyPreviewPause(AnyPreview, PauseMixin):
                     if os.path.exists(full_path):
                         try:
 
-                            from PIL import Image, ImageOps
-                            import node_helpers
-
                             i = node_helpers.pillow(Image.open, full_path)
                             i = node_helpers.pillow(ImageOps.exif_transpose, i)
 
@@ -611,7 +610,6 @@ class ImageMask_Composite(SaveImage):
         return 0
 
     def process_composite(self, mask_opacity=1.0, mask_color="255, 255, 255", mask_outline=False, image=None, mask=None, unique_id=None):
-        from .utility.image_utility import parse_color, is_empty_mask
         unique_id_str = str(unique_id[0] if isinstance(unique_id, list) and unique_id else unique_id)
 
         if mask is not None and is_empty_mask(mask):

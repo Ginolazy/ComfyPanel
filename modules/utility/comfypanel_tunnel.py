@@ -169,7 +169,6 @@ class TunnelManager:
 
             threading.Thread(target=self._monitor_logs, daemon=True).start()
 
-            import re
             is_ip = bool(re.match(r'^[\d\.]+$', server_addr))
             protocol = "http"
 

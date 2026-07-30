@@ -71,8 +71,8 @@
             'plan_billed_monthly': 'Billed monthly',
             'checkout': 'Checkout',
             'checkout_sub': 'Credit / Debit Card',
-            'pay_mianbaoduo': 'Alipay / WeChat',
-            'pay_mianbaoduo_sub': 'Scan to pay securely',
+            'pay_aifadian': 'Alipay / WeChat',
+            'pay_aifadian_sub': 'Scan to pay securely',
 
             // Sections & Headers
             'global_settings': 'Global Settings',
@@ -470,8 +470,8 @@
             'plan_billed_monthly': '按月计费',
             'checkout': '购买专业版',
             'checkout_sub': '信用卡 / 借记卡安全付款',
-            'pay_mianbaoduo': '微信 / 支付宝支付',
-            'pay_mianbaoduo_sub': '扫码极速安全支付',
+            'pay_aifadian': '微信 / 支付宝支付',
+            'pay_aifadian_sub': '扫码极速安全支付',
 
             // Sections & Headers
             'global_settings': '全局设置',

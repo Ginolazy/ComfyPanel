@@ -1,19 +1,29 @@
 REQUIRED_DEPENDENCIES = ("requests", "torch", "numpy", "folder_paths", "PIL")
 
-import os
+import comfy.model_management
+import cv2
+import folder_paths
+import io
 import json
 import logging
-import time
-import requests
-import io
-import uuid
+import nodes
 import numpy as np
+import os
+import random
+import re
+import requests
+import time
 import torch
-import folder_paths
-from PIL import Image
+import torchaudio
+import urllib.parse
+import uuid
+import wave
+import aiohttp
 from aiohttp import web
+from comfy_api.input_impl import VideoFromFile
+from comfy_extras.nodes_audio import load as load_audio
+from PIL import Image
 from server import PromptServer
-import comfy.model_management
 from .utility.type_utility import any_type
 
 def get_rh_config():
@@ -39,50 +49,68 @@ def get_rh_config():
             logging.error(f"[RunningHub] Failed to read config: {e}")
     return api_key, runninghub_base_url
 
-def upload_image_to_runninghub(image_tensor, api_key, base_url):
+def upload_to_runninghub(value, api_key, base_url):
+    """
+    通用上传函数：支持 torch.Tensor、numpy.ndarray 和文件名字符串
+    Unified upload function: supports torch.Tensor, numpy.ndarray, and filename strings
+    """
 
-    return upload_media_to_runninghub(image_tensor, api_key, base_url)
-
-def upload_media_to_runninghub(val, api_key, base_url):
-    import io
-    import folder_paths
-
-    if isinstance(val, list):
-        if len(val) == 0:
+    if isinstance(value, list):
+        if len(value) == 0:
             return ""
-        val = val[0]
+        value = value[0]
 
-    if not isinstance(val, str):
-        raise ValueError(f"Upload value must be a filename string, got: {type(val)}")
+    if isinstance(value, (torch.Tensor, np.ndarray)):
 
-    input_dir = folder_paths.get_input_directory()
-    file_path = os.path.join(input_dir, val)
-    if not os.path.isfile(file_path):
-        file_path = val
-        if not os.path.isfile(file_path):
-            raise FileNotFoundError(f"File not found in ComfyUI input directory: {val}")
+        if isinstance(value, torch.Tensor):
+            img_np = value.cpu().numpy()
+        else:
+            img_np = value
 
-    bio = io.BytesIO()
-    with open(file_path, "rb") as f:
-        bio.write(f.read())
-    bio.seek(0)
+        if img_np.ndim == 4:
+            img_np = img_np[0]
 
-    filename = os.path.basename(file_path)
+        img_np = (img_np * 255.0).astype(np.uint8)
+        img = Image.fromarray(img_np)
 
-    mime_type = "application/octet-stream"
-    lower_fn = filename.lower()
-    if lower_fn.endswith((".png", ".jpg", ".jpeg")):
+        bio = io.BytesIO()
+        img.save(bio, format="PNG")
+        bio.seek(0)
+
+        filename = "uxp_upload.png"
         mime_type = "image/png"
-    elif lower_fn.endswith((".wav", ".mp3", ".flac", ".ogg")):
-        mime_type = "audio/wav"
-    elif lower_fn.endswith((".mp4", ".avi", ".mov", ".webm")):
-        mime_type = "video/mp4"
+
+    elif isinstance(value, str):
+        input_dir = folder_paths.get_input_directory()
+        file_path = os.path.join(input_dir, value)
+        if not os.path.isfile(file_path):
+            file_path = value
+            if not os.path.isfile(file_path):
+                raise FileNotFoundError(f"File not found in ComfyUI input directory: {value}")
+
+        bio = io.BytesIO()
+        with open(file_path, "rb") as f:
+            bio.write(f.read())
+        bio.seek(0)
+
+        filename = os.path.basename(file_path)
+
+        lower_fn = filename.lower()
+        if lower_fn.endswith((".png", ".jpg", ".jpeg")):
+            mime_type = "image/png"
+        elif lower_fn.endswith((".wav", ".mp3", ".flac", ".ogg")):
+            mime_type = "audio/wav"
+        elif lower_fn.endswith((".mp4", ".avi", ".mov", ".webm")):
+            mime_type = "video/mp4"
+        else:
+            mime_type = "application/octet-stream"
+    else:
+        raise ValueError(f"Upload value must be a torch.Tensor, numpy.ndarray, or filename string, got: {type(value)}")
 
     url = f"{base_url.strip().rstrip('/')}/openapi/v2/media/upload/binary"
     headers = {}
     if api_key:
         headers["Authorization"] = f"Bearer {api_key}"
-        headers["User-Language"] = "zh_CN"
 
     files = {"file": (filename, bio, mime_type)}
     resp = requests.post(url, files=files, headers=headers)
@@ -94,6 +122,133 @@ def upload_media_to_runninghub(val, api_key, base_url):
             return file_name
     raise ConnectionError(f"Failed to upload media to RunningHub: {resp.text}")
 
+def process_and_upload_media(value, api_key, base_url, field_name_hint=""):
+    """
+    处理并上传各种媒体类型到 RunningHub
+    支持: 图片tensor, 视频tensor, 音频dict, 文件名字符串等
+    Process and upload various media types to RunningHub
+    Supports: image tensor, video tensor, audio dict, filename string, etc.
+    """
+
+    temp_val = value
+    if isinstance(temp_val, list) and len(temp_val) > 0:
+        if isinstance(temp_val[0], (torch.Tensor, np.ndarray)):
+            temp_val = temp_val[0]
+        elif isinstance(temp_val[0], str):
+            temp_val = temp_val[0]
+        elif isinstance(temp_val[0], dict):
+            temp_val = temp_val[0]
+
+    if isinstance(temp_val, dict) and "waveform" in temp_val and "sample_rate" in temp_val:
+        waveform = temp_val["waveform"]
+        sample_rate = temp_val["sample_rate"]
+        if isinstance(waveform, torch.Tensor):
+            waveform = waveform.cpu().numpy()
+        if waveform.ndim == 3:
+            waveform = waveform[0]
+
+        temp_fn = f"rh_temp_{uuid.uuid4().hex}.wav"
+        temp_dir = folder_paths.get_input_directory()
+        temp_path = os.path.join(temp_dir, temp_fn)
+
+        audio_data = np.clip(waveform, -1.0, 1.0)
+        audio_data = (audio_data * 32767).astype(np.int16)
+
+        with wave.open(temp_path, "wb") as wav_file:
+            nchannels = audio_data.shape[0] if audio_data.ndim > 1 else 1
+            sampwidth = 2
+            wav_file.setnchannels(nchannels)
+            wav_file.setsampwidth(sampwidth)
+            wav_file.setframerate(sample_rate)
+            if nchannels > 1:
+                frames = audio_data.T.tobytes()
+            else:
+                frames = audio_data.tobytes()
+            wav_file.writeframes(frames)
+
+        try:
+            return upload_to_runninghub(temp_fn, api_key, base_url)
+        finally:
+            if os.path.exists(temp_path):
+                try:
+                    os.remove(temp_path)
+                except Exception:
+                    pass
+
+    if isinstance(temp_val, dict):
+        temp_val = temp_val.get("filename") or temp_val.get("image") or temp_val.get("video") or temp_val.get("audio")
+
+    if isinstance(temp_val, str):
+        return upload_to_runninghub(temp_val, api_key, base_url)
+
+    if isinstance(temp_val, (torch.Tensor, np.ndarray)):
+        val_np = temp_val.cpu().numpy() if isinstance(temp_val, torch.Tensor) else temp_val
+
+        is_video = "video" in field_name_hint.lower() and val_np.ndim == 4 and val_np.shape[0] > 1
+
+        if is_video:
+
+            temp_fn = f"rh_temp_{uuid.uuid4().hex}.mp4"
+            temp_dir = folder_paths.get_input_directory()
+            temp_path = os.path.join(temp_dir, temp_fn)
+
+            height, width = val_np.shape[1], val_np.shape[2]
+            fourcc = cv2.VideoWriter_fourcc(*'mp4v')
+            out = cv2.VideoWriter(temp_path, fourcc, 25.0, (width, height))
+            for frame in val_np:
+                frame_bgr = cv2.cvtColor((np.clip(frame, 0, 1) * 255).astype(np.uint8), cv2.COLOR_RGB2BGR)
+                out.write(frame_bgr)
+            out.release()
+
+            try:
+                logging.info(f"[RunningHub] Converted video tensor to MP4, uploading...")
+                return upload_to_runninghub(temp_fn, api_key, base_url)
+            finally:
+                if os.path.exists(temp_path):
+                    try:
+                        os.remove(temp_path)
+                    except Exception:
+                        pass
+        else:
+
+            if val_np.ndim == 4:
+                val_np = val_np[0]
+            val_np = np.clip(val_np, 0, 1)
+            img_data = (val_np * 255).astype(np.uint8)
+            img = Image.fromarray(img_data)
+            temp_fn = f"rh_temp_{uuid.uuid4().hex}.png"
+            temp_dir = folder_paths.get_input_directory()
+            temp_path = os.path.join(temp_dir, temp_fn)
+            img.save(temp_path)
+            try:
+                return upload_to_runninghub(temp_fn, api_key, base_url)
+            finally:
+                if os.path.exists(temp_path):
+                    try:
+                        os.remove(temp_path)
+                    except Exception:
+                        pass
+
+    raise ValueError(f"Unsupported media type for upload: {type(temp_val)}")
+
+def upload_image_to_runninghub(image_tensor, api_key, base_url):
+    """Backward compatibility wrapper for image uploads"""
+    return process_and_upload_media(image_tensor, api_key, base_url, "image")
+
+def upload_media_to_runninghub(val, api_key, base_url):
+    """Backward compatibility wrapper for file uploads"""
+    return process_and_upload_media(val, api_key, base_url, "")
+
+def send_progress_update(unique_id, progress_val, status_str, log_msg=None):
+    """发送节点进度更新到前端"""
+    if unique_id:
+        PromptServer.instance.send_sync("runninghub_webapp_progress", {
+            "node_id": unique_id,
+            "progress": progress_val,
+            "status": status_str,
+            "msg": log_msg or status_str
+        })
+
 @PromptServer.instance.routes.get("/rh_webapp/get_config")
 async def get_rh_webapp_config(request):
     try:
@@ -102,38 +257,12 @@ async def get_rh_webapp_config(request):
     except Exception as e:
         return web.json_response({"error": str(e)}, status=500)
 
-@PromptServer.instance.routes.post("/comfypanel/runninghub/webapp_detail")
-async def runninghub_webapp_detail(request):
-    try:
-        body = await request.json()
-        webapp_id = body.get("webappId")
-        if not webapp_id:
-            return web.json_response({"success": False, "error": "Missing webappId"}, status=400)
-
-        api_key, base_url = get_rh_config()
-        clean_base = base_url.strip().rstrip("/")
-        if not clean_base.startswith("http"):
-            clean_base = "https://www.runninghub.cn"
-
-        url = f"{clean_base}/api/webapp/detail"
-        headers = {
-            "Content-Type": "application/json"
-        }
-        if api_key:
-            headers["token"] = api_key
-
-        resp = requests.post(url, json={"webappId": str(webapp_id)}, headers=headers, timeout=15)
-        if resp.status_code != 200:
-            return web.json_response({"success": False, "error": f"RunningHub detail API returned HTTP {resp.status_code}"}, status=resp.status_code)
-
-        res_json = resp.json()
-        return web.json_response(res_json)
-    except Exception as e:
-        return web.json_response({"success": False, "error": str(e)}, status=500)
-
 @PromptServer.instance.routes.get("/rh_webapp/default_app_list")
 async def get_rh_default_app_list(request):
     try:
+        _, base_url = get_rh_config()
+        is_international = "runninghub.ai" in base_url
+
         config_path = os.path.join(os.path.dirname(os.path.dirname(__file__)), "default", "default_apps.json")
         default_apps = []
         if os.path.exists(config_path):
@@ -144,12 +273,48 @@ async def get_rh_default_app_list(request):
                     for category in raw_apps.values():
                         if isinstance(category, list):
                             for app in category:
-                                if isinstance(app, dict) and "id" in app:
-                                    default_apps.append(str(app["id"]))
+                                if not isinstance(app, dict):
+                                    continue
+
+                                shared_id = app.get("id")
+                                if shared_id:
+                                    default_apps.append(str(shared_id))
+                                region_id = app.get("idEn") if is_international else app.get("idZh")
+                                if region_id:
+                                    default_apps.append(str(region_id))
         return web.json_response({"default_apps": default_apps})
     except Exception as e:
         print(f"[RHWebApp] Error reading default config: {e}")
         return web.json_response({"default_apps": []})
+
+@PromptServer.instance.routes.post("/comfypanel/runninghub/webapp_detail")
+async def runninghub_webapp_detail(request):
+    """
+    Fetch webapp details from RunningHub API for RHWebApp node.
+    """
+    try:
+        body = await request.json()
+        webapp_id = body.get("webappId")
+        if not webapp_id:
+            return web.json_response({"code": -1, "msg": "Missing webappId"}, status=400)
+
+        api_key, base_url = get_rh_config()
+        clean_base = base_url.strip().rstrip("/")
+        if not clean_base.startswith("http"):
+            clean_base = "https://www.runninghub.cn"
+
+        url = f"{clean_base}/api/webapp/detail"
+        headers = {"Content-Type": "application/json"}
+        if api_key:
+            headers["Authorization"] = f"Bearer {api_key}"
+
+        async with aiohttp.ClientSession() as session:
+            async with session.post(url, json={"webappId": str(webapp_id)}, headers=headers, timeout=aiohttp.ClientTimeout(total=15), ssl=False) as resp:
+                result = await resp.json()
+                return web.json_response(result, status=resp.status)
+    except Exception as e:
+        logging.error(f"[RHWebApp] webapp_detail error: {e}")
+        return web.json_response({"code": -1, "msg": str(e)}, status=500)
 
 class RHWorkflow:
     @classmethod
@@ -172,15 +337,6 @@ class RHWorkflow:
     DISPLAY_NAME = "☁️RunningHub Workflow"
     FUNCTION = "execute_workflow"
     CATEGORY = "ComfyPanel"
-
-    def _send_progress(self, unique_id, progress_val, status_str, log_msg=None):
-        if unique_id:
-            PromptServer.instance.send_sync("runninghub_webapp_progress", {
-                "node_id": unique_id,
-                "progress": progress_val,
-                "status": status_str,
-                "msg": log_msg or status_str
-            })
 
     def execute_workflow(self, workflow_file, params_json="{}", unique_id=None, prompt=None, **kwargs):
         api_key, runninghub_base_url = get_rh_config()
@@ -296,118 +452,15 @@ class RHWorkflow:
                                         src_inputs = src_node.get("inputs", {})
                                         raw_fn = src_inputs.get("image") or src_inputs.get("audio") or src_inputs.get("video") or src_inputs.get("upload")
                                         if raw_fn and isinstance(raw_fn, str):
-                                            uploaded_fn = upload_media_to_runninghub(raw_fn, api_key, runninghub_base_url)
+                                            uploaded_fn = process_and_upload_media(raw_fn, api_key, runninghub_base_url, k)
                         except Exception as trace_err:
                             logging.warning(f"[RHWorkflow] Failed to trace parent raw file: {trace_err}")
 
                         if not uploaded_fn:
                             try:
-
-                                temp_val = val
-                                if isinstance(temp_val, list) and len(temp_val) > 0:
-                                    if isinstance(temp_val[0], (torch.Tensor, np.ndarray)):
-                                        temp_val = temp_val[0]
-                                    elif isinstance(temp_val[0], str):
-                                        temp_val = temp_val[0]
-                                    elif isinstance(temp_val[0], dict):
-                                        temp_val = temp_val[0]
-
-                                if isinstance(temp_val, dict) and "waveform" in temp_val and "sample_rate" in temp_val:
-                                    waveform = temp_val["waveform"]
-                                    sample_rate = temp_val["sample_rate"]
-                                    if isinstance(waveform, torch.Tensor):
-                                        waveform = waveform.cpu().numpy()
-                                    if waveform.ndim == 3:
-                                        waveform = waveform[0]
-
-                                    import wave
-                                    import uuid
-                                    temp_fn = f"rh_temp_{uuid.uuid4().hex}.wav"
-                                    temp_dir = folder_paths.get_input_directory()
-                                    temp_path = os.path.join(temp_dir, temp_fn)
-
-                                    audio_data = np.clip(waveform, -1.0, 1.0)
-                                    audio_data = (audio_data * 32767).astype(np.int16)
-
-                                    with wave.open(temp_path, "wb") as wav_file:
-                                        nchannels = audio_data.shape[0] if audio_data.ndim > 1 else 1
-                                        sampwidth = 2
-                                        wav_file.setnchannels(nchannels)
-                                        wav_file.setsampwidth(sampwidth)
-                                        wav_file.setframerate(sample_rate)
-                                        if nchannels > 1:
-                                            frames = audio_data.T.tobytes()
-                                        else:
-                                            frames = audio_data.tobytes()
-                                        wav_file.writeframes(frames)
-
-                                    try:
-                                        uploaded_fn = upload_media_to_runninghub(temp_fn, api_key, runninghub_base_url)
-                                    finally:
-                                        if os.path.exists(temp_path):
-                                            try:
-                                                os.remove(temp_path)
-                                            except Exception as clean_err:
-                                                logging.warning(f"[RHWorkflow] Failed to remove temp file: {clean_err}")
-
-                                if isinstance(temp_val, dict) and not uploaded_fn:
-                                    temp_val = temp_val.get("filename") or temp_val.get("image") or temp_val.get("video") or temp_val.get("audio")
-
-                                if isinstance(temp_val, str) and not uploaded_fn:
-                                    uploaded_fn = upload_media_to_runninghub(temp_val, api_key, runninghub_base_url)
-
-                                elif isinstance(temp_val, (torch.Tensor, np.ndarray)) and not uploaded_fn:
-                                    val_np = temp_val.cpu().numpy() if isinstance(temp_val, torch.Tensor) else temp_val
-
-                                    is_video_slot = k.lower().startswith("video")
-                                    if is_video_slot and val_np.ndim == 4 and val_np.shape[0] > 1:
-
-                                        import cv2
-                                        import uuid
-                                        temp_fn = f"rh_temp_{uuid.uuid4().hex}.mp4"
-                                        temp_dir = folder_paths.get_input_directory()
-                                        temp_path = os.path.join(temp_dir, temp_fn)
-
-                                        height, width = val_np.shape[1], val_np.shape[2]
-                                        fourcc = cv2.VideoWriter_fourcc(*'mp4v')
-                                        out = cv2.VideoWriter(temp_path, fourcc, 25.0, (width, height))
-                                        for frame in val_np:
-                                            frame_bgr = cv2.cvtColor((np.clip(frame, 0, 1) * 255).astype(np.uint8), cv2.COLOR_RGB2BGR)
-                                            out.write(frame_bgr)
-                                        out.release()
-
-                                        try:
-                                            logging.info(f"[RHWorkflow] Converted video tensor to temporary MP4 file '{temp_fn}'. Uploading...")
-                                            uploaded_fn = upload_media_to_runninghub(temp_fn, api_key, runninghub_base_url)
-                                        finally:
-                                            if os.path.exists(temp_path):
-                                                try:
-                                                    os.remove(temp_path)
-                                                except Exception as clean_err:
-                                                    logging.warning(f"[RHWorkflow] Failed to remove temp file: {clean_err}")
-                                    else:
-
-                                        if val_np.ndim == 4:
-                                            val_np = val_np[0]
-                                        val_np = np.clip(val_np, 0, 1)
-                                        img_data = (val_np * 255).astype(np.uint8)
-                                        img = Image.fromarray(img_data)
-
-                                        import uuid
-                                        temp_fn = f"rh_temp_{uuid.uuid4().hex}.png"
-                                        temp_dir = folder_paths.get_input_directory()
-                                        temp_path = os.path.join(temp_dir, temp_fn)
-                                        img.save(temp_path)
-                                        try:
-                                            uploaded_fn = upload_media_to_runninghub(temp_fn, api_key, runninghub_base_url)
-                                        finally:
-                                            if os.path.exists(temp_path):
-                                                try:
-                                                    os.remove(temp_path)
-                                                except Exception as clean_err:
-                                                    logging.warning(f"[RHWorkflow] Failed to remove temp file: {clean_err}")
+                                uploaded_fn = process_and_upload_media(val, api_key, runninghub_base_url, k)
                             except Exception as fallback_err:
-                                logging.error(f"[RHWorkflow] Fallback processing failed: {fallback_err}", exc_info=True)
+                                logging.error(f"[RHWorkflow] Failed to process media for slot '{k}': {fallback_err}", exc_info=True)
 
                         if not uploaded_fn:
                             raise ValueError(f"Failed to trace or process media file for input slot '{k}'")
@@ -433,17 +486,30 @@ class RHWorkflow:
             comfy_headers = {
                 "Content-Type": "application/json"
             }
+            logging.info(f"[RHWorkflow] Submitting to URL: {run_url}")
+            logging.debug(f"[RHWorkflow] Payload size: {len(json.dumps(prompt_json))} bytes")
+
             resp = requests.post(run_url, json={"prompt": prompt_json}, headers=comfy_headers)
             if resp.status_code != 200:
                 raise ConnectionError(f"RunningHub ComfyUI Proxy /prompt failed with HTTP {resp.status_code}: {resp.text}")
 
             res_data = resp.json()
+            logging.debug(f"[RHWorkflow] Response: {res_data}")
+
             if "error" in res_data:
                 raise ValueError(f"ComfyUI execution error: {res_data['error']}")
 
             task_id = res_data.get("prompt_id")
             if not task_id:
-                raise ValueError(f"No prompt_id returned from ComfyUI proxy: {res_data}")
+
+                error_msg = f"No prompt_id returned from ComfyUI proxy. Response: {res_data}"
+                if res_data == {}:
+                    error_msg += "\n\nPossible causes:"
+                    error_msg += "\n1. RunningHub API Key may be invalid or expired"
+                    error_msg += "\n2. Insufficient credits or permissions"
+                    error_msg += "\n3. Workflow JSON format issue"
+                    error_msg += f"\n4. Check API URL: {run_url}"
+                raise ValueError(error_msg)
 
             logging.info(f"[RHWorkflow] Task submitted successfully. PromptID (TaskID): {task_id}. Polling status...")
 
@@ -454,11 +520,14 @@ class RHWorkflow:
 
             outputs_by_node = {}
             max_retries = 360
-            self._send_progress(unique_id, 0.1, "Submitted", "Submitted, polling status...")
+            send_progress_update(unique_id, 0.1, "Submitted", "Submitted, polling status...")
             for step in range(max_retries):
+
+                comfy.model_management.throw_exception_if_processing_interrupted()
+
                 time.sleep(5)
                 progress_val = min(0.1 + (step / max_retries) * 0.8, 0.95)
-                self._send_progress(unique_id, progress_val, f"Running ({step*5}s)")
+                send_progress_update(unique_id, progress_val, f"Running ({step*5}s)")
                 status_resp = requests.get(history_url, headers=comfy_headers)
                 if status_resp.status_code == 200:
                     status_data = status_resp.json()
@@ -501,7 +570,7 @@ class RHWorkflow:
             if not outputs_by_node:
                 raise TimeoutError("RunningHub task timed out or returned no outputs")
 
-            self._send_progress(unique_id, 0.95, "Downloading results...")
+            send_progress_update(unique_id, 0.95, "Downloading results...")
 
             output_results = []
             sorted_output_node_ids = sorted(outputs_by_node.keys(), key=lambda x: int(x) if x.isdigit() else 99999)
@@ -512,7 +581,6 @@ class RHWorkflow:
 
                 for media_url in urls:
                     logging.info(f"[RHWorkflow] Downloading output media: {media_url}")
-                    import urllib.parse
                     parsed_url = urllib.parse.urlparse(media_url)
                     query_params = urllib.parse.parse_qs(parsed_url.query)
                     filename = query_params.get("filename", [""])[0]
@@ -534,7 +602,6 @@ class RHWorkflow:
 
                         elif ext in [".wav", ".mp3", ".flac", ".ogg", ".aac", ".m4a"]:
 
-                            import uuid
                             temp_fn = f"rh_out_{uuid.uuid4().hex}{ext}"
                             temp_dir = folder_paths.get_input_directory()
                             temp_path = os.path.join(temp_dir, temp_fn)
@@ -545,7 +612,6 @@ class RHWorkflow:
                                     f.write(media_bytes)
 
                                 try:
-                                    from comfy_extras.nodes_audio import load as load_audio
                                     waveform, sample_rate = load_audio(temp_path)
 
                                     audio_dict = {"waveform": waveform.unsqueeze(0), "sample_rate": sample_rate}
@@ -562,7 +628,6 @@ class RHWorkflow:
 
                         elif ext in [".mp4", ".avi", ".mov", ".webm", ".gif"]:
 
-                            import uuid
                             dest_fn = f"rh_out_{uuid.uuid4().hex}{ext}"
                             dest_path = os.path.join(folder_paths.get_input_directory(), dest_fn)
                             with open(dest_path, "wb") as f:
@@ -593,11 +658,13 @@ class RHWorkflow:
             padding_len = len(self.RETURN_TYPES) - len(res_tuple)
             if padding_len > 0:
                 res_tuple = res_tuple + (None,) * padding_len
-            self._send_progress(unique_id, 1.0, "Success", "Success!")
+            send_progress_update(unique_id, 1.0, "Success", "Success!")
             return res_tuple
 
-        except Exception as e:
-            self._send_progress(unique_id, 0.0, "Failed", str(e))
+        except BaseException as e:
+
+            status = "Cancelled" if "interrupt" in str(e).lower() or isinstance(e, KeyboardInterrupt) else "Failed"
+            send_progress_update(unique_id, 0.0, status, str(e))
             logging.error(f"[RHWorkflow] Error executing remote workflow: {e}", exc_info=True)
             raise e
 
@@ -642,8 +709,6 @@ class RHWorkflow:
 
                             audio_val = inputs.get("audio")
                             if audio_val and isinstance(audio_val, str):
-                                import urllib.parse
-                                import random
                                 rand_val = random.random()
                                 encoded_fn = urllib.parse.quote(audio_val)
                                 val = f"/api/view?filename={encoded_fn}&type=input&subfolder=&rand={rand_val:.15f}"
@@ -766,216 +831,216 @@ class RHWebApp:
     CATEGORY = "ComfyPanel"
     DISPLAY_NAME = "☁️RunningHub App"
 
-    def _send_progress(self, unique_id, progress_val, status_str, log_msg=None):
-        if unique_id:
-            PromptServer.instance.send_sync("runninghub_webapp_progress", {
-                "node_id": unique_id,
-                "progress": progress_val,
-                "status": status_str,
-                "msg": log_msg or status_str
-            })
-
     def execute_app(self, APP, params_json="{}", prompt=None, extra_pnginfo=None, unique_id=None, **kwargs):
-        api_key, base_url = get_rh_config()
-        if not api_key:
-            raise Exception("RunningHub API Key is not configured. Please configure it in ComfyPanel settings.")
-        if not APP or APP == "None":
-            raise Exception("No App selected")
-
-        web_app_id = None
-        input_values = {}
-        mapping_dict = {}
         try:
-            if params_json:
-                payload_data = json.loads(params_json)
-                if "_port_map" in payload_data:
-                    mapping_dict = payload_data.pop("_port_map")
-                input_values = payload_data
-        except Exception:
-            pass
+            api_key, base_url = get_rh_config()
+            if not api_key:
+                raise Exception("RunningHub API Key is not configured. Please configure it in ComfyPanel settings.")
+            if not APP or APP == "None":
+                raise Exception("No App selected")
 
-        web_app_id = input_values.get("web_app_id")
-        if not web_app_id:
-            raise Exception("Missing web_app_id. Please reload or refresh the node.")
+            web_app_id = None
+            input_values = {}
+            mapping_dict = {}
+            try:
+                if params_json:
+                    payload_data = json.loads(params_json)
+                    if "_port_map" in payload_data:
+                        mapping_dict = payload_data.pop("_port_map")
+                    input_values = payload_data
+            except Exception:
+                pass
 
-        self._send_progress(unique_id, 0.0, "Starting...")
+            web_app_id = input_values.get("web_app_id")
+            if not web_app_id:
+                raise Exception("Missing web_app_id. Please reload or refresh the node.")
 
-        node_info_list = []
+            send_progress_update(unique_id, 0.0, "Starting...")
 
-        for key, val in input_values.items():
-            if key == "web_app_id":
-                continue
-            if "." in key:
-                parts = key.split(".", 1)
-                node_info_list.append({
-                    "nodeId": parts[0],
-                    "fieldName": parts[1],
-                    "fieldValue": str(val)
-                })
+            node_info_list = []
 
-        for label, value in kwargs.items():
-            if label not in mapping_dict:
-                continue
-            var_name = mapping_dict[label]
-            if "." not in var_name:
-                continue
-            parts = var_name.split(".", 1)
-            node_id = parts[0]
-            field_name = parts[1]
+            for key, val in input_values.items():
+                if key == "web_app_id":
+                    continue
+                if "." in key:
+                    parts = key.split(".", 1)
+                    node_info_list.append({
+                        "nodeId": parts[0],
+                        "fieldName": parts[1],
+                        "fieldValue": str(val)
+                    })
 
-            field_val_str = ""
-            if isinstance(value, torch.Tensor) or (isinstance(value, list) and len(value) > 0 and isinstance(value[0], torch.Tensor)):
-                self._send_progress(unique_id, 0.1, f"Uploading input {label}...")
-                field_val_str = upload_image_to_runninghub(value, api_key, base_url)
+            for label, value in kwargs.items():
+                if label not in mapping_dict:
+                    continue
+                var_name = mapping_dict[label]
+                if "." not in var_name:
+                    continue
+                parts = var_name.split(".", 1)
+                node_id = parts[0]
+                field_name = parts[1]
+
+                field_val_str = ""
+
+                try:
+                    send_progress_update(unique_id, 0.1, f"Uploading input {label}...")
+                    field_val_str = process_and_upload_media(value, api_key, base_url, field_name)
+                except Exception as upload_err:
+                    logging.error(f"[RHWebApp] Failed to upload media for field '{field_name}': {upload_err}")
+
+                    field_val_str = str(value)
+
+                found = False
+                for item in node_info_list:
+                    if item["nodeId"] == node_id and item["fieldName"] == field_name:
+                        item["fieldValue"] = field_val_str
+                        found = True
+                        break
+                if not found:
+                    node_info_list.append({
+                        "nodeId": node_id,
+                        "fieldName": field_name,
+                        "fieldValue": field_val_str
+                    })
+
+            send_progress_update(unique_id, 0.2, "Creating WebApp Task...")
+
+            run_url = f"{base_url.strip().rstrip('/')}/task/openapi/ai-app/run"
+            headers = {
+                "Content-Type": "application/json"
+            }
+
+            payload = {
+                "webappId": str(web_app_id),
+                "apiKey": api_key,
+                "nodeInfoList": node_info_list
+            }
+
+            resp = requests.post(run_url, json=payload, headers=headers)
+            if resp.status_code != 200:
+                raise Exception(f"Failed to submit WebApp task, HTTP {resp.status_code}: {resp.text}")
+
+            res_data = resp.json()
+            if res_data.get("code") != 0:
+                msg = res_data.get("msg") or res_data.get("message") or "Unknown error"
+                raise Exception(f"RunningHub WebApp run error: {msg}")
+
+            task_id = None
+            data_field = res_data.get("data")
+            if isinstance(data_field, dict):
+                task_id = data_field.get("taskId") or data_field.get("id")
             else:
-                field_val_str = str(value)
+                task_id = data_field
 
-            found = False
-            for item in node_info_list:
-                if item["nodeId"] == node_id and item["fieldName"] == field_name:
-                    item["fieldValue"] = field_val_str
-                    found = True
-                    break
-            if not found:
-                node_info_list.append({
-                    "nodeId": node_id,
-                    "fieldName": field_name,
-                    "fieldValue": field_val_str
-                })
+            if not task_id:
+                raise Exception(f"No taskId returned from task creation: {res_data}")
 
-        self._send_progress(unique_id, 0.2, "Creating WebApp Task...")
+            task_id = str(task_id)
+            logging.info(f"[RHWebApp] Task created successfully. TaskID: {task_id}. Polling...")
 
-        run_url = f"{base_url.strip().rstrip('/')}/task/openapi/ai-app/run"
-        headers = {
-            "Content-Type": "application/json"
-        }
+            outputs = []
+            poll_url = f"{base_url.strip().rstrip('/')}/task/openapi/outputs"
+            poll_payload = {
+                "apiKey": api_key,
+                "taskId": task_id
+            }
 
-        payload = {
-            "webappId": str(web_app_id),
-            "apiKey": api_key,
-            "nodeInfoList": node_info_list
-        }
+            start_time = time.time()
+            simulated_progress = 0.25
+            max_retries = 180
 
-        resp = requests.post(run_url, json=payload, headers=headers)
-        if resp.status_code != 200:
-            raise Exception(f"Failed to submit WebApp task, HTTP {resp.status_code}: {resp.text}")
+            for attempt in range(max_retries):
+                comfy.model_management.throw_exception_if_processing_interrupted()
+                time.sleep(5)
 
-        res_data = resp.json()
-        if res_data.get("code") != 0:
-            msg = res_data.get("msg") or res_data.get("message") or "Unknown error"
-            raise Exception(f"RunningHub WebApp run error: {msg}")
+                try:
+                    poll_resp = requests.post(poll_url, json=poll_payload, headers=headers, timeout=15)
+                    if poll_resp.status_code == 200:
+                        poll_res = poll_resp.json()
+                        code = poll_res.get("code")
 
-        task_id = None
-        data_field = res_data.get("data")
-        if isinstance(data_field, dict):
-            task_id = data_field.get("taskId") or data_field.get("id")
-        else:
-            task_id = data_field
+                        if code == 0:
+                            data_items = poll_res.get("data")
+                            items = data_items if isinstance(data_items, list) else ([data_items] if data_items else [])
+                            for item in items:
+                                if not item:
+                                    continue
+                                url = item if isinstance(item, str) else (item.get("url") or item.get("fileUrl") or item.get("file_url") or item.get("imgUrl") or item.get("videoUrl") or item.get("audioUrl") or item.get("object_url"))
+                                if url:
+                                    outputs.append(url)
+                            if outputs:
+                                break
+                        elif code in [804, 813]:
+                            status_str = "Queuing" if code == 813 else "Running"
+                            simulated_progress = min(simulated_progress + 0.02, 0.95)
+                            elapsed = int(time.time() - start_time)
+                            send_progress_update(unique_id, simulated_progress, f"{status_str} ({elapsed}s)")
+                        elif code == 805:
+                            failed_data = poll_res.get("data")
+                            reason = "Unknown error"
+                            if isinstance(failed_data, dict):
+                                reason = failed_data.get("failedReason") or failed_data.get("exception_message") or failed_data.get("message") or reason
+                            raise Exception(f"RunningHub WebApp execution failed: {reason}")
+                        else:
+                            msg = poll_res.get("msg") or "Error querying task"
+                            raise Exception(f"RunningHub WebApp task error: {msg}")
+                except Exception as e:
+                    if "execution failed" in str(e) or "task error" in str(e):
+                        raise e
+                    logging.warning(f"[RHWebApp] Polling network error: {e}")
 
-        if not task_id:
-            raise Exception(f"No taskId returned from task creation: {res_data}")
+            if not outputs:
+                raise TimeoutError("RunningHub WebApp execution timed out or returned no output files.")
 
-        task_id = str(task_id)
-        logging.info(f"[RHWebApp] Task created successfully. TaskID: {task_id}. Polling...")
+            send_progress_update(unique_id, 0.99, "Downloading results...")
+            result_outputs = []
 
-        outputs = []
-        poll_url = f"{base_url.strip().rstrip('/')}/task/openapi/outputs"
-        poll_payload = {
-            "apiKey": api_key,
-            "taskId": task_id
-        }
+            output_dir = os.path.join(folder_paths.get_output_directory(), "runninghub_webapp")
+            os.makedirs(output_dir, exist_ok=True)
 
-        start_time = time.time()
-        simulated_progress = 0.25
-        max_retries = 180
+            for idx, file_url in enumerate(outputs):
+                send_progress_update(unique_id, 0.99, f"Downloading result ({idx+1}/{len(outputs)})...")
+                ext = os.path.splitext(file_url.split('?')[0])[1].lower() or ".png"
+                filename = f"rh_{task_id}_{web_app_id}_{idx}{ext}"
+                filepath = os.path.join(output_dir, filename)
 
-        for attempt in range(max_retries):
-            comfy.model_management.throw_exception_if_processing_interrupted()
-            time.sleep(5)
+                try:
+                    with requests.get(file_url, stream=True, timeout=60) as r:
+                        r.raise_for_status()
+                        with open(filepath, 'wb') as f:
+                            for chunk in r.iter_content(chunk_size=8192):
+                                f.write(chunk)
 
-            try:
-                poll_resp = requests.post(poll_url, json=poll_payload, headers=headers, timeout=15)
-                if poll_resp.status_code == 200:
-                    poll_res = poll_resp.json()
-                    code = poll_res.get("code")
-
-                    if code == 0:
-                        data_items = poll_res.get("data")
-                        items = data_items if isinstance(data_items, list) else ([data_items] if data_items else [])
-                        for item in items:
-                            if not item:
-                                continue
-                            url = item if isinstance(item, str) else (item.get("url") or item.get("fileUrl") or item.get("file_url") or item.get("imgUrl") or item.get("videoUrl") or item.get("audioUrl") or item.get("object_url"))
-                            if url:
-                                outputs.append(url)
-                        if outputs:
-                            break
-                    elif code in [804, 813]:
-                        status_str = "Queuing" if code == 813 else "Running"
-                        simulated_progress = min(simulated_progress + 0.02, 0.95)
-                        elapsed = int(time.time() - start_time)
-                        self._send_progress(unique_id, simulated_progress, f"{status_str} ({elapsed}s)")
-                    elif code == 805:
-                        failed_data = poll_res.get("data")
-                        reason = "Unknown error"
-                        if isinstance(failed_data, dict):
-                            reason = failed_data.get("failedReason") or failed_data.get("exception_message") or failed_data.get("message") or reason
-                        raise Exception(f"RunningHub WebApp execution failed: {reason}")
+                    if ext in ['.png', '.jpg', '.jpeg', '.webp', '.bmp', '.tiff']:
+                        img = Image.open(filepath)
+                        img_array = np.array(img.convert("RGBA") if img.mode == 'RGBA' else img.convert("RGB")).astype(np.float32) / 255.0
+                        result_outputs.append(torch.from_numpy(img_array).unsqueeze(0))
+                    elif ext in ['.mp3', '.wav', '.flac', '.aac', '.ogg', '.m4a']:
+                        waveform, sample_rate = torchaudio.load(filepath)
+                        result_outputs.append({"waveform": waveform.unsqueeze(0), "sample_rate": sample_rate})
                     else:
-                        msg = poll_res.get("msg") or "Error querying task"
-                        raise Exception(f"RunningHub WebApp task error: {msg}")
-            except Exception as e:
-                if "execution failed" in str(e) or "task error" in str(e):
-                    raise e
-                logging.warning(f"[RHWebApp] Polling network error: {e}")
+                        try:
+                            result_outputs.append(VideoFromFile(filepath))
+                        except ImportError:
+                            result_outputs.append(filepath)
+                except Exception as e:
+                    logging.error(f"[RHWebApp] Error processing result {idx}: {e}")
 
-        if not outputs:
-            raise TimeoutError("RunningHub WebApp execution timed out or returned no output files.")
+            send_progress_update(unique_id, 1.0, "Success", "Task Finished")
 
-        self._send_progress(unique_id, 0.99, "Downloading results...")
-        result_outputs = []
+            return {
+                "ui": {
+                    "status": {"type": "success", "message": "Task Completed", "task_id": task_id}
+                },
+                "result": (result_outputs,)
+            }
 
-        output_dir = os.path.join(folder_paths.get_output_directory(), "runninghub_webapp")
-        os.makedirs(output_dir, exist_ok=True)
+        except BaseException as e:
 
-        for idx, file_url in enumerate(outputs):
-            self._send_progress(unique_id, 0.99, f"Downloading result ({idx+1}/{len(outputs)})...")
-            ext = os.path.splitext(file_url.split('?')[0])[1].lower() or ".png"
-            filename = f"rh_{task_id}_{web_app_id}_{idx}{ext}"
-            filepath = os.path.join(output_dir, filename)
-
-            try:
-                with requests.get(file_url, stream=True, timeout=60) as r:
-                    r.raise_for_status()
-                    with open(filepath, 'wb') as f:
-                        for chunk in r.iter_content(chunk_size=8192):
-                            f.write(chunk)
-
-                if ext in ['.png', '.jpg', '.jpeg', '.webp', '.bmp', '.tiff']:
-                    img = Image.open(filepath)
-                    img_array = np.array(img.convert("RGBA") if img.mode == 'RGBA' else img.convert("RGB")).astype(np.float32) / 255.0
-                    result_outputs.append(torch.from_numpy(img_array).unsqueeze(0))
-                elif ext in ['.mp3', '.wav', '.flac', '.aac', '.ogg', '.m4a']:
-                    import torchaudio
-                    waveform, sample_rate = torchaudio.load(filepath)
-                    result_outputs.append({"waveform": waveform.unsqueeze(0), "sample_rate": sample_rate})
-                else:
-                    try:
-                        from comfy_api.input_impl import VideoFromFile
-                        result_outputs.append(VideoFromFile(filepath))
-                    except ImportError:
-                        result_outputs.append(filepath)
-            except Exception as e:
-                logging.error(f"[RHWebApp] Error processing result {idx}: {e}")
-
-        self._send_progress(unique_id, 1.0, "Success", "Task Finished")
-
-        return {
-            "ui": {
-                "status": {"type": "success", "message": "Task Completed", "task_id": task_id}
-            },
-            "result": (result_outputs,)
-        }
+            status = "Cancelled" if "interrupt" in str(e).lower() or isinstance(e, KeyboardInterrupt) else "Failed"
+            send_progress_update(unique_id, 0.0, status, str(e))
+            logging.error(f"[RHWebApp] Error executing app: {e}", exc_info=True)
+            raise e
 
 def _find_workflow_file_path(workflow_file: str):
     input_dir = folder_paths.get_input_directory()
@@ -1004,8 +1069,6 @@ def _remap_inner_workflow(inner: dict, remap: dict) -> dict:
 
 async def _upload_local_file_to_rh(filename: str, base_url: str, api_key: str):
     try:
-        import aiohttp
-        import re
         input_dir = folder_paths.get_input_directory()
         file_path = os.path.join(input_dir, filename)
         if not os.path.isfile(file_path):
@@ -1203,7 +1266,6 @@ async def expand_bridge_nodes(outer_prompt: dict, base_url: str, api_key: str) -
     return result
 
 def scan_standard_node_widgets(node, class_type):
-    import nodes
     node_class = nodes.NODE_CLASS_MAPPINGS.get(class_type)
     if not node_class:
         return []

@@ -11,12 +11,14 @@ import os
 import requests
 import time
 import torch
+import torchaudio
 import uuid
 import numpy as np
+import comfy.model_management
+from comfy_api.input_impl import VideoFromFile
 from aiohttp import web
 from PIL import Image
 from server import PromptServer
-import comfy.model_management
 from .utility.type_utility import any_type
 
 def get_api_key():
@@ -381,12 +383,10 @@ class BizyAirWebApp:
                     img_array = np.array(img.convert("RGBA") if img.mode == 'RGBA' else img.convert("RGB")).astype(np.float32) / 255.0
                     result_outputs.append(torch.from_numpy(img_array).unsqueeze(0))
                 elif ext in ['.mp3', '.wav', '.flac', '.aac', '.ogg', '.m4a']:
-                    import torchaudio
                     waveform, sample_rate = torchaudio.load(filepath)
                     result_outputs.append({"waveform": waveform.unsqueeze(0), "sample_rate": sample_rate})
                 else:
 
-                    from comfy_api.input_impl import VideoFromFile
                     result_outputs.append(VideoFromFile(filepath))
             except Exception as e:
                 print(f"[BizyAirWebApp] Error processing result {idx}: {e}")

@@ -80,7 +80,7 @@ ComfyPanel is a professional-grade, high-performance integration for **Adobe Pho
 > **Q: How do I sync account balances and user info for BizyAir and RunningHub?**
 > **A:** ComfyPanel features a built-in real-time billing and account dashboard inside the sidebar panel:
 > - **BizyAir Cloud**: Simply enter your `API Key` (no user registration or sensitive data required). ComfyPanel will execute workflows and instantly fetch your **Username** and **Account Balance** automatically.
-> - **RunningHub Cloud**: Log in using your **Phone Number/Email + Password**. ComfyPanel will automatically detect your account's region (Domestic vs. International), adaptively route to `runninghub.cn` or `runninghub.ai`, and fully unlock your **Username**, **Credits Balance**, and seamlessly synchronize your **Private Apps and Forked Apps** right into the panel without manual configuration.
+> - **RunningHub Cloud**: Log in using your **API Key + Shared API Key + User ID** (find API Keys in the top navigation "API Keys" tab, and User ID in your account dropdown menu). ComfyPanel will fully unlock your **Username** and **Credits Balance**.
 
 > **Q: How do I fix interface lag or memory overflows when transferring large images?**
 > **A:** You don't have to configure anything. ComfyPanel utilizes a native, architecture-level **Zero-Copy mechanism** by default. It leverages direct local file references via Photoshop UXP to completely bypass standard binary IPC data bottlenecks, delivering near-instant synchronization for 4K+ high-resolution textures without consuming extra panel memory.
@@ -159,7 +159,7 @@ ComfyPanel 是一套专为 **Adobe Photoshop** 开发的高灵敏度、专业级
 > **Q: 在 ComfyPanel 中如何同步 BizyAir 与 RunningHub 的余额和用户信息？**
 > **A:** ComfyPanel 在 Photoshop 面板内内置了极其方便的实时账户与计费看板：
 > - **BizyAir 云端**：**只需输入 API Key** (无需注册或绑定任何个人敏感信息，全匿名安全鉴权），系统在驱动渲染的同时，就会自动秒速拉取并显示你的**用户名称与账户余额**。
-> - **RunningHub 云端**：**使用手机号/邮箱 + 密码登录**。ComfyPanel 会自动根据账号判断归属地，智能自适应路由至 `runninghub.cn`（国内）或 `runninghub.ai`（国际）网关，一键完美解锁并显示你的**用户名称、账户余额/点数**，并全自动同步拉取你的**私人 App 与 Forked App**。
+> - **RunningHub 云端**：**使用 API Key + Shared API Key + User ID 登录**（API Key 和 Shared API Key 在顶部导航"密钥"标签页中，User ID 在右上角账号下拉菜单中）。ComfyPanel 将完美解锁并显示你的**用户名称、账户余额/点数**。
 
 > **Q: 如何排查大图传输时插件卡死或内存溢出？**
 > **A:** 你不需要进行任何手动配置。ComfyPanel 默认原生采用了**底层的“零拷贝（Zero-Copy）”性能机制**。通过 Photoshop UXP 的本地文件直接引用技术，从架构上彻底绕过了传统的二进制 IPC 数据传输瓶颈，4K+ 超高清纹理在生成与同步时天然就是秒速响应且不占额外面板内存。

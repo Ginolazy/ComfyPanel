@@ -1,5 +1,6 @@
 import re
 import numpy as np
+import server
 import torch
 import torch.nn.functional as F
 from PIL import Image, ImageColor, ImageEnhance, ImageFilter
@@ -262,7 +263,6 @@ def save_images_for_preview(save_image_instance, images_list: List[torch.Tensor]
 
 def send_preview_event(unique_id_str: str, frontend_data: dict, node_type: str = "preview",
                        action: str = None, extra_data: dict = None):
-    import server
     event_data = {
         "node_id": unique_id_str,
         "node_type": node_type,
