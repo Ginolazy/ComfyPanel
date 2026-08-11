@@ -15,6 +15,7 @@ from aiohttp import web, ClientError
 from server import PromptServer
 from PIL import Image, ImageOps
 from .comfypanel_tunnel import tunnel_manager
+from .comfypanel_config import read_config, write_config
 
 def _patch_origin_middleware():
     app = PromptServer.instance.app
@@ -389,35 +390,6 @@ async def open_user_config(request):
     except Exception as e:
         return web.json_response({"success": False, "error": str(e)}, status=500)
 
-@PromptServer.instance.routes.get("/comfypanel/prompt_templates")
-async def get_prompt_templates(request):
-    try:
-        plugin_root = os.path.dirname(os.path.dirname(os.path.dirname(os.path.realpath(__file__))))
-        templates_path = os.path.abspath(os.path.join(plugin_root, "default", "prompt_templates.json"))
-
-        if not os.path.exists(templates_path):
-
-            return web.json_response({})
-        with open(templates_path, "r", encoding="utf-8") as f:
-            data = json.load(f)
-        return web.json_response(data)
-    except Exception as e:
-        return web.json_response({"error": str(e)}, status=500)
-
-@PromptServer.instance.routes.post("/comfypanel/save_prompt_templates")
-async def save_prompt_templates(request):
-    try:
-        body = await request.json()
-        plugin_root = os.path.dirname(os.path.dirname(os.path.dirname(os.path.realpath(__file__))))
-        templates_path = os.path.abspath(os.path.join(plugin_root, "default", "prompt_templates.json"))
-
-        os.makedirs(os.path.dirname(templates_path), exist_ok=True)
-        with open(templates_path, "w", encoding="utf-8") as f:
-            json.dump(body, f, ensure_ascii=False, indent=2)
-        return web.json_response({"success": True})
-    except Exception as e:
-        return web.json_response({"success": False, "error": str(e)}, status=500)
-
 @PromptServer.instance.routes.get("/comfypanel/userdata")
 async def get_userdata_list(request):
     """
@@ -559,26 +531,6 @@ async def get_builtin_workflows(request):
     except Exception as e:
         return web.json_response({"success": False, "error": str(e)}, status=500)
 
-@PromptServer.instance.routes.post("/comfypanel/open_prompt_templates")
-async def open_prompt_templates(request):
-    try:
-        plugin_root = os.path.dirname(os.path.dirname(os.path.dirname(os.path.realpath(__file__))))
-        templates_path = os.path.abspath(os.path.join(plugin_root, "default", "prompt_templates.json"))
-
-        if not os.path.exists(templates_path):
-            return web.json_response({"success": False, "error": f"prompt_templates.json not found at {templates_path}"}, status=404)
-
-        system = platform.system()
-        if system == "Darwin":
-            subprocess.call(["open", templates_path])
-        elif system == "Windows":
-            os.startfile(templates_path)
-        else:
-            subprocess.call(["xdg-open", templates_path])
-        return web.json_response({"success": True})
-    except Exception as e:
-        return web.json_response({"success": False, "error": str(e)}, status=500)
-
 @PromptServer.instance.routes.post("/comfypanel/tunnel/start")
 async def start_tunnel(request):
     try:
@@ -662,7 +614,7 @@ async def runninghub_proxy(request):
         try:
             async with aiohttp.ClientSession(trust_env=True) as session:
                 if method == "POST":
-                    async with session.post(url, json=payload, headers=proxy_headers, timeout=30, ssl=False) as resp:
+                    async with session.post(url, json=payload, headers=proxy_headers, timeout=30) as resp:
                         try:
                             resp_json = await resp.json()
                             return web.json_response(resp_json, status=resp.status)
@@ -670,7 +622,7 @@ async def runninghub_proxy(request):
                             text = await resp.text()
                             return web.Response(body=text, status=resp.status, content_type=resp.content_type)
                 else:
-                    async with session.get(url, params=payload, headers=proxy_headers, timeout=30, ssl=False) as resp:
+                    async with session.get(url, params=payload, headers=proxy_headers, timeout=30) as resp:
                         try:
                             resp_json = await resp.json()
                             return web.json_response(resp_json, status=resp.status)
@@ -790,24 +742,9 @@ async def runninghub_scan_workflow(request):
 
         data = None
         if is_api_mode or source_type == "runninghub_api":
-            config_dir = os.path.dirname(os.path.dirname(os.path.dirname(os.path.realpath(__file__))))
-            config_path = os.path.join(config_dir, ".runninghub_config")
-            api_key = ""
-            base_url = "https://www.runninghub.cn"
-            if os.path.exists(config_path):
-                try:
-                    with open(config_path, "r", encoding="utf-8") as f:
-                        for line in f:
-                            line = line.strip()
-                            if not line or line.startswith("#") or "=" not in line:
-                                continue
-                            key, val = line.split("=", 1)
-                            if key.strip() == "runninghub_api_key":
-                                api_key = val.strip()
-                            elif key.strip() == "runninghub_base_url":
-                                base_url = val.strip()
-                except Exception:
-                    pass
+            _cfg = read_config()
+            api_key = _cfg.get("runninghub_api_key", "")
+            base_url = _cfg.get("runninghub_base_url", "https://www.runninghub.cn")
             if not api_key:
                 return web.json_response({"success": False, "error": "RunningHub API Key is not configured!"}, status=400)
 
@@ -1145,41 +1082,21 @@ async def runninghub_save_config(request):
         body = await request.json()
         api_key = body.get("apiKey", "").strip()
         base_url = body.get("baseUrl", "").strip()
+        updates = {}
+        if base_url:
+            updates["ComfyPanel.RunningHub.baseUrl"] = base_url
 
-        config_dir = os.path.dirname(os.path.dirname(os.path.dirname(os.path.realpath(__file__))))
-        config_path = os.path.join(config_dir, ".runninghub_config")
-
-        config = {}
-        allowed_keys = {"runninghub_api_key", "runninghub_base_url"}
-
-        if os.path.exists(config_path):
-            try:
-                with open(config_path, "r", encoding="utf-8") as f:
-                    for line in f:
-                        line = line.strip()
-                        if not line or line.startswith("#") or "=" not in line:
-                            continue
-                        key, val = line.split("=", 1)
-                        key = key.strip()
-                        if key in allowed_keys:
-                            config[key] = val.strip()
-            except Exception:
-                pass
+        current_cfg = read_config()
+        effective_base_url = base_url or current_cfg.get("ComfyPanel.RunningHub.baseUrl", "https://www.runninghub.cn")
+        is_en = "runninghub.ai" in effective_base_url
+        key_name = "ComfyPanel.RunningHubEn.apikey" if is_en else "ComfyPanel.RunningHubZh.apikey"
 
         if api_key:
-            config["runninghub_api_key"] = api_key
-        if base_url:
-            config["runninghub_base_url"] = base_url
+            updates[key_name] = api_key
 
-        if not config:
+        if not updates:
             return web.json_response({"success": False, "error": "No valid configuration values provided."}, status=400)
-
-        os.makedirs(os.path.dirname(config_path), exist_ok=True)
-
-        with open(config_path, "w", encoding="utf-8") as f:
-            for key in sorted(config.keys()):
-                f.write(f"{key}={config[key]}\n")
-
+        write_config(updates)
         return web.json_response({"success": True})
     except Exception as e:
         return web.json_response({"success": False, "error": str(e)}, status=500)
@@ -1187,27 +1104,20 @@ async def runninghub_save_config(request):
 @PromptServer.instance.routes.get("/comfypanel/runninghub/get_config")
 async def runninghub_get_config(request):
     try:
-        config_dir = os.path.dirname(os.path.dirname(os.path.dirname(os.path.realpath(__file__))))
-        config_path = os.path.join(config_dir, ".runninghub_config")
-        api_key = ""
-        base_url = "https://www.runninghub.cn"
+        query_base_url = request.query.get("baseUrl", "")
+        cfg = read_config()
+        base_url = query_base_url or cfg.get("ComfyPanel.RunningHub.baseUrl", "https://www.runninghub.cn")
+        is_en = "runninghub.ai" in base_url
+        key_name = "ComfyPanel.RunningHubEn.apikey" if is_en else "ComfyPanel.RunningHubZh.apikey"
+        api_key = cfg.get(key_name, "")
 
-        if os.path.exists(config_path):
-            try:
-                with open(config_path, "r", encoding="utf-8") as f:
-                    for line in f:
-                        line = line.strip()
-                        if not line or line.startswith("#") or "=" not in line:
-                            continue
-                        key, val = line.split("=", 1)
-                        if key.strip() == "runninghub_api_key":
-                            api_key = val.strip()
-                        elif key.strip() == "runninghub_base_url":
-                            base_url = val.strip()
-            except Exception:
-                pass
-
-        return web.json_response({"success": True, "apiKey": api_key, "baseUrl": base_url})
+        return web.json_response({
+            "success": True,
+            "apiKey": api_key,
+            "baseUrl": base_url,
+            "apiKeyZh": cfg.get("ComfyPanel.RunningHubZh.apikey", ""),
+            "apiKeyEn": cfg.get("ComfyPanel.RunningHubEn.apikey", "")
+        })
     except Exception as e:
         return web.json_response({"success": False, "error": str(e)}, status=500)
 

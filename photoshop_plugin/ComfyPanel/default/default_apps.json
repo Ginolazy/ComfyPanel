@@ -2,57 +2,35 @@
     "bizyair": {
         "image": [
             {
-                "name": "NanoBanana 2",
-                "id": "48487"
+                "name": "Flux.2 Inpaint",
+                "id": "56109"
             },
             {
-                "name": "NanoBanana Pro",
-                "id": "48515"
+                "name": "Dual-Image Editing (Flux.2_klein)",
+                "id": "56122"
             },
             {
-                "name": "GPT Image 2 (Third-part)",
-                "id": "51176"
+                "name": "HD Upscale (SeedVR2)",
+                "id": "56117"
             },
             {
-                "name": "GPT Image 2 (Official)",
-                "id": "52815"
-            },
-            {
-                "name": "双图编辑 (Flux.2_Klein)",
-                "id": "51728"
-            },
-            {
-                "name": "全能编辑 (Flux.2_Inpainting)",
-                "id": "43769"
-            },
-            {
-                "name": "图片扩展 (Flux.2_Outpainting)",
-                "id": "43768"
-            },
-            {
-                "name": "局部编辑 (Flux.1_In/Outpainting)",
-                "id": "43694"
-            },
-            {
-                "name": "产品迁移 (Flux.1)",
-                "id": "43854"
-            },
-            {
-                "name": "场景融合 (Flux.1_Kontext)",
-                "id": "43881"
-            },
-            {
-                "name": "高精换脸 (SDXL_InstandID)",
-                "id": "52030"
-            },
-            {
-                "name": "360° Panorama Generator",
-                "id": "54564"
+                "name": "HD Upscaler Pro (TTP + SeedVR2)",
+                "id": "56118"
             }
         ]
     },
     "runninghub": {
         "image": [
+            {
+                "name": "GPT Image 2 (Channel)",
+                "idZh": "2070868537354317826",
+                "idEn": "2077243903857745922"
+            },
+            {
+                "name": "GPT Image 2 (Official)",
+                "idZh": "2073444968953376770",
+                "idEn": "2077243902947856385"
+            },
             {
                 "name": "NanoBanana (Channel)",
                 "idZh": "2070762861495934977",
@@ -79,20 +57,6 @@
                 "idEn": "2077244018963456001"
             },
             {
-                "name": "GPT Image 2 (Channel)",
-                "idZh": "2070868537354317826",
-                "idEn": "2077243903857745922"
-            },
-            {
-                "name": "GPT Image 2 (Official)",
-                "idZh": "2073444968953376770",
-                "idEn": "2077243902947856385"
-            },
-            {
-                "name": "Flux.2 Inpaint",
-                "id": "2061261381885845506"
-            },
-            {
                 "name": "HD Upscaler (SeedVR2)",
                 "idZh": "2081797676273852418",
                 "idEn": "2081798083257004034"
@@ -103,14 +67,18 @@
                 "idEn": "2082055262478802945"
             },
             {
-                "name": "快速换脸 (Flux.1_Redux)",
+                "name": "Face Swap Fast (Flux.1_Redux)",
                 "idZh": "2081378953088036866",
                 "idEn": "2081406313998282754"
             },
             {
-                "name": "高精换脸 (Flux.1_Pulid)",
+                "name": "Face Swap HQ (Flux.1_Pulid)",
                 "idZh": "2081394677139464193",
                 "idEn": "2081406310739308545"
+            },
+            {
+                "name": "Flux.2 Inpaint",
+                "id": "2061261381885845506"
             },
             {
                 "name": "360Panorama",

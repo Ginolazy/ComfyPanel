@@ -25,29 +25,16 @@ from comfy_extras.nodes_audio import load as load_audio
 from PIL import Image
 from server import PromptServer
 from .utility.type_utility import any_type
+from .utility.comfypanel_config import read_config, write_config
+from .utility.comfypanel_output import download_outputs
 
-def get_rh_config():
-    config_dir = os.path.dirname(os.path.dirname(os.path.realpath(__file__)))
-    config_path = os.path.join(config_dir, ".runninghub_config")
-    api_key = ""
-    runninghub_base_url = "https://www.runninghub.cn"
-    if os.path.exists(config_path):
-        try:
-            with open(config_path, "r", encoding="utf-8") as f:
-                for line in f:
-                    line = line.strip()
-                    if not line or line.startswith("#") or "=" not in line:
-                        continue
-                    key, val = line.split("=", 1)
-                    key = key.strip()
-                    val = val.strip()
-                    if key == "runninghub_api_key":
-                        api_key = val
-                    elif key == "runninghub_base_url":
-                        runninghub_base_url = val
-        except Exception as e:
-            logging.error(f"[RunningHub] Failed to read config: {e}")
-    return api_key, runninghub_base_url
+def get_rh_config(provided_base_url=None):
+    cfg = read_config()
+    base_url = provided_base_url or cfg.get("ComfyPanel.RunningHub.baseUrl", "https://www.runninghub.cn")
+    is_en = "runninghub.ai" in base_url
+    api_key_name = "ComfyPanel.RunningHubEn.apikey" if is_en else "ComfyPanel.RunningHubZh.apikey"
+    api_key = cfg.get(api_key_name, "")
+    return api_key, base_url
 
 def upload_to_runninghub(value, api_key, base_url):
     """
@@ -309,7 +296,7 @@ async def runninghub_webapp_detail(request):
             headers["Authorization"] = f"Bearer {api_key}"
 
         async with aiohttp.ClientSession() as session:
-            async with session.post(url, json={"webappId": str(webapp_id)}, headers=headers, timeout=aiohttp.ClientTimeout(total=15), ssl=False) as resp:
+            async with session.post(url, json={"webappId": str(webapp_id)}, headers=headers, timeout=aiohttp.ClientTimeout(total=15)) as resp:
                 result = await resp.json()
                 return web.json_response(result, status=resp.status)
     except Exception as e:
@@ -337,6 +324,7 @@ class RHWorkflow:
     DISPLAY_NAME = "☁️RunningHub Workflow"
     FUNCTION = "execute_workflow"
     CATEGORY = "ComfyPanel"
+    DESCRIPTION = "Flexible RunningHub workflow loader supporting two methods: A.Directly input a RunningHub Workflow ID to run online. B.Open locally after downloading the workflow file from RunningHub."
 
     def execute_workflow(self, workflow_file, params_json="{}", unique_id=None, prompt=None, **kwargs):
         api_key, runninghub_base_url = get_rh_config()
@@ -993,38 +981,8 @@ class RHWebApp:
                 raise TimeoutError("RunningHub WebApp execution timed out or returned no output files.")
 
             send_progress_update(unique_id, 0.99, "Downloading results...")
-            result_outputs = []
-
             output_dir = os.path.join(folder_paths.get_output_directory(), "runninghub_webapp")
-            os.makedirs(output_dir, exist_ok=True)
-
-            for idx, file_url in enumerate(outputs):
-                send_progress_update(unique_id, 0.99, f"Downloading result ({idx+1}/{len(outputs)})...")
-                ext = os.path.splitext(file_url.split('?')[0])[1].lower() or ".png"
-                filename = f"rh_{task_id}_{web_app_id}_{idx}{ext}"
-                filepath = os.path.join(output_dir, filename)
-
-                try:
-                    with requests.get(file_url, stream=True, timeout=60) as r:
-                        r.raise_for_status()
-                        with open(filepath, 'wb') as f:
-                            for chunk in r.iter_content(chunk_size=8192):
-                                f.write(chunk)
-
-                    if ext in ['.png', '.jpg', '.jpeg', '.webp', '.bmp', '.tiff']:
-                        img = Image.open(filepath)
-                        img_array = np.array(img.convert("RGBA") if img.mode == 'RGBA' else img.convert("RGB")).astype(np.float32) / 255.0
-                        result_outputs.append(torch.from_numpy(img_array).unsqueeze(0))
-                    elif ext in ['.mp3', '.wav', '.flac', '.aac', '.ogg', '.m4a']:
-                        waveform, sample_rate = torchaudio.load(filepath)
-                        result_outputs.append({"waveform": waveform.unsqueeze(0), "sample_rate": sample_rate})
-                    else:
-                        try:
-                            result_outputs.append(VideoFromFile(filepath))
-                        except ImportError:
-                            result_outputs.append(filepath)
-                except Exception as e:
-                    logging.error(f"[RHWebApp] Error processing result {idx}: {e}")
+            result_outputs = download_outputs(outputs, output_dir, f"rh_{task_id}_{web_app_id}")
 
             send_progress_update(unique_id, 1.0, "Success", "Task Finished")
 
@@ -1130,7 +1088,6 @@ async def expand_bridge_nodes(outer_prompt: dict, base_url: str, api_key: str) -
             inner_prompt = inner_data
 
         inner_prompt = {str(k): v for k, v in inner_prompt.items()}
-
         outer_ids = set(result.keys()) - {bridge_id}
         inner_ids = set(inner_prompt.keys())
         all_digit_ids = [int(k) for k in (outer_ids | inner_ids) if k.isdigit()]
@@ -1281,7 +1238,6 @@ def scan_standard_node_widgets(node, class_type):
                 linked_input_names.add(inp.get("name"))
 
     widgets_values = node.get("widgets_values", [])
-
     expected_slots = []
     widget_val_idx = 0
 

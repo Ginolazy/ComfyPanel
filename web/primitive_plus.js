@@ -12,6 +12,20 @@ app.registerExtension({
             const origSerialize = nodeType.prototype.serialize;
             const origConfigure = nodeType.prototype.configure;
 
+            function safeInvokeWidgetCallback(targetWidget, value, targetNode) {
+                targetWidget.value = value;
+                if (typeof targetWidget.callback === "function") {
+                    const canvas = app.canvas || null;
+                    const pos = (canvas && typeof canvas.getPointerPos === "function") 
+                        ? canvas.getPointerPos() 
+                        : [0, 0];
+                    targetWidget.callback(value, canvas, targetNode, pos);
+                }
+                if (targetNode && typeof targetNode.setDirtyCanvas === "function") {
+                    targetNode.setDirtyCanvas(true, true);
+                }
+            }
+
             nodeType.prototype.onNodeCreated = function () {
                 if (origOnNodeCreated) origOnNodeCreated.apply(this, arguments);
                 if (!this.outputs || this.outputs.length === 0) {
@@ -38,11 +52,7 @@ app.registerExtension({
                         if (targetNode && targetNode.widgets) {
                             const targetWidget = targetNode.widgets.find(w => w.name === connection.inputName);
                             if (targetWidget) {
-                                targetWidget.value = value;
-                                if (targetWidget.callback) {
-                                    targetWidget.callback(value, targetWidget, targetNode);
-                                }
-                                targetNode.setDirtyCanvas(true, true);
+                                safeInvokeWidgetCallback(targetWidget, value, targetNode);
                             }
                         }
                     }
@@ -222,6 +232,9 @@ app.registerExtension({
                         const widget = this.findWidgetByName(outputName);
                         if (widget) {
                             widget.label = this.truncateWidgetLabel(this.properties.portLabels[i]);
+                            if (widget.inputEl) {
+                                widget.inputEl.placeholder = widget.label;
+                            }
                         }
                     }
                 }
@@ -265,30 +278,23 @@ app.registerExtension({
 
                 let w;
                 const self = this;
-                const callbackViaState = (v) => self.onWidgetChange(name, v);
-                const callbackDirect = (v) => {
-                    targetWidget.value = v;
-                    if (targetWidget.callback) {
-                        targetWidget.callback(v, app.canvas, targetNode, app.canvas.getPointerPos());
-                    }
-                    targetNode.setDirtyCanvas(true, true);
-                };
+                const callbackHandler = (v) => self.onWidgetChange(name, v);
 
                 if (isCombo) {
-                    w = this.addWidget("combo", name, targetWidget.value, callbackDirect, options);
+                    w = this.addWidget("combo", name, targetWidget.value, callbackHandler, options);
                 } else if (isBoolean) {
-                    w = this.addWidget("toggle", name, targetWidget.value, callbackViaState, options);
+                    w = this.addWidget("toggle", name, targetWidget.value, callbackHandler, options);
                 } else if (isNumber) {
-                    w = this.addWidget("number", name, targetWidget.value, callbackDirect, options);
+                    w = this.addWidget("number", name, targetWidget.value, callbackHandler, options);
                 } else {
                     if (targetWidget.type === "customtext" || options?.multiline) {
                         options.multiline = true;
                         const widgetObj = ComfyWidgets["STRING"](this, name, ["STRING", options], app);
                         w = widgetObj.widget;
                         w.value = targetWidget.value;
-                        w.callback = callbackDirect;
+                        w.callback = callbackHandler;
                     } else {
-                        w = this.addWidget("string", name, targetWidget.value, callbackDirect, options);
+                        w = this.addWidget("string", name, targetWidget.value, callbackHandler, options);
                     }
                 }
                 const wLabel = targetWidget.label || targetWidget.name;
@@ -298,6 +304,9 @@ app.registerExtension({
                     w.label = this.truncateWidgetLabel(w.fullLabel);
                 } else {
                     w.label = wLabel;
+                }
+                if (w.inputEl) {
+                    w.inputEl.placeholder = w.label;
                 }
                 return w;
             };

@@ -1,12 +1,12 @@
+import aiohttp
 import base64
-import configparser
 import datetime
 import folder_paths
 import hashlib
 import hmac
 import io
 import json
-import mimetypes
+import logging
 import os
 import requests
 import time
@@ -20,26 +20,38 @@ from aiohttp import web
 from PIL import Image
 from server import PromptServer
 from .utility.type_utility import any_type
+from .utility.comfypanel_config import read_config, write_config
+from .utility.comfypanel_output import download_outputs
 
-def get_api_key():
-    try:
-        user_dir = folder_paths.get_user_directory()
-        settings_file = os.path.join(user_dir, "default", "comfy.settings.json")
-        if os.path.exists(settings_file):
-            with open(settings_file, "r", encoding="utf-8") as f:
-                settings = json.load(f)
-                return settings.get("BizyAir.BizyAirPlus.apikey")
-    except Exception as e:
-        print(f"[BizyAirWebApp] Error reading API key from comfy.settings.json: {e}")
-    return None
+BIZYAIR_API_BASE = "https://api.bizyair.ai"
+BIZYAIR_META_BASE = "https://meta.bizyair.ai"
 
-@PromptServer.instance.routes.get("/bizyair_webapp/get_api_key")
-async def get_bizyair_api_key(request):
+def get_bizyair_config() -> str:
+    cfg = read_config()
+    key = cfg.get("ComfyPanel.BizyAir.apikey", "")
+    if not key:
+        key = cfg.get("BizyAirPlus.apikey", "")
+    return key
+
+def save_bizyair_config(api_key: str) -> None:
+    write_config({"ComfyPanel.BizyAir.apikey": api_key})
+
+@PromptServer.instance.routes.get("/bizyair_webapp/get_config")
+async def get_bizyair_webapp_config(request):
     try:
-        api_key = get_api_key()
-        return web.json_response({"api_key": api_key})
+        api_key = get_bizyair_config()
+        return web.json_response({"success": True, "apiKey": api_key})
     except Exception as e:
-        print(f"[BizyAirWebApp] Error in /bizyair_webapp/get_api_key: {e}")
+        return web.json_response({"error": str(e)}, status=500)
+
+@PromptServer.instance.routes.post("/bizyair_webapp/save_config")
+async def save_bizyair_webapp_config(request):
+    try:
+        body = await request.json()
+        api_key = body.get("apiKey", "")
+        save_bizyair_config(api_key)
+        return web.json_response({"success": True})
+    except Exception as e:
         return web.json_response({"error": str(e)}, status=500)
 
 @PromptServer.instance.routes.get("/bizyair_webapp/default_app_list")
@@ -50,26 +62,40 @@ async def get_default_app_list(request):
         if os.path.exists(config_path):
             with open(config_path, 'r', encoding='utf-8') as f:
                 data = json.load(f)
-
-                raw_apps = data.get("default_apps", {})
-                if isinstance(raw_apps, dict):
-                    for category in raw_apps.values():
+                bizy_data = data.get("bizyair", {})
+                if isinstance(bizy_data, dict):
+                    for category in bizy_data.values():
                         if isinstance(category, list):
                             for app in category:
                                 if isinstance(app, dict) and "id" in app:
                                     default_apps.append(str(app["id"]))
-                elif isinstance(raw_apps, list):
-
-                     for app in raw_apps:
-                        if isinstance(app, dict) and "id" in app:
-                            default_apps.append(str(app["id"]))
-                        elif isinstance(app, (str, int)):
-                            default_apps.append(str(app))
-
         return web.json_response({"default_apps": default_apps})
     except Exception as e:
         print(f"[BizyAirWebApp] Error reading default config: {e}")
         return web.json_response({"default_apps": []})
+
+@PromptServer.instance.routes.post("/comfypanel/bizyair/webapp_detail")
+async def bizyair_webapp_detail(request):
+    """Proxy: fetch webapp details from BizyAir meta API."""
+    try:
+        body = await request.json()
+        webapp_id = body.get("webappId")
+        if not webapp_id:
+            return web.json_response({"code": -1, "msg": "Missing webappId"}, status=400)
+
+        api_key = get_bizyair_config()
+        headers = {"Content-Type": "application/json"}
+        if api_key:
+            headers["Authorization"] = f"Bearer {api_key}"
+
+        url = f"{BIZYAIR_META_BASE}/v1/webapp/{webapp_id}"
+        async with aiohttp.ClientSession() as session:
+            async with session.get(url, headers=headers, timeout=aiohttp.ClientTimeout(total=15)) as resp:
+                result = await resp.json()
+                return web.json_response(result, status=resp.status)
+    except Exception as e:
+        logging.error(f"[BizyAirWebApp] webapp_detail error: {e}")
+        return web.json_response({"code": -1, "msg": str(e)}, status=500)
 
 class BizyAirWebApp:
     @classmethod
@@ -80,24 +106,17 @@ class BizyAirWebApp:
             },
             "optional": {
 
-                "input_1": (any_type,),
-                "input_2": (any_type,),
-                "input_3": (any_type,),
-                "input_4": (any_type,),
-                "input_5": (any_type,),
-                "input_6": (any_type,),
             },
             "hidden": {
                 "prompt": "PROMPT",
                 "extra_pnginfo": "EXTRA_PNGINFO",
                 "unique_id": "UNIQUE_ID",
-                "input_values_json": ("STRING", {"default": "{}"}),
+                "params_json": ("STRING", {"default": "{}"}),
             }
         }
 
     @classmethod
     def VALIDATE_INPUTS(s, **kwargs):
-
         return True
 
     RETURN_TYPES = (any_type,)
@@ -105,7 +124,7 @@ class BizyAirWebApp:
     OUTPUT_IS_LIST = (True,)
     FUNCTION = "execute_app"
     CATEGORY = "ComfyPanel"
-    DISPLAY_NAME = "☁️BizyAirWebApp"
+    DISPLAY_NAME = "☁️BizyAir App"
 
     def _send_progress(self, unique_id, progress_val, status_str, log_msg=None):
         if unique_id:
@@ -117,10 +136,8 @@ class BizyAirWebApp:
             })
 
     def _extract_error(self, data):
-
         err = data.get("error")
         if err: return err
-
         outputs = data.get("outputs")
         if outputs and isinstance(outputs, list):
             for out in outputs:
@@ -139,7 +156,7 @@ class BizyAirWebApp:
         return bio.getvalue()
 
     def _upload_to_oss(self, filename, data, api_key):
-        token_url = f"https://api.bizyair.cn/x/v1/upload/token?file_name={filename}"
+        token_url = f"{BIZYAIR_API_BASE}/v1/upload/token?file_name={filename}&file_type=inputs"
         headers_t = {"Authorization": f"Bearer {api_key}"}
 
         resp = requests.get(token_url, headers=headers_t)
@@ -178,12 +195,11 @@ class BizyAirWebApp:
         return url
 
     def _attempt_cancellation(self, request_id, headers, current_status):
-        """Attempts to cancel or interrupt the task with fallback logic."""
         if not request_id: return
 
         print(f"[BizyAirWebApp] Cancellation detected. Attempting to stop task {request_id}...")
-        cancel_url = f"https://api.bizyair.cn/w/v1/webapp/task/openapi/cancel?requestId={request_id}"
-        interrupt_url = f"https://api.bizyair.cn/w/v1/webapp/task/openapi/interrupt?requestId={request_id}"
+        cancel_url = f"{BIZYAIR_API_BASE}/v1/webapp/task/openapi/cancel?requestId={request_id}"
+        interrupt_url = f"{BIZYAIR_API_BASE}/v1/webapp/task/openapi/interrupt?requestId={request_id}"
 
         def try_request(method, url, label):
             try:
@@ -204,24 +220,21 @@ class BizyAirWebApp:
 
         resp = try_request(primary[0], primary[1], primary[2])
         if resp and resp.status_code == 404:
-
             print(f"[BizyAirWebApp] {primary[2]} returned 404, trying {fallback[2]}...")
             try_request(fallback[0], fallback[1], fallback[2])
         elif resp and (resp.status_code == 200 or resp.status_code == 204):
             print(f"[BizyAirWebApp] {primary[2]} signal sent successfully.")
 
-    def execute_app(self, APP, input_values_json="{}", prompt=None, extra_pnginfo=None, unique_id=None, **kwargs):
-        api_key = get_api_key()
-        if not api_key: raise Exception("BizyAir API Key not found in comfy.settings.json")
+    def execute_app(self, APP, params_json="{}", prompt=None, extra_pnginfo=None, unique_id=None, **kwargs):
+        api_key = get_bizyair_config()
+        if not api_key: raise Exception("BizyAir API Key not configured. Please set it via ⚙️ BizyAir Settings.")
         if not APP or APP == "None": raise Exception("No App selected")
-
-        web_app_id = None
 
         input_values = {}
         mapping_dict = {}
         try:
-            if input_values_json:
-                payload_data = json.loads(input_values_json)
+            if params_json:
+                payload_data = json.loads(params_json)
                 if "_port_map" in payload_data:
                     mapping_dict = payload_data.pop("_port_map")
                 input_values = payload_data
@@ -245,7 +258,6 @@ class BizyAirWebApp:
                     img_bytes = self._tensor_to_bytes(value[i])
                     fname = f"comfy_upload_{uuid.uuid4().hex[:8]}_{i}.png"
                     urls.append(self._upload_to_oss(fname, img_bytes, api_key))
-
                 input_values[var_name] = urls if batch_size > 1 else (urls[0] if urls else None)
             else:
                 input_values[var_name] = value
@@ -265,7 +277,7 @@ class BizyAirWebApp:
             "input_values": input_values,
         }
 
-        create_url = "https://api.bizyair.cn/w/v1/webapp/task/openapi/create"
+        create_url = f"{BIZYAIR_API_BASE}/v1/webapp/task/openapi/create"
         response = requests.post(create_url, json=payload, headers=headers)
 
         if response.status_code not in (200, 202):
@@ -276,7 +288,6 @@ class BizyAirWebApp:
         if not request_id: raise Exception(f"No request_id found in response: {result}")
 
         initial_status = result.get("status")
-
         outputs = []
         poll_data = None
 
@@ -289,7 +300,7 @@ class BizyAirWebApp:
             raise Exception("Task was cancelled immediately")
 
         if poll_data is None:
-            query_url = f"https://api.bizyair.cn/w/v1/webapp/task/openapi/detail?requestId={request_id}"
+            query_url = f"{BIZYAIR_API_BASE}/v1/webapp/task/openapi/detail?requestId={request_id}"
             time.sleep(3)
 
             start_time = time.time()
@@ -298,7 +309,6 @@ class BizyAirWebApp:
 
             try:
                 while poll_data is None or poll_data.get("status") not in ["Success", "Failed", "Error"]:
-
                     comfy.model_management.throw_exception_if_processing_interrupted()
                     time.sleep(1.0)
 
@@ -345,51 +355,22 @@ class BizyAirWebApp:
                 raise e
 
             if not outputs and status != "Success":
-                 raise Exception("Task timed out or failed to return outputs.")
+                raise Exception("Task timed out or failed to return outputs.")
 
         if not outputs and request_id:
-
-             self._send_progress(unique_id, 0.99, "Fetching Outputs...")
-             try:
-                 out_resp = requests.get(f"https://api.bizyair.cn/w/v1/webapp/task/openapi/outputs?requestId={request_id}", headers=headers)
-                 if out_resp.status_code == 200:
-                     d = out_resp.json()
-                     if d.get("code") == 20000: outputs = d.get("data", {}).get("outputs", [])
-             except: pass
+            self._send_progress(unique_id, 0.99, "Fetching Outputs...")
+            try:
+                out_resp = requests.get(f"{BIZYAIR_API_BASE}/v1/webapp/task/openapi/outputs?requestId={request_id}", headers=headers)
+                if out_resp.status_code == 200:
+                    d = out_resp.json()
+                    if d.get("code") == 20000: outputs = d.get("data", {}).get("outputs", [])
+            except: pass
 
         self._send_progress(unique_id, 0.99, "Downloading Results...")
-        result_outputs = []
 
+        urls = [o.get("object_url") for o in outputs if o.get("object_url")]
         output_dir = os.path.join(folder_paths.get_output_directory(), "bizyair")
-        os.makedirs(output_dir, exist_ok=True)
-
-        for idx, output in enumerate(outputs):
-            file_url = output.get("object_url")
-            if not file_url: continue
-
-            self._send_progress(unique_id, 0.99, f"Downloading ({idx+1}/{len(outputs)})...")
-            ext = os.path.splitext(file_url)[1].lower() or ".png"
-            filename = f"{request_id}_{web_app_id}_{idx}{ext}"
-            filepath = os.path.join(output_dir, filename)
-
-            try:
-                with requests.get(file_url, stream=True, timeout=60) as r:
-                    r.raise_for_status()
-                    with open(filepath, 'wb') as f:
-                        for chunk in r.iter_content(chunk_size=8192): f.write(chunk)
-
-                if ext in ['.png', '.jpg', '.jpeg', '.webp', '.bmp', '.tiff']:
-                    img = Image.open(filepath)
-                    img_array = np.array(img.convert("RGBA") if img.mode == 'RGBA' else img.convert("RGB")).astype(np.float32) / 255.0
-                    result_outputs.append(torch.from_numpy(img_array).unsqueeze(0))
-                elif ext in ['.mp3', '.wav', '.flac', '.aac', '.ogg', '.m4a']:
-                    waveform, sample_rate = torchaudio.load(filepath)
-                    result_outputs.append({"waveform": waveform.unsqueeze(0), "sample_rate": sample_rate})
-                else:
-
-                    result_outputs.append(VideoFromFile(filepath))
-            except Exception as e:
-                print(f"[BizyAirWebApp] Error processing result {idx}: {e}")
+        result_outputs = download_outputs(urls, output_dir, f"{request_id}_{web_app_id}")
 
         self._send_progress(unique_id, 1.0, "Success", "Task Finished")
 
