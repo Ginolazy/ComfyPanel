@@ -9,9 +9,7 @@ class FastGroupsMuterVue:
     def INPUT_TYPES(s):
         return {
             "required": {},
-            "optional": {
-                "OPT_CONNECTION": ("*",)
-            }
+            "optional": {}
         }
 
     RETURN_TYPES = ("*",)
@@ -20,9 +18,15 @@ class FastGroupsMuterVue:
     CATEGORY = "ComfyPanel/rgthree (vue)"
     OUTPUT_NODE = True
     DISPLAY_NAME = "Fast Groups Muter (Vue)"
+    DESCRIPTION = (
+        "Fast Groups Muter (Vue)\n"
+        "Group control panel redesigned specifically for the ComfyUI Vue (Nodes 2.0) interface.\n"
+        "Seamlessly displays and toggles the Mute/Enable status for all groups on the canvas.\n\n"
+        "Special thanks to rgthree for the original Fast Groups Muter node concept."
+    )
 
-    def passthrough(self, OPT_CONNECTION=None):
-        return (OPT_CONNECTION,)
+    def passthrough(self):
+        return (None,)
 
 class FastGroupsBypasserVue:
     @classmethod
@@ -38,6 +42,12 @@ class FastGroupsBypasserVue:
     CATEGORY = "ComfyPanel/rgthree (vue)"
     OUTPUT_NODE = True
     DISPLAY_NAME = "Fast Groups Bypasser (Vue)"
+    DESCRIPTION = (
+        "Fast Groups Bypasser (Vue)\n"
+        "Group control panel redesigned specifically for the ComfyUI Vue (Nodes 2.0) interface.\n"
+        "Seamlessly displays and toggles the Bypass/Enable status for all groups on the canvas.\n\n"
+        "Special thanks to rgthree for the original Fast Groups Bypasser node concept."
+    )
 
     def passthrough(self, OPT_CONNECTION=None):
         return (OPT_CONNECTION,)

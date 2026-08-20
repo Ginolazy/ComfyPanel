@@ -1,94 +1,105 @@
 {
-    "bizyair": {
-        "image": [
-            {
-                "name": "Flux.2 Inpaint",
-                "id": "56109"
-            },
-            {
-                "name": "Dual-Image Editing (Flux.2_klein)",
-                "id": "56122"
-            },
-            {
-                "name": "HD Upscale (SeedVR2)",
-                "id": "56117"
-            },
-            {
-                "name": "HD Upscaler Pro (TTP + SeedVR2)",
-                "id": "56118"
-            }
-        ]
-    },
-    "runninghub": {
-        "image": [
-            {
-                "name": "GPT Image 2 (Channel)",
-                "idZh": "2070868537354317826",
-                "idEn": "2077243903857745922"
-            },
-            {
-                "name": "GPT Image 2 (Official)",
-                "idZh": "2073444968953376770",
-                "idEn": "2077243902947856385"
-            },
-            {
-                "name": "NanoBanana (Channel)",
-                "idZh": "2070762861495934977",
-                "idEn": "2077244013190942721"
-            },
-            {
-                "name": "NanoBanana 2 Lite (Channel)",
-                "idZh": "2073439241622867969",
-                "idEn": "2077243902486482946"
-            },
-            {
-                "name": "NanoBanana 2 (Channel)",
-                "idZh": "2070782907018469377",
-                "idEn": "2077243904281645057"
-            },
-            {
-                "name": "NanoBanana 2 (Official)",
-                "idZh": "2073261324313907201",
-                "idEn": "2077244019519873025"
-            },
-            {
-                "name": "NanoBanana Pro (Channel / Official)",
-                "idZh": "2073352722279124994",
-                "idEn": "2077244018963456001"
-            },
-            {
-                "name": "HD Upscaler (SeedVR2)",
-                "idZh": "2081797676273852418",
-                "idEn": "2081798083257004034"
-            },
-            {
-                "name": "HD Upscaler Pro (TTP + SeedVR2)",
-                "idZh": "2082145255993995266",
-                "idEn": "2082055262478802945"
-            },
-            {
-                "name": "Face Swap Fast (Flux.1_Redux)",
-                "idZh": "2081378953088036866",
-                "idEn": "2081406313998282754"
-            },
-            {
-                "name": "Face Swap HQ (Flux.1_Pulid)",
-                "idZh": "2081394677139464193",
-                "idEn": "2081406310739308545"
-            },
-            {
-                "name": "Flux.2 Inpaint",
-                "id": "2061261381885845506"
-            },
-            {
-                "name": "ModelZoo API (All-in-one)⚡",
-                "id": "runninghub_models"
-            },
-            {
-                "name": "360Panorama",
-                "idZh": "2073455314866892801",
-                "idEn": "2077243903429926914"
-            }
-        ]
-    }
+    "bizyair": [
+        {
+            "name": "Flux.2 Inpaint",
+            "id": "56109"
+        },
+        {
+            "name": "Dual-Image Editing (Flux.2_klein)",
+            "id": "56122"
+        },
+        {
+            "name": "HD Upscale (SeedVR2)",
+            "id": "56117"
+        },
+        {
+            "name": "HD Upscaler Pro (TTP + SeedVR2)",
+            "id": "56118"
+        }
+    ],
+    "runninghub": [
+        {
+            "name": "GPT Image 2 (Channel)",
+            "idZh": "2070868537354317826",
+            "idEn": "2077243903857745922"
+        },
+        {
+            "name": "GPT Image 2 (Official)",
+            "idZh": "2073444968953376770",
+            "idEn": "2077243902947856385"
+        },
+        {
+            "name": "NanoBanana (Channel)",
+            "idZh": "2070762861495934977",
+            "idEn": "2077244013190942721"
+        },
+        {
+            "name": "NanoBanana 2 Lite (Channel)",
+            "idZh": "2073439241622867969",
+            "idEn": "2077243902486482946"
+        },
+        {
+            "name": "NanoBanana 2 (Channel)",
+            "idZh": "2070782907018469377",
+            "idEn": "2077243904281645057"
+        },
+        {
+            "name": "NanoBanana 2 (Official)",
+            "idZh": "2073261324313907201",
+            "idEn": "2077244019519873025"
+        },
+        {
+            "name": "NanoBanana Pro (Channel / Official)",
+            "idZh": "2073352722279124994",
+            "idEn": "2077244018963456001"
+        },
+        {
+            "name": "HD Upscaler (SeedVR2)",
+            "idZh": "2081797676273852418",
+            "idEn": "2081798083257004034"
+        },
+        {
+            "name": "HD Upscaler Pro (TTP + SeedVR2)",
+            "idZh": "2082145255993995266",
+            "idEn": "2082055262478802945"
+        },
+        {
+            "name": "Face Swap Fast (Flux.1_Redux)",
+            "idZh": "2081378953088036866",
+            "idEn": "2081406313998282754"
+        },
+        {
+            "name": "Face Swap HQ (Flux.1_Pulid)",
+            "idZh": "2081394677139464193",
+            "idEn": "2081406310739308545"
+        },
+        {
+            "name": "Flux.2 Inpaint",
+            "id": "2061261381885845506"
+        },
+        {
+            "name": "Consistent Product Shots",
+            "idEn": "2089349080157102082"
+        },
+        {
+            "name": "2D Design to Culture Wall (Qwen)",
+            "idZh": "2090008362598617090",
+            "idEn": "2089632581032718338"
+        },
+        {
+            "name": "Virtual Try-On (FireRed)",
+            "idZh": "2088860347410243586",
+            "idEn": "2088860534795243522"
+        },
+        {
+            "name": "360Panorama",
+            "idZh": "2073455314866892801",
+            "idEn": "2077243903429926914"
+        },
+        {
+            "name": "360Panorama V2",
+            "idZh": "2077932829194940417",
+            "idEn": "2077933460735766530"
+        }
+    ]
 }

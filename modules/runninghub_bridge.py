@@ -25,16 +25,8 @@ from comfy_extras.nodes_audio import load as load_audio
 from PIL import Image
 from server import PromptServer
 from .utility.type_utility import any_type
-from .utility.comfypanel_config import read_config, write_config
+from .utility.comfypanel_config import read_config, write_config, get_rh_config
 from .utility.comfypanel_output import download_outputs
-
-def get_rh_config(provided_base_url=None):
-    cfg = read_config()
-    base_url = provided_base_url or cfg.get("ComfyPanel.RunningHub.baseUrl", "https://www.runninghub.cn")
-    is_en = "runninghub.ai" in base_url
-    api_key_name = "ComfyPanel.RunningHubEn.apikey" if is_en else "ComfyPanel.RunningHubZh.apikey"
-    api_key = cfg.get(api_key_name, "")
-    return api_key, base_url
 
 def upload_to_runninghub(value, api_key, base_url):
     """
@@ -255,20 +247,16 @@ async def get_rh_default_app_list(request):
         if os.path.exists(config_path):
             with open(config_path, 'r', encoding='utf-8') as f:
                 data = json.load(f)
-                raw_apps = data.get("runninghub", {})
-                if isinstance(raw_apps, dict):
-                    for category in raw_apps.values():
-                        if isinstance(category, list):
-                            for app in category:
-                                if not isinstance(app, dict):
-                                    continue
-
-                                shared_id = app.get("id")
-                                if shared_id:
-                                    default_apps.append(str(shared_id))
-                                region_id = app.get("idEn") if is_international else app.get("idZh")
-                                if region_id:
-                                    default_apps.append(str(region_id))
+                raw_apps = data.get("runninghub", [])
+                for app in raw_apps:
+                    if not isinstance(app, dict):
+                        continue
+                    shared_id = app.get("id")
+                    if shared_id:
+                        default_apps.append(str(shared_id))
+                    region_id = app.get("idEn") if is_international else app.get("idZh")
+                    if region_id:
+                        default_apps.append(str(region_id))
         return web.json_response({"default_apps": default_apps})
     except Exception as e:
         print(f"[RHWebApp] Error reading default config: {e}")

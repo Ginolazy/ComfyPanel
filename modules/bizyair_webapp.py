@@ -62,13 +62,10 @@ async def get_default_app_list(request):
         if os.path.exists(config_path):
             with open(config_path, 'r', encoding='utf-8') as f:
                 data = json.load(f)
-                bizy_data = data.get("bizyair", {})
-                if isinstance(bizy_data, dict):
-                    for category in bizy_data.values():
-                        if isinstance(category, list):
-                            for app in category:
-                                if isinstance(app, dict) and "id" in app:
-                                    default_apps.append(str(app["id"]))
+                bizy_data = data.get("bizyair", [])
+                for app in bizy_data:
+                    if isinstance(app, dict) and "id" in app:
+                        default_apps.append(str(app["id"]))
         return web.json_response({"default_apps": default_apps})
     except Exception as e:
         print(f"[BizyAirWebApp] Error reading default config: {e}")

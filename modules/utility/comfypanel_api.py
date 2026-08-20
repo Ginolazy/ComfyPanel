@@ -15,7 +15,7 @@ from aiohttp import web, ClientError
 from server import PromptServer
 from PIL import Image, ImageOps
 from .comfypanel_tunnel import tunnel_manager
-from .comfypanel_config import read_config, write_config
+from .comfypanel_config import read_config, write_config, get_rh_config
 
 def _patch_origin_middleware():
     app = PromptServer.instance.app
@@ -742,9 +742,7 @@ async def runninghub_scan_workflow(request):
 
         data = None
         if is_api_mode or source_type == "runninghub_api":
-            _cfg = read_config()
-            api_key = _cfg.get("runninghub_api_key", "")
-            base_url = _cfg.get("runninghub_base_url", "https://www.runninghub.cn")
+            api_key, base_url = get_rh_config()
             if not api_key:
                 return web.json_response({"success": False, "error": "RunningHub API Key is not configured!"}, status=400)
 
@@ -1106,10 +1104,7 @@ async def runninghub_get_config(request):
     try:
         query_base_url = request.query.get("baseUrl", "")
         cfg = read_config()
-        base_url = query_base_url or cfg.get("ComfyPanel.RunningHub.baseUrl", "https://www.runninghub.cn")
-        is_en = "runninghub.ai" in base_url
-        key_name = "ComfyPanel.RunningHubEn.apikey" if is_en else "ComfyPanel.RunningHubZh.apikey"
-        api_key = cfg.get(key_name, "")
+        api_key, base_url = get_rh_config(provided_base_url=query_base_url or None)
 
         return web.json_response({
             "success": True,

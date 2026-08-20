@@ -187,3 +187,70 @@
     border-color: #4facfe;
     outline: none;
 }
+
+/* --- FastGroups Vue Navigation Arrow & Widget Row Styles --- */
+.vfg-row-with-nav {
+    position: relative !important;
+    padding-right: 74px !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+    gap: 8px !important;
+    box-sizing: border-box !important;
+}
+
+/* 1. Left Label: expand up to switch, truncate cleanly with ellipsis if overflowing */
+.vfg-row-with-nav [data-testid="widget-layout-field-label"],
+.vfg-row-with-nav .comfy-vue-widget-label,
+.vfg-row-with-nav .widget-label,
+.vfg-row-with-nav label,
+.vfg-row-with-nav>div:first-child,
+.vfg-row-with-nav>span:first-child {
+    max-width: none !important;
+    width: auto !important;
+    flex: 1 1 auto !important;
+    min-width: 0 !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+    white-space: nowrap !important;
+}
+
+/* 2. Right Switch Control: lock width, prevent shrinking or pushing onto nav arrow */
+.vfg-row-with-nav>div:not(:first-child):not(.vfg-nav-arrow),
+.vfg-row-with-nav .comfy-vue-widget-content,
+.vfg-row-with-nav [data-testid="widget-layout-field-control"],
+.vfg-row-with-nav .p-inputswitch,
+.vfg-row-with-nav .n-switch,
+.vfg-row-with-nav input[type="checkbox"] {
+    flex-shrink: 0 !important;
+    flex-grow: 0 !important;
+}
+
+.vfg-nav-arrow {
+    position: absolute;
+    right: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 24px;
+    height: 24px;
+    background: rgba(100, 130, 150, 0.22);
+    border: 1px solid rgba(136, 170, 187, 0.45);
+    border-radius: 50%;
+    color: #8899AA;
+    font-size: 16px;
+    line-height: 1;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+    z-index: 10;
+    pointer-events: auto;
+    transition: background 0.15s ease, color 0.15s ease, border-color 0.15s ease;
+}
+
+.vfg-nav-arrow:hover {
+    background: rgba(100, 130, 150, 0.45);
+    border-color: rgba(136, 170, 187, 0.8);
+    color: #FFFFFF;
+}

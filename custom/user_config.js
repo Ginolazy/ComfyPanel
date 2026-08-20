@@ -49,13 +49,13 @@ window.userConfig = {
         /* default / 默认 */
         'Float': { widgets: '*' },
         'Int': { widgets: '*' },
-        '*NanoBanana*': {// [NEW] 为本地引擎启用 Smart-Loader 特性：被静音 Bypass 的该类节点将被收纳为 UI 缩略图栏里的 "+" 号添加按钮 / Enable Smart-Loader: bypassed nodes of this type will be grouped into a "+" add button in the UI strip
+        '*Banana*': {// [NEW] 为本地引擎启用 Smart-Loader 特性：被静音 Bypass 的该类节点将被收纳为 UI 缩略图栏里的 "+" 号添加按钮 / Enable Smart-Loader: bypassed nodes of this type will be grouped into a "+" add button in the UI strip
             widgets: [
                 { widgetName: '*' } // Allow all other widgets so they aren't hidden by the whitelist / 允许所有其他小部件，以免被白名单隐藏
             ],
             exclude: [{ widgetName: 'Inputcount' }, { widgetType: 'button' }]
         },
-        '*GPT*': {// [NEW] 为本地引擎启用 Smart-Loader 特性：被静音 Bypass 的该类节点将被收纳为 UI 缩略图栏里的 "+" 号添加按钮 / Enable Smart-Loader: bypassed nodes of this type will be grouped into a "+" add button in the UI strip
+        '*Gpt*': {// [NEW] 为本地引擎启用 Smart-Loader 特性：被静音 Bypass 的该类节点将被收纳为 UI 缩略图栏里的 "+" 号添加按钮 / Enable Smart-Loader: bypassed nodes of this type will be grouped into a "+" add button in the UI strip
             widgets: [
                 { widgetName: '*' } // Allow all other widgets so they aren't hidden by the whitelist / 允许所有其他小部件，以免被白名单隐藏
             ],
