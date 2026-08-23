@@ -68,33 +68,20 @@ window.userConfig = {
         'BizyAirWebApp': {
             widgets: [
                 { widgetName: 'APP', hideLabel: true, fullWidth: true },
-                { widgetName: '*' } // Allow all other widgets so they aren't hidden by the whitelist / 允许所有其他小部件，以免被白名单隐藏
+                { widgetName: '*' }
             ],
             exclude: [{ widgetName: 'input_values_json' }, { widgetType: 'button' }]
         },
         'RHWebApp': {
             widgets: [
                 { widgetName: 'APP', hideLabel: true, fullWidth: true },
-                { widgetName: '*' } // Allow all other widgets so they aren't hidden by the whitelist / 允许所有其他小部件，以免被白名单隐藏
-            ],
-            exclude: [{ widgetName: 'input_values_json' }, { widgetType: 'button' }]
-        },
-        'RHWorkflow': {
-            widgets: [
-                { widgetName: 'APP', hideLabel: true, fullWidth: true },
-                { widgetName: '*' } // Allow all other widgets so they aren't hidden by the whitelist / 允许所有其他小部件，以免被白名单隐藏
+                { widgetName: '*' }
             ],
             exclude: [{ widgetName: 'input_values_json' }, { widgetType: 'button' }]
         },
         'SwitchAny': { widgets: '*' },
         'SwitchOutput': { widgets: '*' },
         'KSampler': { widgets: '*' },
-        'RHWorkflow': {
-            widgets: [
-                { widgetName: '*' } // Allow all other widgets so they aren't hidden by the whitelist / 允许所有其他小部件，以免被白名单隐藏
-            ],
-            exclude: [{ widgetName: 'workflow_file' }, { widgetName: 'params_json' }, { widgetType: 'button' }]
-        },
         'TextMultiline': { widgets: [{ widgetName: 'text' }] }
     }
 };

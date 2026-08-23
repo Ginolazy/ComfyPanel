@@ -427,10 +427,13 @@ async def get_userdata_list(request):
     except Exception as e:
         return web.json_response({"error": str(e)}, status=500)
 
+_CDN_WORKFLOWS_BASE = "https://cdn.jsdelivr.net/gh/Ginolazy/ComfyPanel-defaults@main/workflows"
+
 @PromptServer.instance.routes.get("/comfypanel/userdata/{filename:.*}")
 async def get_userdata_file(request):
     """
     Read a specific JSON file from userdata (e.g., /comfypanel/userdata/workflows/my.json).
+    Built-in workflows under default/workflows/ are served from CDN.
     """
     try:
         path = request.match_info.get("filename", "")
@@ -439,6 +442,14 @@ async def get_userdata_file(request):
 
         if not path:
             return web.json_response({"error": "No filename specified"}, status=400)
+
+        if path.startswith("default/workflows/"):
+            filename = path[len("default/workflows/"):]
+            cdn_url = f"{_CDN_WORKFLOWS_BASE}/{filename}"
+            async with aiohttp.ClientSession() as session:
+                async with session.get(cdn_url, timeout=aiohttp.ClientTimeout(total=15)) as resp:
+                    data = await resp.json(content_type=None)
+            return web.json_response(data)
 
         plugin_root = os.path.dirname(os.path.dirname(os.path.dirname(os.path.realpath(__file__))))
 
@@ -482,51 +493,13 @@ async def save_userdata_file(request):
 @PromptServer.instance.routes.get("/comfypanel/builtin_workflows")
 async def get_builtin_workflows(request):
     """
-    Dedicated endpoint to fetch officially packaged built-in workflows.
-    These are sourced explicitly from the ComfyPanel/workflows root directory.
+    Fetch built-in workflow list from CDN manifest.
     """
     try:
-        plugin_root = os.path.dirname(os.path.dirname(os.path.dirname(os.path.realpath(__file__))))
-        target_dir = os.path.join(plugin_root, "default", "workflows")
-
-        if not os.path.exists(target_dir):
-            return web.json_response({"success": True, "workflows": []})
-
-        workflows = []
-        for filename in os.listdir(target_dir):
-            if filename.endswith(".json"):
-                full_path = os.path.join(target_dir, filename)
-                base_name = filename[:-5]
-                try:
-                    cover_urls = []
-
-                    svg_path = os.path.join(target_dir, f"{base_name}-cover.svg")
-                    webp_cover_path = os.path.join(target_dir, f"{base_name}-cover.webp")
-                    webp_path = os.path.join(target_dir, f"{base_name}.webp")
-
-                    def to_file_uri(path):
-                        clean_path = path.replace("\\", "/")
-
-                        if not clean_path.startswith("/"):
-                            clean_path = "/" + clean_path
-                        return f"file://{clean_path}"
-
-                    if os.path.exists(svg_path):
-                        cover_urls.append(to_file_uri(svg_path))
-                    elif os.path.exists(webp_cover_path):
-                        cover_urls.append(to_file_uri(webp_cover_path))
-                    elif os.path.exists(webp_path):
-                        cover_urls.append(to_file_uri(webp_path))
-
-                    workflows.append({
-                        "name": filename,
-                        "path": "default/workflows/" + filename,
-                        "workflow": None,
-                        "cover_urls": cover_urls
-                    })
-                except Exception as e:
-                    pass
-
+        manifest_url = f"{_CDN_WORKFLOWS_BASE}/manifest.json"
+        async with aiohttp.ClientSession() as session:
+            async with session.get(manifest_url, timeout=aiohttp.ClientTimeout(total=10)) as resp:
+                workflows = await resp.json(content_type=None)
         return web.json_response({"success": True, "workflows": workflows})
     except Exception as e:
         return web.json_response({"success": False, "error": str(e)}, status=500)
@@ -754,37 +727,26 @@ async def runninghub_scan_workflow(request):
             if not clean_base_domain.startswith("http"):
                 clean_base_domain = "https://www.runninghub.cn"
 
-            fetch_url = f"{clean_base_domain}/api/openapi/getJsonApiFormat"
-            payload = {
-                "apiKey": api_key,
-                "workflowId": workflow_file.strip()
-            }
+            fetch_url = f"{clean_base_domain}/api/workflow/export"
             try:
-                resp = requests.post(fetch_url, json=payload, headers=headers, timeout=15)
+                resp = requests.post(fetch_url, json={"workflowId": workflow_val}, headers=headers, timeout=15)
                 if resp.status_code != 200:
                     return web.json_response({"success": False, "error": f"RunningHub API returned HTTP {resp.status_code}"}, status=resp.status_code)
                 res_json = resp.json()
-                if res_json.get("code") != 0:
+                if "code" in res_json and res_json.get("code") != 0:
                     msg = res_json.get("msg") or res_json.get("message") or "Unknown error"
                     return web.json_response({"success": False, "error": msg}, status=400)
 
-                data_val = res_json.get("data")
-                if isinstance(data_val, str):
-                    try:
-                        parsed = json.loads(data_val)
-                        if isinstance(parsed, dict) and "prompt" in parsed:
-                            prompt_val = parsed.get("prompt")
-                            data = json.loads(prompt_val) if isinstance(prompt_val, str) else prompt_val
-                        else:
-                            data = parsed
-                    except Exception:
+                if "nodes" in res_json:
+                    data = res_json
+                elif "data" in res_json:
+                    data_val = res_json.get("data")
+                    if isinstance(data_val, str):
+                        data = json.loads(data_val)
+                    elif isinstance(data_val, dict):
                         data = data_val
-                elif isinstance(data_val, dict):
-                    if "prompt" in data_val:
-                        prompt_val = data_val.get("prompt")
-                        data = json.loads(prompt_val) if isinstance(prompt_val, str) else prompt_val
                     else:
-                        data = data_val
+                        data = res_json
                 else:
                     data = res_json
             except Exception as e:
@@ -816,259 +778,132 @@ async def runninghub_scan_workflow(request):
         }
 
         widgets = []
+        nodes_list = data.get("nodes", []) if isinstance(data, dict) else []
+        for node in nodes_list:
+            if not isinstance(node, dict):
+                continue
+            node_id = node.get("id")
+            node_type = node.get("type", "")
 
-        if "nodes" in data and isinstance(data["nodes"], list):
-            for node in data["nodes"]:
-                node_id = node.get("id")
-                node_type = node.get("type")
+            node_mode = node.get("mode", 0)
+            if node_mode in [2, 4]:
+                continue
 
-                node_mode = node.get("mode", 0)
-                if node_mode in [2, 4]:
+            lower_type = str(node_type).lower()
+            node_title = node.get("title", "").strip()
+
+            if "loadimage" in lower_type or "load_image" in lower_type:
+                has_link = any(any(x is not None for x in out.get("links", [])) for out in node.get("outputs", []) if isinstance(out, dict))
+                if not has_link:
                     continue
 
-                lower_type = node_type.lower()
-                node_title = node.get("title", "").strip()
-
-                if "loadimage" in lower_type or "load_image" in lower_type:
-
-                    has_link = False
-                    outputs = node.get("outputs", [])
-                    for out in outputs:
-                        links = out.get("links")
-                        if links and any(x is not None for x in links):
-                            has_link = True
-                            break
-                    if not has_link:
-                        continue
-
-                    is_mask = "mask" in lower_type
-                    widgets.append({
-                        "nodeId": node_id,
-                        "nodeType": node_type,
-                        "nodeTitle": node_title,
-                        "name": "mask" if is_mask else "image",
-                        "type": "MASK_INPUT_SLOT" if is_mask else "IMAGE_INPUT_SLOT",
-                        "value": ""
-                    })
-                    continue
-                elif "loadvideo" in lower_type or "load_video" in lower_type:
-                    has_link = False
-                    outputs = node.get("outputs", [])
-                    for out in outputs:
-                        links = out.get("links")
-                        if links and any(x is not None for x in links):
-                            has_link = True
-                            break
-                    if not has_link:
-                        continue
-
-                    widgets.append({
-                        "nodeId": node_id,
-                        "nodeType": node_type,
-                        "nodeTitle": node_title,
-                        "name": "video",
-                        "type": "VIDEO_INPUT_SLOT",
-                        "value": ""
-                    })
-                    continue
-                elif "loadaudio" in lower_type or "load_audio" in lower_type:
-                    has_link = False
-                    outputs = node.get("outputs", [])
-                    for out in outputs:
-                        links = out.get("links")
-                        if links and any(x is not None for x in links):
-                            has_link = True
-                            break
-                    if not has_link:
-                        continue
-
-                    widgets.append({
-                        "nodeId": node_id,
-                        "nodeType": node_type,
-                        "nodeTitle": node_title,
-                        "name": "audio",
-                        "type": "AUDIO_INPUT_SLOT",
-                        "value": ""
-                    })
+                is_mask = "mask" in lower_type
+                widgets.append({
+                    "nodeId": node_id,
+                    "nodeType": node_type,
+                    "nodeTitle": node_title,
+                    "name": "mask" if is_mask else "image",
+                    "type": "MASK_INPUT_SLOT" if is_mask else "IMAGE_INPUT_SLOT",
+                    "value": ""
+                })
+                continue
+            elif "loadvideo" in lower_type or "load_video" in lower_type:
+                has_link = any(any(x is not None for x in out.get("links", [])) for out in node.get("outputs", []) if isinstance(out, dict))
+                if not has_link:
                     continue
 
-                if "saveimage" in lower_type or "save_image" in lower_type:
-
-                    has_link = False
-                    inputs = node.get("inputs", [])
-                    for inp in inputs:
-                        if inp.get("link") is not None:
-                            has_link = True
-                            break
-                    if not has_link:
-                        continue
-
-                    widgets.append({
-                        "nodeId": node_id,
-                        "nodeType": node_type,
-                        "nodeTitle": node_title,
-                        "name": "image",
-                        "type": "IMAGE_OUTPUT_SLOT",
-                        "value": ""
-                    })
-                    continue
-                elif "savevideo" in lower_type or "save_video" in lower_type:
-                    has_link = False
-                    inputs = node.get("inputs", [])
-                    for inp in inputs:
-                        if inp.get("link") is not None:
-                            has_link = True
-                            break
-                    if not has_link:
-                        continue
-
-                    widgets.append({
-                        "nodeId": node_id,
-                        "nodeType": node_type,
-                        "nodeTitle": node_title,
-                        "name": "video",
-                        "type": "VIDEO_OUTPUT_SLOT",
-                        "value": ""
-                    })
-                    continue
-                elif "saveaudio" in lower_type or "save_audio" in lower_type:
-                    has_link = False
-                    inputs = node.get("inputs", [])
-                    for inp in inputs:
-                        if inp.get("link") is not None:
-                            has_link = True
-                            break
-                    if not has_link:
-                        continue
-
-                    widgets.append({
-                        "nodeId": node_id,
-                        "nodeType": node_type,
-                        "nodeTitle": node_title,
-                        "name": "audio",
-                        "type": "AUDIO_OUTPUT_SLOT",
-                        "value": ""
-                    })
+                widgets.append({
+                    "nodeId": node_id,
+                    "nodeType": node_type,
+                    "nodeTitle": node_title,
+                    "name": "video",
+                    "type": "VIDEO_INPUT_SLOT",
+                    "value": ""
+                })
+                continue
+            elif "loadaudio" in lower_type or "load_audio" in lower_type:
+                has_link = any(any(x is not None for x in out.get("links", [])) for out in node.get("outputs", []) if isinstance(out, dict))
+                if not has_link:
                     continue
 
-                if any(kw in lower_type for kw in ["loader", "checkpoint", "loraloader", "vaeloader", "model"]):
+                widgets.append({
+                    "nodeId": node_id,
+                    "nodeType": node_type,
+                    "nodeTitle": node_title,
+                    "name": "audio",
+                    "type": "AUDIO_INPUT_SLOT",
+                    "value": ""
+                })
+                continue
+
+            if "saveimage" in lower_type or "save_image" in lower_type:
+                has_link = any(inp.get("link") is not None for inp in node.get("inputs", []) if isinstance(inp, dict))
+                if not has_link:
                     continue
 
-                from ..runninghub_bridge import scan_standard_node_widgets
-                node_widgets = scan_standard_node_widgets(node, node_type)
-                for w in node_widgets:
-                    widget_name = w["name"]
-                    widget_type = w["type"]
-                    value = w["value"]
-
-                    if widget_type not in WHITELIST_TYPES:
-                        continue
-
-                    lower_name = widget_name.lower()
-                    if any(kw in lower_name for kw in EXCLUDE_WIDGET_KEYWORDS):
-                        continue
-
-                    widgets.append({
-                        "nodeId": node_id,
-                        "nodeType": node_type,
-                        "nodeTitle": node_title,
-                        "name": widget_name,
-                        "type": widget_type,
-                        "value": value
-                    })
-        else:
-
-            for node_id, node in data.items():
-                if not isinstance(node, dict):
-                    continue
-                class_type = node.get("class_type", "")
-                lower_type = class_type.lower()
-                inputs = node.get("inputs", {})
-                if not isinstance(inputs, dict):
+                widgets.append({
+                    "nodeId": node_id,
+                    "nodeType": node_type,
+                    "nodeTitle": node_title,
+                    "name": "image",
+                    "type": "IMAGE_OUTPUT_SLOT",
+                    "value": ""
+                })
+                continue
+            elif "savevideo" in lower_type or "save_video" in lower_type or "videocombine" in lower_type or "vhs_videocombine" in lower_type:
+                has_link = any(inp.get("link") is not None for inp in node.get("inputs", []) if isinstance(inp, dict))
+                if not has_link:
                     continue
 
-                if "loadimage" in lower_type or "load_image" in lower_type:
-                    widgets.append({
-                        "nodeId": node_id,
-                        "nodeType": class_type,
-                        "name": "mask" if "mask" in lower_type else "image",
-                        "type": "MASK_INPUT_SLOT" if "mask" in lower_type else "IMAGE_INPUT_SLOT",
-                        "value": ""
-                    })
-                    continue
-                elif "loadvideo" in lower_type or "load_video" in lower_type:
-                    widgets.append({
-                        "nodeId": node_id,
-                        "nodeType": class_type,
-                        "name": "video",
-                        "type": "VIDEO_INPUT_SLOT",
-                        "value": ""
-                    })
-                    continue
-                elif "loadaudio" in lower_type or "load_audio" in lower_type:
-                    widgets.append({
-                        "nodeId": node_id,
-                        "nodeType": class_type,
-                        "name": "audio",
-                        "type": "AUDIO_INPUT_SLOT",
-                        "value": ""
-                    })
+                widgets.append({
+                    "nodeId": node_id,
+                    "nodeType": node_type,
+                    "nodeTitle": node_title,
+                    "name": "video",
+                    "type": "VIDEO_OUTPUT_SLOT",
+                    "value": ""
+                })
+                continue
+            elif "saveaudio" in lower_type or "save_audio" in lower_type:
+                has_link = any(inp.get("link") is not None for inp in node.get("inputs", []) if isinstance(inp, dict))
+                if not has_link:
                     continue
 
-                if "saveimage" in lower_type or "save_image" in lower_type:
-                    widgets.append({
-                        "nodeId": node_id,
-                        "nodeType": class_type,
-                        "name": "image",
-                        "type": "IMAGE_OUTPUT_SLOT",
-                        "value": ""
-                    })
-                    continue
-                elif "savevideo" in lower_type or "save_video" in lower_type:
-                    widgets.append({
-                        "nodeId": node_id,
-                        "nodeType": class_type,
-                        "name": "video",
-                        "type": "VIDEO_OUTPUT_SLOT",
-                        "value": ""
-                    })
-                    continue
-                elif "saveaudio" in lower_type or "save_audio" in lower_type:
-                    widgets.append({
-                        "nodeId": node_id,
-                        "nodeType": class_type,
-                        "name": "audio",
-                        "type": "AUDIO_OUTPUT_SLOT",
-                        "value": ""
-                    })
+                widgets.append({
+                    "nodeId": node_id,
+                    "nodeType": node_type,
+                    "nodeTitle": node_title,
+                    "name": "audio",
+                    "type": "AUDIO_OUTPUT_SLOT",
+                    "value": ""
+                })
+                continue
+
+            if any(kw in lower_type for kw in ["loader", "checkpoint", "loraloader", "vaeloader", "model"]):
+                continue
+
+            from ..runninghub_bridge import scan_standard_node_widgets
+            node_widgets = scan_standard_node_widgets(node, node_type)
+            for w in node_widgets:
+                widget_name = w["name"]
+                widget_type = w["type"]
+                value = w["value"]
+
+                if widget_type not in WHITELIST_TYPES:
                     continue
 
-                if any(kw in lower_type for kw in ["loader", "checkpoint", "loraloader", "vaeloader", "model"]):
+                if any(kw in widget_name.lower() for kw in EXCLUDE_WIDGET_KEYWORDS):
                     continue
 
-                for param_name, param_val in inputs.items():
-                    if isinstance(param_val, list) and len(param_val) == 2 and (isinstance(param_val[0], (str, int)) or str(param_val[0]).isdigit()):
-                        continue
+                widgets.append({
+                    "nodeId": node_id,
+                    "nodeType": node_type,
+                    "nodeTitle": node_title,
+                    "name": widget_name,
+                    "type": widget_type,
+                    "value": value
+                })
 
-                    lower_name = param_name.lower()
-                    if any(kw in lower_name for kw in EXCLUDE_WIDGET_KEYWORDS):
-                        continue
-
-                    w_type = "STRING"
-                    if isinstance(param_val, bool):
-                        w_type = "BOOLEAN"
-                    elif isinstance(param_val, int):
-                        w_type = "INT"
-                    elif isinstance(param_val, float):
-                        w_type = "FLOAT"
-
-                    widgets.append({
-                        "nodeId": node_id,
-                        "nodeType": class_type,
-                        "name": param_name,
-                        "type": w_type,
-                        "value": param_val
-                    })
         return web.json_response({"success": True, "widgets": widgets})
     except Exception as e:
         logging.error(f"[ComfyPanel Linker API] Scan workflow exception: {e}", exc_info=True)

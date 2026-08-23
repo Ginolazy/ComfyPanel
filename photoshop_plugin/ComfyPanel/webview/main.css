@@ -1013,11 +1013,12 @@ body[data-active-tab="global"] #deleteNanoBananaBtn {
     height: 32px;
     padding: 0 10px;
     background: var(--bg-primary);
-    border: 1px solid var(--border-color);
+    border: 1px solid var(--bg-hover);
     border-radius: var(--radius-sm);
     color: var(--text-primary);
     font-size: 11px;
     font-family: inherit;
+    transition: all var(--transition-normal);
 }
 
 #defaultLoadPath,
@@ -1029,8 +1030,8 @@ body[data-active-tab="global"] #deleteNanoBananaBtn {
     color: var(--text-muted);
 }
 
-.input-control:focus {
-    border-color: var(--accent-hover);
+.input-control:hover {
+    border-color: var(--text-secondary);
 }
 
 .input-control:disabled {
@@ -2495,6 +2496,8 @@ textarea.tool-param-input:focus {
     width: 100%;
     min-width: 0;
     z-index: 1;
+    border: 1px solid var(--bg-hover);
+    border-radius: var(--radius-sm);
     /* [FIX] Lower z-index to prevent blocking dropdowns */
 }
 
@@ -2526,8 +2529,6 @@ textarea.tool-param-input:focus {
     position: relative;
     transition: all var(--transition-normal);
     overflow: hidden;
-    border: 1px solid var(--bg-hover);
-    border-radius: var(--radius-sm);
 }
 
 /* Text span inside trigger — handles ellipsis correctly as a block child of flex */
@@ -2541,8 +2542,8 @@ textarea.tool-param-input:focus {
     min-width: 0;
 }
 
-.custom-select-trigger:hover {
-    border-color: var(--border-color);
+.custom-select-container:hover {
+    border-color: var(--text-secondary);
 }
 
 .custom-select-trigger::after {

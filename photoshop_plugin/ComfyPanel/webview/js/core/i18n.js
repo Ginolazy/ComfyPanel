@@ -152,7 +152,7 @@
             'layer': 'Layer',
             'layer_label': 'Supports selecting multiple layers or groups',
             'load': 'Load',
-            'capture_frame': 'Capture Frame',
+            'capture_frame': 'Capture to Layer | ⇧ New Document',
             'save_as_media': 'Save As...',
             'apply_to_canvas': "Fit to Canvas | ⇧ Original Size (No stretching)",
             'apply_to_selection': 'Fit to Selection | ⇧ Fit to Layer Bounds',
@@ -309,10 +309,7 @@
             'audio': 'Audio',
 
             // NanoBanana Settings
-            'nanobanana_url': 'API URL:',
             'nanobanana_url_placeholder': 'https://api.example.com/v1beta/models...',
-            'nanobanana_key': 'API Key:',
-            'nanobanana_alias': 'Alias (Opt):',
             'nanobanana_alias_placeholder': 'My Private Server (Optional)',
             'capabilities': 'Capabilities:',
             'output_format': 'Output Format',
@@ -528,7 +525,7 @@
             'layer': '图层',
             'layer_label': '支持选择多图层或组',
             'load': '加载',
-            'capture_frame': '截取当前帧',
+            'capture_frame': '截帧到图层 | ⇧ 新建文档',
             'save_as_media': '另存为...',
             'apply_to_canvas': "适应画布 | ⇧ 原始大小 (不拉伸)",
             'apply_to_selection': '适应选区 | ⇧ 适应图层边界',
@@ -684,10 +681,7 @@
             'audio': '音频',
 
             // NanoBanana 设置
-            'nanobanana_url': '接口地址:',
             'nanobanana_url_placeholder': '输入接口地址 (包含 v1beta/models...)',
-            'nanobanana_key': 'API 密钥:',
-            'nanobanana_alias': '别名 (可选):',
             'nanobanana_alias_placeholder': '例如：我的私有服务器',
             'capabilities': '接口参数支持:',
             'output_format': '输出格式',

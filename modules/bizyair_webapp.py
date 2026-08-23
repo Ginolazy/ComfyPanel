@@ -54,21 +54,22 @@ async def save_bizyair_webapp_config(request):
     except Exception as e:
         return web.json_response({"error": str(e)}, status=500)
 
+_CDN_DEFAULT_APPS_URL = "https://cdn.jsdelivr.net/gh/Ginolazy/ComfyPanel-defaults@main/default_apps.json"
+
 @PromptServer.instance.routes.get("/bizyair_webapp/default_app_list")
 async def get_default_app_list(request):
     try:
-        config_path = os.path.join(os.path.dirname(os.path.dirname(__file__)), "default", "default_apps.json")
-        default_apps = []
-        if os.path.exists(config_path):
-            with open(config_path, 'r', encoding='utf-8') as f:
-                data = json.load(f)
-                bizy_data = data.get("bizyair", [])
-                for app in bizy_data:
-                    if isinstance(app, dict) and "id" in app:
-                        default_apps.append(str(app["id"]))
+        async with aiohttp.ClientSession() as session:
+            async with session.get(_CDN_DEFAULT_APPS_URL, timeout=aiohttp.ClientTimeout(total=10)) as resp:
+                data = await resp.json(content_type=None)
+        default_apps = [
+            str(app["id"])
+            for app in data.get("bizyair", [])
+            if isinstance(app, dict) and "id" in app
+        ]
         return web.json_response({"default_apps": default_apps})
     except Exception as e:
-        print(f"[BizyAirWebApp] Error reading default config: {e}")
+        print(f"[BizyAirWebApp] Error fetching default config: {e}")
         return web.json_response({"default_apps": []})
 
 @PromptServer.instance.routes.post("/comfypanel/bizyair/webapp_detail")

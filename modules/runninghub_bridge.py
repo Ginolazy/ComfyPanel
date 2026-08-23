@@ -236,30 +236,31 @@ async def get_rh_webapp_config(request):
     except Exception as e:
         return web.json_response({"error": str(e)}, status=500)
 
+_CDN_DEFAULT_APPS_URL = "https://cdn.jsdelivr.net/gh/Ginolazy/ComfyPanel-defaults@main/default_apps.json"
+
 @PromptServer.instance.routes.get("/rh_webapp/default_app_list")
 async def get_rh_default_app_list(request):
     try:
         _, base_url = get_rh_config()
         is_international = "runninghub.ai" in base_url
 
-        config_path = os.path.join(os.path.dirname(os.path.dirname(__file__)), "default", "default_apps.json")
+        async with aiohttp.ClientSession() as session:
+            async with session.get(_CDN_DEFAULT_APPS_URL, timeout=aiohttp.ClientTimeout(total=10)) as resp:
+                data = await resp.json(content_type=None)
+
         default_apps = []
-        if os.path.exists(config_path):
-            with open(config_path, 'r', encoding='utf-8') as f:
-                data = json.load(f)
-                raw_apps = data.get("runninghub", [])
-                for app in raw_apps:
-                    if not isinstance(app, dict):
-                        continue
-                    shared_id = app.get("id")
-                    if shared_id:
-                        default_apps.append(str(shared_id))
-                    region_id = app.get("idEn") if is_international else app.get("idZh")
-                    if region_id:
-                        default_apps.append(str(region_id))
+        for app in data.get("runninghub", []):
+            if not isinstance(app, dict):
+                continue
+            shared_id = app.get("id")
+            if shared_id:
+                default_apps.append(str(shared_id))
+            region_id = app.get("idEn") if is_international else app.get("idZh")
+            if region_id:
+                default_apps.append(str(region_id))
         return web.json_response({"default_apps": default_apps})
     except Exception as e:
-        print(f"[RHWebApp] Error reading default config: {e}")
+        print(f"[RHWebApp] Error fetching default config: {e}")
         return web.json_response({"default_apps": []})
 
 @PromptServer.instance.routes.post("/comfypanel/runninghub/webapp_detail")
@@ -336,38 +337,20 @@ class RHWorkflow:
             if not clean_base_domain.startswith("http"):
                 clean_base_domain = "https://www.runninghub.cn"
 
-            fetch_url = f"{clean_base_domain}/api/openapi/getJsonApiFormat"
-            payload = {
-                "apiKey": api_key,
-                "workflowId": workflow_id
-            }
-
+            fetch_url = f"{clean_base_domain}/api/workflow/export"
             try:
-                resp = requests.post(fetch_url, json=payload, headers=headers, timeout=15)
+                resp = requests.post(fetch_url, json={"workflowId": str(workflow_id)}, headers=headers, timeout=15)
                 if resp.status_code != 200:
-                    raise ConnectionError(f"Failed to fetch workflow via RunningHub API, HTTP {resp.status_code}: {resp.text}")
+                    raise ConnectionError(f"RunningHub API returned HTTP {resp.status_code}: {resp.text}")
                 res_json = resp.json()
-                if res_json.get("code") != 0:
+                if "code" in res_json and res_json.get("code") != 0:
                     msg = res_json.get("msg") or res_json.get("message") or "Unknown error"
                     raise ValueError(f"RunningHub API returned error: {msg}")
-
-                data_val = res_json.get("data")
-                if isinstance(data_val, str):
-                    try:
-                        parsed = json.loads(data_val)
-                        if isinstance(parsed, dict) and "prompt" in parsed:
-                            prompt_val = parsed.get("prompt")
-                            workflow_data = json.loads(prompt_val) if isinstance(prompt_val, str) else prompt_val
-                        else:
-                            workflow_data = parsed
-                    except Exception:
-                        workflow_data = data_val
-                elif isinstance(data_val, dict):
-                    if "prompt" in data_val:
-                        prompt_val = data_val.get("prompt")
-                        workflow_data = json.loads(prompt_val) if isinstance(prompt_val, str) else prompt_val
-                    else:
-                        workflow_data = data_val
+                if "nodes" in res_json:
+                    workflow_data = res_json
+                elif "data" in res_json:
+                    data_val = res_json.get("data")
+                    workflow_data = json.loads(data_val) if isinstance(data_val, str) else data_val
                 else:
                     workflow_data = res_json
             except Exception as e:
@@ -509,6 +492,22 @@ class RHWorkflow:
                     status_data = status_resp.json()
                     if task_id in status_data:
                         task_history = status_data[task_id]
+                        status_obj = task_history.get("status", {})
+                        if status_obj.get("status_str") == "error":
+                            messages = status_obj.get("messages", [])
+                            err_details = []
+                            for msg in messages:
+                                if isinstance(msg, list) and len(msg) >= 2 and isinstance(msg[1], dict):
+                                    ex_type = msg[1].get("exception_type", "")
+                                    ex_msg = msg[1].get("exception_message", "")
+                                    tb = msg[1].get("traceback", [])
+                                    tb_str = " -> ".join(tb) if isinstance(tb, list) else str(tb)
+                                    err_details.append(f"[{ex_type}] {ex_msg} ({tb_str})")
+                                else:
+                                    err_details.append(str(msg))
+                            full_err = "\n".join(err_details) if err_details else "Unknown remote execution error"
+                            raise RuntimeError(f"RunningHub remote execution failed: {full_err}")
+
                         outputs_info = task_history.get("outputs", {})
                         sorted_node_ids = sorted(outputs_info.keys(), key=lambda x: int(x) if x.isdigit() else 99999)
                         for node_id in sorted_node_ids:
@@ -608,7 +607,11 @@ class RHWorkflow:
                             dest_path = os.path.join(folder_paths.get_input_directory(), dest_fn)
                             with open(dest_path, "wb") as f:
                                 f.write(media_bytes)
-                            node_files.append(dest_fn)
+                            try:
+                                video_obj = VideoFromFile(dest_path)
+                                node_files.append(video_obj)
+                            except Exception:
+                                node_files.append(dest_fn)
                             logging.info(f"[RHWorkflow] Saved output video/gif to input directory: {dest_fn}")
 
                         else:
@@ -648,53 +651,60 @@ class RHWorkflow:
         nodes = workflow_data.get("nodes", [])
         links = workflow_data.get("links", [])
 
+        links_map = {l[0]: l for l in links if l and len(l) >= 4}
+        set_vars = {}
+        for n in nodes:
+            if n.get("type") == "SetNode":
+                var_name = n.get("widgets_values", [""])[0] if isinstance(n.get("widgets_values"), (list, tuple)) and n.get("widgets_values") else ""
+                for inp in n.get("inputs", []):
+                    if isinstance(inp, dict) and inp.get("link") in links_map:
+                        l = links_map[inp["link"]]
+                        set_vars[var_name] = (l[1], l[2])
+
+        get_nodes_map = {}
+        for n in nodes:
+            if n.get("type") == "GetNode":
+                var_name = n.get("widgets_values", [""])[0] if isinstance(n.get("widgets_values"), (list, tuple)) and n.get("widgets_values") else ""
+                if var_name in set_vars:
+                    get_nodes_map[n.get("id")] = set_vars[var_name]
+
         prompt_api = {}
         for node in nodes:
             node_id = str(node.get("id"))
             class_type = node.get("type")
 
+            if class_type in ["SetNode", "GetNode"]:
+                continue
+
             inputs = {}
 
-            widgets = scan_standard_node_widgets(node, class_type)
-
-            if not widgets:
-
-                ui_widgets = []
+            widgets_values = node.get("widgets_values")
+            if isinstance(widgets_values, dict):
+                for k, v in widgets_values.items():
+                    if k != "videopreview":
+                        inputs[k] = v
+            elif isinstance(widgets_values, (list, tuple)):
+                ui_val_idx = 0
                 if "inputs" in node and isinstance(node["inputs"], list):
                     for inp in node["inputs"]:
-                        if isinstance(inp, dict) and "widget" in inp:
+                        if isinstance(inp, dict) and inp.get("widget") is not None:
                             w_name = inp["widget"].get("name") or inp.get("name")
-                            if w_name:
-                                ui_widgets.append(w_name)
+                            val = widgets_values[ui_val_idx] if ui_val_idx < len(widgets_values) else ""
+                            ui_val_idx += 1
+                            inputs[w_name] = val
 
-                widgets_values = node.get("widgets_values", [])
-                for idx, w_name in enumerate(ui_widgets):
-                    val = None
-                    if idx < len(widgets_values):
-                        val = widgets_values[idx]
-                    if val is None:
-                        val = ""
-                    inputs[w_name] = val
-            else:
-                for w in widgets:
-                    w_name = w["name"]
-                    val = w["value"]
+            widgets = scan_standard_node_widgets(node, class_type)
+            for w in widgets:
+                w_name = w["name"]
+                if w_name not in inputs or inputs[w_name] == "":
+                    inputs[w_name] = w["value"] if w.get("value") is not None else ""
 
-                    if w_name == "audioUI":
-                        if not val:
-
-                            audio_val = inputs.get("audio")
-                            if audio_val and isinstance(audio_val, str):
-                                rand_val = random.random()
-                                encoded_fn = urllib.parse.quote(audio_val)
-                                val = f"/api/view?filename={encoded_fn}&type=input&subfolder=&rand={rand_val:.15f}"
-                            else:
-                                val = ""
-
-                    if val is None:
-                        val = ""
-
-                    inputs[w_name] = val
+            if "audioUI" in inputs and not inputs["audioUI"]:
+                audio_val = inputs.get("audio")
+                if audio_val and isinstance(audio_val, str):
+                    rand_val = random.random()
+                    encoded_fn = urllib.parse.quote(audio_val)
+                    inputs["audioUI"] = f"/api/view?filename={encoded_fn}&type=input&subfolder=&rand={rand_val:.15f}"
 
             if "inputs" in node and isinstance(node["inputs"], list):
                 for inp in node["inputs"]:
@@ -702,6 +712,9 @@ class RHWorkflow:
                         link_id = inp.get("link")
                         if link_id is not None:
                             src_node_id, src_slot = self._find_link_source(workflow_data, link_id)
+
+                            if src_node_id in get_nodes_map:
+                                src_node_id, src_slot = get_nodes_map[src_node_id]
                             if src_node_id is not None:
                                 inputs[inp.get("name")] = [str(src_node_id), src_slot]
 
@@ -746,7 +759,7 @@ class RHWorkflow:
                     widgets = scan_standard_node_widgets(node, node.get("type"))
                     for w in widgets:
                         if w["name"] == param_name:
-                            idx = w["idx"]
+                            idx = w.get("value_idx", w["idx"])
                             if "widgets_values" not in node or not isinstance(node["widgets_values"], list):
                                 node["widgets_values"] = []
                             while len(node["widgets_values"]) <= idx:
@@ -1211,91 +1224,121 @@ async def expand_bridge_nodes(outer_prompt: dict, base_url: str, api_key: str) -
     return result
 
 def scan_standard_node_widgets(node, class_type):
-    node_class = nodes.NODE_CLASS_MAPPINGS.get(class_type)
-    if not node_class:
-        return []
-    try:
-        input_types = node_class.INPUT_TYPES()
-    except Exception:
-        return []
 
+    ui_widgets = []
+    ui_widget_types = {}
     linked_input_names = set()
+    all_input_names = []
     if "inputs" in node and isinstance(node["inputs"], list):
         for inp in node["inputs"]:
-            if isinstance(inp, dict) and inp.get("link") is not None:
-                linked_input_names.add(inp.get("name"))
+            if not isinstance(inp, dict):
+                continue
+            name = inp.get("name")
+            if not name:
+                continue
+            all_input_names.append(name)
+            if inp.get("link") is not None:
+                linked_input_names.add(name)
+            elif "widget" in inp:
+                w_name = inp["widget"].get("name") or name
+                if w_name:
+                    ui_widgets.append(w_name)
+                    ui_widget_types[w_name] = inp.get("type", "STRING")
 
-    widgets_values = node.get("widgets_values", [])
+    node_class = nodes.NODE_CLASS_MAPPINGS.get(class_type)
+    input_types = {}
+    if node_class:
+        try:
+            input_types = node_class.INPUT_TYPES()
+        except Exception:
+            input_types = {}
+
+    widgets_values = node.get("widgets_values")
+    if not isinstance(widgets_values, (list, tuple)):
+        widgets_values = []
+    final_slots = []
     expected_slots = []
     widget_val_idx = 0
 
-    def process_section_inputs(inputs_dict, prefix=""):
-        nonlocal widget_val_idx
-        for name, config in inputs_dict.items():
-            if name in linked_input_names:
+    has_ui_widgets = any(isinstance(inp, dict) and inp.get("widget") is not None for inp in node.get("inputs", []))
+    if has_ui_widgets:
+        ui_val_idx = 0
+        for inp in node.get("inputs", []):
+            if not isinstance(inp, dict):
                 continue
-            if not isinstance(config, (list, tuple)) or len(config) == 0:
-                continue
-
-            w_type = str(config[0])
-            full_name = f"{prefix}.{name}" if prefix else name
-            expected_slots.append({"name": full_name, "type": w_type})
-
-            val = None
-            if widget_val_idx < len(widgets_values):
-                val = widgets_values[widget_val_idx]
-
-            widget_val_idx += 1
-
-            if name in ["seed", "noise_seed"]:
-                expected_slots.append({"name": f"{prefix}.control_after_generate" if prefix else "control_after_generate", "type": "COMBO", "virtual": True})
-                widget_val_idx += 1
-
-            if w_type == "COMFY_DYNAMICCOMBO_V3" and isinstance(val, str) and len(config) > 1 and isinstance(config[1], dict):
-                options = config[1].get("options", [])
-                for opt in options:
-                    if isinstance(opt, dict) and opt.get("key") == val:
-                        opt_inputs = opt.get("inputs", {})
-                        for sub_sec in ["required", "optional"]:
-                            if sub_sec in opt_inputs and isinstance(opt_inputs[sub_sec], dict):
-                                process_section_inputs(opt_inputs[sub_sec], prefix=full_name)
-
-    for section in ["required", "optional"]:
-        if section in input_types and isinstance(input_types[section], dict):
-            process_section_inputs(input_types[section])
-
-    ui_widgets = []
-    if "inputs" in node and isinstance(node["inputs"], list):
-        for inp in node["inputs"]:
-            if isinstance(inp, dict) and "widget" in inp:
+            if inp.get("widget") is not None:
                 w_name = inp["widget"].get("name") or inp.get("name")
-                if w_name and w_name not in linked_input_names:
-                    ui_widgets.append(w_name)
+                is_linked = inp.get("link") is not None
+                current_val_idx = ui_val_idx
+                val = None
+                if ui_val_idx < len(widgets_values):
+                    val = widgets_values[ui_val_idx]
+                ui_val_idx += 1
+                if is_linked:
+                    continue
+                w_t = inp.get("type", "STRING")
+                final_slots.append({"name": w_name, "type": w_t, "value": val, "value_idx": current_val_idx})
+    else:
+        def process_section_inputs(inputs_dict, prefix=""):
+            nonlocal widget_val_idx
+            for name, config in inputs_dict.items():
+                if not isinstance(config, (list, tuple)) or len(config) == 0:
+                    continue
 
-    expected_names = [slot["name"] for slot in expected_slots if not slot.get("virtual")]
+                raw_type = config[0]
+                if isinstance(raw_type, (list, tuple)):
+                    w_type = "COMBO"
+                else:
+                    w_type = str(raw_type)
+                full_name = f"{prefix}.{name}" if prefix else name
 
-    final_slots = []
-    for slot in expected_slots:
-        if not slot.get("virtual"):
-            final_slots.append(slot)
+                is_linked = name in linked_input_names
+                val = None
+                if not is_linked:
+                    if widget_val_idx < len(widgets_values):
+                        val = widgets_values[widget_val_idx]
+                    expected_slots.append({"name": full_name, "type": w_type, "value": val})
+                    widget_val_idx += 1
 
-    for ui_w in ui_widgets:
-        if ui_w not in expected_names:
-            final_slots.append({"name": ui_w, "type": "STRING"})
+                if name in ["seed", "noise_seed"]:
+                    expected_slots.append({"name": f"{prefix}.control_after_generate" if prefix else "control_after_generate", "type": "COMBO", "virtual": True, "value": None})
+                    widget_val_idx += 1
+
+                if w_type == "COMFY_DYNAMICCOMBO_V3" and isinstance(val, str) and len(config) > 1 and isinstance(config[1], dict):
+                    options = config[1].get("options", [])
+                    for opt in options:
+                        if isinstance(opt, dict) and opt.get("key") == val:
+                            opt_inputs = opt.get("inputs", {})
+                            for sub_sec in ["required", "optional"]:
+                                if sub_sec in opt_inputs and isinstance(opt_inputs[sub_sec], dict):
+                                    process_section_inputs(opt_inputs[sub_sec], prefix=full_name)
+
+        for section in ["required", "optional"]:
+            if section in input_types and isinstance(input_types[section], dict):
+                process_section_inputs(input_types[section])
+
+        for slot in expected_slots:
+            if not slot.get("virtual"):
+                final_slots.append(slot)
+
+        for ui_w in ui_widgets:
+            expected_names = [slot["name"] for slot in expected_slots if not slot.get("virtual")]
+            if ui_w not in expected_names:
+                w_t = ui_widget_types.get(ui_w, "STRING")
+                final_slots.append({"name": ui_w, "type": w_t, "value": None})
 
     widgets_list = []
     for idx, slot in enumerate(final_slots):
-        val = None
-        if idx < len(widgets_values):
-            val = widgets_values[idx]
-
-        widgets_list.append({
+        item = {
             "nodeId": node.get("id"),
             "nodeType": class_type,
             "name": slot["name"],
             "type": slot["type"],
-            "value": val,
+            "value": slot.get("value"),
             "idx": idx
-        })
+        }
+        if "value_idx" in slot:
+            item["value_idx"] = slot["value_idx"]
+        widgets_list.append(item)
 
     return widgets_list
