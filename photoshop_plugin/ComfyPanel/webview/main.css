@@ -499,6 +499,7 @@ body {
     align-items: center;
     gap: 6px;
     min-width: 0;
+    height: 36px;
     flex: 1;
     overflow: hidden;
     transition: all var(--transition-fast);
@@ -528,7 +529,9 @@ body {
 }
 
 .active-workflow-bar .cw-actions .icon-btn {
-    padding: 9px 18px;
+    width: 36px;
+    height: 36px;
+    padding: 4px;
 }
 
 
@@ -2354,8 +2357,8 @@ input:focus {
     color: var(--text-secondary);
     background: var(--bg-input);
     font-size: 12px;
-    font-weight: 300;
-    /* [FIX] Removed fixed z-index to allow natural stacking & parent control */
+    white-space: nowrap;
+    text-overflow: ellipsis;
     transition: all var(--transition-normal);
 }
 
@@ -2444,6 +2447,47 @@ textarea.tool-param-input:focus {
     color: var(--text-primary);
 }
 
+/* Dimension (Width x Height) Input */
+.dimension-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    width: 100%;
+}
+
+.dimension-wrapper .dimension-sub-input {
+    flex: 1;
+    min-width: 0;
+    text-align: center;
+    height: 24px;
+    background: var(--bg-hover);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-sm);
+    color: var(--text-primary);
+    font-size: 11px;
+    padding: 0 4px;
+    transition: border-color 0.2s;
+}
+
+.dimension-wrapper .dimension-sub-input:focus {
+    border-color: var(--accent-primary);
+    outline: none;
+}
+
+.dimension-wrapper .dimension-sub-input::-webkit-inner-spin-button,
+.dimension-wrapper .dimension-sub-input::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+.dimension-wrapper .dimension-separator {
+    color: var(--text-muted);
+    font-size: 12px;
+    font-weight: bold;
+    user-select: none;
+    line-height: 1;
+}
+
 .stepper-btn.minus {
     border-right: 1px solid var(--border-color);
 }
@@ -2458,7 +2502,7 @@ textarea.tool-param-input:focus {
     width: 36px;
     height: 20px;
     background: var(--bg-primary);
-    border: 1px solid var(--border-color);
+    border: 1px solid var(--bg-hover);
     border-radius: 12px;
     position: relative;
     cursor: pointer;
@@ -2498,6 +2542,7 @@ textarea.tool-param-input:focus {
     z-index: 1;
     border: 1px solid var(--bg-hover);
     border-radius: var(--radius-sm);
+    text-transform: capitalize;
     /* [FIX] Lower z-index to prevent blocking dropdowns */
 }
 
@@ -2533,7 +2578,7 @@ textarea.tool-param-input:focus {
 
 /* Text span inside trigger — handles ellipsis correctly as a block child of flex */
 .select-trigger-text {
-    display: flex;
+    display: block;
     align-items: center;
     gap: 2px;
     overflow: hidden;
@@ -2675,6 +2720,18 @@ textarea.tool-param-input:focus {
 .param-row.checkbox-row .param-input-wrapper {
     flex: 0 0 auto;
     width: 36px;
+}
+
+.lora-input-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    width: 100%;
+}
+
+.lora-input {
+    flex: 1;
+    display: flex;
 }
 
 /* Labels occupy 50%, left aligned */

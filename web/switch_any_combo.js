@@ -73,6 +73,13 @@ export function setupSwitchAnyCombo(nodeType) {
         } else if (!comboOptions.includes(currentVal)) {
             widget.value = comboOptions[0];
         }
+        if (this.graph) {
+            if (typeof this.graph.incrementVersion === "function") {
+                this.graph.incrementVersion();
+            } else {
+                this.graph._version = (this.graph._version || 0) + 1;
+            }
+        }
         if (this.setDirtyCanvas) this.setDirtyCanvas(true, true);
     };
     const origOnConfigure = nodeType.prototype.onConfigure;
@@ -86,6 +93,8 @@ export function setupSwitchAnyCombo(nodeType) {
     nodeType.prototype.onConnectionsChange = function (type) {
         if (origOnConnectionsChange) origOnConnectionsChange.apply(this, arguments);
         if (type === 1) {
+            // Run immediately and also in timeout to catch both sync and async connection updates
+            this.updateSwitchAnyComboOptions?.();
             setTimeout(() => this.updateSwitchAnyComboOptions?.(), 50);
         }
     };

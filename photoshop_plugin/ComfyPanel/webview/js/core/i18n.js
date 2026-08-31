@@ -99,7 +99,6 @@
             'builtin_apps': 'Built-in Apps',
             'queue_settings': 'Queue Settings (Opt)',
             'instance_type': 'Instance Type',
-            'personal_queue': 'Personal Queue',
             'user_config': 'User Config',
             'user_config_edit': 'Edit',
             'user_config_reload_apply': 'Apply',
@@ -140,7 +139,7 @@
             'run_bizyair_plus': 'Run (BizyAirPlus)',
             'running': 'Running...',
             'stop': 'Stop',
-            'auto_insert': 'Auto-Insert Result',
+            'auto_insert': 'Auto-Insert Results',
             'draft_resolution': 'Draft Mode Resolution',
             'layout': 'Layout',
             'left': 'Left',
@@ -159,8 +158,8 @@
             'create_new_doc': 'Create New Document',
             'comfyui_server': 'ComfyUI Server:',
             'comfyui_inference_server': 'GPU Server:',
-
-
+            'comfy_auto_return': 'Always Capture Results',
+            'comfy_auto_return_tip': '* When enabled, results from running workflows directly in ComfyUI are automatically shown in the panel and sent to Photoshop (if Auto-Insert is on).',
 
             // Tooltips
             'show_comfyui': 'Show ComfyUI',
@@ -472,7 +471,6 @@
             'builtin_apps': '内置 App',
             'queue_settings': '排队与机型设置(可选)',
             'instance_type': '实例机型',
-            'personal_queue': '独享排队',
             'user_config': '用户配置',
             'user_config_edit': '编辑',
             'user_config_reload_apply': '应用',
@@ -532,6 +530,9 @@
             'create_new_doc': '创建新文档',
             'comfyui_server': 'ComfyUI 服务器:',
             'comfyui_inference_server': 'GPU 服务器:',
+            'comfy_auto_return': '始终捕获结果',
+            'comfy_auto_return_tip': '* 启用该功能后，直接在 ComfyUI 中运行工作流所得的结果会自动显示在面板中，并发送至 Photoshop（若已开启“自动插入”功能）。',
+
 
 
             // Tooltips

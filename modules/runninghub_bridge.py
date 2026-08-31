@@ -604,15 +604,11 @@ class RHWorkflow:
                         elif ext in [".mp4", ".avi", ".mov", ".webm", ".gif"]:
 
                             dest_fn = f"rh_out_{uuid.uuid4().hex}{ext}"
-                            dest_path = os.path.join(folder_paths.get_input_directory(), dest_fn)
+                            dest_path = os.path.join(folder_paths.get_temp_directory(), dest_fn)
                             with open(dest_path, "wb") as f:
                                 f.write(media_bytes)
-                            try:
-                                video_obj = VideoFromFile(dest_path)
-                                node_files.append(video_obj)
-                            except Exception:
-                                node_files.append(dest_fn)
-                            logging.info(f"[RHWorkflow] Saved output video/gif to input directory: {dest_fn}")
+                            node_files.append(VideoFromFile(dest_path))
+                            logging.info(f"[RHWorkflow] Saved output video/gif to temp directory: {dest_path}")
 
                         else:
 
