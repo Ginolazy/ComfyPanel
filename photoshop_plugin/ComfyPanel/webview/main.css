@@ -33,30 +33,6 @@
     flex: 1 !important;
 }
 
-/* TEMPORARY: disable BizyAir engine selection while service is unavailable
-.engine-card[data-action="select-engine"][data-engine="engine_bizyair"] {
-    cursor: not-allowed;
-    border-color: var(--border-color);
-    background: var(--bg-secondary);
-    pointer-events: none;
-}
-
-.engine-card[data-action="select-engine"][data-engine="engine_bizyair"]::after {
-    content: 'BizyAir service temporarily unavailable. Waiting for official recovery.';
-    position: absolute;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 100%;
-    height: 100%;
-    font-weight: 700;
-    background: var(--icon-btn-bg-color);
-    border-radius: 6px;
-    pointer-events: none;
-}
-
-  END TEMPORARY: disable BizyAir engine selection */
-
 /* Loading Overlay */
 body.is-loading::after {
     content: '';
@@ -109,6 +85,11 @@ body.is-loading::before {
 }
 
 /* SVG ICON SYSTEM */
+.icon-tw-7 {
+    width: 7px;
+    height: 7px;
+}
+
 .icon-tw-8 {
     width: 8px;
     height: 8px;
@@ -163,6 +144,11 @@ body.is-loading::before {
 .icon-tw-24 {
     width: 24px;
     height: 24px;
+}
+
+.icon-tw-28 {
+    width: 28px;
+    height: 28px;
 }
 
 svg.icon-tw-10,
@@ -283,7 +269,6 @@ svg.icon-tw-24 {
 
 body {
     font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-    /* [FIX] Hardcoded background to match Host splash screen and prevent white flash */
     background-color: var(--bg-primary) !important;
     color: var(--text-primary);
     font-size: 12px;
@@ -293,7 +278,6 @@ body {
 /* --- Scrollbar --- */
 ::-webkit-scrollbar {
     width: 3px;
-    /* Narrower width */
     height: 3px;
 }
 
@@ -349,7 +333,6 @@ body {
     display: flex;
     align-items: center;
     font-size: 14px;
-    font-weight: 700;
     color: var(--bg-active);
     min-width: 0;
 }
@@ -466,12 +449,18 @@ body {
     padding: 6px;
     background: var(--bg-secondary);
     border-bottom: 1px solid var(--border-color);
-    gap: 6px;
+    gap: 3px;
     flex-shrink: 0;
     width: 100%;
     white-space: nowrap;
 }
 
+.server-selection-bar svg {
+    height: 24px;
+    padding: 2px;
+    background: #000;
+    border-radius: 3px;
+}
 
 /* Active Workflow Bar — pinned at top of workflow list */
 .active-workflow-bar {
@@ -484,54 +473,84 @@ body {
     background: var(--bg-secondary);
     flex-shrink: 0;
     width: 100%;
-    cursor: pointer;
 }
 
-.active-workflow-bar .cw-info:hover,
-.active-workflow-bar .cw-actions:hover {
+.active-workflow-list {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    min-width: 0;
+}
+
+.active-workflow-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    cursor: pointer;
+    transition: background var(--transition-fast);
+    border-bottom: 1px solid var(--border-color);
+}
+
+.active-workflow-item:hover {
     background: var(--bg-hover);
 }
 
-.active-workflow-bar .cw-info {
-    font-weight: 600;
-    padding: 10px;
+.active-workflow-item .cw-info {
+    padding: 8px 10px;
     display: flex;
     align-items: center;
-    gap: 6px;
+    gap: 3px;
     min-width: 0;
-    height: 36px;
     flex: 1;
     overflow: hidden;
-    transition: all var(--transition-fast);
 }
 
-.active-workflow-bar .cw-label {
-    color: var(--accent-success, #2da042);
-    font-size: 9px;
-    font-weight: 600;
+.cw-source-badge {
+    font-size: 8px;
+    font-weight: 700;
+    padding: 1px 0;
+    border-radius: 2px;
     flex-shrink: 0;
-    opacity: 0.9;
+    width: 50px;
+    text-align: center;
+    text-transform: uppercase;
 }
 
-.active-workflow-bar .cw-name {
+.cw-source-badge.internal {
+    background: rgba(66, 133, 244, 0.2);
+    color: #4285f4;
+}
+
+.cw-source-badge.external {
+    background: rgba(45, 160, 66, 0.2);
+    color: #2da042;
+}
+
+.active-workflow-item .cw-name {
+    color: var(--text-secondary);
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
     min-width: 0;
 }
 
-.active-workflow-bar .cw-actions {
-    display: flex;
-    align-items: center;
-    gap: 4px;
+.active-workflow-item .cw-check {
+    font-weight: 800;
+    color: #4285f4;
+    padding-right: 10px;
     flex-shrink: 0;
-    transition: all var(--transition-fast);
+}
+
+.active-workflow-bar .cw-actions {
+    height: 100%;
+    background: rgba(66, 133, 244, 0.08);
+    border-bottom: 1px solid var(--border-color);
 }
 
 .active-workflow-bar .cw-actions .icon-btn {
-    width: 36px;
-    height: 36px;
-    padding: 4px;
+    width: 38px;
+    height: 100%;
+    border-radius: unset;
 }
 
 
@@ -560,7 +579,7 @@ body[data-active-tab="global"] #deleteNanoBananaBtn {
     overflow: hidden;
     cursor: pointer;
     transition: transform var(--transition-fast), border-color var(--transition-fast), box-shadow var(--transition-fast);
-    border: 1px solid var(--border-subtle);
+    border: 1px solid var(--border-color);
     display: flex;
     flex-direction: column;
     position: relative;
@@ -742,13 +761,12 @@ body[data-active-tab="global"] #deleteNanoBananaBtn {
 
 .icon-bizyair {
     padding: 12px 11px 12px 13px;
-    color: #fff;
-    background: rgba(2, 6, 23, .9);
+    background: #000;
 }
 
 .icon-comfyui {
     color: #f0ff41;
-    background: #172dd7;
+    background: #000;
 }
 
 .engine-info {
@@ -910,7 +928,7 @@ body[data-active-tab="global"] #deleteNanoBananaBtn {
 .section-header .header-actions {
     display: flex;
     align-items: start;
-    gap: 6px;
+    gap: 1px;
     flex-shrink: 0;
     /* Never allow buttons to shrink */
 }
@@ -989,15 +1007,24 @@ body[data-active-tab="global"] #deleteNanoBananaBtn {
 }
 
 .list-item-meta {
-    display: flex;
+    display: inline-block;
     align-items: center;
-    gap: 3px;
+    gap: 2px;
     flex-shrink: 999;
     font-size: 10px;
     color: var(--text-muted);
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
+}
+
+.tool-version-meta {
+    max-width: 40px;
+    transition: all var(--transition-normal);
+}
+
+.tool-version-meta:hover {
+    max-width: unset
 }
 
 /* 2. Forms and Controls */
@@ -1087,8 +1114,8 @@ body[data-active-tab="global"] #deleteNanoBananaBtn {
 /* 3. Icon Button Variants */
 .icon-runninghub {
     padding: 5px !important;
-    color: #000;
-    background: #02DBA3;
+    color: #ccff00;
+    background: #000;
 }
 
 .icon-btn {
@@ -1188,9 +1215,20 @@ body[data-active-tab="global"] #deleteNanoBananaBtn {
     padding: 4px 0;
 }
 
+.mz-simple-price-icon {
+    display: inline-flex;
+    align-items: center;
+    gap: 2px;
+    cursor: help;
+}
+
 .mz-simple-price-value {
+    display: inline-flex;
+    align-items: center;
     color: #f8cd47;
     font-weight: 600;
+    gap: 2px;
+    line-height: 1;
 }
 
 .icon-btn:hover,
@@ -1264,12 +1302,15 @@ input:focus {
 }
 
 .list-section-title {
-    padding: 8px 10px;
-    margin: 4px 0;
+    padding: 6px 10px;
     background: var(--bg-secondary);
     display: flex;
     align-items: center;
     justify-content: space-between;
+}
+
+.list-container {
+    margin: 4px 0;
 }
 
 .header-meta-group {
@@ -1717,7 +1758,6 @@ input:focus {
 .pro-lock-overlay {
     position: absolute;
     top: 32px;
-    /* Below title */
     left: 0;
     right: 0;
     bottom: 0;
@@ -1772,20 +1812,15 @@ input:focus {
 
 .audio-trim-input {
     width: 36px;
-    background: none;
+    background: var(--bg-input);
     color: var(--text-primary);
     text-align: center;
     border: none;
+    border-radius: 2px;
     font-size: 9px;
     outline: none;
     appearance: none;
     -moz-appearance: textfield;
-}
-
-.audio-trim-input::-webkit-inner-spin-button,
-.audio-trim-input::-webkit-outer-spin-button {
-    -webkit-appearance: none;
-    margin: 0;
 }
 
 .audio-trim-input:focus {
@@ -2125,7 +2160,6 @@ input:focus {
 
 .log-drawer .icon-tw-12 {
     transform: rotate(0deg);
-    /* Rotated when expanded */
     transition: transform 0.3s ease;
 }
 
@@ -2135,7 +2169,6 @@ input:focus {
 
 .log-drawer:not(.expanded) .icon-tw-12 {
     transform: rotate(0deg);
-    /* Points down when expanded */
 }
 
 .log-content-wrapper,
@@ -2167,10 +2200,8 @@ input:focus {
     background: var(--bg-primary);
     border-radius: var(--radius-sm);
     overflow: visible;
-    /* CRITICAL: must be visible so absolute dropdown can escape */
     border: 1px solid var(--border-color);
     position: relative;
-    /* needed for absolute children */
 }
 
 /* Apply border-radius on child edges instead of overflow:hidden */
@@ -2260,12 +2291,6 @@ input:focus {
     appearance: textfield;
 }
 
-.batch-input::-webkit-outer-spin-button,
-.batch-input::-webkit-inner-spin-button {
-    -webkit-appearance: none;
-    margin: 0;
-}
-
 .batch-controls {
     display: flex;
     flex-direction: column;
@@ -2309,13 +2334,11 @@ input:focus {
 .run-dropdown-menu {
     position: absolute;
     bottom: calc(100% + 4px);
-    /* Make it popup UPWORDS */
     right: 0;
     background: var(--bg-secondary);
     border: 1px solid var(--border-color);
     border-radius: var(--radius-sm);
     box-shadow: 0 -4px 12px rgba(0, 0, 0, 0.4);
-    /* upward shadow */
     min-width: 140px;
     z-index: 1000;
     display: none;
@@ -2349,7 +2372,8 @@ input:focus {
 }
 
 /* Dynamic form component styles */
-.tool-param-input {
+.tool-param-input,
+.dimension-sub-input {
     width: 100%;
     padding: 3px 6px;
     border: 1px solid var(--bg-hover);
@@ -2357,8 +2381,6 @@ input:focus {
     color: var(--text-secondary);
     background: var(--bg-input);
     font-size: 12px;
-    white-space: nowrap;
-    text-overflow: ellipsis;
     transition: all var(--transition-normal);
 }
 
@@ -2374,7 +2396,6 @@ input:focus {
 .global-setting-control[readonly],
 textarea.tool-param-input[readonly] {
     color: var(--text-muted);
-    background-color: var(--bg-input);
 }
 
 textarea.tool-param-input {
@@ -2382,7 +2403,6 @@ textarea.tool-param-input {
     max-height: 40px;
     resize: none;
     line-height: 1.5;
-    background-color: var(--bg-input);
 }
 
 textarea.tool-param-input:focus {
@@ -2413,13 +2433,12 @@ textarea.tool-param-input:focus {
     border-radius: 0;
     text-align: center;
     height: 100%;
-    background: transparent;
     flex: 1;
 }
 
 /* Hide native arrows */
-.number-stepper input[type="number"]::-webkit-inner-spin-button,
-.number-stepper input[type="number"]::-webkit-outer-spin-button {
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
     -webkit-appearance: none;
     margin: 0;
 }
@@ -2430,7 +2449,7 @@ textarea.tool-param-input:focus {
     display: flex;
     align-items: center;
     justify-content: center;
-    background: var(--text-muted);
+    background: transparent;
     border: none;
     color: var(--text-secondary);
     cursor: pointer;
@@ -2447,37 +2466,17 @@ textarea.tool-param-input:focus {
     color: var(--text-primary);
 }
 
-/* Dimension (Width x Height) Input */
 .dimension-wrapper {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+}
+
+.dimension-inputs-row {
     display: flex;
     align-items: center;
     gap: 6px;
     width: 100%;
-}
-
-.dimension-wrapper .dimension-sub-input {
-    flex: 1;
-    min-width: 0;
-    text-align: center;
-    height: 24px;
-    background: var(--bg-hover);
-    border: 1px solid var(--border-color);
-    border-radius: var(--radius-sm);
-    color: var(--text-primary);
-    font-size: 11px;
-    padding: 0 4px;
-    transition: border-color 0.2s;
-}
-
-.dimension-wrapper .dimension-sub-input:focus {
-    border-color: var(--accent-primary);
-    outline: none;
-}
-
-.dimension-wrapper .dimension-sub-input::-webkit-inner-spin-button,
-.dimension-wrapper .dimension-sub-input::-webkit-outer-spin-button {
-    -webkit-appearance: none;
-    margin: 0;
 }
 
 .dimension-wrapper .dimension-separator {
@@ -2486,6 +2485,32 @@ textarea.tool-param-input:focus {
     font-weight: bold;
     user-select: none;
     line-height: 1;
+}
+
+.dimension-swap-btn {
+    width: 24px;
+    height: 24px;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--bg-hover);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-sm);
+    color: var(--text-secondary);
+    cursor: pointer;
+    transition: all 0.2s ease;
+    padding: 0;
+}
+
+.dimension-swap-btn:hover {
+    background: var(--bg-hover-strong, var(--bg-hover));
+    color: var(--text-primary);
+    border-color: var(--accent-primary);
+}
+
+.dimension-swap-btn svg {
+    transform: rotate(90deg);
 }
 
 .stepper-btn.minus {
@@ -2543,12 +2568,10 @@ textarea.tool-param-input:focus {
     border: 1px solid var(--bg-hover);
     border-radius: var(--radius-sm);
     text-transform: capitalize;
-    /* [FIX] Lower z-index to prevent blocking dropdowns */
 }
 
 .custom-select-container.active {
     z-index: 6100;
-    /* [FIX] Boost active container to top of execution section */
 }
 
 .custom-select-container.tool-param-input,
@@ -2569,11 +2592,9 @@ textarea.tool-param-input:focus {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    /* [FIX] Allow badge placement */
     cursor: pointer;
     position: relative;
     transition: all var(--transition-normal);
-    overflow: hidden;
 }
 
 /* Text span inside trigger — handles ellipsis correctly as a block child of flex */
@@ -2648,7 +2669,6 @@ textarea.tool-param-input:focus {
     cursor: pointer;
     white-space: nowrap;
     display: flex;
-    /* [FIX] Allow badge alignment */
     align-items: center;
     justify-content: space-between;
     transition: background 0.2s;
@@ -2764,7 +2784,6 @@ textarea.tool-param-input:focus {
     flex: 0 0 40%;
     width: 40%;
     text-align: left;
-    /* [V75.93] Label left aligned */
     color: var(--text-secondary);
     overflow: hidden;
     text-overflow: ellipsis;
@@ -2778,17 +2797,19 @@ textarea.tool-param-input:focus {
     white-space: normal;
 }
 
+.params-container.card .param-label:hover {
+    cursor: help;
+}
+
 /* Input controls occupy 50%, right aligned */
 .param-input-wrapper {
     flex: 0 0 60%;
     width: 60%;
     display: flex;
     justify-content: flex-end;
-    /* [V75.93] Controls right-aligned */
 }
 
 /* Progress Bar Styles */
-
 .log-entry {
     display: flex;
     gap: 3px;
@@ -3288,7 +3309,6 @@ textarea.tool-param-input:focus {
     border: none !important;
     transform-origin: right;
     transform: scale(0.85);
-    /* Slightly larger for better readability than 0.7 */
 }
 
 .scaled-stepper .tool-param-input {
@@ -3350,7 +3370,6 @@ textarea.tool-param-input:focus {
     background: #ffffff;
     cursor: pointer;
     margin-top: -5px;
-    /* Centers thumb vertically on 4px track: (4-14)/2 */
     box-shadow: 0 1px 4px rgba(0, 0, 0, 0.4);
     transition: transform 0.1s ease, background 0.2s;
 }
@@ -3569,18 +3588,19 @@ body.is-comfy-active .execution-section {
 
 #showComfyBtn.active {
     color: #ff9000;
-    border-color: #1536ce;
-    --comfy-blue: #1536ce;
+    border-color: #000000;
+    --comfy-bg: #000000;
     --comfy-yellow: #f3fd67;
     --comfy-stroke: none;
 }
 
 #showComfyBtn.active svg {
-    border-color: #1536ce;
+    border-color: #000000;
 }
 
 #showComfyBtn svg:hover {
     --comfy-yellow: #f3fd67;
+    --comfy-bg: #000000;
     border-color: var(--text-muted);
     transition: all 0.2s ease;
 }
@@ -3592,7 +3612,7 @@ body.is-comfy-active .execution-section {
 }
 
 #showComfyBtn {
-    --comfy-blue: transparent;
+    --comfy-bg: transparent;
     --comfy-yellow: var(--text-muted);
     --comfy-stroke: var(--text-muted);
 }
@@ -3602,7 +3622,6 @@ body.is-comfy-active .execution-section {
 }
 
 /* --- AnyPreviewPause Breathing Alert --- */
-
 .pause-indicator-dot {
     width: 6px;
     height: 6px;
@@ -3745,9 +3764,7 @@ body.is-comfy-active .execution-section {
         display: grid;
         grid-template-columns: repeat(2, 1fr);
         grid-auto-rows: 4px;
-        /* Micro-rows for Masonry */
         gap: 0 8px;
-        /* Vertical gap managed by spans */
         align-items: start;
     }
 
@@ -3799,7 +3816,6 @@ body.is-comfy-active .execution-section {
 }
 
 @media (min-width: 1024px) {
-
     #toolParamsContent {
         grid-template-columns: repeat(4, 1fr);
         grid-auto-rows: 4px;
@@ -3915,7 +3931,6 @@ body.is-comfy-active .execution-section {
     object-fit: contain;
     display: block;
     flex-shrink: 0;
-    /* Checkerboard background for transparent images/videos */
     background-image: linear-gradient(45deg, #ddd 25%, transparent 25%),
         linear-gradient(-45deg, #ddd 25%, transparent 25%),
         linear-gradient(45deg, transparent 75%, #ddd 75%),
@@ -3935,14 +3950,12 @@ body.is-comfy-active .execution-section {
     pointer-events: none;
     z-index: 2;
     filter: drop-shadow(0 0 1px red) opacity(0.6);
-    /* Ensure mask aligns with image center */
     display: block;
 }
 
 /* Ensure video in strip matches image styling */
 video.strip-thumb-img {
     background: #000;
-    /* Video often looks better on black */
 }
 
 .strip-thumb-media-placeholder {
@@ -4295,6 +4308,11 @@ body:not([data-backend="comfyui"]) .comfyui-only-settings {
     display: none !important;
 }
 
+.param-row[title="instanceType"] {
+    padding-top: 12px;
+    border-top: 1px dashed var(--border-color);
+}
+
 /* Engine Settings Container Visibility overrides */
 .engine-only-settings {
     display: none !important;
@@ -4506,16 +4524,14 @@ body.mode-express[data-backend="comfyui"] .engine-only-settings {
 
 .pricing-header {
     display: flex;
-    align-items: center;
-    gap: 16px;
+    align-items: stretch;
+    gap: 8px;
     flex-shrink: 0;
 }
 
 .pricing-card {
     max-width: 95vw;
     max-height: 90vh;
-    display: flex;
-    flex-direction: column;
     overflow: hidden;
     background: #0f1115;
     border: 1px solid rgba(255, 255, 255, 0.1);
@@ -4557,16 +4573,9 @@ body.mode-express[data-backend="comfyui"] .engine-only-settings {
     height: 35px;
 }
 
-.pricing-title-group h2 {
-    margin: 0;
-    font-size: 22px;
-    font-weight: 600;
-}
-
 /* --- Membership Badges & Gating --- */
 .badge-pro {
     display: none;
-    /* Hidden by default */
     background: linear-gradient(90deg, #f8cd47 0%, #f7a01b 100%);
     color: #000;
     padding: 0.5px 6px;
@@ -4600,14 +4609,23 @@ body.is-pro .badge-pro {
 }
 
 /* Consolidated duplicate .locked-overlay into .pro-lock-overlay to maintain DRY styling */
+.pricing-title-group {
+    font-size: 22px;
+    font-weight: 600;
+    line-height: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 1px 0 5px 0;
+}
 
 .pricing-title-group .subtitle {
     margin: 0;
     color: #a855f7;
     font-size: 14px;
-    font-weight: 500;
     letter-spacing: 1px;
     text-transform: uppercase;
+    line-height: 1;
 }
 
 .pricing-intro {
@@ -4805,7 +4823,13 @@ body.is-pro .badge-pro {
         gap: 20px;
     }
 
-    .pricing-card,
+    .pricing-card {
+        display: flex;
+        flex-direction: column;
+        height: 90vh;
+        padding: 12px;
+    }
+
     .plan-col {
         padding: 12px;
     }
@@ -4828,10 +4852,6 @@ body.is-pro .badge-pro {
     .pricing-footer button {
         gap: 5px !important;
         padding: 0 5px !important;
-    }
-
-    .pricing-title-group h2 {
-        font-size: 18px;
     }
 
     .feature-text strong,
@@ -5115,6 +5135,10 @@ body:not(.is-pro) .badge-pro.feature-badge {
     border: 1px solid var(--border-color);
     border-radius: var(--radius-md);
     background: var(--bg-secondary);
+}
+
+.account-card .custom-select-container {
+    text-transform: unset;
 }
 
 .account-items {

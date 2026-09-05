@@ -64,7 +64,6 @@ window.userConfig = {
         '*Display*': { widgets: '*' },
         '*Note*': { widgets: '*' },
         '*Show*': { widgets: '*' },
-        /* custom / 自定义 */
         'BizyAirWebApp': {
             widgets: [
                 { widgetName: 'APP', hideLabel: true, fullWidth: true },
@@ -79,6 +78,7 @@ window.userConfig = {
             ],
             exclude: [{ widgetName: 'input_values_json' }, { widgetType: 'button' }]
         },
+        /* custom / 自定义 */
         'SwitchAny': { widgets: '*' },
         'SwitchOutput': { widgets: '*' },
         'KSampler': { widgets: '*' },

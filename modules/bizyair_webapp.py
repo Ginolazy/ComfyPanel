@@ -85,8 +85,11 @@ async def bizyair_webapp_detail(request):
         headers = {"Content-Type": "application/json"}
         if api_key:
             headers["Authorization"] = f"Bearer {api_key}"
+        accept_lang = request.headers.get("Accept-Language")
+        if accept_lang:
+            headers["Accept-Language"] = accept_lang
 
-        url = f"{BIZYAIR_META_BASE}/v1/webapp/{webapp_id}"
+        url = f"{BIZYAIR_META_BASE}/v1/webapp/{webapp_id}/detail"
         async with aiohttp.ClientSession() as session:
             async with session.get(url, headers=headers, timeout=aiohttp.ClientTimeout(total=15)) as resp:
                 result = await resp.json()

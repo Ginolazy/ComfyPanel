@@ -17,47 +17,35 @@ from PIL import Image, ImageOps
 from .comfypanel_tunnel import tunnel_manager
 from .comfypanel_config import read_config, write_config, get_rh_config
 
-def _patch_origin_middleware():
+def _install_comfypanel_cors():
     app = PromptServer.instance.app
     for i, mw in enumerate(app.middlewares):
-        name = getattr(mw, '__name__', '')
-        if 'origin' in name.lower():
-            original = mw
+        if getattr(mw, '__name__', '') == 'origin_only_middleware':
+            _orig = mw
 
             @web.middleware
-            async def patched(request, handler, _orig=original):
-                normalized = request.path.lstrip('/')
+            async def comfypanel_cors_middleware(request: web.Request, handler, _orig=_orig):
+                path = request.path.lstrip('/')
                 req_origin = request.headers.get('Origin', '')
-                is_file_origin = req_origin.startswith('file://')
-                allowed_prefixes = ['comfypanel/', 'comfypanel', 'view', 'api/view']
-                const_match = any(normalized == prefix or normalized.startswith(prefix + '/') or normalized.startswith(prefix)
-                                  for prefix in allowed_prefixes)
-                if is_file_origin or const_match:
+                if req_origin.startswith('file://') or \
+                        path.startswith('comfypanel') or \
+                        path.startswith('view') or \
+                        path.startswith('api/view'):
                     if request.method == "OPTIONS":
                         resp = web.Response()
                     else:
                         resp = await handler(request)
-
-                    if req_origin:
-                        resp.headers['Access-Control-Allow-Origin'] = req_origin
-                        resp.headers['Access-Control-Allow-Credentials'] = 'true'
-                    else:
-                        resp.headers['Access-Control-Allow-Origin'] = '*'
-
+                    resp.headers['Access-Control-Allow-Origin'] = req_origin if req_origin else '*'
+                    resp.headers['Access-Control-Allow-Credentials'] = 'true'
                     resp.headers['Access-Control-Allow-Headers'] = 'Content-Type, Authorization, PS-UXP-Client, ps-uxp-client'
                     resp.headers['Access-Control-Allow-Methods'] = 'GET, POST, OPTIONS'
                     return resp
                 return await _orig(request, handler)
 
-            app.middlewares[i] = patched
-            logging.info("[ComfyPanel] Patched origin middleware to whitelist /comfypanel/ routes")
+            app.middlewares[i] = comfypanel_cors_middleware
             return
-    logging.debug("[ComfyPanel] No origin middleware found (CORS mode or newer ComfyUI), skipping patch")
 
-try:
-    _patch_origin_middleware()
-except Exception as e:
-    logging.warning(f"[ComfyPanel] Failed to patch origin middleware: {e}")
+_install_comfypanel_cors()
 
 def _get_uxp_dir(plugin_root):
     """
@@ -977,3 +965,97 @@ async def runninghub_upload_workflow(request):
         return web.json_response({"success": True, "filename": filename})
     except Exception as e:
         return web.json_response({"success": False, "error": str(e)}, status=500)
+
+_ext_browser_ws = None
+_ext_uxp_ws = None
+_ext_active_workflow = {"name": "", "toolId": "", "alive": False}
+
+@PromptServer.instance.routes.get("/comfypanel/ws/ext_bridge")
+async def comfypanel_ws_ext_bridge(request):
+    global _ext_browser_ws, _ext_uxp_ws, _ext_active_workflow
+    ws = web.WebSocketResponse(heartbeat=30.0)
+    await ws.prepare(request)
+
+    role = request.query.get("role", "browser")
+
+    if role == "browser":
+        _ext_browser_ws = ws
+        _ext_active_workflow["alive"] = True
+        logging.info("[ComfyPanel ExtBridge] System Browser connected")
+
+        if _ext_uxp_ws and not _ext_uxp_ws.closed:
+            try:
+                await _ext_uxp_ws.send_json({
+                    "type": "EXT_BROWSER_STATUS",
+                    "alive": True,
+                    "workflow": _ext_active_workflow
+                })
+            except Exception:
+                pass
+    else:
+        _ext_uxp_ws = ws
+        logging.info("[ComfyPanel ExtBridge] UXP client connected")
+
+        await ws.send_json({
+            "type": "EXT_BROWSER_STATUS",
+            "alive": (_ext_browser_ws is not None and not _ext_browser_ws.closed),
+            "workflow": _ext_active_workflow
+        })
+
+    try:
+        async for msg in ws:
+            if msg.type == aiohttp.WSMsgType.TEXT:
+                try:
+                    payload = json.loads(msg.data)
+                except Exception:
+                    payload = {}
+
+                msg_type = payload.get("type")
+
+                if msg_type == "EXT_WORKFLOW_STATE":
+                    _ext_active_workflow = {
+                        "name": payload.get("name", ""),
+                        "toolId": payload.get("toolId", ""),
+                        "alive": True
+                    }
+                    if _ext_uxp_ws and not _ext_uxp_ws.closed:
+                        try:
+                            await _ext_uxp_ws.send_json({
+                                "type": "EXT_BROWSER_STATUS",
+                                "alive": True,
+                                "workflow": _ext_active_workflow
+                            })
+                        except Exception:
+                            pass
+
+                elif role == "uxp" and _ext_browser_ws and not _ext_browser_ws.closed:
+                    try:
+                        await _ext_browser_ws.send_str(msg.data)
+                    except Exception:
+                        pass
+                elif role == "browser" and _ext_uxp_ws and not _ext_uxp_ws.closed:
+                    try:
+                        await _ext_uxp_ws.send_str(msg.data)
+                    except Exception:
+                        pass
+
+            elif msg.type == aiohttp.WSMsgType.ERROR:
+                break
+    finally:
+        if role == "browser" and _ext_browser_ws == ws:
+            _ext_browser_ws = None
+            _ext_active_workflow["alive"] = False
+            logging.info("[ComfyPanel ExtBridge] System Browser disconnected")
+            if _ext_uxp_ws and not _ext_uxp_ws.closed:
+                try:
+                    await _ext_uxp_ws.send_json({
+                        "type": "EXT_BROWSER_STATUS",
+                        "alive": False,
+                        "workflow": {"name": "", "toolId": "", "alive": False}
+                    })
+                except Exception:
+                    pass
+        elif role == "uxp" and _ext_uxp_ws == ws:
+            _ext_uxp_ws = None
+
+    return ws

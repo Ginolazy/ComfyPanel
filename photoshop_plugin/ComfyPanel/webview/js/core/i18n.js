@@ -74,6 +74,14 @@
             'pay_aifadian': 'Alipay / WeChat',
             'pay_aifadian_sub': 'Scan to pay securely',
 
+            // Dynamic Pricing & Estimation
+            'price_billing_reference': 'Billing Reference',
+            'price_calculating': 'Calculating price...',
+            'price_label': 'Price',
+            'price_est_prefix': 'Est. ≈ ',
+            'price_charged_by_actual_usage': 'Charged by actual usage',
+            'price_free': 'Free',
+
             // Sections & Headers
             'global_settings': 'Global Settings',
             'account_management': 'Account Management',
@@ -97,8 +105,7 @@
             'group_private_apps': 'Private Apps',
             'builtin_workflows': 'Built-in Workflows',
             'builtin_apps': 'Built-in Apps',
-            'queue_settings': 'Queue Settings (Opt)',
-            'instance_type': 'Instance Type',
+            'instance_type': 'Instance Type (Opt)',
             'user_config': 'User Config',
             'user_config_edit': 'Edit',
             'user_config_reload_apply': 'Apply',
@@ -157,12 +164,11 @@
             'apply_to_selection': 'Fit to Selection | ⇧ Fit to Layer Bounds',
             'create_new_doc': 'Create New Document',
             'comfyui_server': 'ComfyUI Server:',
-            'comfyui_inference_server': 'GPU Server:',
             'comfy_auto_return': 'Always Capture Results',
             'comfy_auto_return_tip': '* When enabled, results from running workflows directly in ComfyUI are automatically shown in the panel and sent to Photoshop (if Auto-Insert is on).',
 
             // Tooltips
-            'show_comfyui': 'Show ComfyUI',
+            'show_comfyui': 'Show Internal ComfyUI',
             'tool_list': 'Tool List',
             'app_list': 'App List',
             'settings': 'Settings',
@@ -201,6 +207,8 @@
             'import_success': 'Imported into editor. Click Save to apply.',
             'layout_tip': '* Adjust the panel position in Photoshop.',
             'remote_tunnel_tip_custom': '* Sync local ComfyUI to a public server for remote access.<br>* Server Setup: Open your Remote VPS/Server terminal, paste and press Enter.',
+            'open_internal_workflow_title': 'Embedded WebView active workflow',
+            'open_external_workflow_title': 'System Browser active workflow',
 
             // Logs & Alerts
             'log_loaded_file': 'Loaded: {name}{suffix}',
@@ -227,10 +235,11 @@
             'log_deleting': 'Deleting {name}...',
             'log_deleted_success': 'Deleted successfully.',
             'log_cleared_all': 'All results cleared.',
-            'log_engine_reset': 'Engine {type} has been reset.',
             'log_switching_engine': 'Switching engine, please wait...',
-            'log_engine_switched': 'Switched to {engine} Engine {status}',
-            'log_applying_result': 'Applying result ({mode}){suffix}...',
+            'log_engine_switched': 'Switched to {engine} Engine',
+            'log_switch_failed': 'Failed to switch to {engine} Engine: {error}',
+            'error_server_offline': 'Server is offline or unreachable.',
+            'log_applying_result': 'Applied result ({mode}){suffix}',
             'log_error_no_target_path': 'Error: No result target path',
             'log_op_complete': 'Operation complete!',
             'log_action_failed': 'Action failed: {error}',
@@ -254,6 +263,7 @@
             'log_settings_saved': 'Settings saved successfully!',
 
             // Global Toast Notifications
+            'offline_connect_failed': 'Network offline. Please check your internet connection.',
             'pro_reedit_locked': 'Preview-pause Re-edit is a PRO feature.',
             'pro_feature_relay': 'Official Cloud Relay is a Pro feature. Please use Custom mode or upgrade.',
             'pro_run_limit_hint': 'Free version shows only first 3 results. Upgrade to Pro to see all.',
@@ -446,6 +456,14 @@
             'pay_aifadian': '微信 / 支付宝支付',
             'pay_aifadian_sub': '扫码极速安全支付',
 
+            // Dynamic Pricing & Estimation
+            'price_billing_reference': '计费参考',
+            'price_calculating': '正在计算价格...',
+            'price_label': '价格',
+            'price_est_prefix': '预估 ≈ ',
+            'price_charged_by_actual_usage': '按实际使用扣费',
+            'price_free': '免费',
+
             // Sections & Headers
             'global_settings': '全局设置',
             'account_management': '账户管理',
@@ -469,8 +487,7 @@
             'group_private_apps': '私人应用',
             'builtin_workflows': '内置工作流',
             'builtin_apps': '内置 App',
-            'queue_settings': '排队与机型设置(可选)',
-            'instance_type': '实例机型',
+            'instance_type': '实例机型 (可选)',
             'user_config': '用户配置',
             'user_config_edit': '编辑',
             'user_config_reload_apply': '应用',
@@ -529,14 +546,13 @@
             'apply_to_selection': '适应选区 | ⇧ 适应图层边界',
             'create_new_doc': '创建新文档',
             'comfyui_server': 'ComfyUI 服务器:',
-            'comfyui_inference_server': 'GPU 服务器:',
             'comfy_auto_return': '始终捕获结果',
             'comfy_auto_return_tip': '* 启用该功能后，直接在 ComfyUI 中运行工作流所得的结果会自动显示在面板中，并发送至 Photoshop（若已开启“自动插入”功能）。',
 
 
 
             // Tooltips
-            'show_comfyui': '显示 ComfyUI',
+            'show_comfyui': '显示内置 ComfyUI',
             'tool_list': '工具列表',
             'app_list': '应用列表',
             'settings': '设置',
@@ -575,6 +591,8 @@
             'import_success': '已导入到编辑器，点击“保存”以生效。',
             'layout_tip': '* 调整在 Photoshop 中面板位置.',
             'remote_tunnel_tip_custom': '* 将本地 ComfyUI 同步至公网服务器，实现远程访问。<br>* 服务器执行：打开远程服务器 (VPS) 终端，粘贴脚本并回车。',
+            'open_internal_workflow_title': '软件内置窗口的当前工作流',
+            'open_external_workflow_title': '系统默认浏览器的当前工作流',
 
             // Logs & Alerts
             'log_loaded_file': '已加载: {name}{suffix}',
@@ -601,10 +619,11 @@
             'log_deleting': '正在删除 {name}...',
             'log_deleted_success': '删除成功。',
             'log_cleared_all': '所有结果已清空。',
-            'log_engine_reset': '引擎 {type} 已重置。',
             'log_switching_engine': '正在切换引擎，请稍候...',
-            'log_engine_switched': '已切换至 {engine} 引擎 {status}',
-            'log_applying_result': '正在置回结果 ({mode}){suffix}...',
+            'log_engine_switched': '已切换至 {engine} 引擎',
+            'log_switch_failed': '切换至 {engine} 引擎失败: {error}',
+            'error_server_offline': '服务未启动或无法访问。',
+            'log_applying_result': '已置回结果 ({mode}){suffix}',
             'log_error_no_target_path': '错误：未找到结果目标路径',
             'log_op_complete': '操作成功！',
             'log_action_failed': '操作失败: {error}',
@@ -628,6 +647,7 @@
             'log_settings_saved': '设置已成功保存！',
 
             // Global Toast Notifications
+            'offline_connect_failed': '网络已断开，请检查网络。',
             'pro_reedit_locked': '预览暂停再编辑是一项专业版功能。',
             'pro_feature_relay': '官方云中继是一项专业版功能。请使用自定义模式或升级。',
             'pro_run_limit_hint': '免费版仅显示前 3 条结果。升级至专业版即可查看全部。',
