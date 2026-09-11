@@ -151,6 +151,11 @@ body.is-loading::before {
     height: 28px;
 }
 
+.icon-tw-40 {
+    width: 40px;
+    height: 40px;
+}
+
 svg.icon-tw-10,
 svg.icon-tw-12,
 svg.icon-tw-14,
@@ -470,9 +475,11 @@ body {
     display: none;
     align-items: center;
     justify-content: space-between;
-    background: var(--bg-secondary);
+    background: color-mix(in srgb, var(--bg-secondary) 80%, black 20%);
     flex-shrink: 0;
     width: 100%;
+    padding: 2px;
+    gap: 2px;
 }
 
 .active-workflow-list {
@@ -480,6 +487,7 @@ body {
     flex-direction: column;
     flex: 1;
     min-width: 0;
+    gap: 2px;
 }
 
 .active-workflow-item {
@@ -488,7 +496,8 @@ body {
     justify-content: space-between;
     cursor: pointer;
     transition: background var(--transition-fast);
-    border-bottom: 1px solid var(--border-color);
+    background: var(--bg-primary);
+    border-radius: 6px;
 }
 
 .active-workflow-item:hover {
@@ -496,10 +505,10 @@ body {
 }
 
 .active-workflow-item .cw-info {
-    padding: 8px 10px;
+    padding: 8px;
     display: flex;
     align-items: center;
-    gap: 3px;
+    gap: 2px;
     min-width: 0;
     flex: 1;
     overflow: hidden;
@@ -543,14 +552,13 @@ body {
 
 .active-workflow-bar .cw-actions {
     height: 100%;
-    background: rgba(66, 133, 244, 0.08);
-    border-bottom: 1px solid var(--border-color);
+    background: var(--bg-primary);
+    border-radius: 6px;
 }
 
 .active-workflow-bar .cw-actions .icon-btn {
     width: 38px;
     height: 100%;
-    border-radius: unset;
 }
 
 
@@ -990,6 +998,10 @@ body[data-active-tab="global"] #deleteNanoBananaBtn {
     overflow: hidden;
 }
 
+.list-item-title svg {
+    filter: brightness(0.7);
+}
+
 .list-item-title .title-text {
     overflow: hidden;
     text-overflow: ellipsis;
@@ -1100,7 +1112,7 @@ body[data-active-tab="global"] #deleteNanoBananaBtn {
 }
 
 .action-btn:hover:not(:disabled) {
-    filter: brightness(1.2);
+    filter: brightness(0.8);
 }
 
 .action-btn:disabled {
@@ -1484,9 +1496,9 @@ input:focus {
     display: flex !important;
 }
 
-.media-preview-box.is-audio .media-preview-container {
+/* .media-preview-box.is-audio .media-preview-container {
     height: 60px;
-}
+} */
 
 /* 4. VIDEO Mode (.is-video) */
 .media-preview-box.is-video .preview-video,
@@ -1684,6 +1696,7 @@ input:focus {
     width: 100%;
     height: 100%;
     display: flex;
+    gap: 36px;
     flex-direction: column;
     align-items: center;
     justify-content: center;
@@ -1786,13 +1799,9 @@ input:focus {
 }
 
 .audio-trim-row {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
     width: 100%;
     padding: 0 4px;
     gap: 4px;
-    margin-bottom: 2px;
 }
 
 .audio-trim-side {
@@ -3918,6 +3927,10 @@ body.is-comfy-active .execution-section {
 .strip-thumb.active {
     border-color: var(--accent-primary, #6e40f2);
     background: var(--bg-hover);
+}
+
+.strip-thumb:hover svg {
+    opacity: 1;
 }
 
 .strip-thumb.dynamic-unmute-btn:hover {
