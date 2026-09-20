@@ -77,6 +77,9 @@ ComfyPanel is a professional-grade, high-performance integration for **Adobe Pho
     * *Need help? See the [Full Setup Guide](https://lazyet.com/blogs/labs/comfypanel-tutorial).*
 
 ### ❓ AI-Assisted Troubleshooting & FAQ
+> **Q: 为什么插件无法加载？**
+> **A:** Please check your Adobe account sign-in status (Photoshop > Help). Photoshop must be signed in to an Adobe account to load plugins normally. After signing in once, the plugin can still be loaded offline as long as the account remains signed in. This is a Photoshop requirement, not a plugin requirement.
+
 > **Q: How do I sync account balances and user info for BizyAir and RunningHub?**
 > - **BizyAir Cloud**: Simply enter your `API Key` (no user registration or sensitive data required). ComfyPanel will execute workflows and instantly fetch your **Username** and **Account Balance** automatically.
 > - **RunningHub Cloud**: Supports two convenient login methods:
@@ -157,6 +160,9 @@ ComfyPanel 是一套专为 **Adobe Photoshop** 开发的高灵敏度、专业级
     * *安装遇到问题？查看[完整中文教程](https://lazyet.com/blogs/labs/comfypanel-tutorial)。*
 
 ### ❓ 常见问题与 AI 诊断 (FAQ)
+> **Q: 为什么插件无法加载？**
+> **A:** 请检查 Photoshop 的 Adobe 账号登录状态（Photoshop > Help 菜单）。Photoshop 必须登录 Adobe 账号才能正常加载插件。首次登录后，即使处于离线状态，只要账号保持登录，插件仍可正常加载。这是 Photoshop 本身的要求，与插件无关。
+
 > **Q: 在 ComfyPanel 中如何同步 BizyAir 与 RunningHub 的余额和用户信息？**
 > **A:** ComfyPanel 在 Photoshop 面板内内置了极其方便的实时账户与计费看板：
 > - **BizyAir 云端**：**只需输入 API Key**（无需注册或绑定任何个人敏感信息，全匿名安全鉴权），系统在驱动渲染的同时，就会自动秒速拉取并显示你的**用户名称与账户余额**。

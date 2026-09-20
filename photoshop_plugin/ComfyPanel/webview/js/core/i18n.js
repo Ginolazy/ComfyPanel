@@ -176,6 +176,7 @@
             'sync_forked_apps': 'Sync my forked apps',
             'sync_apps_server': 'Sync my apps from server',
             'delete_current_result': 'Delete Current Result',
+            'confirm_delete_all': 'Click again to delete all',
             'clear_all_history': 'Clear All History',
             'load_history': 'Load history',
             'active_workflow': '(Active)',
@@ -264,6 +265,7 @@
 
             // Global Toast Notifications
             'offline_connect_failed': 'Network offline. Please check your internet connection.',
+            'install_turbo_bar_hint': 'Please install the ComfyPanel Turbo Bar component first.',
             'pro_reedit_locked': 'Preview-pause Re-edit is a PRO feature.',
             'pro_feature_relay': 'Official Cloud Relay is a Pro feature. Please use Custom mode or upgrade.',
             'pro_run_limit_hint': 'Free version shows only first 3 results. Upgrade to Pro to see all.',
@@ -305,8 +307,8 @@
             'draft_desc': 'Draft: Upload limited to {size}px',
             'product_desc': 'Product: Upload full-size image',
             'ready': ' (Ready)',
-            'express': 'Express',
-            'expert': 'Expert',
+            'turbo': 'Turbo',
+            'studio': 'Studio',
             'workspace_mode_desc': '{mode} Mode',
             'login_promo_hint': 'Login to unlock more quota (3 generation outputs & 10 history items)!',
             'visitor_run_limit_hint': 'Visitor mode shows only 1 result. Sign in to unlock 3 results.',
@@ -560,6 +562,7 @@
             'sync_forked_apps': '同步我 Fork 的应用',
             'sync_apps_server': '从服务器同步我的应用',
             'delete_current_result': '删除当前结果',
+            'confirm_delete_all': '再次点击确认删除全部',
             'clear_all_history': '清空历史记录',
             'load_history': '加载历史',
             'active_workflow': '(活动)',
@@ -648,6 +651,7 @@
 
             // Global Toast Notifications
             'offline_connect_failed': '网络已断开，请检查网络。',
+            'install_turbo_bar_hint': '请先安装 ComfyPanel Turbo Bar 组件',
             'pro_reedit_locked': '预览暂停再编辑是一项专业版功能。',
             'pro_feature_relay': '官方云中继是一项专业版功能。请使用自定义模式或升级。',
             'pro_run_limit_hint': '免费版仅显示前 3 条结果。升级至专业版即可查看全部。',
@@ -689,8 +693,8 @@
             'draft_desc': '草稿模式: 上传限制在 {size}px 以内',
             'product_desc': '生产模式: 上传全尺寸图像',
             'ready': ' (就绪)',
-            'express': '极速模式',
-            'expert': '专家模式',
+            'turbo': 'Turbo 模式',
+            'studio': 'Studio 模式',
             'workspace_mode_desc': '{mode}模式',
             'login_promo_hint': '登录解锁更多生成额度（3张生成结果，10条历史记录）！',
             'visitor_run_limit_hint': '游客模式仅显示前 1 条结果。登录免费账号解锁 3 条，升级专业版解锁全部。',

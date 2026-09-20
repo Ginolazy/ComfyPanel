@@ -390,18 +390,29 @@ body {
     border-color: var(--accent-primary);
 }
 
-/* Express Mode = green accent */
-.workspace-mode-btn.mode-express {
+/* Turbo Mode = green accent */
+.workspace-mode-btn.mode-turbo {
     color: #4ade80;
     background: rgba(74, 222, 128, 0.1);
     border-color: rgba(74, 222, 128, 0.3);
 }
 
-/* Expert Mode = purple/blue accent */
-.workspace-mode-btn.mode-expert {
+/* Studio Mode = purple/blue accent */
+.workspace-mode-btn.mode-studio {
     color: #3d8bff;
     background: rgba(85, 147, 247, 0.1);
     border-color: rgba(85, 147, 247, 0.3);
+}
+
+/* Turbo mode: hide media input nodes, pure prompt nodes, individual prompt rows, result preview, and execution footer */
+body.turbo-mode .node-group.is-media-input-node,
+body.turbo-mode .node-group.is-prompt-node,
+body.turbo-mode .param-row.is-prompt-row,
+body.turbo-mode .media-preview-box,
+body.turbo-mode #resultStickySection,
+body.turbo-mode .log-drawer,
+body.turbo-mode .execution-footer {
+    display: none !important;
 }
 
 /* Product active = blue accent */
@@ -416,35 +427,6 @@ body {
     color: var(--brand-primary);
     background: rgba(248, 205, 71, 0.1);
     border-color: rgba(248, 205, 71, 0.3);
-}
-
-/* Express Mode Hiding Rules */
-.mode-express #showComfyBtn {
-    display: none !important;
-}
-
-/* Global Settings Hiding in Express Mode (Keep Language and Insertion) */
-.mode-express #smartLoaderRow,
-.mode-express #autoInsertRow,
-.mode-express #draftResRow,
-.mode-express #mediaLibraryRow,
-.mode-express #mediaLibraryList {
-    display: none !important;
-}
-
-/* Local Engine Settings Hiding in Express Mode */
-.mode-express .comfyui-only-settings {
-    display: none !important;
-}
-
-/* Cloud Engine Settings Hiding in Express Mode (Keep Account Management, Hide Tool Management) */
-.mode-express #cloudAppSection,
-.mode-express #savedToolsList {
-    display: none !important;
-}
-
-.mode-express[data-backend="bizyair"] #bizyairAccountSection {
-    display: block !important;
 }
 
 .server-selection-bar {
@@ -569,9 +551,16 @@ body[data-active-tab="global"] #deleteNanoBananaBtn {
     display: none !important;
 }
 
-/* Grid View for Express Mode */
-.list-section.grid-view {
-    padding: 10px 0;
+/* Thumbnail view for the tool list */
+.tool-list-layout-controls {
+    display: flex;
+    justify-content: flex-end;
+    gap: 4px;
+    padding: 0;
+}
+
+.tool-list-layout-controls .icon-btn.active {
+    background: var(--bg-hover);
 }
 
 .grid-container {
@@ -665,10 +654,6 @@ body[data-active-tab="global"] #deleteNanoBananaBtn {
     overflow: hidden;
     text-overflow: ellipsis;
     text-align: center;
-}
-
-.mode-express[data-backend="comfyui"] #engineSettingsTabBtn {
-    display: none !important;
 }
 
 .engine-selection-section {
@@ -1249,6 +1234,22 @@ body[data-active-tab="global"] #deleteNanoBananaBtn {
     background: var(--bg-hover);
 }
 
+.icon-btn.armed-danger {
+    color: #ff5a5a;
+    background: rgba(255, 90, 90, 0.15);
+    animation: armed-pulse 0.6s ease-in-out infinite alternate;
+}
+
+@keyframes armed-pulse {
+    from {
+        background: rgba(255, 90, 90, 0.10);
+    }
+
+    to {
+        background: rgba(255, 90, 90, 0.25);
+    }
+}
+
 input[type="text"],
 input[type="password"] {
     width: 100%;
@@ -1329,12 +1330,10 @@ input:focus {
     color: var(--text-secondary);
     display: flex;
     align-items: center;
-    gap: 4px;
 }
 
 .media-filter-group {
     display: inline-flex;
-    gap: 1px;
     align-items: center;
 }
 
@@ -4341,10 +4340,6 @@ body[data-backend][data-active-tab="engine"] div.engine-only-settings {
     display: block !important;
 }
 
-body.mode-express[data-backend="comfyui"] .engine-only-settings {
-    display: none !important;
-}
-
 .modal-close-top {
     color: var(--brand-secondary);
     text-align: right;
@@ -4651,12 +4646,12 @@ body.is-pro .badge-pro {
 .pricing-footer {
     display: grid;
     grid-template-columns: 1fr 1.2fr;
-    gap: 16px;
+    gap: 10px;
     flex-shrink: 0;
 }
 
 .pricing-footer button {
-    height: 54px;
+    height: 46px;
     border-radius: 12px;
     display: flex;
     align-items: center;
@@ -4839,7 +4834,6 @@ body.is-pro .badge-pro {
     .pricing-card {
         display: flex;
         flex-direction: column;
-        height: 90vh;
         padding: 12px;
     }
 
