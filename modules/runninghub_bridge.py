@@ -56,24 +56,43 @@ def upload_to_runninghub(value, api_key, base_url):
         img.save(bio, format="PNG")
         bio.seek(0)
 
-        filename = "uxp_upload.png"
+        filename = "tensor_upload.png"
         mime_type = "image/png"
 
+    elif isinstance(value, dict) and "waveform" in value and "sample_rate" in value:
+        waveform = value["waveform"]
+        sample_rate = value["sample_rate"]
+        if isinstance(waveform, torch.Tensor):
+            waveform = waveform.cpu().numpy()
+        if waveform.ndim == 3:
+            waveform = waveform[0]
+        audio_data = (np.clip(waveform, -1.0, 1.0) * 32767).astype(np.int16)
+        bio = io.BytesIO()
+        with wave.open(bio, "wb") as wav_file:
+            nchannels = audio_data.shape[0] if audio_data.ndim > 1 else 1
+            wav_file.setnchannels(nchannels)
+            wav_file.setsampwidth(2)
+            wav_file.setframerate(sample_rate)
+            wav_file.writeframes(audio_data.T.tobytes() if nchannels > 1 else audio_data.tobytes())
+        bio.seek(0)
+        filename = "tensor_audio.wav"
+        mime_type = "audio/wav"
+
     elif isinstance(value, str):
-        input_dir = folder_paths.get_input_directory()
-        file_path = os.path.join(input_dir, value)
-        if not os.path.isfile(file_path):
+        if os.path.isabs(value) and os.path.isfile(value):
             file_path = value
+        else:
+            temp_path = os.path.join(folder_paths.get_temp_directory(), value)
+            input_path = os.path.join(folder_paths.get_input_directory(), value)
+            file_path = temp_path if os.path.isfile(temp_path) else (input_path if os.path.isfile(input_path) else value)
             if not os.path.isfile(file_path):
-                raise FileNotFoundError(f"File not found in ComfyUI input directory: {value}")
+                raise FileNotFoundError(f"File not found in temp or input directory: {value}")
 
         bio = io.BytesIO()
         with open(file_path, "rb") as f:
             bio.write(f.read())
         bio.seek(0)
-
         filename = os.path.basename(file_path)
-
         lower_fn = filename.lower()
         if lower_fn.endswith((".png", ".jpg", ".jpeg")):
             mime_type = "image/png"
@@ -84,13 +103,10 @@ def upload_to_runninghub(value, api_key, base_url):
         else:
             mime_type = "application/octet-stream"
     else:
-        raise ValueError(f"Upload value must be a torch.Tensor, numpy.ndarray, or filename string, got: {type(value)}")
+        raise ValueError(f"Upload value must be tensor, audio dict, or filename string, got: {type(value)}")
 
     url = f"{base_url.strip().rstrip('/')}/openapi/v2/media/upload/binary"
-    headers = {}
-    if api_key:
-        headers["Authorization"] = f"Bearer {api_key}"
-
+    headers = {"Authorization": f"Bearer {api_key}"} if api_key else {}
     files = {"file": (filename, bio, mime_type)}
     resp = requests.post(url, files=files, headers=headers)
     if resp.status_code == 200:
@@ -102,57 +118,13 @@ def upload_to_runninghub(value, api_key, base_url):
     raise ConnectionError(f"Failed to upload media to RunningHub: {resp.text}")
 
 def process_and_upload_media(value, api_key, base_url, field_name_hint=""):
-    """
-    处理并上传各种媒体类型到 RunningHub
-    支持: 图片tensor, 视频tensor, 音频dict, 文件名字符串等
-    Process and upload various media types to RunningHub
-    Supports: image tensor, video tensor, audio dict, filename string, etc.
-    """
-
+    """处理并上传媒体类型到 RunningHub（纯内存优先）"""
     temp_val = value
     if isinstance(temp_val, list) and len(temp_val) > 0:
-        if isinstance(temp_val[0], (torch.Tensor, np.ndarray)):
-            temp_val = temp_val[0]
-        elif isinstance(temp_val[0], str):
-            temp_val = temp_val[0]
-        elif isinstance(temp_val[0], dict):
-            temp_val = temp_val[0]
+        temp_val = temp_val[0]
 
     if isinstance(temp_val, dict) and "waveform" in temp_val and "sample_rate" in temp_val:
-        waveform = temp_val["waveform"]
-        sample_rate = temp_val["sample_rate"]
-        if isinstance(waveform, torch.Tensor):
-            waveform = waveform.cpu().numpy()
-        if waveform.ndim == 3:
-            waveform = waveform[0]
-
-        temp_fn = f"rh_temp_{uuid.uuid4().hex}.wav"
-        temp_dir = folder_paths.get_input_directory()
-        temp_path = os.path.join(temp_dir, temp_fn)
-
-        audio_data = np.clip(waveform, -1.0, 1.0)
-        audio_data = (audio_data * 32767).astype(np.int16)
-
-        with wave.open(temp_path, "wb") as wav_file:
-            nchannels = audio_data.shape[0] if audio_data.ndim > 1 else 1
-            sampwidth = 2
-            wav_file.setnchannels(nchannels)
-            wav_file.setsampwidth(sampwidth)
-            wav_file.setframerate(sample_rate)
-            if nchannels > 1:
-                frames = audio_data.T.tobytes()
-            else:
-                frames = audio_data.tobytes()
-            wav_file.writeframes(frames)
-
-        try:
-            return upload_to_runninghub(temp_fn, api_key, base_url)
-        finally:
-            if os.path.exists(temp_path):
-                try:
-                    os.remove(temp_path)
-                except Exception:
-                    pass
+        return upload_to_runninghub(temp_val, api_key, base_url)
 
     if isinstance(temp_val, dict):
         temp_val = temp_val.get("filename") or temp_val.get("image") or temp_val.get("video") or temp_val.get("audio")
@@ -162,26 +134,20 @@ def process_and_upload_media(value, api_key, base_url, field_name_hint=""):
 
     if isinstance(temp_val, (torch.Tensor, np.ndarray)):
         val_np = temp_val.cpu().numpy() if isinstance(temp_val, torch.Tensor) else temp_val
-
         is_video = "video" in field_name_hint.lower() and val_np.ndim == 4 and val_np.shape[0] > 1
 
         if is_video:
-
-            temp_fn = f"rh_temp_{uuid.uuid4().hex}.mp4"
-            temp_dir = folder_paths.get_input_directory()
+            temp_fn = f"rh_temp_{uuid.uuid4().hex[:8]}.mp4"
+            temp_dir = folder_paths.get_temp_directory()
             temp_path = os.path.join(temp_dir, temp_fn)
-
             height, width = val_np.shape[1], val_np.shape[2]
-            fourcc = cv2.VideoWriter_fourcc(*'mp4v')
-            out = cv2.VideoWriter(temp_path, fourcc, 25.0, (width, height))
+            out = cv2.VideoWriter(temp_path, cv2.VideoWriter_fourcc(*'mp4v'), 25.0, (width, height))
             for frame in val_np:
-                frame_bgr = cv2.cvtColor((np.clip(frame, 0, 1) * 255).astype(np.uint8), cv2.COLOR_RGB2BGR)
-                out.write(frame_bgr)
+                out.write(cv2.cvtColor((np.clip(frame, 0, 1) * 255).astype(np.uint8), cv2.COLOR_RGB2BGR))
             out.release()
-
             try:
                 logging.info(f"[RunningHub] Converted video tensor to MP4, uploading...")
-                return upload_to_runninghub(temp_fn, api_key, base_url)
+                return upload_to_runninghub(temp_path, api_key, base_url)
             finally:
                 if os.path.exists(temp_path):
                     try:
@@ -189,24 +155,7 @@ def process_and_upload_media(value, api_key, base_url, field_name_hint=""):
                     except Exception:
                         pass
         else:
-
-            if val_np.ndim == 4:
-                val_np = val_np[0]
-            val_np = np.clip(val_np, 0, 1)
-            img_data = (val_np * 255).astype(np.uint8)
-            img = Image.fromarray(img_data)
-            temp_fn = f"rh_temp_{uuid.uuid4().hex}.png"
-            temp_dir = folder_paths.get_input_directory()
-            temp_path = os.path.join(temp_dir, temp_fn)
-            img.save(temp_path)
-            try:
-                return upload_to_runninghub(temp_fn, api_key, base_url)
-            finally:
-                if os.path.exists(temp_path):
-                    try:
-                        os.remove(temp_path)
-                    except Exception:
-                        pass
+            return upload_to_runninghub(val_np, api_key, base_url)
 
     raise ValueError(f"Unsupported media type for upload: {type(temp_val)}")
 
@@ -577,8 +526,8 @@ class RHWorkflow:
 
                         elif ext in [".wav", ".mp3", ".flac", ".ogg", ".aac", ".m4a"]:
 
-                            temp_fn = f"rh_out_{uuid.uuid4().hex}{ext}"
-                            temp_dir = folder_paths.get_input_directory()
+                            temp_fn = f"rh_out_{int(time.time() * 1000)}{ext}"
+                            temp_dir = folder_paths.get_temp_directory()
                             temp_path = os.path.join(temp_dir, temp_fn)
 
                             try:
@@ -603,7 +552,7 @@ class RHWorkflow:
 
                         elif ext in [".mp4", ".avi", ".mov", ".webm", ".gif"]:
 
-                            dest_fn = f"rh_out_{uuid.uuid4().hex}{ext}"
+                            dest_fn = f"rh_out_{int(time.time() * 1000)}{ext}"
                             dest_path = os.path.join(folder_paths.get_temp_directory(), dest_fn)
                             with open(dest_path, "wb") as f:
                                 f.write(media_bytes)

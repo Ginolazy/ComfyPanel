@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file.
 
+## [2.1.0] - 2026-09-30
+
+ComfyPanel v2.1.0
+
+• AnyPause / AnyPreviewPause — Added `always_continue` boolean toggle. When enabled, the node skips the pause and passes data through immediately without interrupting the workflow.
+
+• AnyPause / AnyPreviewPause —— 新增 `always_continue` 布尔开关。开启后节点跳过暂停，数据直接透传，不中断工作流执行。
+
 ## [2.0.0] - 2026-09-19
 
 ComfyPanel v2.0.0 - ComfyPanel Turbo Bar Support

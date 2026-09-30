@@ -87,7 +87,11 @@ async def resume_pause(request):
 
 class PauseMixin:
     @classmethod
-    def pause_is_changed(cls, action="Pause", **kwargs):
+    def pause_is_changed(cls, action="Pause", always_continue=False, **kwargs):
+        if isinstance(always_continue, list):
+            always_continue = always_continue[0] if always_continue else False
+        if always_continue:
+            return 0
         if isinstance(action, list):
             action = action[0] if action else "Pause"
         if action == "Pause":
@@ -191,7 +195,9 @@ class AnyPause(PauseMixin):
     @classmethod
     def INPUT_TYPES(s):
         return {
-            "required": {},
+            "required": {
+                "always_continue": ("BOOLEAN", {"default": False}),
+            },
             "hidden": {"prompt": "PROMPT", "extra_pnginfo": "EXTRA_PNGINFO", "unique_id": "UNIQUE_ID"},
         }
 
@@ -204,7 +210,9 @@ class AnyPause(PauseMixin):
     OUTPUT_IS_LIST = (True,) * MAX_FLOW_PORTS
     IS_CHANGED = PauseMixin.pause_is_changed
 
-    def process_pause(self, prompt=None, extra_pnginfo=None, unique_id=None, **kwargs):
+    def process_pause(self, always_continue=False, prompt=None, extra_pnginfo=None, unique_id=None, **kwargs):
+        if isinstance(always_continue, list):
+            always_continue = always_continue[0] if always_continue else False
         unique_id_str = str(unique_id[0] if isinstance(unique_id, list) and unique_id else unique_id)
 
         input_keys = sorted([k for k in kwargs.keys() if k.startswith("input_")],
@@ -219,6 +227,9 @@ class AnyPause(PauseMixin):
             result_tuple = tuple(actual_returns[:MAX_FLOW_PORTS])
 
         result_data = {"ui": {}, "result": result_tuple}
+
+        if always_continue:
+            return result_data
 
         result_data, action = self._handle_pause(
             unique_id_str,
@@ -312,14 +323,18 @@ class AnyPreviewPause(AnyPreview, PauseMixin):
     @classmethod
     def INPUT_TYPES(s):
         return {
-            "required": {},
+            "required": {
+                "always_continue": ("BOOLEAN", {"default": False}),
+            },
             "hidden": {"prompt": "PROMPT", "extra_pnginfo": "EXTRA_PNGINFO", "unique_id": "UNIQUE_ID"},
         }
 
     FUNCTION = "process_any"
     IS_CHANGED = PauseMixin.pause_is_changed
 
-    def process_any(self, prompt=None, extra_pnginfo=None, unique_id=None, **kwargs):
+    def process_any(self, always_continue=False, prompt=None, extra_pnginfo=None, unique_id=None, **kwargs):
+        if isinstance(always_continue, list):
+            always_continue = always_continue[0] if always_continue else False
         unique_id_str = str(unique_id[0] if isinstance(unique_id, list) and unique_id else unique_id)
 
         input_keys = sorted([k for k in kwargs.keys() if k.startswith("input_")], key=lambda x: int(x.split("_")[1]))
@@ -364,6 +379,9 @@ class AnyPreviewPause(AnyPreview, PauseMixin):
             result_tuple = tuple(actual_returns[:MAX_FLOW_PORTS])
 
         result = {"ui": frontend_data, "result": result_tuple}
+
+        if always_continue:
+            return result
 
         result, action = self._handle_pause(
             unique_id_str,

@@ -166,6 +166,7 @@
             'comfyui_server': 'ComfyUI Server:',
             'comfy_auto_return': 'Always Capture Results',
             'comfy_auto_return_tip': '* When enabled, results from running workflows directly in ComfyUI are automatically shown in the panel and sent to Photoshop (if Auto-Insert is on).',
+            'ext_browser_disconnected': 'System Browser disconnected, switched to Embedded WebView',
 
             // Tooltips
             'show_comfyui': 'Show Internal ComfyUI',
@@ -550,7 +551,7 @@
             'comfyui_server': 'ComfyUI 服务器:',
             'comfy_auto_return': '始终捕获结果',
             'comfy_auto_return_tip': '* 启用该功能后，直接在 ComfyUI 中运行工作流所得的结果会自动显示在面板中，并发送至 Photoshop（若已开启“自动插入”功能）。',
-
+            'ext_browser_disconnected': '系统浏览器已断开，已切换回内置 WebView',
 
 
             // Tooltips

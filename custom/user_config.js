@@ -16,6 +16,7 @@
  * - labelWidth sets the label width as a percentage.
  * - layout: 'grid' enables multiple widgets per row.
  * - forceShowSuffix / forceHideSuffix are used to temporarily show or hide nodes.
+ * - Load* / Save* / AnyPreview* = system-level, skip.
  */
 
 window.userConfig = {
@@ -31,9 +32,7 @@ window.userConfig = {
     allowedNodes: {
         'Float': { widgets: '*' },
         'Int': { widgets: '*' },
-        '*Display*': { widgets: '*' },
         '*Note*': { widgets: '*' },
-        '*Show*': { widgets: '*' },
         '*Banana*': {
             widgets: [{ widgetName: '*' }],
             exclude: [{ widgetName: 'Inputcount' }, { widgetType: 'button' }]

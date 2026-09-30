@@ -433,7 +433,7 @@ body.turbo-mode .execution-footer {
     display: none;
     align-items: center;
     justify-content: space-between;
-    padding: 6px;
+    padding: 6px 3px;
     background: var(--bg-secondary);
     border-bottom: 1px solid var(--border-color);
     gap: 3px;
@@ -444,9 +444,9 @@ body.turbo-mode .execution-footer {
 
 .server-selection-bar svg {
     height: 24px;
-    padding: 2px;
+    padding: 1px;
     background: #000;
-    border-radius: 3px;
+    border-radius: 4px;
 }
 
 /* Active Workflow Bar — pinned at top of workflow list */
@@ -1151,7 +1151,7 @@ body[data-active-tab="global"] #deleteNanoBananaBtn {
 
 .mz-price-table-container {
     font-size: 10px;
-    padding: 12px;
+    padding: 8px;
     background: var(--bg-secondary);
     border: 1px solid rgba(255, 255, 255, 0.06);
     border-radius: 8px;
@@ -1455,6 +1455,7 @@ input:focus {
 /* [FIX] Ensure node boxes have relative context for carousel positioning */
 .media-preview-box {
     position: relative;
+    margin-bottom: 6px;
 }
 
 /* Base state for hover-only buttons (like Crop) */
@@ -2820,6 +2821,7 @@ input[type="number"]::-webkit-outer-spin-button {
 /* Progress Bar Styles */
 .log-entry {
     display: flex;
+    align-items: center;
     gap: 3px;
 }
 
@@ -2827,6 +2829,7 @@ input[type="number"]::-webkit-outer-spin-button {
     color: var(--text-muted);
     flex-shrink: 0;
     letter-spacing: -0.7px;
+    font-size: 9px;
 }
 
 .log-message {
@@ -2924,6 +2927,7 @@ input[type="number"]::-webkit-outer-spin-button {
 .bridge-status {
     width: 8px;
     height: 8px;
+    margin-right: 3px;
     border-radius: 50%;
     display: inline-block;
     background: var(--text-muted, #777777);
@@ -3078,7 +3082,7 @@ input[type="number"]::-webkit-outer-spin-button {
 /* --- Dropdown Menu System --- */
 .dropdown-menu {
     position: absolute;
-    right: 6px;
+    right: 0;
     top: calc(100% + 4px);
     background: var(--bg-secondary);
     border: 1px solid var(--border-color);
@@ -4051,7 +4055,6 @@ video.strip-thumb-img {
     color: var(--text-secondary);
 }
 
-.strip-thumb-media-placeholder:hover,
 .strip-thumb-remove-btn:hover {
     color: var(--bg-active)
 }

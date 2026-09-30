@@ -159,6 +159,40 @@ async def list_output_files(request):
 
     return web.json_response({"success": True, "files": files})
 
+@PromptServer.instance.routes.get("/comfypanel/input_files")
+async def list_input_files(request):
+    """
+    List all media files in ComfyUI's input folder.
+    Returns file list with name and nativePath for load media dropdown.
+    """
+    IMAGE_EXTS = {'.png', '.jpg', '.jpeg', '.webp', '.gif'}
+    VIDEO_EXTS = {'.mp4', '.webm', '.mov', '.avi'}
+    AUDIO_EXTS = {'.mp3', '.wav', '.ogg', '.flac'}
+    MODEL3D_EXTS = {'.glb', '.gltf', '.obj', '.fbx', '.usdz'}
+    ALL_EXTS = IMAGE_EXTS | VIDEO_EXTS | AUDIO_EXTS | MODEL3D_EXTS
+
+    input_dir = folder_paths.get_input_directory()
+    files = []
+    seen_paths = set()
+
+    try:
+        if os.path.exists(input_dir):
+            for entry in os.scandir(input_dir):
+                if entry.is_file() and entry.path not in seen_paths:
+                    ext = os.path.splitext(entry.name)[1].lower()
+                    if ext in ALL_EXTS:
+                        seen_paths.add(entry.path)
+                        files.append({
+                            "name": entry.name,
+                            "nativePath": entry.path,
+                            "mtime": entry.stat().st_mtime,
+                        })
+            files.sort(key=lambda x: x["name"].lower())
+    except Exception as e:
+        return web.json_response({"success": False, "error": str(e)}, status=500)
+
+    return web.json_response({"success": True, "files": files})
+
 @PromptServer.instance.routes.get("/comfypanel/thumbnail")
 async def get_thumbnail(request):
     """
