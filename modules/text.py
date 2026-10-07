@@ -1,4 +1,4 @@
-import re, shlex, subprocess
+import re, requests
 from .utility.math_utility import math_operation_calc
 from .utility.type_utility import handle_error
 
@@ -122,54 +122,68 @@ class TextConcat:
         return (result,)
 
 class TextMultiline:
+    API_URL = "https://index-translate.bilibili.com/v1/chat/completions"
+    MODEL_NAME = "Index-Translate-35B-A3B"
+
     @classmethod
     def INPUT_TYPES(cls):
         return {
             "required": {
                 "text": ("STRING", {"multiline": True}),
-                "direction": (["auto", "zh-en", "en-zh", "none"], {"default": "none"})
+                "direction": (["none", "translate_to_en", "enhance_to_en", "translate_to_target"], {"default": "none"}),
+            },
+            "optional": {
+                "target_lang": ("STRING", {"default": "zh"}),
             }
         }
 
     RETURN_TYPES = ("STRING",)
     FUNCTION = "translate_text"
     CATEGORY = "ComfyPanel/Text"
-    DESCRIPTION = "TextMultiline Node – Mac Translation Magic 🪄: Works with macOS Shortcuts for fun, customizable text translations. Only on Mac!"
+    DESCRIPTION = "TextMultiline Node – Translate or enhance text using Index-Translate."
 
-    def is_translatable(self, text):
-        return bool(re.search(r"[\u4e00-\u9fffA-Za-z]", text))
-
-    def is_english(self, text):
-        letters = re.findall(r"[A-Za-z]", text)
-        chinese = re.findall(r"[\u4e00-\u9fff]", text)
-        return len(letters) > len(chinese) * 1.5
-
-    def translate_text(self, text, direction):
+    def translate_text(self, text, direction, target_lang="zh"):
         text = text.strip()
-        if not text:
-            return ("",)
-        if direction == "none":
+        if not text or direction == "none":
             return (text,)
-        if not self.is_translatable(text):
-            return (text,)
-        if direction == "auto":
-            direction = "zh-en" if not self.is_english(text) else "en-zh"
-        shortcut_name = "Translate_ZHToEN" if direction == "zh-en" else "Translate_ENToZH"
-        try:
-            cmd = f"printf %s {shlex.quote(text)} | shortcuts run {shortcut_name}"
-            result = subprocess.run(
-                cmd,
-                capture_output=True,
-                text=True,
-                shell=True,
-                check=True
+
+        if direction == "translate_to_en":
+            prompt = f"请将以下文本翻译为英语，直接输出翻译结果，不要进行任何解释。\n\n{text}"
+        elif direction == "enhance_to_en":
+            prompt = (
+                "你是一个专业的AI绘画提示词专家。请根据以下描述，扩写为丰富、具象、包含画面细节与氛围的高质量英文提示词（Prompt）。"
+                f"直接输出英文提示词，不要输出任何解释：\n\n{text}"
             )
-            output = re.sub(r'\n\s*\n+', '\n', result.stdout.strip())
+        elif direction == "translate_to_target":
+            lang = target_lang.strip() if target_lang else "中文"
+            prompt = f"请将以下文本翻译为{lang}，直接输出翻译结果，不要进行任何解释。\n\n{text}"
+        else:
+            return (text,)
+
+        payload = {
+            "model": self.MODEL_NAME,
+            "messages": [{"role": "user", "content": prompt}]
+        }
+
+        headers = {
+            "Content-Type": "application/json",
+            "User-Agent": "curl/8.7.1",
+            "Accept": "*/*"
+        }
+
+        try:
+            response = requests.post(
+                self.API_URL,
+                json=payload,
+                headers=headers,
+                timeout=30
+            )
+            response.raise_for_status()
+            data = response.json()
+            output = data["choices"][0]["message"]["content"].strip()
             return (output,)
-        except subprocess.CalledProcessError as e:
-            return (handle_error(e, f"Translation shortcut '{shortcut_name}' failed"),)
         except Exception as e:
-            return (handle_error(e, "Unexpected error during translation"),)
+            return (handle_error(e, "Translation request failed"),)
 
 class ShowText:
     @classmethod

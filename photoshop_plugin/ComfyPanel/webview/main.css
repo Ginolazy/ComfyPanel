@@ -404,10 +404,13 @@ body {
     border-color: rgba(85, 147, 247, 0.3);
 }
 
-/* Turbo mode: hide media input nodes, pure prompt nodes, individual prompt rows, result preview, and execution footer */
+/* Turbo mode: hide media input nodes, pure prompt nodes, individual prompt rows, result preview, execution footer, billing reference, and instance_type */
 body.turbo-mode .node-group.is-media-input-node,
 body.turbo-mode .node-group.is-prompt-node,
 body.turbo-mode .param-row.is-prompt-row,
+body.turbo-mode .param-row:has([data-key="instanceType"]),
+body.turbo-mode .param-row[title="instanceType"],
+body.turbo-mode .mz-price-table-container,
 body.turbo-mode .media-preview-box,
 body.turbo-mode #resultStickySection,
 body.turbo-mode .log-drawer,
@@ -1770,11 +1773,11 @@ input:focus {
 
 .pro-lock-overlay {
     position: absolute;
-    top: 32px;
+    top: 0;
     left: 0;
     right: 0;
     bottom: 0;
-    background: rgba(0, 0, 0, 0.4);
+    background: rgba(0, 0, 0, 0.6);
     backdrop-filter: blur(2px);
     display: flex;
     flex-direction: column;
@@ -1783,7 +1786,7 @@ input:focus {
     gap: 8px;
     z-index: 100;
     cursor: pointer;
-    color: var(--text-primary);
+    color: #f8cd47;
     font-size: 11px;
     font-weight: 600;
     transition: background 0.2s;
@@ -2533,8 +2536,8 @@ input[type="number"]::-webkit-outer-spin-button {
 .toggle-switch {
     appearance: none;
     -webkit-appearance: none;
-    width: 36px;
-    height: 20px;
+    width: 34px;
+    height: 18px;
     background: var(--bg-primary);
     border: 1px solid var(--bg-hover);
     border-radius: 12px;
@@ -2546,10 +2549,10 @@ input[type="number"]::-webkit-outer-spin-button {
 .toggle-switch::after {
     content: '';
     position: absolute;
-    top: 2px;
-    left: 2px;
-    width: 14px;
-    height: 14px;
+    top: 0;
+    left: 0;
+    width: 16px;
+    height: 16px;
     background: var(--text-secondary);
     border-radius: 50%;
     transition: transform 0.3s;
@@ -2588,9 +2591,7 @@ input[type="number"]::-webkit-outer-spin-button {
     padding: 0;
 }
 
-.custom-select-container .badge-pro {
-    display: block !important;
-}
+
 
 .custom-select-trigger {
     width: 100%;
@@ -2615,6 +2616,20 @@ input[type="number"]::-webkit-outer-spin-button {
     white-space: nowrap;
     text-overflow: ellipsis;
     min-width: 0;
+    flex: 1;
+}
+
+.custom-select-trigger input.select-trigger-input {
+    width: 100%;
+    height: 100%;
+    border: none;
+    outline: none;
+    background: transparent;
+    color: var(--text-primary);
+    font-size: 11px;
+    font-family: inherit;
+    padding: 0;
+    margin: 0;
 }
 
 .custom-select-container:hover {
@@ -3204,6 +3219,23 @@ input[type="number"]::-webkit-outer-spin-button {
     background: rgba(255, 255, 255, 0.03);
     border-radius: var(--radius-md) var(--radius-md) 0 0;
     /* Keep top corners rounded */
+}
+
+.settings-card.collapsed>.card-header-row:first-child {
+    border-radius: var(--radius-md);
+}
+
+.settings-card .accordion-chevron {
+    transform: rotate(0deg);
+    color: var(--text-secondary);
+}
+
+.settings-card.collapsed .accordion-chevron {
+    transform: rotate(-90deg);
+}
+
+.settings-card #remoteTunnelHeader:hover {
+    background: rgba(255, 255, 255, 0.06);
 }
 
 .card-header-row {
@@ -4067,6 +4099,7 @@ video.strip-thumb-img {
     display: flex;
     align-items: center;
     justify-content: flex-end;
+    gap: 2px;
     transition: opacity 0.15s ease;
     position: absolute;
     right: 0;
@@ -4085,7 +4118,9 @@ video.strip-thumb-img {
     background: none;
     color: var(--accent-primary);
     cursor: pointer;
-    padding: 0;
+    padding: 2px;
+    width: 20px;
+    height: 20px;
     flex-shrink: 0;
     transition: background 0.15s ease, color 0.15s ease, border-color 0.15s ease;
 }
@@ -4094,6 +4129,16 @@ video.strip-thumb-img {
     background: var(--accent-hover);
     border-color: var(--accent-hover);
     color: var(--text-primary);
+}
+
+.prompt-template-btn.is-loading {
+    pointer-events: none;
+    opacity: 0.65;
+    cursor: not-allowed;
+}
+
+.prompt-template-btn.is-loading svg {
+    animation: spin 0.8s linear infinite;
 }
 
 /* Floating popover */
@@ -4398,8 +4443,6 @@ body[data-backend][data-active-tab="engine"] div.engine-only-settings {
 }
 
 .badge-pro.upgrade-trigger {
-    display: inline-block;
-    padding: 2px 10px !important;
     transition: all 0.2s ease;
     cursor: pointer;
 }
@@ -4586,37 +4629,29 @@ body[data-backend][data-active-tab="engine"] div.engine-only-settings {
 
 /* --- Membership Badges & Gating --- */
 .badge-pro {
-    display: none;
-    background: linear-gradient(90deg, #f8cd47 0%, #f7a01b 100%);
-    color: #000;
-    padding: 0.5px 6px;
-    border-radius: 20px;
+    display: inline-block;
     font-size: 7px;
     font-weight: 700;
     text-transform: uppercase;
-    box-shadow: 0 2px 5px rgba(248, 205, 71, 0.4);
-    flex-shrink: 0;
-    margin-left: 4px;
-    transform: scale(0.95);
-}
-
-body.is-pro .badge-pro {
-    display: inline-block;
-}
-
-/* Specific Logo Badge positioning */
-.brand .badge-pro {
     position: absolute;
     top: -5px;
     margin-left: 2px;
-    background: none;
-    box-shadow: none;
-    padding: 0;
     color: #dfaa59;
 }
 
+body:not(.is-pro) .brand .badge-pro {
+    display: none;
+}
+
 .member-center-card .badge-pro {
+    color: #000;
     font-size: 9px;
+    position: unset;
+    top: unset;
+    padding: 1px 8px;
+    background: linear-gradient(90deg, #f8cd47 0%, #f7a01b 100%);
+    box-shadow: 0 2px 5px rgba(248, 205, 71, 0.4);
+    border-radius: 20px;
 }
 
 /* Consolidated duplicate .locked-overlay into .pro-lock-overlay to maintain DRY styling */
@@ -5012,12 +5047,24 @@ body.is-pro .badge-pro {
     background: rgba(128, 110, 64, 0.7);
 }
 
-/* Feature Badge Visibility for Non-Pro Users */
-.badge-pro.feature-badge {
-    display: inline-block !important;
+/* Settings label with inline PRO badge via CSS (no JS/i18n needed) */
+.label-pro::after {
+    content: 'PRO';
+    display: inline-block;
+    background: linear-gradient(90deg, #f8cd47 0%, #f7a01b 100%);
+    color: #000;
+    padding: 0.5px 3px;
+    border-radius: 20px;
+    font-size: 7px;
+    font-weight: 700;
+    text-transform: uppercase;
+    box-shadow: 0 1px 5px rgba(248, 205, 71, 0.4);
+    margin-left: 2px;
+    transform: scale(0.95);
+    vertical-align: middle;
 }
 
-body:not(.is-pro) .badge-pro.feature-badge {
+body:not(.is-pro) .label-pro::after {
     filter: grayscale(1);
     opacity: 0.6;
 }
@@ -5565,40 +5612,32 @@ body:not(.is-pro) .badge-pro.feature-badge {
     text-overflow: ellipsis;
 }
 
-/* 比例选择下拉 */
-#pano-ratio-select {
-    appearance: none;
-    -webkit-appearance: none;
-    background: rgba(255, 255, 255, 0.09) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6' viewBox='0 0 10 6'%3E%3Cpath d='M1 1l4 4 4-4' stroke='rgba(255,255,255,0.5)' stroke-width='1.5' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") no-repeat right 8px center;
-    border: 1px solid rgba(255, 255, 255, 0.15);
-    border-radius: 6px;
-    color: rgba(255, 255, 255, 0.8);
-    font-size: 10px;
-    font-weight: 600;
-    letter-spacing: 0.04em;
-    padding: 4px 26px 4px 10px;
+/* 比例选择下拉 (复用通用 custom-select-container 体系) */
+#panoRatioSelect {
+    width: 82px;
     height: 26px;
-    cursor: pointer;
     flex-shrink: 0;
-    transition: background 0.2s, border-color 0.2s;
     pointer-events: auto;
+    border-radius: 6px;
+    background: rgba(255, 255, 255, 0.09);
+    border: 1px solid rgba(255, 255, 255, 0.15);
 }
 
-#pano-ratio-select:hover {
-    background-color: rgba(255, 255, 255, 0.15);
+#panoRatioSelect:hover {
+    background: rgba(255, 255, 255, 0.15);
     border-color: rgba(255, 255, 255, 0.3);
 }
 
-#pano-ratio-select:focus {
-    outline: none;
-    border-color: rgba(0, 140, 255, 0.6);
-    box-shadow: 0 0 0 2px rgba(0, 140, 255, 0.2);
+#panoRatioSelect .custom-select-trigger {
+    color: rgba(255, 255, 255, 0.85);
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    padding: 0 20px 0 8px;
 }
 
-#pano-ratio-select option {
-    background: #1a1a1a;
-    color: #fff;
-    font-size: 11px;
+#panoRatioSelect .custom-select-menu {
+    min-width: 82px;
 }
 
 /* 关闭按钮 */

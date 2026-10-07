@@ -2,6 +2,34 @@
 
 All notable changes to this project will be documented in this file.
 
+## [2.2.0] - 2026-10-01
+
+ComfyPanel v2.2.0
+
+• Turbo Mode: Added `cropLayer` (Crop by Layer Bounds) button, dynamically shown when active document has multiple layers (`layerCount > 1`). Fully aligned with Studio mode's mutual exclusion logic between Selection and Layer cropping.
+
+• Turbo Mode: Fixed an issue where changing crop modes or switching active documents could mistakenly reuse stale RGBA cache from the first execution.
+
+• Result Placement Optimization: Refactored the result insertion logic to prevent unintended stretching or scaling on cutout and transparent images. Auto-insert mode now intelligently places matching canvas images at 1:1 original scale in-place without distortion. Manual insertion continues to fit effective contents to canvas, while Shift+ click reliably restores 1:1 true physical pixel dimensions.
+
+• [PRO] Upload Image Format: Added a new PRO setting to control the image format used when uploading to ComfyUI. Supports WebP (Fast) and PNG. WebP drastically reduces file size and upload time. Non-Pro users default to PNG.
+
+• Prompt Toolbar (Translate & Enhance): Added inline "Translate to EN" and "Enhance to EN" action buttons to multiline prompt inputs in the Photoshop panel, powered by Index-Translate (pure frontend, zero ComfyUI dependency). Supports translating any source language to English, AI prompt enhancement, and smart partial replacement for selected text.
+
+• TextMultiline Node: Upgraded translation and prompt enhancement capabilities powered by Index-Translate, supporting multi-language translation to English (`translate_to_en`), AI prompt enhancement (`enhance_to_en`), and target language translation (`translate_to_target`).
+
+• Turbo 模式：新增 `cropLayer`（按图层边界裁剪）快捷按钮，在多图层文档（图层数 > 1）时按需显示，并与选区裁剪遵循与 Studio 模式一致的互斥逻辑。
+
+• Turbo 模式：修复了切换裁剪模式或切换文档时，可能误用首次运行产生的旧 RGBA 缓存的问题。
+
+• 结果图插回逻辑优化：重构了置入图层变换与缩放逻辑，解决抠图及带透明区域图片插回时异常撑满变形的问题。自动插回模式新增轻智能判定，结果画布与文档一致时自动 1:1 原位贴合；手动点击保持适配撑满画布，Shift+ 点击可无损还原为结果图真实的 1:1 物理像素尺寸。
+
+• [PRO] 上传图片格式：新增 PRO 专属设置，可控制上传至 ComfyUI 时所使用的图片格式。支持 WebP（快速）与 PNG。WebP 可大幅压缩文件体积并缩短上传耗时；非 Pro 用户默认使用 PNG。
+
+• 提示词工具栏（翻译与增强）：在 Photoshop 面板的多行提示词输入框上方新增「翻译为英文 (Translate to EN)」与「AI增强为英文 (Enhance to EN)」按钮，基于 Index-Translate 纯前端直连（不依赖 ComfyUI）。支持任意源语言翻译为英文、AI 提示词智能增强，以及选中的文本局部替换。
+
+• TextMultiline 节点：升级翻译与提示词增强功能，集成开源 Index-Translate 服务，支持多语言翻译为英文（`translate_to_en`）、AI 提示词增强（`enhance_to_en`）以及目标语言翻译（`translate_to_target`）。
+
 ## [2.1.0] - 2026-09-30
 
 ComfyPanel v2.1.0

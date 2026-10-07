@@ -23,8 +23,8 @@ window.userConfig = {
     globalSettings: {
         strictMode: true,
         itemLimit: 100,
-        forceShowSuffix: '*',
-        forceHideSuffix: '.',
+        forceShowSuffix: '@',
+        forceHideSuffix: '~',
         topIcons: ['🎨', '📁', '⚙️'],
         useSlidersForNumbers: true
     },
