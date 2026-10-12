@@ -292,6 +292,7 @@
             'pro_feature_webp': 'WebP upload is a PRO feature. Upgrade to enjoy faster uploads with smaller file sizes!',
             'pro_feature_draft': 'Draft Mode is a PRO feature. Upgrade to enjoy ultra-fast iterative rendering and instant creative feedback!',
             'pro_unlocked_success': 'Welcome to ComfyPanel Pro! Your premium features have been unlocked!',
+            'device_kicked_notice': 'Signed in on this device. The least recently used device has been signed out automatically.',
 
             // Placeholders & Messages
             'enter_api_key': 'Enter API Key...',
@@ -692,6 +693,7 @@
             'pro_feature_webp': 'WebP 上传是 PRO 专属功能，升级享受更快上传速度与更小文件体积！',
             'pro_feature_draft': '极速草图模式是 PRO 专属功能，升级享受瞬时创意迭代与高速反馈！',
             'pro_unlocked_success': '欢迎加入 ComfyPanel Pro！您的专业版权益已成功解锁！',
+            'device_kicked_notice': '此设备已登录成功，最久未使用的设备已被自动退出。',
 
             // Placeholders & Messages
             'enter_api_key': '输入 API Key...',

@@ -192,6 +192,7 @@ ComfyPanel 始终拥抱开源社区。**免费社区版**是 100% 永久免费�
 | **Resolution Limit / 分辨率上限** | Up to 2000px / 限制 2K 以内 | Unlimited resolution / 无损超高清无上限 |
 | **History Manager / 历史生成记录** | Last 5 items / 仅保留 5 条 | Unlimited history / 无上限保存 |
 | **Smart Layout / 清爽排版** | Standard tiled / 标准平铺 | Smart-Loader & Capsule / 极简胶囊布局 |
+| **Upload Image Format / 上传图片格式** | PNG (Standard) | PNG (Standard) / WebP (Fast) |
 
 ---
 

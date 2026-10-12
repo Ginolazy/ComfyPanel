@@ -1024,3 +1024,102 @@ class ImageMask_ScaleRestore:
         rgb_part = restored_image * mask_exp
         rgba_image = torch.cat([rgb_part, mask_exp], dim=-1)
         return (rgba_image, restored_mask)
+
+class ImageMask_Align:
+    DESCRIPTION = (
+        "Preserve 1:1 original pixels and pad outward to the nearest multiple.\n"
+        "Model alignment reference:\n"
+        "• 8: SD 1.5, SD 2.1, SDXL (8x VAE)\n"
+        "• 16: FLUX.1-Kontext, SD3 / SD3.5 (Patch 2x2 + 8x VAE)\n"
+        "• 32: Qwen-Image 2.1, Qwen2-VL, HunyuanVideo\n"
+        "• 64: CogVideoX, Wan2.1 (3D VAE / Video DiT)"
+    )
+
+    @classmethod
+    def INPUT_TYPES(cls):
+        return {
+            "required": {
+                "image": ("IMAGE",),
+                "round_to_multiple": (["8", "16", "32", "64"], {"default": "32"}),
+            },
+            "optional": {
+                "mask": ("MASK",),
+            }
+        }
+
+    RETURN_TYPES = ("IMAGE", "MASK", "ALIGN_DATA")
+    RETURN_NAMES = ("image", "mask", "align_data")
+    FUNCTION = "align"
+    CATEGORY = "ComfyPanel/Process & Restore"
+
+    def align(self, image, round_to_multiple, mask=None):
+        batch_size, orig_h, orig_w, _ = image.shape
+        multiple = int(round_to_multiple)
+
+        target_w = ((orig_w + multiple - 1) // multiple) * multiple
+        target_h = ((orig_h + multiple - 1) // multiple) * multiple
+        align_data = {"orig_w": orig_w, "orig_h": orig_h}
+
+        has_mask = mask is not None and mask.numel() > 0 and mask.shape[-2:] == (orig_h, orig_w) and mask.max() > 0
+
+        if target_w == orig_w and target_h == orig_h:
+            out_mask = mask if has_mask else torch.zeros((batch_size, 64, 64), device=image.device)
+            return (image, out_mask, align_data)
+
+        pad_l = (target_w - orig_w) // 2
+        pad_t = (target_h - orig_h) // 2
+
+        padded_image = torch.zeros((batch_size, target_h, target_w, 3), dtype=image.dtype, device=image.device)
+        padded_image[:, pad_t:pad_t + orig_h, pad_l:pad_l + orig_w, :3] = image[:, :, :, :3]
+
+        if has_mask:
+            padded_mask = torch.zeros((batch_size, target_h, target_w), dtype=torch.float32, device=image.device)
+            padded_mask[:, pad_t:pad_t + orig_h, pad_l:pad_l + orig_w] = mask
+        else:
+            padded_mask = torch.zeros((batch_size, 64, 64), dtype=torch.float32, device=image.device)
+
+        return (padded_image, padded_mask, align_data)
+
+class ImageMask_AlignRestore:
+    DESCRIPTION = "Restores image and mask to their original dimensions using center-crop based on align_data."
+
+    @classmethod
+    def INPUT_TYPES(cls):
+        return {
+            "required": {
+                "image": ("IMAGE",),
+            },
+            "optional": {
+                "mask": ("MASK",),
+                "align_data": ("ALIGN_DATA",),
+            }
+        }
+
+    RETURN_TYPES = ("IMAGE", "MASK")
+    RETURN_NAMES = ("image", "mask")
+    FUNCTION = "restore"
+    CATEGORY = "ComfyPanel/Process & Restore"
+
+    def restore(self, align_data, image=None, mask=None):
+        if image is None and mask is None:
+            raise ValueError("Provide at least image or mask")
+
+        orig_w = int(align_data["orig_w"])
+        orig_h = int(align_data["orig_h"])
+
+        restored_image = None
+        if image is not None:
+            left = max(0, (image.shape[2] - orig_w) // 2)
+            top = max(0, (image.shape[1] - orig_h) // 2)
+            restored_image = image[:, top:top + orig_h, left:left + orig_w, :]
+
+        has_mask = mask is not None and mask.shape[-2:] != (64, 64) and mask.max() > 0
+        if has_mask:
+            left = max(0, (mask.shape[-1] - orig_w) // 2)
+            top = max(0, (mask.shape[-2] - orig_h) // 2)
+            restored_mask = mask[:, top:top + orig_h, left:left + orig_w]
+        else:
+            dev = image.device if image is not None else (mask.device if mask is not None else "cpu")
+            restored_mask = torch.zeros((1, 64, 64), device=dev)
+
+        return (restored_image, restored_mask)

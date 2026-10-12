@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file.
 
+## [2.3.0] - 2026-10-11
+
+ComfyPanel v2.3.0
+
+• Silent Config & Asset Sync Refactor: Streamlined default app configuration (`default_apps.json`) and workflow manifest synchronization in the Photoshop plugin. Removed dependence on unreliable GitHub API and SHA tracking, switching to direct CDN-based content comparison and atomic file overwrite. Ensures instant, zero-friction updates across domestic and global networks whenever defaults are pushed.
+
+• Image Alignment & Lossless Restore Nodes: Added `ImageMask_Align` and `ImageMask_AlignRestore` nodes (`ComfyPanel/Process & Restore`). Solves image distortion, edge cropping, and pixel shifting caused by non-standard dimensions in ComfyUI workflows (e.g. Qwen, Wan, CogVideo, Inpainting). Pads outward instead of lossy interpolation resizing to meet model alignment requirements (8/16/32/64), and accurately restores the canvas to original dimensions with 1:1 pixel-perfect, distortion-free, and shift-free precision.
+
+• 静默配置与资产同步重构：精简 Photoshop 插件端内置默认应用（`default_apps.json`）及工作流清册的同步机制。彻底移除对易受网络环境限制的 GitHub API 与 SHA 文件比对的依赖，改为直连 CDN 内容比对与文件直接覆盖写入。确保海内外用户在云端配置推送后均能秒级、无感、稳定地同步最新应用及工作流变更。
+
+• 图像尺寸对齐与无损还原节点：在 `ComfyPanel/Process & Restore` 分类下新增 `ImageMask_Align` 与 `ImageMask_AlignRestore` 节点。彻底解决 ComfyUI 工作流中非标尺寸在模型重绘、生图时画面被插值拉伸变糊、边缘被悄悄裁切或多模态/视频模型（如 Qwen、Wan、CogVideo）因非倍数尺寸报错的问题。采用向外居中扩充代替有损重采样缩放，对齐至 8/16/32/64 等模型推荐倍数；配套还原节点保证画面 1:1 绝对不变形、不偏移、无损还原。
+
 ## [2.2.0] - 2026-10-01
 
 ComfyPanel v2.2.0
