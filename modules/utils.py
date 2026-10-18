@@ -1,5 +1,3 @@
-REQUIRED_DEPENDENCIES = ("torch", "numpy", "folder_paths", "server", "aiohttp")
-
 import comfy.model_management
 import folder_paths
 import json

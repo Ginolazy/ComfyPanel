@@ -1015,7 +1015,6 @@ async def comfypanel_ws_ext_bridge(request):
     if role == "browser":
         _ext_browser_ws = ws
         _ext_active_workflow["alive"] = True
-        logging.info("[ComfyPanel ExtBridge] System Browser connected")
 
         if _ext_uxp_ws and not _ext_uxp_ws.closed:
             try:
@@ -1079,7 +1078,7 @@ async def comfypanel_ws_ext_bridge(request):
         if role == "browser" and _ext_browser_ws == ws:
             _ext_browser_ws = None
             _ext_active_workflow["alive"] = False
-            logging.info("[ComfyPanel ExtBridge] System Browser disconnected")
+
             if _ext_uxp_ws and not _ext_uxp_ws.closed:
                 try:
                     await _ext_uxp_ws.send_json({

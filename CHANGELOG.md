@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file.
 
+## [2.3.1] - 2026-10-14
+
+ComfyPanel v2.3.1
+
+• Loader Enhancer: Added universal support for `none` option in file dropdowns of ComfyUI loader nodes (e.g., `LoadImage`, `LoadAudio`, `LoadVideo`). Automatically bypasses file validation and returns `None` outputs when `none` is selected, enabling multi-input workflows (like Nanobanana, GPT Image, Qwen Image) to selectively pass inputs without breaking or disconnecting nodes.
+
+• Loader 节点增强：为原生及自定义媒体加载节点（如 `LoadImage`、`LoadAudio`、`LoadVideo` 等）的文件下拉菜单首位全局注入 `none` 选项。选择 `none` 时自动放行文件存在性校验并在运行时输出 `None`，完美解决多图/多输入节点（如 Nanobanana、GPT Image、Qwen Image）需要按需传图时不得不频繁手动断开连线的问题。
+
 ## [2.3.0] - 2026-10-11
 
 ComfyPanel v2.3.0

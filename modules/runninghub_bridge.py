@@ -1,5 +1,3 @@
-REQUIRED_DEPENDENCIES = ("requests", "torch", "numpy", "folder_paths", "PIL")
-
 import comfy.model_management
 import cv2
 import folder_paths

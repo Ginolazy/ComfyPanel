@@ -70,7 +70,7 @@ ComfyPanel is a professional-grade, high-performance integration for **Adobe Pho
 
 ### 🛠️ Installation
 * **Photoshop**: Adobe Photoshop 2025 (v26.0) or higher.
-* **ComfyUI**: Clone this repo to `custom_nodes/` and restart.
+* **ComfyUI**: Version **>= 0.2.0** (required for real-time bi-directional synchronization bridge). Clone this repo to `custom_nodes/` and restart.
 * **PS Plugin Setup**: 
     * **Auto**: Run `comfypanel.ccx` (recommended).
     * **Manual**: Copy the plugin folder to `Adobe Photoshop */Plug-ins/` directory.
@@ -153,7 +153,7 @@ ComfyPanel 是一套专为 **Adobe Photoshop** 开发的高灵敏度、专业级
 
 ### 🛠️ 快速安装
 * **Photoshop 要求**：Adobe Photoshop 2025 (v26.0) 或更高版本。
-* **ComfyUI 端**：克隆本仓库至 `custom_nodes/` 目录并重启。
+* **ComfyUI 端**：推荐版本 **>= 0.2.0**（完整支持双向实时同步桥接）。克隆本仓库至 `custom_nodes/` 目录并重启。
 * **PS插件安装**：
     * **自动安装**：直接运行 `comfypanel.ccx`（推荐）。
     * **手动安装**：将插件文件夹复制到`Adobe Photoshop */Plug-ins/`插件目录。

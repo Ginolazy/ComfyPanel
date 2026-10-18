@@ -1,5 +1,4 @@
 /* ComfyUI/custom_nodes/ComfyPanel/web/ui/comfypanel_ui.css */
-
 .cp-modal-overlay {
     position: fixed;
     top: 0;
@@ -253,4 +252,134 @@
     background: rgba(100, 130, 150, 0.45);
     border-color: rgba(136, 170, 187, 0.8);
     color: #FFFFFF;
+}
+
+/* ------ Override ComfyUI default  ------ */
+[aria-label="ComfyUI Manager"]>i,
+[aria-label="Show favorite custom node list"],
+[aria-label="Unload Models"],
+[aria-label="Free model and node cache"],
+[aria-label="Share"],
+[aria-label="Templates"],
+[data-testid="workflows-sidebar"] .p-tree-node-toggle-button {
+    display: none !important;
+}
+
+.comfy-menu-button-wrapper,
+.sidebar-item-group>button {
+    width: unset !important;
+}
+
+.p-tree {
+    padding-inline: 10px !important;
+}
+
+.sidebar-content-container {
+    font-size: 12px !important;
+}
+
+.min-w-78 {
+    min-width: unset !important;
+}
+
+/* ------ Adapted for ComfyPanel ------ */
+@media (max-width: 1800px) {
+
+    .rgthree-comfybar-top-button-group,
+    .drag-handle.h-max.w-3.cursor-grab,
+    [aria-label="Enter app mode"],
+    [aria-controls="bizyairplus-balance-popover"] {
+        display: none !important;
+    }
+}
+
+@media (max-width: 1200px) {
+
+    .actionbar-container {
+        padding: 0 !important;
+        gap: 0 !important;
+        height: unset !important;
+    }
+
+    .p-buttongroup {
+        padding: 0 !important;
+    }
+}
+
+@media (max-width: 800px) {
+
+    .pointer-events-auto.inline-flex.items-center.rounded-lg.bg-secondary-background,
+    .sidebar-content-container .p-tree-node-icon,
+    [data-testid="legacy-topbar-container"] {
+        display: none !important;
+    }
+
+    .sidebar-content-container {
+        font-size: 10px !important;
+    }
+
+    .sidebar-content-container .p-tree {
+        padding-inline: 0 !important;
+    }
+
+    .side-toolbar-container .p-2 {
+        padding: 2px !important;
+    }
+
+    .sidebar-item-group>button {
+        height: 30px !important;
+    }
+
+    .side-toolbar-container .sidebar-icon-badge {
+        min-width: 12px !important;
+        height: 12px !important;
+        line-height: 1 !important;
+    }
+
+    .side-toolbar-container i {
+        width: 0.9em !important;
+        height: 0.9em !important;
+    }
+}
+
+@media (max-width: 534px) {
+    [aria-label="BizyAirPlus"] {
+        display: none !important;
+    }
+}
+
+@media (max-width: 410px) {
+
+    [data-testid="queue-overlay-toggle"],
+    [aria-label="Canvas Mode"] {
+        display: none !important;
+    }
+}
+
+@media (max-width: 322px) {
+
+    [aria-label="Batch Count"],
+    [aria-label="Toggle properties panel"],
+    [data-testid="toggle-minimap-button"],
+    [aria-label="Cancel current run"] {
+        display: none !important;
+    }
+}
+
+@media (max-width: 266px) {
+
+    [data-testid="queue-mode-menu-trigger"],
+    [data-testid="zoom-controls-button"],
+    [data-testid="toggle-link-visibility-button"],
+    .side-toolbar-container {
+        display: none !important;
+    }
+}
+
+@media (max-width: 96px) {
+
+    .ml-1.flex.flex-col.gap-1.pt-1,
+    .side-toolbar-container {
+        display: none !important;
+    }
 }
