@@ -254,36 +254,35 @@
     color: #FFFFFF;
 }
 
-/* ------ Override ComfyUI default  ------ */
-[aria-label="ComfyUI Manager"]>i,
-[aria-label="Show favorite custom node list"],
-[aria-label="Unload Models"],
-[aria-label="Free model and node cache"],
-[aria-label="Share"],
-[aria-label="Templates"],
-[data-testid="workflows-sidebar"] .p-tree-node-toggle-button {
-    display: none !important;
-}
-
-.comfy-menu-button-wrapper,
-.sidebar-item-group>button {
-    width: unset !important;
-}
-
-.p-tree {
-    padding-inline: 10px !important;
-}
-
-.sidebar-content-container {
-    font-size: 12px !important;
-}
-
-.min-w-78 {
-    min-width: unset !important;
-}
-
 /* ------ Adapted for ComfyPanel ------ */
-@media (max-width: 1800px) {
+@media (max-width: 1600px) {
+
+    [aria-label="ComfyUI Manager"]>i,
+    [aria-label="Show favorite custom node list"],
+    [aria-label="Unload Models"],
+    [aria-label="Free model and node cache"],
+    [aria-label="Share"],
+    [aria-label="Templates"],
+    [data-testid="workflows-sidebar"] .p-tree-node-toggle-button {
+        display: none !important;
+    }
+
+    .comfy-menu-button-wrapper,
+    .sidebar-item-group>button {
+        width: unset !important;
+    }
+
+    .p-tree {
+        padding-inline: 10px !important;
+    }
+
+    .sidebar-content-container {
+        font-size: 12px !important;
+    }
+
+    .min-w-78 {
+        min-width: unset !important;
+    }
 
     .rgthree-comfybar-top-button-group,
     .drag-handle.h-max.w-3.cursor-grab,
