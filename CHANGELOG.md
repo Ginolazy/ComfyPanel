@@ -2,6 +2,22 @@
 
 All notable changes to this project will be documented in this file.
 
+## [2.3.2] - 2026-10-19
+
+ComfyPanel v2.3.2
+
+• Media Asset Lock Fix: Fixed a bug where locked media assets (images, video, audio) lost their preview after switching apps or workflows. Locked assets now seamlessly follow slot order (slot 0 → slot 0, slot 1 → slot 1, ...) across any workflow switch, consistent with how mask state has always worked globally.
+
+• Auto-Insert Mask Fix: Fixed a regression where auto-inserting results no longer created a layer mask from the active selection. The mask was previously only applied in canvas capture mode; it now correctly applies in all capture modes (canvas, layer, selection) whenever a selection is present at run time.
+
+• 媒体资产锁定修复：修复锁定后切换 App / 工作流时媒体预览（图像、视频、音频）丢失的问题。锁定的媒体资产现在按槽位顺序（槽位 0 → 槽位 0，槽位 1 → 槽位 1，...）无缝流转至新工作流对应节点，行为与遮罩全局状态保持一致。
+
+• 自动插回蒙版修复：修复了自动插回结果图时不再自动基于当前选区添加图层蒙版的回归性问题。此前蒙版创建仅在画布捕获模式（canvas）下生效；现已修正为任意捕获模式（canvas / layer / selection）下，只要运行时存在有效选区，均能正确创建蒙版。
+
+• Multi-Load Layer Placement Fix: Fixed a bug where auto-insert with layer capture + crop-by-layer mode would fall back to canvas-fill placement when multiple LoadImage nodes were present. The primary node's layer bounds are now locked in at run time and correctly used as the placement target for all auto-inserted results.
+
+• 多 LoadImage 节点图层置入修复：修复在"取图层图 + crop by layer"模式下，存在多个 LoadImage 节点时自动插回回退为撑满画布的问题。现已在运行时正确锁定首图节点的图层包围盒，并将其用于所有自动插回结果图的置入定位。
+
 ## [2.3.1] - 2026-10-14
 
 ComfyPanel v2.3.1

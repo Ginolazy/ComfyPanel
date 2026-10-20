@@ -1030,7 +1030,8 @@ class ImageMask_Align:
         "• 8: SD 1.5, SD 2.1, SDXL (8x VAE)\n"
         "• 16: FLUX.1-Kontext, SD3 / SD3.5 (Patch 2x2 + 8x VAE)\n"
         "• 32: Qwen-Image 2.1, Qwen2-VL, HunyuanVideo\n"
-        "• 64: CogVideoX, Wan2.1 (3D VAE / Video DiT)"
+        "• 64: CogVideoX, Wan2.1 (3D VAE / Video DiT)\n"
+        "• 112: Qwen-Image-Edit (4x 28 ViT patch alignment)"
     )
 
     @classmethod
@@ -1038,7 +1039,7 @@ class ImageMask_Align:
         return {
             "required": {
                 "image": ("IMAGE",),
-                "round_to_multiple": (["8", "16", "32", "64"], {"default": "32"}),
+                "round_to_multiple": (["8", "16", "32", "64", "112"], {"default": "32"}),
             },
             "optional": {
                 "mask": ("MASK",),
