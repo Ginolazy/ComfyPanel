@@ -9,7 +9,7 @@ from .modules.utility import comfypanel_api, loader_enhancer
 NODE_CLASS_MAPPINGS = {}
 NODE_DISPLAY_NAME_MAPPINGS = {}
 WEB_DIRECTORY = "./web"
-__version__ = "2.3.2"
+__version__ = "2.3.3"
 
 plugin_dir = os.path.dirname(os.path.realpath(__file__))
 py_dir = os.path.join(plugin_dir, "modules")

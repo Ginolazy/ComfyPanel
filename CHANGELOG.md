@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file.
 
+## [2.3.3] - 2026-10-22
+
+ComfyPanel v2.3.3
+
+• Documentation & Extension Registry Mapping: Updated documentation and README assets. Submitted official ComfyUI-Manager node class mappings to enable node discovery and indexing in the Manager registry.
+
+• 文档与节点映射收录：更新说明文档及 README。为 ComfyUI-Manager 提交了官方节点类别映射，使 ComfyPanel 的自定义节点能被 Manager 正确索引并完整展示节点列表。
+
 ## [2.3.2] - 2026-10-19
 
 ComfyPanel v2.3.2
