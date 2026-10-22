@@ -2,7 +2,7 @@
 
 > **The Artisan’s Bridge between ComfyUI and Adobe Photoshop.**
 
-[English](#english) | [中文](#中文) | [📖 Detailed Tutorials](https://lazyet.com/blogs/labs/comfypanel-tutorial) | [💎 ComfyPanel Pro](https://lazyet.com/products/comfypanel-pro)
+[English](#english) | [中文](#中文) | [📖 Detailed Tutorials](https://lazyet.com/blogs/labs/comfypanel-tutorial) | [⚡ ComfyPanel Turbo Bar](https://github.com/Ginolazy/ComfyPanel-Turbo-Bar) | [💎 ComfyPanel Pro](https://lazyet.com/products/comfypanel-pro)
 
 ---
 
@@ -61,12 +61,14 @@ ComfyPanel is a professional-grade, high-performance integration for **Adobe Pho
 - **Infinite Offline Recovery**: Never lose a masterpiece. If Photoshop crashes or closes, ComfyPanel automatically retrieves and renders your asynchronous cloud results (RunningHub / BizyAir) upon the next launch.
 - **Deep Canvas Awareness**: Real-time synchronization of layer visibility, transparency, masks, and sub-pixel selections via Photoshop UXP core.
 - **Zero-Copy Performance**: Architecture-level optimization. Utilizing direct local file referencing to completely bypass binary IPC data bottlenecks. Delivers instant synchronization for 4K+ high-resolution textures out of the box with **zero manual configuration required**.
+- **ComfyPanel Turbo Bar & Turbo Mode**: Streamlined, ultra-fast generation experience. Features native integration with the dedicated [ComfyPanel Turbo Bar](https://github.com/Ginolazy/ComfyPanel-Turbo-Bar), providing an ultra-lightweight floating toolbar and zero-distraction workflow for quick generations directly over your Photoshop canvas.
 - **Remote Tunnel (FRP)**: Access your local ComfyUI instance from anywhere via integrated FRP tunneling. Features on-demand dependency downloading with multi-source fallback and auto-resume logic.
 
 ### 🏗️ Structure
 1. **[ComfyPanel (PS Plugin)](./photoshop_plugin/ComfyPanel)**: The UXP core. A modern, minimalist UI built for the Photoshop sidebar.
-2. **Custom Nodes**: A robust library of back-end nodes for flow control, multi-dimensional asset rendering, and image IO.
-3. **App System**: Pre-built "Apps" that turn scary JSON workflows into beautiful, familiar UI sliders.
+2. **[ComfyPanel Turbo Bar](https://github.com/Ginolazy/ComfyPanel-Turbo-Bar)**: Dedicated standalone companion app for Turbo Mode (distributed separately).
+3. **Custom Nodes**: A robust library of back-end nodes for flow control, multi-dimensional asset rendering, and image IO.
+4. **App System**: Pre-built "Apps" that turn scary JSON workflows into beautiful, familiar UI sliders.
 
 ### 🛠️ Installation
 * **Photoshop**: Adobe Photoshop 2025 (v26.0) or higher.
@@ -149,6 +151,7 @@ ComfyPanel 是一套专为 **Adobe Photoshop** 开发的高灵敏度、专业级
 - **离线断点找回**：首创云端任务持久化机制。即便中途关闭 PS 或遇到程序崩溃，重启后系统也会自动抓回并渲染来自 RunningHub / BizyAir 已完成的算力任务，绝不丢失灵感。
 - **深层画布感知**：基于 Photoshop UXP 核心，全自动同步图层显隐、透明度、选区及蒙版。
 - **零拷贝（Zero-Copy）架构级加速**：架构级无感优化。独有的本地路径直接引用技术，彻底告别二进制 IPC 传输带来的延迟与大图（4K+ 纹理）内存溢出。**全自动后台运行，无需用户在 UI 面板上手动开启任何开关。**
+- **ComfyPanel Turbo Bar 与极速 Turbo 模式**：极简、敏捷的即时生成体验。全面支持独立的配套应用 [ComfyPanel Turbo Bar](https://github.com/Ginolazy/ComfyPanel-Turbo-Bar)，提供轻量沉浸的悬浮工具栏交互，在 PS 画布上方随心调用常用工作流与参数，享受无干扰的纯粹创作流。
 - **远程隧道 (FRP)**：内置 FRP 隧道技术，支持从公网远程访问本地 ComfyUI。具备按需自动下载依赖、多源重试、SSL 校验绕过及断线自动重连等鲁棒特性。
 
 ### 🛠️ 快速安装
