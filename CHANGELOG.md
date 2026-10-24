@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file.
 
+## [2.3.4] - 2026-10-22
+
+ComfyPanel v2.3.4
+
+• Prompt Toolbar — Version History Navigation: Added `‹` / `›` arrow buttons to the prompt toolbar. The buttons are hidden by default and appear automatically after the first Translate or Enhance action. Clicking `‹` restores the previous version; `›` re-applies the next. Manual edits between AI actions are preserved in the stack with forward history trimmed on new operations. State is scoped to the textarea lifetime (no persistence).
+
+• Prompt 工具栏 — 版本历史导航：为 Prompt 工具栏新增 `‹` / `›` 箭头按钮，默认隐藏，首次执行翻译或增强操作后自动显示。点击 `‹` 可回退至上一版本，点击 `›` 可恢复下一版本。AI 操作之间的手动编辑也会计入版本栈，执行新操作时自动截断前向历史。版本状态仅在当前 textarea 生命周期内有效，刷新后清空。
+
 ## [2.3.3] - 2026-10-22
 
 ComfyPanel v2.3.3

@@ -4141,6 +4141,16 @@ video.strip-thumb-img {
     animation: spin 0.8s linear infinite;
 }
 
+.prompt-ver-btn {
+    opacity: 0.6;
+    padding: 0;
+    width: 15px;
+}
+
+.prompt-ver-btn:hover {
+    opacity: 1;
+}
+
 /* Floating popover */
 .prompt-template-popover {
     position: absolute;

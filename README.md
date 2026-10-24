@@ -62,6 +62,9 @@ ComfyPanel is a professional-grade, high-performance integration for **Adobe Pho
 - **Deep Canvas Awareness**: Real-time synchronization of layer visibility, transparency, masks, and sub-pixel selections via Photoshop UXP core.
 - **Zero-Copy Performance**: Architecture-level optimization. Utilizing direct local file referencing to completely bypass binary IPC data bottlenecks. Delivers instant synchronization for 4K+ high-resolution textures out of the box with **zero manual configuration required**.
 - **ComfyPanel Turbo Bar & Turbo Mode**: Streamlined, ultra-fast generation experience. Features native integration with the dedicated [ComfyPanel Turbo Bar](https://github.com/Ginolazy/ComfyPanel-Turbo-Bar), providing an ultra-lightweight floating toolbar and zero-distraction workflow for quick generations directly over your Photoshop canvas.
+<p align="center">
+  <img width="900" alt="ComfyPanel Turbo Bar" src="https://github.com/user-attachments/assets/aeaeb56b-214a-4b94-be59-9d4c7aedaced" />
+</p>
 - **Remote Tunnel (FRP)**: Access your local ComfyUI instance from anywhere via integrated FRP tunneling. Features on-demand dependency downloading with multi-source fallback and auto-resume logic.
 
 ### 🏗️ Structure
@@ -79,8 +82,8 @@ ComfyPanel is a professional-grade, high-performance integration for **Adobe Pho
     * *Need help? See the [Full Setup Guide](https://lazyet.com/blogs/labs/comfypanel-tutorial).*
 
 ### ❓ AI-Assisted Troubleshooting & FAQ
-> **Q: 为什么插件无法加载？**
-> **A:** Please check your Adobe account sign-in status (Photoshop > Help). Photoshop must be signed in to an Adobe account to load plugins normally. After signing in once, the plugin can still be loaded offline as long as the account remains signed in. This is a Photoshop requirement, not a plugin requirement.
+> **Q: Why does the plugin fail to load? / 为什么插件无法加载？**
+> **A:** For Photoshop 27.8 and later versions, you must be signed in to an Adobe account (Photoshop > Help) to load plugins properly. After signing in once, the plugin can still load normally even while offline, provided your Adobe account remains signed in. This is an Adobe Photoshop system requirement, not a plugin requirement.
 
 > **Q: How do I sync account balances and user info for BizyAir and RunningHub?**
 > - **BizyAir Cloud**: Simply enter your `API Key` (no user registration or sensitive data required). ComfyPanel will execute workflows and instantly fetch your **Username** and **Account Balance** automatically.
@@ -152,6 +155,9 @@ ComfyPanel 是一套专为 **Adobe Photoshop** 开发的高灵敏度、专业级
 - **深层画布感知**：基于 Photoshop UXP 核心，全自动同步图层显隐、透明度、选区及蒙版。
 - **零拷贝（Zero-Copy）架构级加速**：架构级无感优化。独有的本地路径直接引用技术，彻底告别二进制 IPC 传输带来的延迟与大图（4K+ 纹理）内存溢出。**全自动后台运行，无需用户在 UI 面板上手动开启任何开关。**
 - **ComfyPanel Turbo Bar 与极速 Turbo 模式**：极简、敏捷的即时生成体验。全面支持独立的配套应用 [ComfyPanel Turbo Bar](https://github.com/Ginolazy/ComfyPanel-Turbo-Bar)，提供轻量沉浸的悬浮工具栏交互，在 PS 画布上方随心调用常用工作流与参数，享受无干扰的纯粹创作流。
+<p align="center">
+  <img width="900" alt="ComfyPanel Turbo Bar" src="https://github.com/user-attachments/assets/aeaeb56b-214a-4b94-be59-9d4c7aedaced" />
+</p>
 - **远程隧道 (FRP)**：内置 FRP 隧道技术，支持从公网远程访问本地 ComfyUI。具备按需自动下载依赖、多源重试、SSL 校验绕过及断线自动重连等鲁棒特性。
 
 ### 🛠️ 快速安装
@@ -164,7 +170,7 @@ ComfyPanel 是一套专为 **Adobe Photoshop** 开发的高灵敏度、专业级
 
 ### ❓ 常见问题与 AI 诊断 (FAQ)
 > **Q: 为什么插件无法加载？**
-> **A:** 请检查 Photoshop 的 Adobe 账号登录状态（Photoshop > Help 菜单）。Photoshop 必须登录 Adobe 账号才能正常加载插件。首次登录后，即使处于离线状态，只要账号保持登录，插件仍可正常加载。这是 Photoshop 本身的要求，与插件无关。
+> **A:** 对于 Photoshop 27.8 及之后的版本，必须处于 Adobe 账号登录状态（Photoshop > Help 菜单），才能正常加载插件。首次登录后，即使处于离线状态，只要 Adobe 账号仍保持登录状态，插件仍可正常加载。此要求属于 Photoshop 宿主软件本身的限制，与插件本身无关。
 
 > **Q: 在 ComfyPanel 中如何同步 BizyAir 与 RunningHub 的余额和用户信息？**
 > **A:** ComfyPanel 在 Photoshop 面板内内置了极其方便的实时账户与计费看板：
