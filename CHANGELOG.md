@@ -2,6 +2,30 @@
 
 All notable changes to this project will be documented in this file.
 
+## [2.3.6] - 2026-10-28
+
+ComfyPanel v2.3.6
+
+• Security Hardening & ComfyUI-Manager Alignment: Addressed all security and ecosystem compliance requirements from ComfyUI-Manager review (#3418). Confined file reads/writes using `os.path.realpath` and `os.path.commonpath`, strictly isolated CORS bypass exclusively to Photoshop UXP `file://` origin, masked API keys in responses, and enforced strict host whitelisting on cloud proxy endpoints.
+
+• Remote Tunnel Cleanup & Security Policy Compliance: In strict compliance with ComfyUI-Manager security guidelines and to eliminate external binary security risks, the experimental built-in `frpc` binary downloader and tunnel daemon routes have been removed. This eliminates untrusted executable downloads while keeping ComfyPanel pure and lightweight. Remote ComfyUI access remains fully supported by connecting client-side to any user-hosted URL (e.g. Cloudflare Tunnel, Tailscale, self-hosted FRP, or LAN).
+
+• 安全加固与规范对齐：全量修复并对齐 ComfyUI-Manager 官方收录规范（#3418）。对所有文件读写操作严格实施 `realpath` 与 `commonpath` 目录越界限制，严格将跨域检查隔离至 Photoshop UXP 的 `file://` 协议，对配置接口中的 API Key 进行脱敏，并对云端代理主机实施严格白名单校验。
+
+• 内网穿透模块精简与安全合规说明：为严格遵守 ComfyUI-Manager 官方生态安全规范，杜绝从网络自动下载并执行未经校验的外部第三方二进制文件（`frpc`）所带来的潜在安全隐患，我们彻底移除了实验性的内置 `frpc` 隧道守护进程及管理路由，以保证插件核心的纯粹与系统运行安全。远程访问需求不受影响：用户仍可作为客户端，通过连接任意外部自建隧道（如 Cloudflare Tunnel、Tailscale、自建 FRP 等）或局域网地址顺畅使用 ComfyPanel。
+
+## [2.3.5] - 2026-10-27
+
+ComfyPanel v2.3.5
+
+• Prompt AI Service & Universal OpenAI-Compatible Endpoint: Added a configurable Prompt AI Service in Global Settings, decoupled from the ComfyUI backend. Supports switching between the official free online service (powered by Index-Translate-35B-A3B) and custom endpoints (supporting API Key / Authorization, universally compatible with OpenAI, Claude, Gemini, DeepSeek, Groq, Ollama, llama.cpp, vLLM, etc.) with a built-in one-click connection test.
+
+• Multimodal Vision Prompt Enhancement (Pro): Exclusive for Pro users. When enhancing prompts with reference images present, thumbnails of active loader nodes are automatically bound and sent to multimodal vision models. If an inpainting selection/mask is present, it is dynamically composited as a semi-transparent quick mask, allowing the AI to accurately locate the exact editing target area and surrounding context for pixel-perfect, photorealistic prompt expansions. Visual tags (`图1`, `图2`...) are automatically rendered in node titles to clearly map user references.
+
+• 提示词 AI 服务与通用 OpenAI 兼容端点：在全局设置中新增独立的“提示词 AI 服务”配置，纯前端直连且与 ComfyUI 后端完全解耦。支持在官方“免费在线 API”（接入 Index-Translate-35B-A3B）与“自定义端点”（支持配置 API 密钥 Authorization，通用兼容 OpenAI、Claude、Gemini、DeepSeek、Groq、Ollama、vLLM 等国际与本地主流平台）之间自由切换，并提供一键连接测试。
+
+• 多模态参考图与选区视觉感知增强 (Pro)：Pro 用户专享支持。点击“增强”时自动抓取当前活跃载入节点的缩略图作为多模态上下文；若存在重绘选区/蒙版（Mask），前端将以类似 Photoshop 快速蒙版的半透红色高亮实时合成传入，让 AI 模型精准看懂具体框选的是哪个肢体或物体部位，结合主体、光影与周围环境进行像素级精准扩写，彻底告别局部重绘时模型对编辑区域的凭空猜测。并在载入节点标题前展示 `图1`、`图2` 等直观徽标，让多图编辑逻辑清晰对齐。
+
 ## [2.3.4] - 2026-10-22
 
 ComfyPanel v2.3.4

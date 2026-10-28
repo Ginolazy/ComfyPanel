@@ -3234,10 +3234,6 @@ input[type="number"]::-webkit-outer-spin-button {
     transform: rotate(-90deg);
 }
 
-.settings-card #remoteTunnelHeader:hover {
-    background: rgba(255, 255, 255, 0.06);
-}
-
 .card-header-row {
     display: flex;
     align-items: center;

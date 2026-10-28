@@ -14,28 +14,55 @@ import urllib.parse
 from aiohttp import web, ClientError
 from server import PromptServer
 from PIL import Image, ImageOps
-from .comfypanel_tunnel import tunnel_manager
 from .comfypanel_config import read_config, write_config, get_rh_config
 
+def _is_safe_path(target_path: str, base_dir: str) -> bool:
+    """Verify target_path is strictly contained inside base_dir using realpath + commonpath."""
+    try:
+        real_target = os.path.realpath(target_path)
+        real_base = os.path.realpath(base_dir)
+        return os.path.commonpath([real_target, real_base]) == real_base
+    except Exception:
+        return False
+
+ALLOWED_RUNNINGHUB_HOSTS = {
+    "runninghub.cn", "www.runninghub.cn", "api.runninghub.cn",
+    "runninghub.ai", "www.runninghub.ai", "api.runninghub.ai"
+}
+
+def _is_allowed_rh_host(base_url: str) -> bool:
+    """Ensure outgoing proxy requests only target official RunningHub endpoints."""
+    try:
+        parsed = urllib.parse.urlparse(base_url)
+        host = (parsed.hostname or "").lower()
+        if host in ALLOWED_RUNNINGHUB_HOSTS:
+            return True
+        if host.endswith(".runninghub.cn") or host.endswith(".runninghub.ai"):
+            return True
+        return False
+    except Exception:
+        return False
+
 def _install_comfypanel_cors():
-    app = PromptServer.instance.app
+    if not hasattr(PromptServer, 'instance') or PromptServer.instance is None:
+        return
+    app = getattr(PromptServer.instance, 'app', None)
+    if not app:
+        return
     for i, mw in enumerate(app.middlewares):
         if getattr(mw, '__name__', '') == 'origin_only_middleware':
             _orig = mw
 
             @web.middleware
             async def comfypanel_cors_middleware(request: web.Request, handler, _orig=_orig):
-                path = request.path.lstrip('/')
                 req_origin = request.headers.get('Origin', '')
-                if req_origin.startswith('file://') or \
-                        path.startswith('comfypanel') or \
-                        path.startswith('view') or \
-                        path.startswith('api/view'):
+
+                if req_origin.startswith('file://'):
                     if request.method == "OPTIONS":
                         resp = web.Response()
                     else:
                         resp = await handler(request)
-                    resp.headers['Access-Control-Allow-Origin'] = req_origin if req_origin else '*'
+                    resp.headers['Access-Control-Allow-Origin'] = req_origin
                     resp.headers['Access-Control-Allow-Credentials'] = 'true'
                     resp.headers['Access-Control-Allow-Headers'] = 'Content-Type, Authorization, PS-UXP-Client, ps-uxp-client'
                     resp.headers['Access-Control-Allow-Methods'] = 'GET, POST, OPTIONS'
@@ -80,24 +107,28 @@ async def upload_from_local_path(request):
         if src_path and len(src_path) >= 3 and src_path[0] == '/' and src_path[2] == ':':
             src_path = src_path[1:]
 
-        if not src_path or not os.path.isfile(src_path):
-            return web.json_response({"success": False, "error": f"Source file not found: {src_path}"}, status=400)
+        if not src_path:
+            return web.json_response({"success": False, "error": "filePath is required"}, status=400)
 
         input_dir = folder_paths.get_input_directory()
 
-        abs_src = os.path.abspath(src_path)
-        abs_input = os.path.abspath(input_dir)
+        abs_src = os.path.realpath(src_path)
+        real_input = os.path.realpath(input_dir)
 
-        if abs_src.startswith(abs_input) and os.path.isfile(abs_src):
-            rel_name = os.path.relpath(abs_src, abs_input).replace("\\", "/")
-            return web.json_response({"success": True, "fileName": rel_name, "optimization": "zero_copy"})
+        if _is_safe_path(abs_src, real_input):
+            rel_name = os.path.relpath(abs_src, real_input).replace("\\", "/")
+            return web.json_response({"success": True, "fileName": rel_name})
 
-        if not dest_name:
-            dest_name = os.path.basename(src_path)
+        safe_name = os.path.basename(dest_name or src_path)
+        if not safe_name:
+            return web.json_response({"success": False, "error": "Invalid target filename"}, status=400)
 
-        dest_path = os.path.join(abs_input, dest_name)
+        dest_path = os.path.join(real_input, safe_name)
+        if not _is_safe_path(dest_path, real_input):
+            return web.json_response({"success": False, "error": "Access denied: destination outside input directory"}, status=403)
+
         shutil.copy2(src_path, dest_path)
-        return web.json_response({"success": True, "fileName": dest_name, "optimization": "copy"})
+        return web.json_response({"success": True, "fileName": safe_name})
     except Exception as e:
         return web.json_response({"success": False, "error": str(e)}, status=500)
 
@@ -210,6 +241,12 @@ async def get_thumbnail(request):
 
         output_dir = folder_paths.get_output_directory()
 
+        input_dir = folder_paths.get_input_directory()
+        output_abs = os.path.abspath(output_dir)
+        temp_abs = os.path.abspath(folder_paths.get_temp_directory())
+        input_abs = os.path.abspath(input_dir)
+        allowed_roots = [output_abs, temp_abs, input_abs]
+
         if path_param:
 
             try:
@@ -217,10 +254,8 @@ async def get_thumbnail(request):
             except Exception:
                 decoded = path_param
             file_path = os.path.abspath(decoded)
-            output_abs = os.path.abspath(output_dir)
-            temp_abs = os.path.abspath(folder_paths.get_temp_directory())
             is_allowed = any(file_path == root or file_path.startswith(root + os.sep)
-                             for root in [output_abs, temp_abs]) or (
+                             for root in allowed_roots) or (
                          "Adobe" in file_path and "UXP" in file_path and "PluginsStorage" in file_path)
             if not is_allowed:
                 return web.Response(status=403, text="Access denied")
@@ -228,16 +263,20 @@ async def get_thumbnail(request):
             if not filename:
                 return web.Response(status=400, text="No filename")
             temp_dir = folder_paths.get_temp_directory()
-            output_abs = os.path.abspath(output_dir)
-            temp_abs = os.path.abspath(temp_dir)
 
-            candidate_path = os.path.abspath(os.path.join(output_dir, subfolder, filename))
-            if not (candidate_path == output_abs or candidate_path.startswith(output_abs + os.sep)):
-                candidate_path = os.path.abspath(os.path.join(temp_dir, subfolder, filename))
+            candidate_path = None
+            for base in [output_dir, temp_dir, input_dir]:
+                p = os.path.abspath(os.path.join(base, subfolder, filename))
+                base_abs = os.path.abspath(base)
+                if (p == base_abs or p.startswith(base_abs + os.sep)) and os.path.isfile(p):
+                    candidate_path = p
+                    break
+
+            if not candidate_path:
+                candidate_path = os.path.abspath(os.path.join(output_dir, subfolder, filename))
 
             file_path = candidate_path
-            if not ((file_path == output_abs or file_path.startswith(output_abs + os.sep)) or
-                    (file_path == temp_abs or file_path.startswith(temp_abs + os.sep))):
+            if not any(file_path == root or file_path.startswith(root + os.sep) for root in allowed_roots):
                 return web.Response(status=403, text="Access denied")
 
         if not os.path.isfile(file_path):
@@ -338,16 +377,19 @@ async def delete_output_file(request):
 async def get_comfypanel_static_file(request):
     try:
         folder = request.match_info.get("folder")
-        filepath = request.match_info.get("filepath")
+        filepath = request.match_info.get("filepath", "")
 
-        if not filepath or ".." in filepath or folder not in ["custom", "default"]:
+        if not filepath or folder not in ["custom", "default"]:
             return web.Response(status=403)
 
         plugin_root = os.path.dirname(os.path.dirname(os.path.dirname(os.path.realpath(__file__))))
-        file_path = os.path.join(plugin_root, folder, filepath)
+        allowed_dir = os.path.realpath(os.path.join(plugin_root, folder))
+        file_path = os.path.realpath(os.path.join(allowed_dir, filepath))
 
-        if os.path.exists(file_path):
-             return web.FileResponse(file_path)
+        if not _is_safe_path(file_path, allowed_dir) or not os.path.isfile(file_path):
+            return web.Response(status=404)
+
+        return web.FileResponse(file_path)
 
         return web.Response(status=404)
     except Exception as e:
@@ -476,14 +518,13 @@ async def get_userdata_file(request):
         plugin_root = os.path.dirname(os.path.dirname(os.path.dirname(os.path.realpath(__file__))))
 
         user_dir = folder_paths.get_user_directory() if hasattr(folder_paths, 'get_user_directory') else os.path.join(folder_paths.base_path, "user", "default")
-        full_path = os.path.abspath(os.path.join(user_dir, path))
+        full_path = os.path.realpath(os.path.join(user_dir, path))
 
-        if not os.path.exists(full_path):
+        if not (_is_safe_path(full_path, user_dir) and os.path.isfile(full_path)):
 
-            full_path = os.path.abspath(os.path.join(plugin_root, path))
-
-        if not os.path.exists(full_path):
-            return web.json_response({"error": f"File not found: {path}"}, status=404)
+            full_path = os.path.realpath(os.path.join(plugin_root, path))
+            if not (_is_safe_path(full_path, plugin_root) and os.path.isfile(full_path)):
+                return web.json_response({"error": f"File not found or access denied: {path}"}, status=404)
 
         with open(full_path, "r", encoding="utf-8") as f:
             data = json.load(f)
@@ -497,14 +538,27 @@ async def save_userdata_file(request):
     Save a JSON file to userdata.
     """
     try:
-        path = request.match_info.get("filename", "")
+        raw_path = request.match_info.get("filename", "")
         body = await request.json()
 
+        sub_dir = os.path.dirname(raw_path)
+        base_name = os.path.basename(raw_path)
+        if not base_name or not base_name.endswith(".json"):
+            return web.json_response({"success": False, "error": "Only .json files are allowed"}, status=400)
+
         plugin_root = os.path.dirname(os.path.dirname(os.path.dirname(os.path.realpath(__file__))))
+        allowed_base = os.path.realpath(os.path.join(plugin_root, "custom"))
+        os.makedirs(allowed_base, exist_ok=True)
 
-        full_path = os.path.abspath(os.path.join(plugin_root, path))
+        target_dir = os.path.realpath(os.path.join(allowed_base, sub_dir)) if sub_dir else allowed_base
+        if not _is_safe_path(target_dir, allowed_base):
+            return web.json_response({"success": False, "error": "Access denied"}, status=403)
 
-        os.makedirs(os.path.dirname(full_path), exist_ok=True)
+        os.makedirs(target_dir, exist_ok=True)
+        full_path = os.path.realpath(os.path.join(target_dir, base_name))
+        if not _is_safe_path(full_path, allowed_base):
+            return web.json_response({"success": False, "error": "Access denied"}, status=403)
+
         with open(full_path, "w", encoding="utf-8") as f:
             json.dump(body, f, ensure_ascii=False, indent=2)
 
@@ -526,44 +580,6 @@ async def get_builtin_workflows(request):
     except Exception as e:
         return web.json_response({"success": False, "error": str(e)}, status=500)
 
-@PromptServer.instance.routes.post("/comfypanel/tunnel/start")
-async def start_tunnel(request):
-    try:
-        body = await request.json()
-        server_addr = body.get("server_addr")
-        server_port = body.get("server_port", 7000)
-        token = body.get("token")
-        remote_port = body.get("remote_port")
-        subdomain = body.get("subdomain")
-        local_port = body.get("local_port", 8188)
-
-        if not all([server_addr, token]) or (not remote_port and not subdomain):
-            return web.json_response({"success": False, "error": "Missing parameters"}, status=400)
-
-        result = tunnel_manager.start(server_addr, server_port, token, remote_port, local_port, subdomain)
-        return web.json_response(result)
-    except Exception as e:
-        return web.json_response({"success": False, "error": str(e)}, status=500)
-
-@PromptServer.instance.routes.post("/comfypanel/tunnel/stop")
-async def stop_tunnel(request):
-    try:
-        success = tunnel_manager.stop()
-        return web.json_response({"success": success})
-    except Exception as e:
-        return web.json_response({"success": False, "error": str(e)}, status=500)
-
-@PromptServer.instance.routes.get("/comfypanel/tunnel/status")
-async def get_tunnel_status(request):
-    info = tunnel_manager.get_status_info()
-    return web.json_response({
-        "success": True,
-        "status": info["status"],
-        "running": info["running"],
-        "error": info["error"],
-        "remote_url": info["remote_url"]
-    })
-
 @PromptServer.instance.routes.post("/comfypanel/runninghub/proxy")
 async def runninghub_proxy(request):
     try:
@@ -572,9 +588,12 @@ async def runninghub_proxy(request):
         method = body.get("method", "POST").upper()
         payload = body.get("body")
         headers = body.get("headers", {})
-        base_url = body.get("baseUrl", "")
+        base_url = body.get("baseUrl", "").strip()
         if not base_url:
-            return web.json_response({"success": False, "error": "Missing baseUrl"})
+            return web.json_response({"success": False, "error": "Missing baseUrl"}, status=400)
+
+        if not _is_allowed_rh_host(base_url):
+            return web.json_response({"success": False, "error": "Forbidden: Proxy target must be an official RunningHub host."}, status=403)
 
         if not endpoint.startswith('/'):
             endpoint = '/' + endpoint
@@ -636,17 +655,21 @@ async def runninghub_upload_proxy(request):
     try:
         body = await request.json()
         filename = body.get("filename", "")
-        base_url = body.get("baseUrl", "")
+        base_url = body.get("baseUrl", "").strip()
         api_key = body.get("apiKey", "")
         if not base_url:
-            return web.json_response({"success": False, "error": "Missing baseUrl"})
+            return web.json_response({"success": False, "error": "Missing baseUrl"}, status=400)
+
+        if not _is_allowed_rh_host(base_url):
+            return web.json_response({"success": False, "error": "Forbidden: Proxy target must be an official RunningHub host."}, status=403)
 
         if not filename:
             return web.json_response({"success": False, "error": "No filename provided"}, status=400)
 
         input_dir = folder_paths.get_input_directory()
-        file_path = os.path.abspath(os.path.join(input_dir, filename))
-        if not file_path.startswith(os.path.abspath(input_dir)) or not os.path.isfile(file_path):
+        real_input = os.path.realpath(input_dir)
+        file_path = os.path.realpath(os.path.join(real_input, filename))
+        if not (_is_safe_path(file_path, real_input) and os.path.isfile(file_path)):
             return web.json_response({"success": False, "error": f"File not found: {filename}"}, status=404)
 
         url = f"{base_url}/openapi/v2/media/upload/binary"
@@ -775,20 +798,25 @@ async def runninghub_scan_workflow(request):
                 return web.json_response({"success": False, "error": f"Failed to fetch workflow from API: {str(e)}"}, status=500)
         else:
 
+            input_dir = folder_paths.get_input_directory()
+            real_input = os.path.realpath(input_dir)
+            clean_name = os.path.basename(workflow_file)
+
             possible_paths = [
-                workflow_file,
-                os.path.join(folder_paths.get_input_directory(), "workflows", workflow_file),
-                os.path.join(folder_paths.get_input_directory(), workflow_file),
+                os.path.realpath(os.path.join(real_input, "workflows", workflow_file)),
+                os.path.realpath(os.path.join(real_input, "workflows", clean_name)),
+                os.path.realpath(os.path.join(real_input, workflow_file)),
+                os.path.realpath(os.path.join(real_input, clean_name)),
             ]
 
             resolved_path = None
             for p in possible_paths:
-                if os.path.exists(p) and os.path.isfile(p):
+                if _is_safe_path(p, real_input) and os.path.isfile(p):
                     resolved_path = p
                     break
 
             if not resolved_path:
-                return web.json_response({"success": False, "error": f"Workflow file not found: {workflow_file}"}, status=404)
+                return web.json_response({"success": False, "error": f"Workflow file not found or access denied: {workflow_file}"}, status=404)
             with open(resolved_path, "r", encoding="utf-8") as f:
                 data = json.load(f)
 
@@ -956,6 +984,14 @@ async def runninghub_save_config(request):
     except Exception as e:
         return web.json_response({"success": False, "error": str(e)}, status=500)
 
+def _mask_key(key: str) -> str:
+    """Mask sensitive API key to prevent exfiltration."""
+    if not key:
+        return ""
+    if len(key) <= 8:
+        return "********"
+    return f"{key[:4]}****{key[-4:]}"
+
 @PromptServer.instance.routes.get("/comfypanel/runninghub/get_config")
 async def runninghub_get_config(request):
     try:
@@ -963,12 +999,18 @@ async def runninghub_get_config(request):
         cfg = read_config()
         api_key, base_url = get_rh_config(provided_base_url=query_base_url or None)
 
+        key_zh = cfg.get("ComfyPanel.RunningHubZh.apikey", "")
+        key_en = cfg.get("ComfyPanel.RunningHubEn.apikey", "")
+
         return web.json_response({
             "success": True,
-            "apiKey": api_key,
+            "apiKey": _mask_key(api_key),
             "baseUrl": base_url,
-            "apiKeyZh": cfg.get("ComfyPanel.RunningHubZh.apikey", ""),
-            "apiKeyEn": cfg.get("ComfyPanel.RunningHubEn.apikey", "")
+            "hasApiKey": bool(api_key),
+            "apiKeyZh": _mask_key(key_zh),
+            "apiKeyEn": _mask_key(key_en),
+            "hasApiKeyZh": bool(key_zh),
+            "hasApiKeyEn": bool(key_en)
         })
     except Exception as e:
         return web.json_response({"success": False, "error": str(e)}, status=500)
@@ -981,15 +1023,19 @@ async def runninghub_upload_workflow(request):
         if not file_field:
             return web.json_response({"success": False, "error": "No file uploaded"}, status=400)
 
-        filename = file_field.filename
-        if not filename.endswith('.json'):
-            return web.json_response({"success": False, "error": "Only JSON files are allowed"}, status=400)
+        raw_name = getattr(file_field, "filename", "")
+        filename = os.path.basename(raw_name)
+        if not filename or not filename.endswith('.json'):
+            return web.json_response({"success": False, "error": "Only .json files are allowed"}, status=400)
 
         input_dir = folder_paths.get_input_directory()
-
-        workflows_dir = os.path.join(input_dir, "workflows")
+        real_input = os.path.realpath(input_dir)
+        workflows_dir = os.path.realpath(os.path.join(real_input, "workflows"))
         os.makedirs(workflows_dir, exist_ok=True)
-        target_path = os.path.join(workflows_dir, filename)
+
+        target_path = os.path.realpath(os.path.join(workflows_dir, filename))
+        if not _is_safe_path(target_path, workflows_dir):
+            return web.json_response({"success": False, "error": "Access denied: destination outside workflows directory"}, status=403)
 
         file_data = file_field.file.read()
         with open(target_path, 'wb') as f:
@@ -1078,7 +1124,6 @@ async def comfypanel_ws_ext_bridge(request):
         if role == "browser" and _ext_browser_ws == ws:
             _ext_browser_ws = None
             _ext_active_workflow["alive"] = False
-
             if _ext_uxp_ws and not _ext_uxp_ws.closed:
                 try:
                     await _ext_uxp_ws.send_json({
