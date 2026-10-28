@@ -2,6 +2,22 @@
 
 All notable changes to this project will be documented in this file.
 
+## [2.3.7] - 2026-10-29
+
+ComfyPanel v2.3.7
+
+• Security Patch (ComfyUI-Manager #3418 Round 2): Added media file extension whitelist to `upload_from_path` to prevent arbitrary files from being copied into `input/` and served via `/view`. Confirmed all round-1 and round-2 compliance requirements are addressed.
+
+• Crop-by-Selection Fix: Fixed a bug where crop mode fell back to canvas when multiple load nodes were present. Primary node is now always `mediaNodes[0]` (workflow order), and the crop button state is read directly from the DOM with consistent string ID comparison.
+
+• Result Preview Fix: Removed the `thumbnailUrl` HTTP fallback that caused 403 errors in the Photoshop UXP panel. Result images now load directly from their local `file://` path.
+
+• 安全合规补丁（#3418 第二轮）：为 `upload_from_path` 增加媒体扩展名白名单，防止系统文件通过该接口被复制到 `input/` 后经 `/view` 外泄。全量确认第一、二轮合规要求均已覆盖。
+
+• 选区裁剪模式修复：修复多 Load 节点时裁剪模式回退为画布的问题。首图固定为 `mediaNodes[0]`（工作流顺序），裁剪状态统一从 DOM 按钮直接读取，消除了 String/Number ID 类型不匹配的根因。
+
+• 结果预览修复：删除 `thumbnailUrl` HTTP 降级逻辑（UXP 中 Origin 为 null 导致 403）。结果图现在直接以本地 `file://` 路径渲染。
+
 ## [2.3.6] - 2026-10-28
 
 ComfyPanel v2.3.6

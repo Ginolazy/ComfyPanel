@@ -1,8 +1,6 @@
 import aiohttp
 import asyncio
 import folder_paths
-import hashlib
-import io
 import json
 import logging
 import os
@@ -13,8 +11,15 @@ import subprocess
 import urllib.parse
 from aiohttp import web, ClientError
 from server import PromptServer
-from PIL import Image, ImageOps
-from .comfypanel_config import read_config, write_config, get_rh_config
+from .comfypanel_config import (
+    read_config,
+    write_config,
+    get_rh_config,
+    _mask_key,
+    _is_safe_path,
+    is_safe_comfy_path,
+    is_allowed_rh_host as _is_allowed_rh_host,
+)
 
 def _is_safe_path(target_path: str, base_dir: str) -> bool:
     """Verify target_path is strictly contained inside base_dir using realpath + commonpath."""
@@ -55,14 +60,20 @@ def _install_comfypanel_cors():
 
             @web.middleware
             async def comfypanel_cors_middleware(request: web.Request, handler, _orig=_orig):
-                req_origin = request.headers.get('Origin', '')
+                origin = request.headers.get('Origin', '')
+                referer = request.headers.get('Referer', '')
+                is_uxp = (
+                    origin.startswith('file://') or
+                    referer.startswith('file://') or
+                    (origin == 'null' and (referer.startswith('file://') or not referer))
+                )
 
-                if req_origin.startswith('file://'):
+                if is_uxp:
                     if request.method == "OPTIONS":
                         resp = web.Response()
                     else:
                         resp = await handler(request)
-                    resp.headers['Access-Control-Allow-Origin'] = req_origin
+                    resp.headers['Access-Control-Allow-Origin'] = origin if origin.startswith('file://') else '*'
                     resp.headers['Access-Control-Allow-Credentials'] = 'true'
                     resp.headers['Access-Control-Allow-Headers'] = 'Content-Type, Authorization, PS-UXP-Client, ps-uxp-client'
                     resp.headers['Access-Control-Allow-Methods'] = 'GET, POST, OPTIONS'
@@ -94,7 +105,8 @@ def _get_uxp_dir(plugin_root):
 async def upload_from_local_path(request):
     """
     Copy a local file (already on disk) directly into ComfyUI's input folder.
-    This avoids the PS → IPC → ComfyUI binary transfer that causes OOM on large images.
+    Source may be any readable path on disk (e.g. UXP PluginData tmp).
+    Destination is always strictly limited to ComfyUI input/.
 
     Body JSON: { "filePath": "/abs/path/to/file.png", "fileName": "upload_name.png" }
     Returns: { "success": true, "fileName": "upload_name.png" }
@@ -110,9 +122,23 @@ async def upload_from_local_path(request):
         if not src_path:
             return web.json_response({"success": False, "error": "filePath is required"}, status=400)
 
-        input_dir = folder_paths.get_input_directory()
-
         abs_src = os.path.realpath(src_path)
+        if not os.path.isfile(abs_src):
+            return web.json_response({"success": False, "error": f"Source file not found: {src_path}"}, status=404)
+
+        ALLOWED_MEDIA_EXTS = {
+            '.png', '.jpg', '.jpeg', '.webp', '.bmp', '.tiff', '.gif',
+            '.mp4', '.mov', '.avi', '.webm', '.mkv',
+            '.mp3', '.wav', '.ogg', '.flac', '.m4a'
+        }
+        src_ext = os.path.splitext(abs_src)[1].lower()
+        if src_ext not in ALLOWED_MEDIA_EXTS:
+            return web.json_response({
+                "success": False,
+                "error": f"Access denied: only media files ({', '.join(sorted(ALLOWED_MEDIA_EXTS))}) are allowed."
+            }, status=403)
+
+        input_dir = folder_paths.get_input_directory()
         real_input = os.path.realpath(input_dir)
 
         if _is_safe_path(abs_src, real_input):
@@ -127,7 +153,7 @@ async def upload_from_local_path(request):
         if not _is_safe_path(dest_path, real_input):
             return web.json_response({"success": False, "error": "Access denied: destination outside input directory"}, status=403)
 
-        shutil.copy2(src_path, dest_path)
+        shutil.copy2(abs_src, dest_path)
         return web.json_response({"success": True, "fileName": safe_name})
     except Exception as e:
         return web.json_response({"success": False, "error": str(e)}, status=500)
@@ -224,105 +250,6 @@ async def list_input_files(request):
 
     return web.json_response({"success": True, "files": files})
 
-@PromptServer.instance.routes.get("/comfypanel/thumbnail")
-async def get_thumbnail(request):
-    """
-    Generate or return a cached thumbnail for an image.
-    Supports two modes:
-      - filename[+subfolder]: looks up in ComfyUI output folder
-      - path: absolute path, allowed for ComfyUI dirs or Adobe/UXP/PluginsStorage
-    Returns a WebP image.
-    """
-    try:
-        path_param = request.query.get("path", "")
-        filename = request.query.get("filename", "")
-        subfolder = request.query.get("subfolder", "")
-        size = int(request.query.get("size", 256))
-
-        output_dir = folder_paths.get_output_directory()
-
-        input_dir = folder_paths.get_input_directory()
-        output_abs = os.path.abspath(output_dir)
-        temp_abs = os.path.abspath(folder_paths.get_temp_directory())
-        input_abs = os.path.abspath(input_dir)
-        allowed_roots = [output_abs, temp_abs, input_abs]
-
-        if path_param:
-
-            try:
-                decoded = urllib.parse.unquote(path_param)
-            except Exception:
-                decoded = path_param
-            file_path = os.path.abspath(decoded)
-            is_allowed = any(file_path == root or file_path.startswith(root + os.sep)
-                             for root in allowed_roots) or (
-                         "Adobe" in file_path and "UXP" in file_path and "PluginsStorage" in file_path)
-            if not is_allowed:
-                return web.Response(status=403, text="Access denied")
-        else:
-            if not filename:
-                return web.Response(status=400, text="No filename")
-            temp_dir = folder_paths.get_temp_directory()
-
-            candidate_path = None
-            for base in [output_dir, temp_dir, input_dir]:
-                p = os.path.abspath(os.path.join(base, subfolder, filename))
-                base_abs = os.path.abspath(base)
-                if (p == base_abs or p.startswith(base_abs + os.sep)) and os.path.isfile(p):
-                    candidate_path = p
-                    break
-
-            if not candidate_path:
-                candidate_path = os.path.abspath(os.path.join(output_dir, subfolder, filename))
-
-            file_path = candidate_path
-            if not any(file_path == root or file_path.startswith(root + os.sep) for root in allowed_roots):
-                return web.Response(status=403, text="Access denied")
-
-        if not os.path.isfile(file_path):
-            return web.Response(status=404, text="File not found")
-
-        mtime = os.path.getmtime(file_path)
-
-        path_hash = hashlib.md5(file_path.encode()).hexdigest()
-        params_hash = hashlib.md5(f"{mtime}_{size}".encode()).hexdigest()
-
-        temp_dir = folder_paths.get_temp_directory()
-        cache_dir = os.path.join(temp_dir, "comfypanel_thumbs")
-        if not os.path.exists(cache_dir):
-            os.makedirs(cache_dir, exist_ok=True)
-
-        cache_path = os.path.join(cache_dir, f"{path_hash}_{params_hash}.webp")
-
-        if os.path.exists(cache_path):
-            return web.FileResponse(cache_path)
-
-        try:
-            img = Image.open(file_path)
-        except Exception:
-
-            return web.Response(status=415, text="Unsupported file type")
-
-        img = ImageOps.exif_transpose(img)
-        img.thumbnail((size, size))
-
-        output = io.BytesIO()
-        img.save(output, format="WEBP", quality=85)
-        img.close()
-
-        webp_data = output.getvalue()
-
-        try:
-            with open(cache_path, "wb") as f:
-                f.write(webp_data)
-        except Exception:
-            pass
-
-        return web.Response(body=webp_data, content_type="image/webp")
-
-    except Exception as e:
-        return web.Response(status=500, text=str(e))
-
 @PromptServer.instance.routes.post("/comfypanel/delete_output_file")
 async def delete_output_file(request):
     """
@@ -342,21 +269,6 @@ async def delete_output_file(request):
             return web.json_response({"success": False, "error": "Access denied"}, status=403)
 
         if os.path.isfile(file_path):
-
-            try:
-                path_hash = hashlib.md5(file_path.encode()).hexdigest()
-                temp_dir = folder_paths.get_temp_directory()
-                cache_dir = os.path.join(temp_dir, "comfypanel_thumbs")
-                if os.path.exists(cache_dir):
-                    for f in os.listdir(cache_dir):
-                        if f.startswith(path_hash):
-                            try:
-                                os.remove(os.path.join(cache_dir, f))
-                            except Exception:
-                                pass
-            except Exception:
-                pass
-
             os.remove(file_path)
 
             parent_dir = os.path.dirname(file_path)
@@ -967,6 +879,11 @@ async def runninghub_save_config(request):
         base_url = body.get("baseUrl", "").strip()
         updates = {}
         if base_url:
+            if not _is_allowed_rh_host(base_url):
+                return web.json_response({
+                    "success": False,
+                    "error": "Forbidden: Base URL must target an official RunningHub domain (*.runninghub.cn or *.runninghub.ai)."
+                }, status=403)
             updates["ComfyPanel.RunningHub.baseUrl"] = base_url
 
         current_cfg = read_config()

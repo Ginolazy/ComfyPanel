@@ -11,7 +11,67 @@ Keys managed:
 import json
 import logging
 import os
+import urllib.parse
 import folder_paths
+
+def _mask_key(key: str) -> str:
+    """Mask sensitive API key to prevent exfiltration."""
+    if not key:
+        return ""
+    if len(key) <= 8:
+        return "********"
+    return f"{key[:4]}****{key[-4:]}"
+
+def _is_safe_path(target_path: str, base_dir: str) -> bool:
+    """Verify target_path is strictly contained inside base_dir using realpath + commonpath."""
+    try:
+        real_target = os.path.realpath(target_path)
+        real_base = os.path.realpath(base_dir)
+        return os.path.commonpath([real_target, real_base]) == real_base
+    except Exception:
+        return False
+
+def is_safe_comfy_path(target_path: str) -> bool:
+    """Verify target_path is strictly inside ComfyUI allowed directories (input, output, temp, user)."""
+    if not target_path or not isinstance(target_path, str):
+        return False
+    try:
+        allowed_dirs = [
+            folder_paths.get_input_directory(),
+            folder_paths.get_output_directory(),
+            folder_paths.get_temp_directory(),
+            folder_paths.get_user_directory(),
+        ]
+        real_target = os.path.realpath(target_path)
+        for d in allowed_dirs:
+            if d and _is_safe_path(real_target, d):
+                return True
+        return False
+    except Exception:
+        return False
+
+ALLOWED_RUNNINGHUB_HOSTS = {
+    "runninghub.cn", "www.runninghub.cn", "api.runninghub.cn",
+    "runninghub.ai", "www.runninghub.ai", "api.runninghub.ai"
+}
+
+def is_allowed_rh_host(base_url: str) -> bool:
+    """Ensure outgoing proxy requests or configured base URLs only target official RunningHub endpoints."""
+    try:
+        if not base_url or not isinstance(base_url, str):
+            return False
+        parsed = urllib.parse.urlparse(base_url)
+        host = (parsed.hostname or "").lower()
+        if not host:
+
+            host = base_url.split("/")[0].split(":")[0].lower()
+        if host in ALLOWED_RUNNINGHUB_HOSTS:
+            return True
+        if host.endswith(".runninghub.cn") or host.endswith(".runninghub.ai"):
+            return True
+        return False
+    except Exception:
+        return False
 
 def _get_settings_path() -> str:
     user_dir = folder_paths.get_user_directory()

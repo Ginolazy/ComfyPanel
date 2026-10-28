@@ -20,7 +20,7 @@ from aiohttp import web
 from PIL import Image
 from server import PromptServer
 from .utility.type_utility import any_type
-from .utility.comfypanel_config import read_config, write_config
+from .utility.comfypanel_config import read_config, write_config, _mask_key
 from .utility.comfypanel_output import download_outputs
 
 BIZYAIR_API_BASE = "https://api.bizyair.ai"
@@ -40,7 +40,11 @@ def save_bizyair_config(api_key: str) -> None:
 async def get_bizyair_webapp_config(request):
     try:
         api_key = get_bizyair_config()
-        return web.json_response({"success": True, "apiKey": api_key})
+        return web.json_response({
+            "success": True,
+            "apiKey": _mask_key(api_key),
+            "hasApiKey": bool(api_key)
+        })
     except Exception as e:
         return web.json_response({"error": str(e)}, status=500)
 

@@ -5,13 +5,16 @@ ComfyUI-native types (IMAGE tensor, AUDIO dict, VideoFromFile).
 
 import logging
 import os
+import re
 import numpy as np
 import requests
 import torch
 import torchaudio
+import folder_paths
 
 from comfy_api.input_impl import VideoFromFile
 from PIL import Image
+from .comfypanel_config import _is_safe_path
 
 IMAGE_EXTS = {'.png', '.jpg', '.jpeg', '.webp', '.bmp', '.tiff'}
 AUDIO_EXTS = {'.mp3', '.wav', '.flac', '.aac', '.ogg', '.m4a'}
@@ -56,14 +59,28 @@ def download_outputs(urls: list, output_dir: str, prefix: str) -> list:
     Download a list of output URLs into `output_dir`, convert each, and return
     a list of ComfyUI-native values (skipping None results).
 
-    `prefix` is used to build filenames: {prefix}_{idx}{ext}
+    `prefix` is sanitized and used to build filenames: {safe_prefix}_{idx}{ext}.
+    Output paths are strictly confined within ComfyUI output directory.
     """
-    os.makedirs(output_dir, exist_ok=True)
+    safe_output_root = os.path.realpath(folder_paths.get_output_directory())
+    real_output_dir = os.path.realpath(output_dir)
+    if not _is_safe_path(real_output_dir, safe_output_root):
+        real_output_dir = os.path.realpath(os.path.join(safe_output_root, "runninghub_webapp"))
+
+    os.makedirs(real_output_dir, exist_ok=True)
     results = []
+
+    safe_prefix = re.sub(r"[^a-zA-Z0-9_-]", "_", prefix or "output")
+
     for idx, url in enumerate(urls):
         ext = os.path.splitext(url.split('?')[0])[1].lower() or ".png"
-        filename = f"{prefix}_{idx}{ext}"
-        filepath = os.path.join(output_dir, filename)
+        clean_ext = re.sub(r"[^a-zA-Z0-9.]", "", ext)
+        if not clean_ext.startswith('.'):
+            clean_ext = f".{clean_ext}"
+        filename = f"{safe_prefix}_{idx}{clean_ext}"
+        filepath = os.path.realpath(os.path.join(real_output_dir, filename))
+        if not _is_safe_path(filepath, real_output_dir):
+            continue
         item = download_and_convert(url, filepath)
         if item is not None:
             results.append(item)

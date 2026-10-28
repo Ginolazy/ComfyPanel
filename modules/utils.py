@@ -14,6 +14,7 @@ from comfy_api.latest import UI
 from comfy_api.latest._io import FolderType
 from nodes import SaveImage
 from PIL import Image, ImageOps
+from .utility.comfypanel_config import _is_safe_path, is_safe_comfy_path
 from .utility.type_utility import (any_type, handle_error, handle_error_safe)
 from .utility.image_utility import (
     composite_image_with_color,
@@ -426,17 +427,19 @@ class AnyPreviewPause(AnyPreview, PauseMixin):
                         current_img_idx += 1
 
             input_dir = folder_paths.get_input_directory()
-            clipspace_dir = os.path.join(input_dir, "clipspace")
+            real_input = os.path.realpath(input_dir)
+            clipspace_dir = os.path.realpath(os.path.join(real_input, "clipspace"))
 
             for idx, img_info in enumerate(updated_images):
                 if idx >= len(port_structure):
                     break
 
                 if img_info.get("subfolder") == "clipspace":
-                    filename = img_info.get("filename")
-                    full_path = os.path.join(clipspace_dir, filename)
+                    raw_filename = img_info.get("filename", "")
+                    clean_filename = os.path.basename(raw_filename)
+                    full_path = os.path.realpath(os.path.join(clipspace_dir, clean_filename))
 
-                    if os.path.exists(full_path):
+                    if _is_safe_path(full_path, clipspace_dir) and os.path.exists(full_path):
                         try:
 
                             i = node_helpers.pillow(Image.open, full_path)

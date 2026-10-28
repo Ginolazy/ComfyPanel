@@ -23,7 +23,15 @@ from comfy_extras.nodes_audio import load as load_audio
 from PIL import Image
 from server import PromptServer
 from .utility.type_utility import any_type
-from .utility.comfypanel_config import read_config, write_config, get_rh_config
+from .utility.comfypanel_config import (
+    read_config,
+    write_config,
+    get_rh_config,
+    _mask_key,
+    _is_safe_path,
+    is_safe_comfy_path,
+    is_allowed_rh_host,
+)
 from .utility.comfypanel_output import download_outputs
 
 def upload_to_runninghub(value, api_key, base_url):
@@ -77,13 +85,23 @@ def upload_to_runninghub(value, api_key, base_url):
         mime_type = "audio/wav"
 
     elif isinstance(value, str):
-        if os.path.isabs(value) and os.path.isfile(value):
-            file_path = value
+        file_path = None
+        if os.path.isabs(value):
+            real_val = os.path.realpath(value)
+            if is_safe_comfy_path(real_val) and os.path.isfile(real_val):
+                file_path = real_val
+            else:
+                raise PermissionError(f"Access denied: file must reside within ComfyUI directories: {value}")
         else:
-            temp_path = os.path.join(folder_paths.get_temp_directory(), value)
-            input_path = os.path.join(folder_paths.get_input_directory(), value)
-            file_path = temp_path if os.path.isfile(temp_path) else (input_path if os.path.isfile(input_path) else value)
-            if not os.path.isfile(file_path):
+            temp_dir = os.path.realpath(folder_paths.get_temp_directory())
+            input_dir = os.path.realpath(folder_paths.get_input_directory())
+            clean_name = os.path.basename(value)
+            for d in [temp_dir, input_dir]:
+                candidate = os.path.realpath(os.path.join(d, clean_name))
+                if _is_safe_path(candidate, d) and os.path.isfile(candidate):
+                    file_path = candidate
+                    break
+            if not file_path:
                 raise FileNotFoundError(f"File not found in temp or input directory: {value}")
 
         bio = io.BytesIO()
@@ -179,7 +197,11 @@ def send_progress_update(unique_id, progress_val, status_str, log_msg=None):
 async def get_rh_webapp_config(request):
     try:
         api_key, base_url = get_rh_config()
-        return web.json_response({"apiKey": api_key, "baseUrl": base_url})
+        return web.json_response({
+            "apiKey": _mask_key(api_key),
+            "baseUrl": base_url,
+            "hasApiKey": bool(api_key),
+        })
     except Exception as e:
         return web.json_response({"error": str(e)}, status=500)
 
@@ -926,7 +948,9 @@ class RHWebApp:
 
             send_progress_update(unique_id, 0.99, "Downloading results...")
             output_dir = os.path.join(folder_paths.get_output_directory(), "runninghub_webapp")
-            result_outputs = download_outputs(outputs, output_dir, f"rh_{task_id}_{web_app_id}")
+            clean_app_id = re.sub(r"[^a-zA-Z0-9_-]", "_", str(web_app_id))
+            clean_task_id = re.sub(r"[^a-zA-Z0-9_-]", "_", str(task_id))
+            result_outputs = download_outputs(outputs, output_dir, f"rh_{clean_task_id}_{clean_app_id}")
 
             send_progress_update(unique_id, 1.0, "Success", "Task Finished")
 
@@ -945,14 +969,20 @@ class RHWebApp:
             raise e
 
 def _find_workflow_file_path(workflow_file: str):
+    if not workflow_file or not isinstance(workflow_file, str):
+        return None
     input_dir = folder_paths.get_input_directory()
+    real_input = os.path.realpath(input_dir)
+    clean_name = os.path.basename(workflow_file)
+
     possible_paths = [
-        workflow_file,
-        os.path.join(input_dir, "workflows", workflow_file),
-        os.path.join(input_dir, workflow_file),
+        os.path.realpath(os.path.join(real_input, "workflows", clean_name)),
+        os.path.realpath(os.path.join(real_input, clean_name)),
+        os.path.realpath(os.path.join(real_input, "workflows", workflow_file)),
+        os.path.realpath(os.path.join(real_input, workflow_file)),
     ]
     for p in possible_paths:
-        if os.path.exists(p) and os.path.isfile(p):
+        if _is_safe_path(p, real_input) and os.path.isfile(p):
             return p
     return None
 
@@ -971,10 +1001,14 @@ def _remap_inner_workflow(inner: dict, remap: dict) -> dict:
 
 async def _upload_local_file_to_rh(filename: str, base_url: str, api_key: str):
     try:
+        if not filename or not isinstance(filename, str):
+            return None
         input_dir = folder_paths.get_input_directory()
-        file_path = os.path.join(input_dir, filename)
-        if not os.path.isfile(file_path):
-            logging.warning(f"[expand_bridge_nodes] Local file not found for upload: {filename}")
+        real_input = os.path.realpath(input_dir)
+        clean_name = os.path.basename(filename)
+        file_path = os.path.realpath(os.path.join(real_input, clean_name))
+        if not (_is_safe_path(file_path, real_input) and os.path.isfile(file_path)):
+            logging.warning(f"[expand_bridge_nodes] Local file not found for upload or access denied: {filename}")
             return None
 
         match = re.match(r"(https?://[^/]+)", base_url.strip())
