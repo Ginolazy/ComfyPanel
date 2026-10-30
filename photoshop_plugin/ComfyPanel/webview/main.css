@@ -712,7 +712,7 @@ body[data-active-tab="global"] #deleteNanoBananaBtn {
     border-radius: 8px;
     padding: 8px;
     cursor: pointer;
-    transition: all 0.2s ease;
+    transition: all var(--transition-slow);
     display: grid;
     grid-template-columns: 1fr;
     align-items: center;
@@ -862,7 +862,7 @@ body[data-active-tab="global"] #deleteNanoBananaBtn {
     color: var(--accent-color);
     text-decoration: none;
     font-weight: 500;
-    transition: opacity 0.2s;
+    transition: opacity var(--transition-fast);
     cursor: pointer;
 }
 
@@ -1350,11 +1350,11 @@ input:focus {
     cursor: pointer;
     color: var(--text-muted, #888);
     opacity: 0.6;
-    transition: all 0.15s ease;
+    transition: all var(--transition-fast) ease;
 }
 
 .media-filter-btn:hover {
-    color: var(--text-main, #ffffff);
+    color: var(--text-primary);
     opacity: 1;
     background: rgba(255, 255, 255, 0.1);
 }
@@ -1558,7 +1558,7 @@ input:focus {
     font-size: 11px;
     z-index: 2;
     pointer-events: none;
-    transition: opacity 0.2s;
+    transition: opacity var(--transition-fast);
 }
 
 /* Auto-hide placeholder when content is loaded */
@@ -1645,7 +1645,7 @@ input:focus {
     padding: 2px;
     border-radius: 20px;
     opacity: 0;
-    transition: opacity var(--transition-fast), transform 0.2s ease;
+    transition: opacity var(--transition-fast), transform var(--transition-normal) ease;
     pointer-events: none;
     z-index: 10;
 }
@@ -1789,7 +1789,7 @@ input:focus {
     color: #f8cd47;
     font-size: 11px;
     font-weight: 600;
-    transition: background 0.2s;
+    transition: background var(--transition-normal);
 }
 
 .pro-lock-overlay:hover {
@@ -1892,7 +1892,7 @@ input:focus {
     border-radius: 2px;
     cursor: ew-resize;
     box-shadow: 0 1px 4px rgba(0, 0, 0, 0.8);
-    transition: transform 0.1s;
+    transition: transform var(--transition-fast);
 }
 
 .audio-trim-range:active::-webkit-slider-thumb {
@@ -1912,7 +1912,7 @@ input:focus {
     gap: 6px;
     z-index: 10;
     opacity: 0;
-    transition: opacity 0.2s;
+    transition: opacity var(--transition-normal);
     pointer-events: none;
 }
 
@@ -1930,7 +1930,7 @@ input:focus {
     display: flex;
     align-items: center;
     justify-content: center;
-    transition: color 0.2s;
+    transition: color var(--transition-normal);
 }
 
 .media-control-btn:hover {
@@ -1972,7 +1972,7 @@ input:focus {
     margin: 3px;
     gap: 2px;
     opacity: 0;
-    transition: opacity 0.3s ease;
+    transition: opacity var(--transition-normal) ease;
     pointer-events: none;
 }
 
@@ -1990,7 +1990,7 @@ input:focus {
     border-radius: 3px;
     cursor: pointer;
     font-weight: bold;
-    transition: all 0.2s;
+    transition: all var(--transition-normal);
 }
 
 .filter-btn:hover {
@@ -2116,7 +2116,7 @@ input:focus {
     color: var(--text-muted);
     border: 1px solid var(--border-color);
     cursor: pointer;
-    transition: all 0.2s ease;
+    transition: all var(--transition-normal) ease;
 }
 
 .stop-btn:hover {
@@ -2132,7 +2132,7 @@ input:focus {
     min-height: 18px;
     align-items: flex-start;
     border-top: 1px solid var(--border-color);
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    transition: all var(--transition-normal) cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .log-drawer-header {
@@ -2172,7 +2172,7 @@ input:focus {
 
 .log-drawer .icon-tw-12 {
     transform: rotate(0deg);
-    transition: transform 0.3s ease;
+    transition: transform var(--transition-normal) ease;
 }
 
 .log-drawer.expanded .icon-tw-12 {
@@ -2188,7 +2188,7 @@ input:focus {
     width: 100%;
     max-height: 14px;
     overflow-y: auto;
-    transition: all 0.3s ease;
+    transition: all var(--transition-normal) ease;
     display: block;
 }
 
@@ -2367,7 +2367,7 @@ input:focus {
     color: var(--text-secondary);
     cursor: pointer;
     font-size: 11px;
-    transition: background 0.2s;
+    transition: background var(--transition-normal);
     white-space: nowrap;
 }
 
@@ -2465,7 +2465,7 @@ input[type="number"]::-webkit-outer-spin-button {
     border: none;
     color: var(--text-secondary);
     cursor: pointer;
-    transition: all 0.2s;
+    transition: all var(--transition-normal);
 }
 
 .stepper-btn:hover {
@@ -2511,7 +2511,7 @@ input[type="number"]::-webkit-outer-spin-button {
     border-radius: var(--radius-sm);
     color: var(--text-secondary);
     cursor: pointer;
-    transition: all 0.2s ease;
+    transition: all var(--transition-normal) ease;
     padding: 0;
 }
 
@@ -2543,7 +2543,7 @@ input[type="number"]::-webkit-outer-spin-button {
     border-radius: 12px;
     position: relative;
     cursor: pointer;
-    transition: background 0.3s;
+    transition: background var(--transition-normal)s;
 }
 
 .toggle-switch::after {
@@ -2555,7 +2555,7 @@ input[type="number"]::-webkit-outer-spin-button {
     height: 16px;
     background: var(--text-secondary);
     border-radius: 50%;
-    transition: transform 0.3s;
+    transition: transform var(--transition-normal)s;
 }
 
 .toggle-switch:checked {
@@ -2695,7 +2695,7 @@ input[type="number"]::-webkit-outer-spin-button {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    transition: background 0.2s;
+    transition: background var(--transition-normal);
 }
 
 .custom-select-item:hover {
@@ -2887,7 +2887,7 @@ input[type="number"]::-webkit-outer-spin-button {
     justify-content: center;
     cursor: pointer;
     z-index: 40;
-    transition: all 0.2s ease-in-out;
+    transition: all var(--transition-normal) ease-in-out;
     opacity: 0.6;
 }
 
@@ -2946,7 +2946,7 @@ input[type="number"]::-webkit-outer-spin-button {
     border-radius: 50%;
     display: inline-block;
     background: var(--text-muted, #777777);
-    transition: background 0.3s ease, box-shadow 0.3s ease;
+    transition: background var(--transition-normal) ease, box-shadow var(--transition-normal) ease;
 }
 
 /* Modifier Classes for Unified Status Dots */
@@ -3022,7 +3022,7 @@ input[type="number"]::-webkit-outer-spin-button {
     transform: translateX(-50%);
     opacity: 0;
     z-index: 30;
-    transition: opacity 0.3s ease;
+    transition: opacity var(--transition-normal) ease;
     pointer-events: none;
     padding: 3px;
     display: flex;
@@ -3206,7 +3206,7 @@ input[type="number"]::-webkit-outer-spin-button {
     margin-bottom: 12px;
     overflow: visible;
     /* [FIX] Allow custom-select dropdowns to show */
-    transition: border-color 0.2s;
+    transition: border-color var(--transition-normal);
 }
 
 .settings-card:focus-within {
@@ -3265,7 +3265,7 @@ input[type="number"]::-webkit-outer-spin-button {
     align-items: center;
     justify-content: center;
     cursor: pointer;
-    transition: all 0.2s ease;
+    transition: all var(--transition-normal) ease;
     z-index: 5;
     opacity: 0;
 }
@@ -3302,7 +3302,7 @@ input[type="number"]::-webkit-outer-spin-button {
     backdrop-filter: blur(4px);
     z-index: 5;
     opacity: 0;
-    transition: opacity 0.3s ease;
+    transition: opacity var(--transition-normal) ease;
 }
 
 .result-preview-container:hover .carousel-indicator,
@@ -3353,7 +3353,7 @@ input[type="number"]::-webkit-outer-spin-button {
 
 .scaled-stepper .tool-param-input {
     height: 18px;
-    transition: all 0.3s, height 0s, width 0s;
+    transition: all var(--transition-normal), height 0s, width 0s;
 }
 
 .scaled-stepper .tool-param-input:focus {
@@ -3411,7 +3411,7 @@ input[type="number"]::-webkit-outer-spin-button {
     cursor: pointer;
     margin-top: -5px;
     box-shadow: 0 1px 4px rgba(0, 0, 0, 0.4);
-    transition: transform 0.1s ease, background 0.2s;
+    transition: transform var(--transition-fast) ease, background var(--transition-normal);
 }
 
 .slider-control:active::-webkit-slider-thumb {
@@ -3552,7 +3552,7 @@ input[type="number"]::-webkit-outer-spin-button {
     background: #ffffff;
     box-shadow: 0 0 0 2px rgba(77, 142, 255, 0.8), 0 1px 4px rgba(0, 0, 0, 0.5);
     margin-top: -3px;
-    transition: transform 0.1s ease;
+    transition: transform var(--transition-fast) ease;
 }
 
 .native-slider .slider-control:active::-webkit-slider-thumb {
@@ -3642,7 +3642,7 @@ body.is-comfy-active .execution-section {
     --comfy-yellow: #f3fd67;
     --comfy-bg: #000000;
     border-color: var(--text-muted);
-    transition: all 0.2s ease;
+    transition: all var(--transition-normal) ease;
 }
 
 /* --- ComfyUI Icon State Management --- */
@@ -3658,7 +3658,7 @@ body.is-comfy-active .execution-section {
 }
 
 #showComfyBtn svg path {
-    transition: all 0.2s ease;
+    transition: all var(--transition-normal) ease;
 }
 
 /* --- AnyPreviewPause Breathing Alert --- */
@@ -3668,7 +3668,7 @@ body.is-comfy-active .execution-section {
     background-color: #00a0ff;
     border-radius: 50%;
     opacity: 0.5;
-    transition: all 0.3s ease;
+    transition: all var(--transition-normal) ease;
 }
 
 .node-group.is-pausing .pause-indicator-dot {
@@ -3681,7 +3681,7 @@ body.is-comfy-active .execution-section {
     border: 1px solid transparent;
     border-radius: var(--radius-sm);
     padding: 2px;
-    transition: all 0.3s ease;
+    transition: all var(--transition-normal) ease;
 }
 
 .node-group.is-pausing .pause-button-group {
@@ -3925,7 +3925,7 @@ body.is-comfy-active .execution-section {
     min-width: 20px;
     height: 20px;
     opacity: 0.7;
-    transition: opacity 0.15s;
+    transition: opacity var(--transition-fast);
 }
 
 .preview-nav-btn:hover {
@@ -3945,7 +3945,7 @@ body.is-comfy-active .execution-section {
     cursor: pointer;
     position: relative;
     background: var(--bg-tertiary, var(--bg-input));
-    transition: border-color 0.15s ease, background 0.15s ease;
+    transition: border-color var(--transition-fast) ease, background var(--transition-fast) ease;
     overflow: hidden;
     justify-content: center;
 }
@@ -4096,7 +4096,7 @@ video.strip-thumb-img {
     align-items: center;
     justify-content: flex-end;
     gap: 2px;
-    transition: opacity 0.15s ease;
+    transition: opacity var(--transition-fast) ease;
     position: absolute;
     right: 0;
 }
@@ -4118,7 +4118,7 @@ video.strip-thumb-img {
     width: 20px;
     height: 20px;
     flex-shrink: 0;
-    transition: background 0.15s ease, color 0.15s ease, border-color 0.15s ease;
+    transition: background var(--transition-fast) ease, color var(--transition-fast) ease, border-color var(--transition-fast) ease;
 }
 
 .prompt-template-btn:hover {
@@ -4195,6 +4195,18 @@ video.strip-thumb-img {
     gap: 4px;
 }
 
+.prompt-popover-icon-btn {
+    color: var(--text-muted);
+    background: none;
+    border: none;
+    transition: all var(--transition-normal) ease;
+}
+
+.prompt-popover-icon-btn:hover {
+    cursor: pointer;
+    color: var(--text-primary);
+}
+
 .prompt-inline-save {
     display: none;
     flex-direction: column;
@@ -4231,7 +4243,7 @@ video.strip-thumb-img {
     color: var(--text-secondary);
     font-size: 10px;
     cursor: pointer;
-    transition: all 0.1s ease;
+    transition: all var(--transition-fast) ease;
 }
 
 .prompt-save-cat-btn:hover {
@@ -4312,7 +4324,7 @@ video.strip-thumb-img {
     gap: 6px;
     padding: 5px 12px;
     cursor: pointer;
-    transition: background 0.1s ease;
+    transition: background var(--transition-fast) ease;
 }
 
 .prompt-template-item:hover {
@@ -4342,7 +4354,7 @@ video.strip-thumb-img {
     line-height: 1;
     padding: 0 2px;
     opacity: 0;
-    transition: opacity 0.1s ease, color 0.1s ease;
+    transition: opacity var(--transition-fast) ease, color var(--transition-fast) ease;
 }
 
 .prompt-template-item:hover .prompt-template-item-del {
@@ -4351,6 +4363,54 @@ video.strip-thumb-img {
 
 .prompt-template-item-del:hover {
     color: var(--accent-error, #ff4d4f);
+}
+
+/* Prompt Enhancement Comparison Popover */
+.prompt-enhance-comparison-popover {
+    position: absolute;
+    top: calc(100% + 4px);
+    right: 0;
+    z-index: 9999;
+    background: var(--bg-secondary, #1e1e2a);
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
+    padding: 0;
+    width: calc(100vw - 12px);
+    max-height: 280px;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    font-size: 11px;
+    animation: fadeIn 0.12s ease-out;
+}
+
+.prompt-enhance-comparison-body {
+    padding: 10px 12px;
+    overflow-y: auto;
+    font-size: 11.5px;
+    line-height: 1.5;
+    color: var(--text-primary);
+    white-space: pre-wrap;
+    word-break: break-word;
+    user-select: text;
+    -webkit-user-select: text;
+}
+
+.prompt-template-btn.has-comparison {
+    color: var(--accent-primary, #6366f1);
+    position: relative;
+}
+
+.prompt-template-btn.has-comparison::after {
+    content: '';
+    position: absolute;
+    top: 2px;
+    right: 2px;
+    width: 4px;
+    height: 4px;
+    border-radius: 50%;
+    background: var(--accent-primary, #6366f1);
 }
 
 /* --- Decoupled Engine Settings Visibility --- */
@@ -4449,7 +4509,7 @@ body[data-backend][data-active-tab="engine"] div.engine-only-settings {
 }
 
 .badge-pro.upgrade-trigger {
-    transition: all 0.2s ease;
+    transition: all var(--transition-normal) ease;
     cursor: pointer;
 }
 
@@ -4500,7 +4560,7 @@ body[data-backend][data-active-tab="engine"] div.engine-only-settings {
     font-weight: 700;
     cursor: pointer;
     font-size: 12px;
-    transition: transform 0.1s, background 0.2s;
+    transition: transform var(--transition-fast), background var(--transition-normal);
 }
 
 .auth-btn:hover {
@@ -4550,7 +4610,7 @@ body[data-backend][data-active-tab="engine"] div.engine-only-settings {
     cursor: pointer;
     text-decoration: underline;
     text-underline-offset: 3px;
-    transition: all 0.3s ease;
+    transition: all var(--transition-normal) ease;
 }
 
 .logout-link:hover,
@@ -4574,7 +4634,7 @@ body[data-backend][data-active-tab="engine"] div.engine-only-settings {
     z-index: 11000;
     opacity: 0;
     visibility: hidden;
-    transition: all 0.3s ease;
+    transition: all var(--transition-normal) ease;
 }
 
 .modal-overlay.visible {
@@ -4703,7 +4763,7 @@ body:not(.is-pro) .brand .badge-pro {
     padding: 0 20px;
     gap: 16px;
     cursor: pointer;
-    transition: all 0.2s;
+    transition: all var(--transition-normal);
     text-align: left;
     box-shadow: 0 4px 15px rgba(116, 94, 244, 0.3);
     border-top: 1.5px solid rgba(255, 255, 255, 0.1);
@@ -4969,7 +5029,7 @@ body:not(.is-pro) .brand .badge-pro {
 .btn-aifadian {
     background: linear-gradient(to right, #0f1934, #132551);
     color: #fff;
-    transition: all 0.2s ease;
+    transition: all var(--transition-normal) ease;
 }
 
 .btn-aifadian:hover {
@@ -5018,7 +5078,7 @@ body:not(.is-pro) .brand .badge-pro {
     font-weight: 500;
     font-size: 13px;
     opacity: 0;
-    transition: opacity 0.3s ease, right 0.3s ease;
+    transition: opacity var(--transition-normal) ease, right var(--transition-normal) ease;
     pointer-events: none;
     max-width: 90%;
     color: #fff;
@@ -5083,7 +5143,7 @@ body:not(.is-pro) .label-pro::after {
     border-radius: var(--radius-md, 8px);
     padding: 10px 12px;
     margin-bottom: 12px;
-    transition: all 0.3s ease;
+    transition: all var(--transition-normal) ease;
 }
 
 .login-promo-content {
@@ -5140,7 +5200,7 @@ body:not(.is-pro) .label-pro::after {
     background: linear-gradient(90deg, #525bc4, #874199);
     border: none;
     color: #fff;
-    transition: all 0.2s ease;
+    transition: all var(--transition-normal) ease;
     box-shadow: 0 2px 8px rgba(82, 91, 196, 0.3);
 }
 
@@ -5169,7 +5229,7 @@ body:not(.is-pro) .label-pro::after {
     padding: 8px 12px;
     font-size: 12px;
     border-radius: var(--radius-md, 8px);
-    transition: all 0.2s ease;
+    transition: all var(--transition-normal) ease;
 }
 
 #authModalContent .auth-input:focus {
@@ -5224,7 +5284,7 @@ body:not(.is-pro) .label-pro::after {
     align-items: center;
     justify-content: center;
     opacity: 0;
-    transition: opacity 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+    transition: opacity var(--transition-normal) cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .lora-modal-window {
@@ -5267,7 +5327,7 @@ body:not(.is-pro) .label-pro::after {
     font-size: 24px;
     cursor: pointer;
     line-height: 1;
-    transition: color 0.15s ease;
+    transition: color var(--transition-fast) ease;
 }
 
 .lora-modal-close-btn:hover {
@@ -5297,7 +5357,7 @@ body:not(.is-pro) .label-pro::after {
     font-size: 11px;
     border-radius: 6px;
     color: #fff;
-    transition: border-color 0.2s, background 0.2s;
+    transition: border-color var(--transition-normal), background var(--transition-normal);
 }
 
 .filter-main input[type="text"]:focus {
@@ -5331,7 +5391,7 @@ body:not(.is-pro) .label-pro::after {
     padding: 6px 12px;
     cursor: pointer;
     border-bottom: 2px solid transparent;
-    transition: all 0.2s ease;
+    transition: all var(--transition-normal) ease;
 }
 
 .lora-tab-btn:hover {
@@ -5366,7 +5426,7 @@ body:not(.is-pro) .label-pro::after {
     position: relative;
     display: flex;
     flex-direction: column;
-    transition: transform 0.2s, border-color 0.2s, box-shadow 0.2s;
+    transition: transform var(--transition-normal), border-color var(--transition-normal), box-shadow var(--transition-normal);
 }
 
 .lora-card:hover {
@@ -5387,7 +5447,7 @@ body:not(.is-pro) .label-pro::after {
     width: 100%;
     height: 100%;
     object-fit: cover;
-    transition: transform 0.3s ease;
+    transition: transform var(--transition-normal) ease;
 }
 
 .lora-card:hover .lora-card-preview img {
@@ -5443,7 +5503,7 @@ body:not(.is-pro) .label-pro::after {
     display: flex;
     align-items: center;
     justify-content: center;
-    transition: opacity 0.2s ease;
+    transition: opacity var(--transition-normal) ease;
     z-index: 5;
 }
 
@@ -5461,7 +5521,7 @@ body:not(.is-pro) .label-pro::after {
     border-radius: 4px;
     cursor: pointer;
     box-shadow: 0 4px 10px rgba(0, 160, 255, 0.4);
-    transition: transform 0.15s, background-color 0.15s;
+    transition: transform var(--transition-fast), background-color var(--transition-fast);
 }
 
 .lora-select-confirm-btn:hover {
@@ -5523,7 +5583,7 @@ body:not(.is-pro) .label-pro::after {
     display: flex;
     align-items: center;
     gap: 4px;
-    transition: background 0.2s, transform 0.15s, box-shadow 0.2s;
+    transition: background var(--transition-normal), transform var(--transition-normal), box-shadow var(--transition-normal);
     animation: pano-pulse 2.5s ease-in-out infinite;
     pointer-events: auto;
     user-select: none;
@@ -5660,7 +5720,7 @@ body:not(.is-pro) .label-pro::after {
     align-items: center;
     justify-content: center;
     cursor: pointer;
-    transition: background 0.2s, transform 0.15s;
+    transition: background var(--transition-normal), transform var(--transition-normal);
 }
 
 #pano-viewer-close:hover {
@@ -5683,7 +5743,7 @@ body:not(.is-pro) .label-pro::after {
     align-items: center;
     justify-content: center;
     cursor: pointer;
-    transition: background 0.2s, color 0.2s, transform 0.15s, box-shadow 0.2s;
+    transition: background var(--transition-normal), color var(--transition-normal), transform var(--transition-normal), box-shadow var(--transition-normal);
 }
 
 #pano-screenshot-btn:hover {
@@ -5718,7 +5778,7 @@ body:not(.is-pro) .label-pro::after {
     position: relative;
     overflow: hidden;
     cursor: grab;
-    transition: width 0.25s ease, height 0.25s ease, aspect-ratio 0.25s ease;
+    transition: width var(--transition-normal) ease, height var(--transition-normal) ease, aspect-ratio var(--transition-normal) ease;
 }
 
 /* 固定比例模式：由 JS 设置 aspect-ratio，CSS 负责约束尺寸 */

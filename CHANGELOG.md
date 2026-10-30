@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file.
 
+## [2.3.8] - 2026-10-30
+
+ComfyPanel v2.3.8
+
+• Bilingual Prompt Enhancement & Native Language Comparison: Enhanced `enhance-to-en` to output both expanded English and native/input language comparison text. The expanded English prompt is automatically filled into the textarea with full undo/redo version stack support, while the native explanation is accessible via hover tooltip and a lightweight comparison popover (with one-click clipboard copying).
+
+• Prompt Enhancement Latency & Timeout Fix.
+
+• 双语提示词扩写与母语对照：升级 `enhance-to-en`（AI增强为英文）功能，支持同时输出高质量英文扩写与输入/母语对照。扩写后的英文直接填入输入框并无缝接入版本历史栈（可随时前进/后退撤销），对照内容同步挂载至悬停提示及轻量对比浮层（支持一键复制到剪贴板）。
+
+• 提示词增强超时与延迟优化。
+
 ## [2.3.7] - 2026-10-29
 
 ComfyPanel v2.3.7
