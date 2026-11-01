@@ -15,6 +15,7 @@ from .comfypanel_config import (
     read_config,
     write_config,
     get_rh_config,
+    get_or_create_plugin_token,
     _mask_key,
     _is_safe_path,
     is_safe_comfy_path,
@@ -22,10 +23,10 @@ from .comfypanel_config import (
 )
 
 def _is_safe_path(target_path: str, base_dir: str) -> bool:
-    """Verify target_path is strictly contained inside base_dir using realpath + commonpath."""
+    """Verify target_path is strictly contained inside base_dir using realpath + commonpath (cross-platform)."""
     try:
-        real_target = os.path.realpath(target_path)
-        real_base = os.path.realpath(base_dir)
+        real_target = os.path.normcase(os.path.realpath(target_path))
+        real_base = os.path.normcase(os.path.realpath(base_dir))
         return os.path.commonpath([real_target, real_base]) == real_base
     except Exception:
         return False
@@ -33,6 +34,17 @@ def _is_safe_path(target_path: str, base_dir: str) -> bool:
 ALLOWED_RUNNINGHUB_HOSTS = {
     "runninghub.cn", "www.runninghub.cn", "api.runninghub.cn",
     "runninghub.ai", "www.runninghub.ai", "api.runninghub.ai"
+}
+
+ALLOWED_MEDIA_EXTS = {
+
+    '.png', '.jpg', '.jpeg', '.webp', '.bmp', '.tiff', '.gif',
+
+    '.mp4', '.mov', '.avi', '.webm', '.mkv',
+
+    '.mp3', '.wav', '.ogg', '.flac', '.m4a',
+
+    '.glb', '.gltf', '.obj', '.fbx', '.usdz'
 }
 
 def _is_allowed_rh_host(base_url: str) -> bool:
@@ -61,23 +73,25 @@ def _install_comfypanel_cors():
             @web.middleware
             async def comfypanel_cors_middleware(request: web.Request, handler, _orig=_orig):
                 origin = request.headers.get('Origin', '')
-                referer = request.headers.get('Referer', '')
-                is_uxp = (
-                    origin.startswith('file://') or
-                    referer.startswith('file://') or
-                    (origin == 'null' and (referer.startswith('file://') or not referer))
-                )
+                expected_token = get_or_create_plugin_token()
 
-                if is_uxp:
-                    if request.method == "OPTIONS":
-                        resp = web.Response()
-                    else:
-                        resp = await handler(request)
-                    resp.headers['Access-Control-Allow-Origin'] = origin if origin.startswith('file://') else '*'
+                def _apply_cors(resp):
+                    resp.headers['Access-Control-Allow-Origin'] = origin if origin else '*'
                     resp.headers['Access-Control-Allow-Credentials'] = 'true'
-                    resp.headers['Access-Control-Allow-Headers'] = 'Content-Type, Authorization, PS-UXP-Client, ps-uxp-client'
-                    resp.headers['Access-Control-Allow-Methods'] = 'GET, POST, OPTIONS'
+                    resp.headers['Access-Control-Allow-Headers'] = 'Content-Type, Authorization, X-ComfyPanel-Token, x-comfypanel-token, PS-UXP-Client, ps-uxp-client'
+                    resp.headers['Access-Control-Allow-Methods'] = 'GET, POST, OPTIONS, PUT, DELETE'
                     return resp
+
+                if request.method == "OPTIONS":
+                    return _apply_cors(web.Response())
+
+                is_ws = request.headers.get('Upgrade', '').lower() == 'websocket'
+                token = request.headers.get('X-ComfyPanel-Token', '')
+
+                if (token and token == expected_token) or (is_ws and origin.startswith('file://')):
+                    resp = await handler(request)
+                    return _apply_cors(resp)
+
                 return await _orig(request, handler)
 
             app.middlewares[i] = comfypanel_cors_middleware
@@ -126,16 +140,17 @@ async def upload_from_local_path(request):
         if not os.path.isfile(abs_src):
             return web.json_response({"success": False, "error": f"Source file not found: {src_path}"}, status=404)
 
-        ALLOWED_MEDIA_EXTS = {
-            '.png', '.jpg', '.jpeg', '.webp', '.bmp', '.tiff', '.gif',
-            '.mp4', '.mov', '.avi', '.webm', '.mkv',
-            '.mp3', '.wav', '.ogg', '.flac', '.m4a'
-        }
         src_ext = os.path.splitext(abs_src)[1].lower()
         if src_ext not in ALLOWED_MEDIA_EXTS:
             return web.json_response({
                 "success": False,
                 "error": f"Access denied: only media files ({', '.join(sorted(ALLOWED_MEDIA_EXTS))}) are allowed."
+            }, status=403)
+
+        if not is_safe_comfy_path(abs_src):
+            return web.json_response({
+                "success": False,
+                "error": "Access denied: source path must be within ComfyUI directories."
             }, status=403)
 
         input_dir = folder_paths.get_input_directory()
@@ -177,12 +192,6 @@ async def list_output_files(request):
     Returns file list with name, path, mtime for use in history panel.
     No filename filtering — let the JS side decide what to show.
     """
-    IMAGE_EXTS = {'.png', '.jpg', '.jpeg', '.webp', '.gif'}
-    VIDEO_EXTS = {'.mp4', '.webm', '.mov', '.avi'}
-    AUDIO_EXTS = {'.mp3', '.wav', '.ogg', '.flac'}
-    MODEL3D_EXTS = {'.glb', '.gltf', '.obj', '.fbx', '.usdz'}
-    ALL_EXTS = IMAGE_EXTS | VIDEO_EXTS | AUDIO_EXTS | MODEL3D_EXTS
-
     output_dir = folder_paths.get_output_directory()
     files = []
 
@@ -200,7 +209,7 @@ async def list_output_files(request):
             for entry in os.scandir(scan_dir):
                 if entry.is_file() and entry.path not in seen_paths:
                     ext = os.path.splitext(entry.name)[1].lower()
-                    if ext in ALL_EXTS:
+                    if ext in ALLOWED_MEDIA_EXTS:
                         seen_paths.add(entry.path)
 
                         rel_name = os.path.relpath(entry.path, output_dir).replace("\\", "/")
@@ -222,12 +231,6 @@ async def list_input_files(request):
     List all media files in ComfyUI's input folder.
     Returns file list with name and nativePath for load media dropdown.
     """
-    IMAGE_EXTS = {'.png', '.jpg', '.jpeg', '.webp', '.gif'}
-    VIDEO_EXTS = {'.mp4', '.webm', '.mov', '.avi'}
-    AUDIO_EXTS = {'.mp3', '.wav', '.ogg', '.flac'}
-    MODEL3D_EXTS = {'.glb', '.gltf', '.obj', '.fbx', '.usdz'}
-    ALL_EXTS = IMAGE_EXTS | VIDEO_EXTS | AUDIO_EXTS | MODEL3D_EXTS
-
     input_dir = folder_paths.get_input_directory()
     files = []
     seen_paths = set()
@@ -237,7 +240,7 @@ async def list_input_files(request):
             for entry in os.scandir(input_dir):
                 if entry.is_file() and entry.path not in seen_paths:
                     ext = os.path.splitext(entry.name)[1].lower()
-                    if ext in ALL_EXTS:
+                    if ext in ALLOWED_MEDIA_EXTS:
                         seen_paths.add(entry.path)
                         files.append({
                             "name": entry.name,
@@ -618,6 +621,9 @@ async def runninghub_download_image(request):
 
         if not image_url or not filename:
             return web.json_response({"success": False, "error": "Missing parameters"}, status=400)
+
+        if not _is_allowed_rh_host(image_url):
+            return web.json_response({"success": False, "error": "Forbidden: Download target must be an official RunningHub host."}, status=403)
 
         if img_type == "temp":
             base_dir = folder_paths.get_temp_directory()

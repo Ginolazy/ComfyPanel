@@ -11,6 +11,7 @@ Keys managed:
 import json
 import logging
 import os
+import secrets
 import urllib.parse
 import folder_paths
 
@@ -23,10 +24,10 @@ def _mask_key(key: str) -> str:
     return f"{key[:4]}****{key[-4:]}"
 
 def _is_safe_path(target_path: str, base_dir: str) -> bool:
-    """Verify target_path is strictly contained inside base_dir using realpath + commonpath."""
+    """Verify target_path is strictly contained inside base_dir using realpath + commonpath (cross-platform)."""
     try:
-        real_target = os.path.realpath(target_path)
-        real_base = os.path.realpath(base_dir)
+        real_target = os.path.normcase(os.path.realpath(target_path))
+        real_base = os.path.normcase(os.path.realpath(base_dir))
         return os.path.commonpath([real_target, real_base]) == real_base
     except Exception:
         return False
@@ -109,3 +110,39 @@ def get_rh_config(provided_base_url: str = None) -> tuple[str, str]:
     api_key_name = "ComfyPanel.RunningHubEn.apikey" if is_en else "ComfyPanel.RunningHubZh.apikey"
     api_key = cfg.get(api_key_name, "")
     return api_key, base_url
+
+def get_or_create_plugin_token() -> str:
+    """
+    Get or create a persistent random secret token for Photoshop UXP plugin authentication.
+    Writes window.__COMFYPANEL_TOKEN__ to custom/comfypanel_token.js so the UXP WebView
+    loads it synchronously as a standard local script without sandbox I/O restrictions.
+    """
+    plugin_root = os.path.dirname(os.path.dirname(os.path.dirname(os.path.realpath(__file__))))
+    token_file = os.path.join(plugin_root, ".comfypanel_secret.token")
+    token = ""
+    if os.path.exists(token_file):
+        try:
+            with open(token_file, "r", encoding="utf-8") as f:
+                token = f.read().strip()
+        except Exception as e:
+            logging.error(f"[ComfyPanel] Failed to read token from {token_file}: {e}")
+
+    if not token:
+        token = secrets.token_hex(24)
+        try:
+            with open(token_file, "w", encoding="utf-8") as f:
+                f.write(token)
+        except Exception as e:
+            logging.error(f"[ComfyPanel] Failed to write token to {token_file}: {e}")
+
+    js_file = os.path.join(plugin_root, "custom", "comfypanel_token.js")
+    try:
+        os.makedirs(os.path.dirname(js_file), exist_ok=True)
+        js_content = f"window.__COMFYPANEL_TOKEN__ = '{token}';\n"
+        if not os.path.exists(js_file) or open(js_file, "r", encoding="utf-8").read() != js_content:
+            with open(js_file, "w", encoding="utf-8") as f:
+                f.write(js_content)
+    except Exception as e:
+        logging.error(f"[ComfyPanel] Failed to sync token to {js_file}: {e}")
+
+    return token

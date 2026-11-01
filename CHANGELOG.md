@@ -2,6 +2,20 @@
 
 All notable changes to this project will be documented in this file.
 
+## [2.3.9] - 2026-11-01
+
+ComfyPanel v2.3.9
+
+• Security & Ecosystem Alignment (ComfyUI-Manager #3418 Round 3):
+  - Replaced `Origin: null` bypass with persistent local token authentication (`X-ComfyPanel-Token`) for Photoshop UXP plugin communication.
+  - Confined `upload_from_path` strictly to ComfyUI directories (`input/`, `output/`, `temp/`) while preserving Zero-Copy canvas sync.
+  - Added official RunningHub host allowlist check to `runninghub/download_image` to prevent SSRF.
+
+• 安全合规与官方收录对齐（#3418 第三轮）：
+  - 废除 `Origin: null` 盲目放行，改用本地持久化凭证（`X-ComfyPanel-Token`）严格认证 Photoshop UXP 插件通信。
+  - `upload_from_path` 严格限制在 ComfyUI 工作目录（`input/`、`output/`、`temp/`）内，同时完整保留画板同步零拷贝。
+  - 为 `runninghub/download_image` 增加官方域名白名单校验，杜绝 SSRF 风险。
+
 ## [2.3.8] - 2026-10-30
 
 ComfyPanel v2.3.8
