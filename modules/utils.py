@@ -400,7 +400,7 @@ class AnyPreviewPause(AnyPreview, PauseMixin):
 
         if updated_images and isinstance(updated_images, list):
             mask_updated = False
-            updated_returns = list(actual_returns)
+            updated_returns = list(result.get("result", actual_returns))
 
             current_img_idx = 0
             port_structure = []
@@ -434,59 +434,62 @@ class AnyPreviewPause(AnyPreview, PauseMixin):
                 if idx >= len(port_structure):
                     break
 
-                if img_info.get("subfolder") == "clipspace":
-                    raw_filename = img_info.get("filename", "")
-                    clean_filename = os.path.basename(raw_filename)
-                    full_path = os.path.realpath(os.path.join(clipspace_dir, clean_filename))
+                raw_filename = img_info.get("filename", "")
+                clean_filename = os.path.basename(raw_filename)
 
-                    if _is_safe_path(full_path, clipspace_dir) and os.path.exists(full_path):
-                        try:
+                full_path = os.path.realpath(os.path.join(clipspace_dir, clean_filename))
+                if not os.path.exists(full_path):
+                    full_path = os.path.realpath(os.path.join(real_input, clean_filename))
 
-                            i = node_helpers.pillow(Image.open, full_path)
-                            i = node_helpers.pillow(ImageOps.exif_transpose, i)
+                is_clipspace = (img_info.get("subfolder") == "clipspace") or clean_filename.startswith("clipspace-")
+                if is_clipspace and _is_safe_path(full_path, real_input) and os.path.exists(full_path):
+                    try:
 
-                            if i.mode == 'I':
-                                i = i.point(lambda i: i * (1 / 255))
+                        i = node_helpers.pillow(Image.open, full_path)
+                        i = node_helpers.pillow(ImageOps.exif_transpose, i)
 
-                            mask = None
-                            if 'A' in i.getbands():
-                                mask = np.array(i.getchannel('A')).astype(np.float32) / 255.0
-                                mask = 1. - torch.from_numpy(mask)
-                            else:
+                        if i.mode == 'I':
+                            i = i.point(lambda i: i * (1 / 255))
 
-                                i_l = i.convert('L')
-                                mask = np.array(i_l).astype(np.float32) / 255.0
-                                mask = torch.from_numpy(mask)
+                        mask = None
+                        if 'A' in i.getbands():
+                            mask = np.array(i.getchannel('A')).astype(np.float32) / 255.0
+                            mask = 1. - torch.from_numpy(mask)
+                        else:
 
-                            i_rgb = i.convert('RGB')
-                            img_tensor = np.array(i_rgb).astype(np.float32) / 255.0
-                            img_tensor = torch.from_numpy(img_tensor).unsqueeze(0)
+                            i_l = i.convert('L')
+                            mask = np.array(i_l).astype(np.float32) / 255.0
+                            mask = torch.from_numpy(mask)
 
-                            struct = port_structure[idx]
-                            port_idx = struct["port_idx"]
-                            val_idx = struct["val_idx"]
+                        i_rgb = i.convert('RGB')
+                        img_tensor = np.array(i_rgb).astype(np.float32) / 255.0
+                        img_tensor = torch.from_numpy(img_tensor).unsqueeze(0)
 
-                            if isinstance(updated_returns[port_idx], list):
-                                updated_returns[port_idx] = list(updated_returns[port_idx])
-                                updated_returns[port_idx][val_idx] = img_tensor
-                            else:
-                                updated_returns[port_idx] = img_tensor
+                        struct = port_structure[idx]
+                        port_idx = struct["port_idx"]
+                        val_idx = struct["val_idx"]
 
-                            if mask is not None:
-                                if mask.ndim == 2:
-                                    mask = mask.unsqueeze(0)
+                        if isinstance(updated_returns[port_idx], list):
+                            updated_returns[port_idx] = list(updated_returns[port_idx])
+                            updated_returns[port_idx][val_idx] = img_tensor
+                        else:
+                            updated_returns[port_idx] = img_tensor
 
-                                if struct["has_mask"]:
+                        if mask is not None:
+                            if mask.ndim == 2:
+                                mask = mask.unsqueeze(0)
 
-                                    next_port_idx = port_idx + 1
-                                    next_port_vals = updated_returns[next_port_idx]
-                                    if isinstance(next_port_vals, list):
-                                        updated_returns[next_port_idx] = [mask]
-                                    else:
-                                        updated_returns[next_port_idx] = mask
-                            mask_updated = True
-                        except Exception as e:
-                            print(f"[AnyPreviewPause] Error loading clipspace mask: {e}")
+                            if struct["has_mask"]:
+
+                                next_port_idx = port_idx + 1
+                                next_port_vals = updated_returns[next_port_idx]
+                                if isinstance(next_port_vals, list):
+                                    updated_returns[next_port_idx] = [mask]
+                                else:
+                                    updated_returns[next_port_idx] = mask
+                        mask_updated = True
+                    except Exception as e:
+                        print(f"[AnyPreviewPause] Error loading clipspace mask: {e}")
 
             if mask_updated:
 

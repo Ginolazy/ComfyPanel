@@ -1,35 +1,60 @@
+import inspect
 import folder_paths
 import nodes
 
 orig_filter = folder_paths.filter_files_content_types
-def patched_filter(files, content_types):
-    result = orig_filter(files, content_types)
-    return ["none"] + [f for f in result if f != "none"]
-folder_paths.filter_files_content_types = patched_filter
+folder_paths.filter_files_content_types = lambda files, types: ["none"] + [f for f in orig_filter(files, types) if f != "none"]
 
 orig_exists = folder_paths.exists_annotated_filepath
-def patched_exists(name):
-    return True if name == "none" else orig_exists(name)
-folder_paths.exists_annotated_filepath = patched_exists
+folder_paths.exists_annotated_filepath = lambda name: True if name == "none" else orig_exists(name)
 
-def _patch_node_class(cls):
-    """Short-circuit execution when any input is 'none', returning None matching RETURN_TYPES count."""
-    func_name = getattr(cls, "FUNCTION", None)
-    if not func_name or not hasattr(cls, func_name):
+def _patch_method(cls, name, null_value_fn):
+    attr = inspect.getattr_static(cls, name, None)
+    if not attr:
         return
-    orig_fn = getattr(cls, func_name)
-    return_count = len(getattr(cls, "RETURN_TYPES", (None,))) or 1
+    is_cm = isinstance(attr, classmethod)
+    orig_fn = attr.__func__ if is_cm else getattr(cls, name)
 
-    def _patched_fn(*args, **kwargs):
-        if "none" in args or "none" in kwargs.values():
-            if hasattr(cls, "define_schema"):
-                from comfy_api.latest import io
-                return io.NodeOutput(*(None for _ in range(return_count)))
-            return tuple(None for _ in range(return_count))
-        return orig_fn(*args, **kwargs)
+    if is_cm:
+        def patched(cls_, *args, **kwargs):
+            if "none" in args or "none" in kwargs.values():
+                return null_value_fn()
+            return orig_fn(cls_, *args, **kwargs)
+        setattr(cls, name, classmethod(patched))
+    else:
+        def patched(*args, **kwargs):
+            if "none" in args or "none" in kwargs.values():
+                return null_value_fn()
+            return orig_fn(*args, **kwargs)
+        setattr(cls, name, patched)
 
-    setattr(cls, func_name, classmethod(_patched_fn) if isinstance(cls.__dict__.get(func_name), classmethod) else _patched_fn)
+def _patch_node(cls):
+    if not isinstance(cls, type) or getattr(cls, "_cp_patched", False):
+        return
+    cls._cp_patched = True
 
-for node_name, node_cls in list(nodes.NODE_CLASS_MAPPINGS.items()):
-    if node_name.startswith("Load"):
-        _patch_node_class(node_cls)
+    is_v3 = hasattr(cls, "define_schema")
+    exec_name = "execute" if is_v3 else getattr(cls, "FUNCTION", None)
+    if not exec_name:
+        return
+
+    count = 1
+    if is_v3:
+        try:
+            count = len(cls.define_schema().outputs)
+        except Exception:
+            pass
+    else:
+        count = len(getattr(cls, "RETURN_TYPES", ())) or 1
+
+    if is_v3:
+        from comfy_api.latest import io
+        _patch_method(cls, exec_name, lambda: io.NodeOutput(*(None for _ in range(count))))
+        _patch_method(cls, "fingerprint_inputs", lambda: "none")
+    else:
+        _patch_method(cls, exec_name, lambda: tuple(None for _ in range(count)))
+        _patch_method(cls, "IS_CHANGED", lambda: "none")
+
+for name, cls in list(nodes.NODE_CLASS_MAPPINGS.items()):
+    if name.startswith("Load"):
+        _patch_node(cls)

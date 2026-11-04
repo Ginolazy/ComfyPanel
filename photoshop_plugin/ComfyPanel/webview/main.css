@@ -1266,6 +1266,10 @@ input[type="password"] {
     min-width: 0;
 }
 
+.node-group:only-child {
+    grid-column: 1 / -1;
+}
+
 /* [NEW] Configurable Grid Layout */
 .node-group.is-grid-layout {
     display: grid;

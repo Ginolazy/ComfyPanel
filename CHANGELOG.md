@@ -2,6 +2,20 @@
 
 All notable changes to this project will be documented in this file.
 
+## [2.3.10] - 2026-11-04
+
+ComfyPanel v2.3.10
+
+• AnyPreviewPause – 修复与适配：
+  - 适配新版 ComfyUI 遮罩编辑器文件路径（向下兼容 `input/` 根目录与 `input/clipspace/`）。
+  - 修复暂停状态下二次编辑遮罩后点击继续输出未更新的问题。
+  - 修复暂停状态下二次编辑文本内容后点击继续下游节点接收旧值失效的问题。
+
+• FastGroupsMuterVue / FastGroupsBypasserVue – 双模状态全面对齐与修复：
+  - **Vue 2.0 模式**：完全由 ComfyUI 原生 `WidgetToggleSwitch` 提供响应式渲染与双向绑定，DOM 注入导航箭头，丝滑切换。
+  - **旧版 Canvas 模式**：完美恢复传统 Canvas 模式下的药丸外观与导航箭头绘制，并精准修复右侧点击区域判定，点击导航箭头跳转定位对应组，点击开关切换状态，彻底告别点击箭头误切开关的问题。
+  - **右键菜单置顶**：`⚙️ Fast Groups Settings...` 保持在右键菜单第一行。
+
 ## [2.3.9] - 2026-11-01
 
 ComfyPanel v2.3.9

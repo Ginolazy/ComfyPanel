@@ -1,13 +1,44 @@
+# Python cache
 __pycache__/
 *.pyc
 *.pyo
-.DS_Store
-Thumbs.db
-*.log
-*.tmp
-node_modules/
+
+# Virtual environments
+venv/
+.env/
 .env
 
-# ComfyPanel tokens
+# IDEs
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Node / build
+node_modules/
+package-lock.json
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# UXP & Node
+node_modules/
+dist/
+*.log
+
+# Temporary / output
+outputs/
+*.tmp
+*.log
+
+# Backups
+*.zip
+*.rar
+*.bak
+
+# RunningHub local config
+.comfypanel_config
 .comfypanel_secret.token
 custom/comfypanel_token.js
+
