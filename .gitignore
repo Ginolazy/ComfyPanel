@@ -7,3 +7,7 @@ Thumbs.db
 *.tmp
 node_modules/
 .env
+
+# ComfyPanel tokens
+.comfypanel_secret.token
+custom/comfypanel_token.js
