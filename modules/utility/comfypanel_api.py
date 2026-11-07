@@ -15,7 +15,6 @@ from .comfypanel_config import (
     read_config,
     write_config,
     get_rh_config,
-    get_or_create_plugin_token,
     _mask_key,
     _is_safe_path,
     is_safe_comfy_path,
@@ -73,22 +72,29 @@ def _install_comfypanel_cors():
             @web.middleware
             async def comfypanel_cors_middleware(request: web.Request, handler, _orig=_orig):
                 origin = request.headers.get('Origin', '')
-                expected_token = get_or_create_plugin_token()
 
                 def _apply_cors(resp):
                     resp.headers['Access-Control-Allow-Origin'] = origin if origin else '*'
                     resp.headers['Access-Control-Allow-Credentials'] = 'true'
-                    resp.headers['Access-Control-Allow-Headers'] = 'Content-Type, Authorization, X-ComfyPanel-Token, x-comfypanel-token, PS-UXP-Client, ps-uxp-client'
+                    resp.headers['Access-Control-Allow-Headers'] = 'Content-Type, Authorization'
                     resp.headers['Access-Control-Allow-Methods'] = 'GET, POST, OPTIONS, PUT, DELETE'
                     return resp
 
+                is_uxp_or_local = (
+                    not origin
+                    or origin.startswith('file://')
+                    or origin.startswith('plugin-')
+                    or origin.startswith('http://localhost')
+                    or origin.startswith('http://127.0.0.1')
+                    or origin == 'null'
+                )
+
                 if request.method == "OPTIONS":
-                    return _apply_cors(web.Response())
+                    if is_uxp_or_local:
+                        return _apply_cors(web.Response())
 
                 is_ws = request.headers.get('Upgrade', '').lower() == 'websocket'
-                token = request.headers.get('X-ComfyPanel-Token', '')
-
-                if (token and token == expected_token) or (is_ws and origin.startswith('file://')):
+                if is_uxp_or_local or (is_ws and origin.startswith('file://')):
                     resp = await handler(request)
                     return _apply_cors(resp)
 

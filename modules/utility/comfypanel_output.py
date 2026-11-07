@@ -9,7 +9,6 @@ import re
 import numpy as np
 import requests
 import torch
-import torchaudio
 import folder_paths
 
 from comfy_api.input_impl import VideoFromFile
@@ -46,6 +45,7 @@ def download_and_convert(file_url: str, filepath: str) -> object:
             arr = np.array(img).astype(np.float32) / 255.0
             return torch.from_numpy(arr).unsqueeze(0)
         elif ext in AUDIO_EXTS:
+            import torchaudio
             waveform, sample_rate = torchaudio.load(filepath)
             return {"waveform": waveform.unsqueeze(0), "sample_rate": sample_rate}
         else:

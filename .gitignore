@@ -39,6 +39,4 @@ outputs/
 
 # RunningHub local config
 .comfypanel_config
-.comfypanel_secret.token
-custom/comfypanel_token.js
 

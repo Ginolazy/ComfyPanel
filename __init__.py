@@ -7,7 +7,7 @@ import importlib
 from .modules.utility import comfypanel_api, loader_enhancer
 
 WEB_DIRECTORY = "./web"
-__version__ = "2.3.10"
+__version__ = "2.4.0"
 
 plugin_dir = os.path.dirname(os.path.realpath(__file__))
 py_dir = os.path.join(plugin_dir, "modules")
@@ -82,8 +82,8 @@ if os.path.isdir(py_dir):
                     if hasattr(obj, "INPUT_TYPES") and hasattr(obj, "FUNCTION"):
                         DYNAMIC_NODES[name] = obj
                         DYNAMIC_DISPLAY[name] = getattr(obj, "DISPLAY_NAME", name)
-            except Exception:
-                pass
+            except Exception as e:
+                print(f"[ComfyPanel] Warning: Failed to load module '{filename[:-3]}': {e}")
 
 NODE_CLASS_MAPPINGS.update(DYNAMIC_NODES)
 NODE_CLASS_MAPPINGS = {k: v for k, v in NODE_CLASS_MAPPINGS.items() if v is not None}

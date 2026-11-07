@@ -2,9 +2,39 @@
 
 All notable changes to this project will be documented in this file.
 
+## [2.4.0] - 2026-11-07
+
+ComfyPanel v2.4.0
+
+• RunningHub WebApp & UXP UI Widgets:
+  - Fixed dropdown options not showing in WebApp widgets (e.g. `Aspect Ratio`).
+  - Fixed number stepper buttons (`+/-`) not responding on unbounded float inputs.
+
+• FastGroupsMuterVue / FastGroupsBypasserVue – Group sync & UX improvements:
+  - Fixed groups not detected in real-time when the node is placed before group creation, or when a group is dragged/resized.
+  - Added a smooth non-invasive sync loop for all modes: pauses during drag, refreshes immediately on release.
+
+• RunningHub WebApp 与 UXP 插件组件：
+  - 修复 WebApp 节点（如 `Aspect Ratio`）下拉菜单点击无选项的问题。
+  - 修复浮点数值组件点击 `+/-` 按钮无响应及步进精度问题。
+
+• FastGroupsMuterVue / FastGroupsBypasserVue – 画布组动态同步与体验优化：
+  - 修复节点先于组创建、后续新建组或拖拽调整组范围时无法实时同步检测的问题。
+  - 增加全模式平滑避让同步机制，拖拽组时不抢占性能，松开后自动即时刷新。
+
 ## [2.3.10] - 2026-11-04
 
 ComfyPanel v2.3.10
+
+• AnyPreviewPause – Fixes & compatibility:
+  - Adapted to new ComfyUI mask editor file paths (backwards-compatible with `input/` root and `input/clipspace/`).
+  - Fixed mask output not updating when continuing after re-editing a mask in paused state.
+  - Fixed downstream nodes receiving stale text values when continuing after re-editing text in paused state.
+
+• FastGroupsMuterVue / FastGroupsBypasserVue – Dual-mode alignment & fixes:
+  - **Vue 2.0 mode**: Fully powered by ComfyUI native `WidgetToggleSwitch` for reactive rendering and two-way binding; navigation arrows injected via DOM.
+  - **Legacy Canvas mode**: Restored pill appearance and navigation arrow rendering; fixed right-side click hit areas — arrow clicks navigate to the group, toggle clicks switch state, no more accidental mis-clicks.
+  - **Context menu priority**: `⚙️ Fast Groups Settings...` stays pinned as the first item in the right-click menu.
 
 • AnyPreviewPause – 修复与适配：
   - 适配新版 ComfyUI 遮罩编辑器文件路径（向下兼容 `input/` 根目录与 `input/clipspace/`）。

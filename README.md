@@ -13,6 +13,25 @@ ComfyPanel is a professional Photoshop plugin built for designers and AI develop
 
 ---
 
+### 💖 Sponsor
+
+<table>
+  <tr>
+    <td align="center" width="160">
+      <a href="https://www.runninghub.ai/call-api?source=github" target="_blank">
+        <img src="https://github.com/user-attachments/assets/b15e0f1d-5fcb-416b-819e-4c1ab2bc555a" height="80" alt="RunningHub API" />
+      </a>
+    </td>
+    <td>
+      <b><a href="https://www.runninghub.ai/call-api?source=github">RunningHub API</a></b> — Access <b>400+ leading AI models</b> (Seedance, Kling, MiniMax, Nano Banana, Veo, etc.) via a unified API. High concurrency, end-to-end encryption, and elastic pay-as-you-go pricing.
+      <br/>
+      🚀 <b><a href="https://www.runninghub.ai/call-api?source=github">Test the API for Free</a></b> &nbsp;|&nbsp; Special discount & testing: <code>zhenyuedong@haima.me</code>
+    </td>
+  </tr>
+</table>
+
+---
+
 ## Core Data Flow & Integration Architecture
 
 ### 🔄 PS ↔ Local ComfyUI (Full-State Real-Time Bidirectional Mirroring)

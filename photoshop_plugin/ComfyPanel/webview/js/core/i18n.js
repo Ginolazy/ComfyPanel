@@ -122,7 +122,7 @@
             'translating': 'Translating…',
             'enhancing': 'Enhancing…',
             'prompt_empty_tip': 'Please enter or select text first',
-            'engine_comfyui_client_tip': '* Local ComfyUI URL / Remote server URL (e.g. Tunnel, LAN, VPS).',
+            'engine_comfyui_client_tip': '* Local / Remote ComfyUI URL (e.g. Tunnel, LAN, VPS).',
 
             // Labels & Buttons
             'save': 'Save',
@@ -520,7 +520,7 @@
             'translating': '正在翻译…',
             'enhancing': '正在增强…',
             'prompt_empty_tip': '请先输入或选中文本',
-            'engine_comfyui_client_tip': '* 本地 ComfyUI 地址 / 远程服务器地址（支持公网隧道、局域网或云端 VPS）。',
+            'engine_comfyui_client_tip': '* 本地 / 远程 ComfyUI 地址（支持 Tunnel、局域网、VPS）。',
 
             // Labels & Buttons
             'save': '保存',

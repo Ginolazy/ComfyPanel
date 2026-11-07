@@ -8,7 +8,6 @@ import random
 import server
 import threading
 import torch
-import torchaudio
 from aiohttp import web
 from comfy_api.latest import UI
 from comfy_api.latest._io import FolderType
@@ -43,6 +42,7 @@ def save_audio_preview_native(audio_dict, prefix_append):
         return None
 
     try:
+        import torchaudio
         waveform = audio_dict["waveform"]
         if waveform.ndim == 3:
             waveform = waveform.squeeze(0)
