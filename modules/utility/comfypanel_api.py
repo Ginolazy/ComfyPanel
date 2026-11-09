@@ -1,10 +1,12 @@
 import aiohttp
+import ast
 import asyncio
 import folder_paths
 import json
 import logging
 import os
 import platform
+import re
 import requests
 import shutil
 import subprocess
@@ -357,6 +359,40 @@ async def open_user_config(request):
         return web.json_response({"success": True})
     except Exception as e:
         return web.json_response({"success": False, "error": str(e)}, status=500)
+
+@PromptServer.instance.routes.get("/comfypanel/user_config")
+async def get_user_config(request):
+    """
+    Safely parse custom/user_config.js into a JSON dictionary without code execution.
+    """
+    try:
+        plugin_root = os.path.dirname(os.path.dirname(os.path.dirname(os.path.realpath(__file__))))
+        js_path = os.path.realpath(os.path.join(plugin_root, "custom", "user_config.js"))
+
+        if not os.path.isfile(js_path):
+            return web.json_response({"success": False, "config": {}}, status=404)
+
+        with open(js_path, "r", encoding="utf-8") as f:
+            content = f.read()
+
+        content = re.sub(r"/\*[\s\S]*?\*/", "", content)
+        content = re.sub(r"//.*", "", content)
+        start = content.find("{")
+        end = content.rfind("}")
+        if start == -1 or end == -1:
+            return web.json_response({"success": False, "config": {}})
+
+        obj_str = content[start:end + 1]
+        obj_str = re.sub(r"\btrue\b", "True", obj_str)
+        obj_str = re.sub(r"\bfalse\b", "False", obj_str)
+        obj_str = re.sub(r"\bnull\b", "None", obj_str)
+        obj_str = re.sub(r"(\b[a-zA-Z_][a-zA-Z0-9_]*\b)\s*:", r"'\1':", obj_str)
+
+        parsed = ast.literal_eval(obj_str)
+        return web.json_response({"success": True, "config": parsed})
+    except Exception as e:
+        logging.error(f"[ComfyPanel] Failed to parse user_config.js: {e}")
+        return web.json_response({"success": False, "config": {}, "error": str(e)}, status=500)
 
 @PromptServer.instance.routes.get("/comfypanel/userdata")
 async def get_userdata_list(request):

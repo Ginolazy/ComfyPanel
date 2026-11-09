@@ -2,6 +2,20 @@
 
 All notable changes to this project will be documented in this file.
 
+## [2.4.2] - 2026-11-09
+
+ComfyPanel v2.4.2
+
+• User Configuration & CCX Sandbox Fix:
+  - Fixed `undefined is not an object (evaluating 'config.allowedNodes')` error in production CCX environments.
+  - Replaced dynamic script injection with a secure JSON data API (`/comfypanel/user_config`), complying with Adobe UXP review guidelines.
+  - Ensured user config is awaited before workflow parsing, guaranteeing node whitelist and strict mode apply reliably.
+
+• 用户配置与 CCX 沙箱修复：
+  - 修复 CCX 生产环境下因沙箱隔离导致 `config.allowedNodes` 报错的问题。
+  - 改用纯 JSON 接口（`/comfypanel/user_config`）获取配置，杜绝动态脚本注入，符合 Adobe 审核规范。
+  - 修复异步加载竞态，确保解析工作流前配置就绪，白名单与严格模式规则稳定生效。
+
 ## [2.4.1] - 2026-11-09
 
 ComfyPanel v2.4.1
