@@ -2,6 +2,24 @@
 
 All notable changes to this project will be documented in this file.
 
+## [2.4.1] - 2026-11-09
+
+ComfyPanel v2.4.1
+
+• Security & Reliability Improvements:
+  - **Security Hardening**: Fixed cross-origin resource handling for the Photoshop plugin while keeping native security checks intact; fortified file, directory, and download endpoints against unauthorized path access and request forgery.
+  - **Input & Execution Protection**: Added input escaping to prevent UI injection; restricted workflow JSON uploads to a safe file size limit; cleaned up unnecessary system-level execution privileges.
+  - **Remote Cloud ComfyUI Support**: Unified image synchronization to dynamically select optimal local or network transmission modes, fixing file-not-found errors on remote servers.
+  - **Session & Auth Stability**: Improved authentication token refresh logic to eliminate transient unauthorized errors on panel reload; cleaned up legacy debug flags and unused tunnel configs.
+  - **RunningHub Points System**: Adapted WebApp billing estimation to the new points system and updated instance rate displays.
+
+• 安全加固与稳定性优化：
+  - **安全合规增强**：重构跨域通行机制，在严格保留系统原生防护的同时支持 Photoshop 插件安全接入；全面加固文件读写、下载与资源访问接口，杜绝越权路径访问与请求伪造风险。
+  - **输入与执行保护**：补齐数据渲染转义，防止界面注入；针对导入的工作流 JSON 文件施加 10 MB 安全大小限制；去除多余的系统调用与代理穿透风险。
+  - **远程/云端 ComfyUI 兼容**：统一优化图片同步机制，自动根据本地或云端环境适配传输策略，解决远程实例提示“源文件未找到”的问题。
+  - **登录凭证平滑续期**：优化会话鉴权预检与静默刷新流程，消除重载面板时偶发的未授权报错；移除废弃的调试配置与旧隧道残留。
+  - **RunningHub 积分体系适配**：适配 WebApp 价格预估至官方新积分计费体系，更新实例费率展示与文案。
+
 ## [2.4.0] - 2026-11-07
 
 ComfyPanel v2.4.0

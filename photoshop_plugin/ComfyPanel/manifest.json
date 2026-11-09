@@ -1,7 +1,7 @@
 {
     "id": "comfypanel",
     "name": "ComfyPanel",
-    "version": "2.4.0",
+    "version": "2.4.1",
     "main": "index.html",
     "manifestVersion": 5,
     "host": {
@@ -9,9 +9,7 @@
         "minVersion": "25.0.0"
     },
     "featureFlags": {
-        "enableAlerts": true,
-        "enableDeveloperTools": true,
-        "enableRemoteInspection": true
+        "enableAlerts": true
     },
     "requiredPermissions": {
         "allowCodeGenerationFromStrings": true,
@@ -69,7 +67,7 @@
             "id": "comfyPanel",
             "main": "index.html",
             "label": {
-                "default": "ComfyPanel 2.4.0"
+                "default": "ComfyPanel 2.4.1"
             },
             "minimumSize": {
                 "width": 256,

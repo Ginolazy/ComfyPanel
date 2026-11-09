@@ -523,6 +523,10 @@ class RHWorkflow:
                 node_files = []
 
                 for media_url in urls:
+                    if not is_allowed_rh_host(media_url):
+                        logging.warning(f"[RHWorkflow] Blocked non-RunningHub output media URL: {media_url}")
+                        continue
+
                     logging.info(f"[RHWorkflow] Downloading output media: {media_url}")
                     parsed_url = urllib.parse.urlparse(media_url)
                     query_params = urllib.parse.parse_qs(parsed_url.query)

@@ -13,7 +13,7 @@ import folder_paths
 
 from comfy_api.input_impl import VideoFromFile
 from PIL import Image
-from .comfypanel_config import _is_safe_path
+from .comfypanel_config import _is_safe_path, is_allowed_rh_host
 
 IMAGE_EXTS = {'.png', '.jpg', '.jpeg', '.webp', '.bmp', '.tiff'}
 AUDIO_EXTS = {'.mp3', '.wav', '.flac', '.aac', '.ogg', '.m4a'}
@@ -27,6 +27,9 @@ def download_and_convert(file_url: str, filepath: str) -> object:
 
     Returns None on failure.
     """
+    if not is_allowed_rh_host(file_url):
+        logging.error(f"[ComfyPanel] Blocked download from non-allowlisted URL: {file_url}")
+        return None
     try:
         with requests.get(file_url, stream=True, timeout=60) as r:
             r.raise_for_status()
@@ -73,6 +76,10 @@ def download_outputs(urls: list, output_dir: str, prefix: str) -> list:
     safe_prefix = re.sub(r"[^a-zA-Z0-9_-]", "_", prefix or "output")
 
     for idx, url in enumerate(urls):
+
+        if not is_allowed_rh_host(url):
+            logging.warning(f"[ComfyPanel] Skipping download from non-RunningHub URL: {url}")
+            continue
         ext = os.path.splitext(url.split('?')[0])[1].lower() or ".png"
         clean_ext = re.sub(r"[^a-zA-Z0-9.]", "", ext)
         if not clean_ext.startswith('.'):

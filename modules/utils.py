@@ -675,6 +675,35 @@ class ImageMask_Composite(SaveImage):
         send_preview_event(unique_id_str, frontend_data, "preview")
         return {"ui": frontend_data, "result": (result,)}
 
+class isMaskEmptyThreshold:
+    @classmethod
+    def INPUT_TYPES(s):
+        return {
+            "required": {
+                "mask": ("MASK",),
+            },
+            "optional": {
+                "threshold": ("FLOAT", {"default": 0.01, "min": 0.0, "max": 1.0, "step": 0.01, "round": False}),
+            }
+        }
+
+    RETURN_TYPES = ("BOOLEAN",)
+    RETURN_NAMES = ("boolean",)
+    FUNCTION = "execute"
+    CATEGORY = "ComfyPanel/Utils"
+    DISPLAY_NAME = "isMaskEmpty (threshold)"
+    DESCRIPTION = (
+        "Check if a mask is empty with a custom threshold tolerance.\n"
+        "Inspired by comfyui-easy-use (isMaskEmpty), extended with threshold support.\n"
+    )
+
+    def execute(self, mask, threshold=0.01):
+        if mask is None:
+            return (True,)
+        if torch.all(mask <= threshold):
+            return (True,)
+        return (False,)
+
 class MakeAnyList:
     @classmethod
     def INPUT_TYPES(s):

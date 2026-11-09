@@ -1,1 +1,688 @@
-function _0x2ab8(){const n=["change","tuwWy","YSqtY","YaLaT","tmGRI","computeSize","JnWBx","IGlPr","gWMQW","JSulE","TLdkJ","Mute all","oezWs","AItLU","hAmSc","kcacv","wghsB","qmycw","localeCompare","gDIwM","TExRl","_size","EbiJe","VcAMe","278440qyKYpz","pSkQA","onPointerDown","vHSHh","gger","Bboix","custom alphabet","bkbLu","BcSNA","prototype","FkrBi","max","TGkTN","GXCBL","LwfQj","AoTjE","lUDnh","cfFaB","mUawq","woCha","JzKRR","while (true) {}","GTign","Xpkia","DtABV","hnxRS","uJIcq","hMwwH","halRr","onRemoved","DCHGF","RErHa","setZoom","zGvBe","QMoPk","aLwLr","detail","QbORR","XToFJ","YcUgm","YYHvt","FofWh","RdICD","EmmFv","pkbyG","kMptZ","pos","XcXom","constructor","YTHYI","pZTiJ","WIDGET_FONT_SIZE","puHow","HJQvV","eSQvL","eJlPb","getExtraMenuOptions","YpfVS","gHRal","UGchJ","QSiqQ","VZzKx","1825704TxrAed","bFZTC","round","YXSLP","filter","RJmJV","YUGuh","tCoNG","VhPnq","DkdUs","nbgcl","MxaZa","jRVAt","bZhPO","rlFFX","dBacV","jiKXr","Uzcli","dKIyo","className","faLLc","LvFzb","appendChild","WOusE","LgFBD","DtKVC","INmxW","getBounding","NOaZV","hmFED","ZXGKn","type","HfqPr","JwDoa","width","FnTmv","TvPaC","5640500fQLKWo","uwrxD","kSWwa","HqnPa","setDirty","mmHqg","DLoPa","kdvGy","sQwdA","SqjNe","registerExtension","etTuA","nfhNG","YnXmh","#888","KkYnQ","GdPwb","ohwNI","cFxht","YouBF","dzMql","gKhYD","TiQGu","widgets","PwqNz","FHLfn","qtjMi","AcGru","SdtOq","pdGQu","ELqGW","NmljG","lBwmV","ISCbG","xetZp","px sans-serif","IUQWv","EnNFx","HZBaH","_vfgWatchingTitle","SMDKG","vLhxA","TixCx","SszxE","yRQmv","pkZwF","xUPKF","rxZab","\\+\\+ *(?:[a-zA-Z_$][0-9a-zA-Z_$]*)","GopCZ","elnry","querySelector","llUeS","KhxdA","hjItc","TQfrD","lIBdH","xVuDx","xiTFm","AcJqs","selected_group_resizing","aaafM","wKnpK","QcOmH","cVErQ","vvnYs","getGroupNodes","zDmsS","JROHr","gkQYu","gOwHi","rgFkp","hHmnY","jCjpu","GEfyl","TNSFN","XoJYp","strokeStyle","textAlign","UvKVm","coxVH","TvxWL","gGWZR","AhLJc","pTkCF","PITDQ","&#10132;","lineCap","qwZIX","eVNlz","yClnO","RsenL","Rpnqc","WXOVl","ilgHJ","lfmmw","lzFWZ","UudoW","HFoTZ","Enable ","yjZGH","MZKxp","onConfigure","JyWfd","OJMXq","OzTOY","mdSor","LuSeB","ZqjeA","UuKCH","oZRvc","VSrBN","WjahV","hTFFG","DbnQX","$1$1$2$2$3$3","mode","selected_group_moving","dFVEP","VPuRO","UQRlQ","CqNIa","callback","sSKHB","phckO","RQmbP","KYVXQ","QzGui","osOZc","tGmBn","xCcBU","wxIxW","BDUsn","AMLmU","wVaIR","jmDwm","fillStyle","qQIHt","GGome","DiUsD","SSTTt","TtpdK","toString","fZYES","XxQCU","CnXcD","EYeeP","matchColors","WVLfI","xUbFj","qZuvR","unjGs","ypEQy","oMUWs","XDGcH","some","qprAq","pmzSi","GNxKM","SHTcS","SgEkv","settings","twKmy","iMHCL","IeVVz","ZFSPS","vghIL","olFhM","zrdFg","PVFar","znnxS","name","JLkgU","HauAW","RbAWH","groupcolor","stroke","brQkO","IJobf","stateObject","mmtXI","UhhrO","zCXJO","ztvJy","mswNH","DluaV","#444","JUAyS","VoGOf","AngMn","NcDpY","wMOor","qAzAK","Tysqo","aXXgU","mWmxj","RyTBU","HggmR","ZYWPe","TIEci","AjzOG","DhMES","SaQws","wgMDK","HobZr","hEHkr","Eykzc","uPCkY","BNemG","outputs","push","Wnqzc","LrIZN","CuhUz","eYTwj","tXUYP","cBwSJ","EsMTr","UmNDp","icEZp","MWrNR","UVqhk","HbOIJ","FGgik","vfg-nav-arrow","dZkxc","Unnamed Group","Qjkge","etVuy","nviBB","onConnectionsChange","AKzAK","IFoJa","UQCtx","KCmSs","hvfHC","lLUjD","unshift","epcQR","TccvU","mUafF","pNZMo","uHqxm","FddVb","njSOZ","fsDPv","FgOpR","gCACL","XLpzY","KFpKE","pfEjO","dbuUw","ayqEB","VsWYu","pbMaP","maeFw","tveLc","OAlsG","aVNiU","QhdrU","Ajoro","5296893WCLkUZ","zMbzu","getSettingValue","RcBPQ","⚙️ Fast Groups Settings...","cWCRd","replace","set","StvMJ","NwRbX","Mydvx","HxBpM","SVMFl","qvzGh","achIY","xvrmY","debu","tEamg","mVTOY","zWQfo","WIDGET_SECONDARY_TEXT_COLOR","SlaLR","TlLnY","fwNRT","pwvTh","LBQDV","aHPZs","wdkZp","KfzRo","OzKgs","zPGTA","ZxalV","mDLNY","Ksrzs","vxEhg","zYSBr","vPMRI","uvIGH","SgEYc","zaTmI","OSaOO","maMgF","QKdwE","JnpYd","zpdYN","#DDD","cCXpe","srXhG","uKvIf","RFDkD","FxbAk","kLniS","NRGbi","min","size","Riwmk","qsans","yXhlX","KHLoG","substring","DWavQ","Txgjz","TUxYv","ODBXe","OqFcJ","wWFot","pzAwn","socFN","NhuqD","BcPzO","zzEOm","LGraphCanvas","kdJSr","nXGvq","MAiPO","nrpDy","kMXkn","jIHYC","zqSxX","height","WIDGET_TEXT_COLOR","NHcpS","HZKAg","oRQsI","PIXIf","vNuvy","VqtBB","innerHTML","JycXZ","ERCmg","GOegC","kwpAF","WOunO","tidVJ","AATju","delete","pGSPn","KfZsA","mBftN","QXWOG","XrDAi","xMAKD","NNdaG","thiph","mpOWc","hUgHp","BwxYZ","rjJtE","rYZow","fYVBf","bqvWU","BibTS","fillText","_applyFastGroupsAction","wxWrs","TRiNp","FastGroupsBypasserVue","eHWBJ","axQnO","OXJeR","VmDqY","noQaW","onWidgetChanged","LFuYY","preventDefault","XsJeu","OSOlX","CRTjc","fill","GuQYL","zkIVX","default","WHaGE","xqMlq","add","apply","JDeaL","xpDAT","XQoIN","ZUYjE","FrRbR","Caqtq","function *\\( *\\)","properties","yXMkr","UQgwJ","xGWgp","KtsoE","FastGroupsMuterVue","wPkNc","TATzi","DmHHf","kJlwT","QJqZm","pDNNJ","parentElement","jdUkU","dHBZv","xZpMT","mouse","addEventListener","TrrBH","paXmb","kfUPk","VUXfx","VWhKf","VjKnz","textContent","iKfBi","YzfMJ","YWBId","gYnKR","NjGUP","_groupRef","DybZB","nwjgK","input","WhknG","yjUTZ","mwBWB","JiHFj","wsGGr","DBwFx","gazWa","iOdxm","xXNtF","dwmwH","TblUw","label","#333","node_colors","position","XxvWp","iJBPJ","BBLIm","dppbZ","xSLCG","QyKwX","FkPRK","mYtlQ","vYqYW","string","DLbwW","vHpXY","Zrwym","koXYL","OZMla","PxFSn","rnlzn","pfNKU","LSqWT","QiGlA","findIndex","sOxbY","BQvqg","jSgHw","VyUsS","KrGXU","Sjtjw","ziJfy","IQRWi","KvQnM","ZmDOw","length","jCHDj","paPDf","FVZjG","rVWmH","xSMRI","pGwYX","TzIdI","TwQqp","WaKUe","srXIi","ujvZY","YdaPk","tWbrF","BsBPR","querySelectorAll","defineProperty","IYqxG","rPqtO","GarhS","_nodes","AVVAb","MLGPI","kARwN","ClkJd","customSortAlphabet","nniuV","eqOub","rMmKE","observe","StrBc","534770WaJNgn","vfg-row-with-nav","VCDOU","xeBid","vgyQg","setDirtyCanvas","addedNodes","ZqLGD","ZuCkg","YCNUu","xgBwv","UMwKU","uXXYC","#89A","GjfzN","(((.+)+)+)+$","XcMZM","#222","qJVaA","RUdwi","daIbE","tcgTW","GfLhY","qLsyF","EXknP"," one","action","ncFaw","llXxt","uEXpj","XJRLK","childList","vJPuE","IZaXn",'.comfy-vue-widget, [data-testid="widget-layout-field"], .widget-row',"OVcLR","ZEagY","HBPAg","Comfy.VueNodes.Enabled","WteIz","xRjGK","dwKLi","waROq","MntXC","HZoYt","BrYdF","wdNYP","comfyClass","tFbkM","IRNYy","TaoOh","umzJQ","graph","includes","bEnKN","right","aqMWL","fcTdq","slUYa","zCQsd","gxODc","EfNMl","BoVKJ","PRgvf","jYSSt","rWNVZ","LthRZ","bulHo","LMJFV","_refreshVueGroupWidgets","AQZFc","SRwBC","wIlky","chdcM","search","flgpb","eyIXG","call","yePCi","subtree","xPVwA","dSaBC","QDiFg","GCfhl","LSLXm","nJDNM","vrPvG","toggleRestriction","yxkCF","HPAVA","ywkvU","jauif","IMnpv","showNav","mnEvc","WIDGET_OUTLINE_COLOR","jPjOb","matchTitle","sqOik","eaLDo","PKXBr","classList","FeKev","vCcQG","qvqjM","iAEXd","ddHoy","rgnZN","IxkFp","startsWith","48RkXXxg","yTuVp","QAalH","wiYfm","HwpHm","bJfIF","measureText","ORoAZ","fOaaf","PqvhG","MPtBL","vSUiA","remove","dRXVQ","qNwaJ","upmwR","closest"," v ","CFghI","dLaPO","AWHIr","KlLJi","rQZog","licbr","ZBiTZ","rvThe","setSize","vCFkD","rekle","bDShd","jyHBE","hajSs","color","_isMuter","createElement","bbgqC","KHWzY","bRFpc","max one","zNnWb","oKKcz","jrMOs","IAWav","dxWTT","undefined","NRjjw","WhKmp","MHVVp","iRHAF","lRtRq","showAllGraphs","WmpZo","LFpzn","TiMoL","reefj","sort","NpAfW","body","RVtaX","Toggle all","_vfgDOMObserver","BaQfO","aKjDe","init","JAEdN","JFMfN","XlBjk","kyvfE","BAmSX","COboy","idjHh","addWidget","QQKGL","kQWfN","gFzpX","SFqdQ","CTZmn","SrlAi","Ohuej","DjpgR","VVDqx","azkbH","dutXy","vlJRL","fPWdq","azihT","ZApXd","trim","yQFky","tcGbI","AunsU","title","YkCjd","raaRI","fsDAv","always one","DffRh","nTOrq","XRjCH","woEOl","bRwSk","BJjtN","OgvOX","znRwf","true","vNibL","kFCVc","OVEqO","tJwlw","MRIdx","TPqKL","IzUFu","sOMxm","get","lVRME","hUpKr","false","WDDLJ","GXNNB","mkwtK","JMujT","QBMep","Yhbul","MSJDY","wuSqU","pcrmU","GRdFr","niWzz","SKWzv","GSeiz","DHUXt","sqGfM","McckL","gMSTe","pXWuX","unDeG","zYHpT","SUMVE","OctYF","GrzpX","yRIRm","pXNek","zHztv","GiuVE","FlTWg","kUcbc","EkqpI","left","SfKTq","OPT_CONNECTION","qmVCS","sNPMH","FdHBZ","BqTOM","ezQvX","oMRys","vmHSh","ednrp","329xjXTOk","gyaoV","jcUXX","VInGv","dqVzk","XXVqJ","UJWFt","tYOjo","stopPropagation","counter","taTZS","ngYLh","adAjC","NeEtH","hkExe","rgkbQ","hxmEw","PDYTW","PXjkS","sKdAS",'Navigate to "',"JDkhO","FUgjv","map","pointerdown","vGYST","JdxSu","gkvMP","NrbBz","wutCH","eHTGG","Yzlca","uTLXA","FWLme","VgMki","CeleL","EUJZk","NOXak","mdQNf","toLowerCase","tCVDC","ZVVPV","opFdV","Uotaa","UsMHc","pvGyP","dPwFm","qXHFT","WxMqo","wdmOD","NXCZi","FZnhA","LVvgE","mNZXE","UFvgE","scale","UgCNh","roundRect","WtYAC","XmjHe","NArmh","dzgoq","IiTbb","Onbrq","ZJcPS","GeWqE",'[data-node-id="',"YktOE","JyyyR","OfCjk","vKaIr","sJdqr","maauw","cgKiH","dSEoD","egsrZ","rJtXy","LDhwR","ymctB","ApwVz","kJxLL","BTEhw","sOyAj","skFbE","ZXKZi","wHvQA","UdpHM","FCaPs","SybXA","tEmJw","1273258MmRdEA","nthms","beginPath","kNfxe","XHLJM","qUrfV","qhXpU","GhHbF","pBNQa","TXmug","test","EfqXC","KFIhy","RzTMr","HTEiT","split","sieCn","rYBVz","WlJmx","hWlfX","yvaDE","QIqjy","ahKHP","sPyRU","JGrJc","vaONQ","xywam","WXLxU","SCVZv","fQRUh","CWMyJ","IvjKJ","xytyw","AhKyh","CRBIj","GAAni","odjHx","TYXyT","WhcYS","oyEYl","BkQVx","nHZdA","FSzdx","mmJwd","wvRRf","isDragging","emZtQ","toggle","DhVYS","yQyBi","ScZtW","graph_mouse","Bypass all","hBLXy","xqBmw","qUzzD","YdbYb","eYhkf","lntem","fMsIs","IONNJ","dUTwp","uEGsu","oYbUd","UYdom","DXlAx","value","ykozv","tZbJO","AokEJ","TqezH","eYyZA","font","tQHky","bsZMw","WIDGET_BGCOLOR","VhsdY","STiwQ","cHATl","OgcCd","byJjW","Enable all","HmOmF","ComfyPanel.VueFastGroups","yOBCe","tplLH","PewBW","wSlXu","dVLMN","ShJAq","tKZxw","canvas","nHmjb","sKEiX","KvPMw","Lhlxd","RxjjS","gtnTt","mwWrc"," l -7 6 v -3 h -7 v -6 h 7 v -3 z","igSmy","OCovp","gnoVZ",".vfg-nav-arrow","qyBci","Vzpsd","FUBgK","meTwM","ZqEAK","centerOnNode","shgxS","lineJoin","evlWa","rjTpQ","ceil","ATvzz","Jqzov","pPRKP","NVFro","gMRxV","49263948LPfrcw","mMzsG","JySRa","LCvnS","EKMII","NUzkJ","jPyzd","DZBfP","RQLfT","Dlwdx","chain","rZWsr","onNodeCreated","AxtQZ","eyxoj","Kskqy","GriaO","YMqjr","awUGR","lCyct","PsjSq","arc","bmISs","vGGjD","forEach","QBGqR",'[data-testid="widget-layout-field-label"], .comfy-vue-widget-label, .widget-label, label, span',"XzQoN","IMRrM","cIbPt",'.comfy-vue-node, [data-testid="node-widgets"], .lg-node-widgets',"dsdLG","rgthreeUtils","HqlvP","PXheA","bbRjW","IOfgm","rrQtx","draw","LvXiq","_groups","xLjGc","THclX","yzjHs","EuXVj","UdIhs","koBzs","LDCML","phirC","GENwS","dxpDP","OfQmM","dzMWC","cJbWw","button","lmLPh","GjdQe","JZccj","gtiQW","UuQUo","qdXZa","alphanumeric","MLkPz"];return(_0x2ab8=function(){return n})()}const _0x406696=_0x1b74;!function(){const n=_0x1b74,t=_0x2ab8();for(;;)try{if(944520===parseInt(n(1102))/1+parseInt(n(833))/2+parseInt(n(221))/3+parseInt(n(1139))/4+-parseInt(n(475))/5*(parseInt(n(585))/6)+parseInt(n(743))/7*(parseInt(n(1040))/8)+-parseInt(n(953))/9)break;t.push(t.shift())}catch(n){t.push(t.shift())}}();import{app}from"../../../scripts/app.js";import{showFastGroupsConfigModal,ensureStyleLoaded}from"./comfypanel_components.js";typeof document!==_0x406696(629)&&ensureStyleLoaded();const MUTER_TYPE=_0x406696(369),BYPASSER_TYPE=_0x406696(337),activeFastGroupNodes=new Set;function syncAllFastGroups(n=null){const t=_0x406696,r={RsenL:function(n,t){return n(t)},fPWdq:function(n,t){return n||t},zCXJO:function(n,t){return n(t)},TvxWL:function(n,t){return n||t},DXlAx:function(n,t){return n===t},GhHbF:t(1254),YdaPk:function(n,t){return n<=t},MPtBL:function(n,t){return n<=t},iMHCL:function(n,t){return n<t},yQFky:function(n,t){return n/t},uKvIf:function(n,t){return n+t},sJdqr:function(n,t){return n<=t},RFDkD:function(n,t){return n-t},lLUjD:function(n,t){return n-t},HqlvP:t(1206),dwmwH:function(n,t){return n===t},mpOWc:t(1140),GdPwb:t(1171)};if(app[t(527)])for(const e of activeFastGroupNodes)if(r[t(898)](r[t(986)],r[t(986)])){if(!e||r[t(407)](e,n))continue;if(app[t(527)][t(464)]&&!app[t(527)][t(464)][t(528)](e)){if(r[t(898)](r[t(325)],r[t(325)])){activeFastGroupNodes[t(316)](e);continue}{const n=r[t(1230)](_0xdbe64d,r[t(669)](_0x5dbed3,""))[t(672)]()[t(782)]();if(!n)return"";const e=_0x112fc1[t(292)]?.[t(411)]||_0x13817d[t(924)]?.[t(1088)]?.[t(411)]||{},u=e[n]?.[t(1314)]||e[n]?.[t(617)]||n;let c=r[t(1321)](_0x7c2c40,r[t(1220)](u,""))[t(227)]("#","")[t(672)]()[t(782)]();return c?(r[t(898)](c[t(444)],3)&&/^[0-9a-f]{3}$/[t(843)](c)&&(c=c[t(227)](/(.)(.)(.)/,r[t(840)])),/^[0-9a-f]{6}$/[t(843)](c)?"#"+c:""):""}}if(e[t(544)]){if(!r[t(407)](r[t(1155)],r[t(1155)])){let n=_0x2e1af0[t(591)](_0x5c3424)[t(1136)];const e="…",u=_0x36d487[t(591)](e)[t(1136)];if(r[t(456)](n,_0x4f5983)||r[t(595)](n,u))return _0x175d40;let c=0,o=_0x555532[t(444)];for(;r[t(1302)](c,o);){const n=_0x30c416[t(947)](r[t(673)](r[t(269)](c,o),2));r[t(814)](_0x221411[t(591)](_0x1fafa0[t(280)](0,n))[t(1136)],r[t(270)](_0x112ad9,u))?c=n:o=r[t(196)](n,1)}return r[t(269)](_0x4240e0[t(280)](0,c),e)}e[t(544)]()}}else{const n=new _0x2ecac7(_0x4a3ef9[t(572)][t(672)](),"i");_0x275f2a=_0x439619[t(1106)](r=>n[t(843)](r[t(676)]||""))}}function getGroupNodes(n){const t=_0x406696,r={LFuYY:t(363),LBQDV:t(1187),aXXgU:function(n,t){return n(t)},gDIwM:t(648),wghsB:function(n,t){return n+t},kJxLL:t(963),umzJQ:function(n,t){return n+t},GEfyl:t(397),gnoVZ:function(n){return n()},EmmFv:function(n,t){return n===t},odjHx:t(286),ezQvX:t(1172),byJjW:function(n,t){return n/t},HbOIJ:function(n,t){return n>=t},srXIi:function(n,t){return n<=t},UdpHM:function(n,t){return n!==t},CTZmn:t(1028),HauAW:function(n,t){return n+t},aqMWL:function(n,t){return n+t}};if(!n||!app[t(527)])return[];if(window[t(985)]?.[t(1205)]){if(!r[t(829)](r[t(661)],r[t(661)]))return window[t(985)][t(1205)](n);{const n=new _0x4dcb9d(cfyyIY[t(344)]),r=new _0x366f18(cfyyIY[t(246)],"i"),e=cfyyIY[t(1333)](_0xe4c127,cfyyIY[t(1035)]);n[t(843)](cfyyIY[t(1032)](e,cfyyIY[t(823)]))&&r[t(843)](cfyyIY[t(526)](e,cfyyIY[t(1213)]))?cfyyIY[t(935)](_0x154a8b):cfyyIY[t(1333)](e,"0")}}const e=n[t(1129)]?n[t(1129)]():[n[t(1086)][0],n[t(1086)][1],n[t(275)][0],n[t(275)][1]],u=e[0],c=e[1],o=r[t(1312)](e[0],e[2]),f=r[t(531)](e[1],e[3]);return(app[t(527)][t(464)]||[])[t(1106)](n=>{const e=t;if(!r[e(1083)](r[e(869)],r[e(739)])){if(!n[e(1086)]||!n[e(275)])return!1;const t=r[e(1032)](n[e(1086)][0],r[e(913)](n[e(275)][0],2)),i=r[e(526)](n[e(1086)][1],r[e(913)](n[e(275)][1],2));return r[e(182)](t,u)&&r[e(454)](t,o)&&r[e(182)](i,c)&&r[e(454)](i,f)}r[e(935)](_0x21a1b7)})}function setGroupMode(n,t,r){const e=_0x406696,u={yOBCe:e(734),FgOpR:function(n,t){return n===t},jdUkU:e(753),LvXiq:function(n,t){return n!==t},sKEiX:e(1243),SMDKG:e(516),UYdom:function(n,t){return n-t},uvIGH:function(n,t){return n(t)},nrpDy:e(923),VZzKx:e(1156)},c=u[e(258)](getGroupNodes,n),o=r?0:t?2:4;let f=!1;return c[e(977)](n=>{const t=e,r={};r[t(768)]=u[t(917)];const c=r;if(u[t(206)](u[t(377)],u[t(377)])){if(u[t(992)](n[t(1255)],o))if(u[t(206)](u[t(926)],u[t(1179)]))try{const n=new _0x383659(_0x2cd0cb[t(572)][t(672)](),"i");_0x339e5f=_0x387624[t(1106)](r=>n[t(843)](r[t(676)]||""))}catch(n){}else n[t(1255)]=o,f=!0,n[t(480)]&&n[t(480)](!0,!0)}else{if(!_0x5d2721[t(169)])return;_0x2b9cc5[t(169)][t(977)](n=>{const r=t;n[r(409)]=c[r(768)],n[r(1310)]=c[r(768)]})}}),app[e(527)]&&(u[e(206)](u[e(296)],u[e(1101)])?_0x4e2644=u[e(897)](_0x1bc424,1):app[e(527)][e(480)](!0,!0)),f}function normalizeGroupColor(n){const t=_0x406696,r={TlLnY:function(n,t){return n>t},ATvzz:function(n,t,r,e,u){return n(t,r,e,u)},IGlPr:function(n,t){return n(t)},qXHFT:function(n,t){return n||t},llUeS:function(n,t){return n(t)},reefj:function(n,t){return n===t},JAEdN:t(1305),XQoIN:t(1207),NXCZi:t(1254)},e=r[t(1023)](String,r[t(790)](n,""))[t(672)]()[t(782)]();if(!e)return"";const u=window[t(292)]?.[t(411)]||app[t(924)]?.[t(1088)]?.[t(411)]||{},c=u[e]?.[t(1314)]||u[e]?.[t(617)]||e;let o=r[t(1191)](String,r[t(790)](c,""))[t(227)]("#","")[t(672)]()[t(782)]();if(!o)return"";if(r[t(639)](o[t(444)],3)&&/^[0-9a-f]{3}$/[t(843)](o))if(r[t(639)](r[t(649)],r[t(359)])){const n={vHSHh:function(n,e){return r[t(243)](n,e)},WXLxU:function(n,e,u,c,o){return r[t(948)](n,e,u,c,o)}};_0x3b3022[t(977)]((r,e)=>{const u=t,c=!_0x63faf0||!n[u(1043)](e,0);n[u(860)](_0x581e42,_0x338758,r,_0x3c9366,c)})}else o=o[t(227)](/(.)(.)(.)/,r[t(793)]);return/^[0-9a-f]{6}$/[t(843)](o)?"#"+o:""}function _0x1b74(n,t){n-=156;return _0x2ab8()[n]}function normalizeToggleRestriction(n){const t=_0x406696,r={WOusE:function(n,t){return n(t)},MWrNR:t(352)};return r[t(1125)](String,n?.[t(364)]?.[t(562)]||r[t(180)])[t(672)]()[t(782)]()}function applyToggleRestriction(n,t,r,e){const u=_0x406696,c={xvrmY:function(n,t){return n!==t},DiUsD:function(n,t){return n===t},qZuvR:function(n,t,r,e){return n(t,r,e)},HwpHm:function(n,t){return n(t)},GjfzN:u(629),UVqhk:u(513),yTuVp:function(n,t){return n!=t},WtYAC:function(n,t){return n!==t},tCVDC:u(983),pZTiJ:function(n){return n()},OAlsG:u(581),CnXcD:function(n,t){return n!==t},tXUYP:u(1135),YkCjd:function(n,t){return n===t},dVLMN:u(187),uTLXA:u(811),Vzpsd:function(n,t){return n===t},jmDwm:u(1248),UgCNh:u(372),KvPMw:function(n,t){return n!==t},etVuy:function(n,t){return n-t},TYXyT:function(n,t){return n!==t},GfLhY:function(n){return n()},azihT:function(n,t){return n/t},tuwWy:u(1238),kcacv:u(509),jRVAt:u(936),TqezH:u(476),TIEci:u(1007),nbgcl:u(184),tWbrF:u(1225),GXNNB:u(767),dSEoD:function(n,t){return n==t},rWNVZ:u(979),jiKXr:function(n,t){return n(t)},vaONQ:u(680),qprAq:u(415),HTEiT:u(536),tEmJw:u(623),mmHqg:function(n,t){return n===t},TvPaC:function(n,t){return n===t},GuQYL:u(1151),WhKmp:u(806),nniuV:function(n,t){return n!==t},RxjjS:u(455),VsWYu:function(n,t){return n!==t},JSulE:u(305),FofWh:function(n,t){return n===t},fsDAv:u(593),cfFaB:u(222),aHPZs:u(893)},o=c[u(1118)](normalizeToggleRestriction,n),f=(n[u(1162)]||[])[u(1106)](n=>n&&n[u(394)]);let i=e;if(c[u(938)](o,c[u(858)])&&c[u(677)](e,!1)){if(!c[u(938)](c[u(1295)],c[u(1295)]))return _0x386adc[u(985)][u(1205)](_0x4a1dc2);if(!f[u(1294)](n=>n!==t&&!0===n[u(899)]))if(c[u(870)](c[u(847)],c[u(847)])){if(c[u(236)](_0x443051,_0x331350)&&c[u(1278)](_0xd5dfff[u(899)],!0)){const n=_0x53eec6[u(899)];_0x34187a[u(899)]=!1,_0x324063[u(394)]&&c[u(1289)](_0x588f68,_0x126a2d[u(394)],_0x138176,!1),_0x505ffc[u(343)]&&_0x528bec[u(343)](_0x54a90e[u(1310)],!1,n,_0x2b4c5d)}}else i=!0}if(c[u(677)](i,!0)&&(c[u(1278)](o,c[u(832)])||c[u(1144)](o,c[u(858)])))if(c[u(1138)](c[u(350)],c[u(631)])){if(!_0x3cff1d[u(527)])return;const n=_0x153edd[u(527)][u(464)]||[];for(const t of n)t&&(c[u(1278)](t[u(1133)],_0x4c346c)||c[u(1278)](t[u(1133)],_0x4f09b0))&&c[u(589)](_0x46e22f,t)}else f[u(977)](e=>{const o=u,f={AjzOG:function(n,t){return c[_0x1b74(1278)](n,t)},JMujT:c[o(181)],hEHkr:function(n){return c[o(1090)](n)}};if(c[o(236)](c[o(217)],c[o(217)]))_0xfb2b29[o(899)]=_0x166ee6;else if(c[o(801)](e,t)&&c[o(1278)](e[o(899)],!0))if(c[o(1284)](c[o(175)],c[o(175)])){const n=_0x542f43?.[o(1076)]?.[o(1310)]||_0x74d475?.[o(1310)];(!n||f[o(160)](n,f[o(705)]))&&f[o(165)](_0x472b5c)}else{const t=e[o(899)];if(e[o(899)]=!1,e[o(394)]){if(c[o(677)](c[o(921)],c[o(775)])){if(c[o(236)](typeof _0x40e3d5,c[o(489)])&&_0xa83cac.ui?.[o(1300)]?.[o(223)]){const n=_0x39f652.ui[o(1300)][o(223)](c[o(181)]);if(c[o(586)](n,null))return!!n}return!!c[o(801)](typeof _0x31e213,c[o(489)])&&!!_0x1a42e3[o(1190)](c[o(783)])}c[o(1289)](setGroupMode,e[o(394)],r,!1)}if(n[o(343)])if(c[o(938)](c[o(1274)],c[o(799)])){!_0x260ef7[o(1294)](n=>n!==_0x398433&&!0===n[o(899)])&&(_0xd7ae0e=!0)}else n[o(343)](e[o(1310)],!1,t,e)}});const x=t[u(899)];if(t[u(899)]=i,t[u(394)]){if(c[u(470)](c[u(929)],c[u(929)])){const n=(_0x34d0a6[u(676)]||"")[u(782)](),t=(_0x20e6d0[u(676)]||"")[u(782)](),r=_0x395178[u(433)](t=>n[u(584)](t)),e=_0x1e9cb5[u(433)](n=>t[u(584)](n));return c[u(801)](r,-1)&&c[u(927)](e,-1)?c[u(188)](r,e)||n[u(1034)](t):c[u(1284)](r,-1)?-1:c[u(870)](e,-1)?1:n[u(1034)](t)}c[u(1289)](setGroupMode,t[u(394)],r,i)}if(n[u(343)]&&(c[u(213)](c[u(1025)],c[u(1025)])?_0x4647d4[u(480)](!0,!0):n[u(343)](t[u(1310)],i,x,t)),n[u(480)]){if(!c[u(1081)](c[u(679)],c[u(679)]))return c[u(497)](_0x59512d)?_0x7f51b:_0x4d0a25;n[u(480)](!0,!0)}if(app[u(527)])if(c[u(1284)](c[u(1057)],c[u(247)]))app[u(527)][u(480)](!0,!0);else{const n={uEXpj:function(n,t){return c[u(188)](n,t)},vxEhg:function(n,t){return c[u(670)](n,t)},yClnO:c[u(1017)],wuSqU:c[u(1031)],SrlAi:c[u(1114)],VhsdY:c[u(903)],tcgTW:c[u(159)],UmNDp:c[u(1112)],TccvU:c[u(457)],hBLXy:c[u(703)]};if(c[u(817)](_0x2e5bd6.id,null))return;const t=_0x244d01[u(1190)](u(809)+_0x109fef.id+'"]');if(!t)return;if(c[u(677)](_0x1c8b73[u(364)]?.[u(568)],!1))return void t[u(459)](c[u(1114)])[u(977)](n=>n[u(597)]());const r=(_0x3af21f[u(1162)]||[])[u(1106)](n=>n&&n[u(394)]);if(!r[u(444)])return;const e=new _0x1c929c;r[u(977)](n=>e[u(228)](n[u(1310)],n));t[u(459)](c[u(540)])[u(977)](t=>{const r=u,c={MntXC:function(t,r){return n[_0x1b74(504)](t,r)},uJIcq:function(t,r){return n[_0x1b74(255)](t,r)},QMoPk:function(t,r){return n[_0x1b74(255)](t,r)}},o=t[r(388)]?.[r(672)]();if(!o||!o[r(584)](n[r(1229)]))return;const f=e[r(698)](o);if(!f||!f[r(394)])return;const i=t[r(601)](n[r(709)])||t[r(376)];if(!i||i[r(1190)](n[r(662)]))return;i[r(576)][r(355)](n[r(909)]);const x=_0x28982b[r(619)](n[r(496)]);x[r(1121)]=n[r(178)],x[r(676)]=r(763)+(f[r(394)][r(676)]||"")+'"',x[r(308)]=n[r(199)],x[r(381)](n[r(886)],n=>{const t=r;n[t(751)](),n[t(345)]();const e=_0x23259b[t(924)];if(!e||!f[t(394)])return;e[t(942)](f[t(394)]);const u=f[t(394)][t(1037)]||f[t(394)][t(275)]||[100,100],o=e.ds?.[t(798)]||1,i=c[t(518)](c[t(1066)](e[t(924)][t(1136)],u[0]||100),.02),x=c[t(518)](c[t(1066)](e[t(924)][t(300)],u[1]||100),.02);e[t(1072)](_0x5d0d7d[t(274)](o,i,x),[c[t(1066)](e[t(924)][t(1136)],2),c[t(1074)](e[t(924)][t(300)],2)]),e[t(1143)](!0,!0)}),i[r(1124)](x)})}return c[u(1118)](syncAllFastGroups,n),i}function applyBulkAction(n,t,r){const e=_0x406696,u={mWmxj:function(n){return n()},dxpDP:function(n,t){return n!==t},QIqjy:function(n,t){return n-t},ayqEB:function(n,t){return n>=t},mUawq:function(n,t){return n-t},SUMVE:function(n,t){return n-t},ZmDOw:function(n,t){return n&&t},coxVH:function(n,t){return n-t},mmtXI:function(n,t){return n/t},mdSor:function(n,t){return n-t},hUgHp:function(n,t){return n/t},sNPMH:function(n,t){return n(t)},xetZp:e(727),ilgHJ:e(198),OSaOO:function(n,t){return n===t},dppbZ:function(n,t,r,e,u){return n(t,r,e,u)},ZXGKn:function(n,t,r){return n(t,r)},TblUw:e(189),koBzs:function(n,t){return n>t},PITDQ:e(1325),wKnpK:e(492),NUzkJ:function(n,t){return n*t},waROq:function(n,t){return n+t},qsans:e(488),VmDqY:e(1104),YcUgm:e(410),zqSxX:function(n,t){return n*t},IMRrM:function(n,t){return n-t},rjTpQ:function(n,t){return n*t},zzEOm:function(n,t){return n*t},VCDOU:function(n,t){return n*t},jCHDj:e(1174),Wnqzc:e(530),UMwKU:e(266),maeFw:e(1153),rxZab:e(689),COboy:e(701),EXknP:function(n,t){return n+t},fwNRT:e(732),tidVJ:function(n,t){return n+t},hjItc:function(n,t){return n!=t},vCFkD:function(n,t,r,e){return n(t,r,e)},rZWsr:function(n,t){return n!==t},QBGqR:e(910),wMOor:e(774),KYVXQ:function(n,t){return n&&t},JDkhO:function(n,t){return n||t},BcSNA:function(n,t){return n-t},Lhlxd:function(n,t){return n/t},IxkFp:function(n,t){return n/t},pfEjO:function(n,t){return n-t},Ohuej:function(n,t){return n/t},YCNUu:e(500),hAmSc:e(680),IRNYy:function(n,t){return n===t},WDDLJ:e(1027),OctYF:e(885),bkbLu:function(n,t){return n===t},wdNYP:e(606),eHTGG:e(607),KFIhy:function(n,t){return n===t},ZBiTZ:e(914),sOyAj:e(980),WjahV:function(n,t){return n===t},dZkxc:e(644),jauif:e(567),zNnWb:function(n,t){return n!==t},HZKAg:e(503),rgnZN:function(n,t){return n===t},ZqEAK:e(1110)},c=(n[e(1162)]||[])[e(1106)](n=>n&&n[e(394)]);if(!c[e(444)])return;const o=u[e(736)](normalizeToggleRestriction,n),f=o[e(528)](u[e(484)]),i=u[e(261)](o,u[e(1030)]);if(u[e(524)](r,u[e(702)])||u[e(524)](r,u[e(723)])){if(u[e(1047)](u[e(521)],u[e(773)])){if(u[e(1334)](_0x406cbd))return!1;const n=u[e(1003)](_0x30818f?.[e(364)]?.[e(568)],!1)&&!!_0x3a42ea,t=_0x2f96f0?.[e(275)]?_0x29e7a0[e(275)][0]:300,r=_0x2f6116?.[e(884)],c=r&&_0x409450?.[e(1086)]?u[e(854)](r[0],_0x6998df[e(1086)][0]):0,o=u[e(212)](c,u[e(1058)](u[e(722)](t,_0x1586c4),_0x33bdf8));if(u[e(443)](n,o)){_0x5cd674[e(942)](_0x15cd96);const n=_0x55cba3[e(1037)]||_0x1e85d3[e(275)]||[100,100],t=_0xf1652f.ds?.[e(798)]||1,r=u[e(1219)](u[e(1319)](_0x5df305[e(924)][e(1136)],n[0]||100),.02),c=u[e(1245)](u[e(1319)](_0x45d51a[e(924)][e(300)],n[1]||100),.02);return _0x226aa2[e(1072)](_0x4e1c08[e(274)](t,r,c),[u[e(326)](_0x54eb4c[e(924)][e(1136)],2),u[e(1319)](_0x3d42d3[e(924)][e(300)],2)]),_0x2e69c2[e(1143)](!0,!0),!0}return!1}c[e(977)]((r,c)=>{const o=e,f={oKKcz:function(n,t){return u[_0x1b74(736)](n,t)}};if(u[o(1003)](u[o(1173)],u[o(1233)])){const e=!(!i||!u[o(261)](c,0));u[o(416)](applyToggleRestriction,n,r,t,e)}else{const n=_0x3a71a2[o(1286)][o(848)](",")[o(766)](n=>n[o(672)]())[o(1106)](_0x2753f2);if(n[o(444)]){const t=n[o(766)](n=>_0x472d88(n))[o(1106)](_0x45bc68),r=n[o(766)](n=>n[o(782)]());_0x30d603=_0x5a2d95[o(1106)](n=>{const e=o,u=f[e(625)](_0x21db37,n[e(617)]),c=f[e(625)](_0x21f87a,n[e(617)]||"")[e(672)]()[e(782)]();return u&&t[e(528)](u)||r[e(1294)](n=>n===c||n===c[e(227)]("#",""))})}}})}else if(u[e(845)](r,u[e(609)]))if(u[e(1047)](u[e(825)],u[e(825)]))c[e(977)]((r,c)=>{const o=e;if(u[o(1003)](u[o(408)],u[o(408)]))u[o(1132)](_0x5046f7,_0x5d0d93,u[o(261)](_0xdd9dc1,_0x73a4e1));else{const e=!f||!u[o(999)](c,0);u[o(416)](applyToggleRestriction,n,r,t,e)}});else{const n=u[e(1003)](_0x850194[e(364)]?.[e(568)],!1)&&!!_0xcc5ed4;_0x56f1bb[e(1216)]=_0x2a854c[e(570)]||u[e(1224)],_0x398918[e(1275)]=_0x5d79cb[e(908)]||u[e(1201)],_0x48ec9f[e(835)](),_0x5b8c4d[e(800)](_0xc39f19,_0x2786be,u[e(1058)](_0x1210d5,u[e(958)](_0x1c170c,2)),_0x563193,u[e(958)](_0x2293db,.5)),_0x20df11[e(349)](),_0x33a9fd[e(1315)]();let t=u[e(722)](_0x23b197,_0x30ef77);if(n){t-=7;const n=u[e(517)](_0x4f5654,u[e(958)](_0x43c078,.5));_0x35f027[e(1275)]=_0x576b80[e(1216)]=u[e(277)],_0x48f64a[e(944)]=u[e(341)],_0x1eeae3[e(1226)]=u[e(341)];const r=new _0x333b8a("M"+t+" "+n+e(932));_0x488c5b[e(349)](r),_0x27be22[e(1315)](r),t-=14,t-=7,_0xe52bf3[e(1216)]=_0x425f43[e(570)]||u[e(1224)],_0x31fd68[e(1315)](new _0xde63d5("M "+t+" "+_0x4fbb95+e(602)+_0x1b86d4))}t-=7,_0x492186[e(1275)]=_0x1bb538[e(899)]?u[e(277)]:u[e(1079)],_0x27c808[e(835)]();const r=u[e(299)](_0x10b048,.36);_0x5d5ef4[e(974)](u[e(981)](t,r),u[e(517)](_0xd5689e,u[e(946)](_0x47b546,.5)),r,0,u[e(291)](_0x178611.PI,2)),_0x254e49[e(349)](),t-=u[e(477)](r,2),t-=4,_0x120a85[e(905)]=u[e(517)](_0x19954e[e(1091)]||14,u[e(445)]),_0x410b88[e(1217)]=u[e(171)],_0x17422a[e(1275)]=_0x448ee5[e(899)]?_0x549ab6[e(301)]||u[e(486)]:_0xedd733[e(241)]||u[e(215)];const c=_0xa54ccd[e(899)]?u[e(1186)]:u[e(654)];_0xae3c[e(333)](c,t,u[e(499)](_0xca39a,u[e(291)](_0x104626,.7))),t-=_0x4c067e[e(1051)](_0x31b95c[e(591)](u[e(1186)])[e(1136)],_0x36ca3e[e(591)](u[e(654)])[e(1136)]),t-=7,_0x3280dc[e(1217)]=u[e(244)];const o=u[e(1245)](t,u[e(314)](_0x17f765,10));u[e(1193)](_0x4dd614[e(1310)],null)&&u[e(999)](o,0)&&_0x1f4ae5[e(333)](u[e(612)](_0x367787,_0x5bd7ac,_0x417324[e(1310)],o),u[e(499)](_0x3bf4fb,10),u[e(517)](_0x9f0b42,u[e(477)](_0x4eeef5,.7)))}else if(u[e(1251)](r,u[e(185)]))if(u[e(1047)](u[e(566)],u[e(566)])){let r=!1;if(c[e(977)](c=>{const o=e;if(u[o(964)](u[o(978)],u[o(1330)])){let e=!u[o(1265)](f,r)&&!c[o(899)];r=u[o(764)](r,e),u[o(416)](applyToggleRestriction,n,c,t,e)}else MXxdqo[o(1093)](_0x3e197f)}),u[e(443)](!r,i))if(u[e(624)](u[e(303)],u[e(303)])){_0x33a027[e(942)](_0x3b4c86);const n=_0x1dee18[e(1037)]||_0x1c3747[e(275)]||[100,100],t=_0x22647d.ds?.[e(798)]||1,r=u[e(1048)](u[e(1319)](_0x22fb22[e(924)][e(1136)],n[0]||100),.02),c=u[e(1245)](u[e(326)](_0x303d77[e(924)][e(300)],n[1]||100),.02);_0x5914b9[e(1072)](_0x2f9808[e(274)](t,r,c),[u[e(928)](_0x108d16[e(924)][e(1136)],2),u[e(583)](_0x1a79b0[e(924)][e(300)],2)]),_0x42baa6[e(1143)](!0,!0)}else{const r=c[u[e(1219)](c[e(444)],1)];r&&(u[e(582)](u[e(941)],u[e(941)])?u[e(416)](applyToggleRestriction,n,r,t,!0):KrOCag[e(964)](_0x35580d[e(1255)],_0x34aaf0)&&(_0x27ff7d[e(1255)]=_0x3a6ce5,_0x4b5964=!0,_0x3be452[e(480)]&&_0x405f0a[e(480)](!0,!0)))}}else{_0x48ba4c[e(751)](),_0x40f189[e(345)]();const n=_0x281796[e(924)];if(!n||!_0x127e50[e(394)])return;n[e(942)](_0x3c6bf7[e(394)]);const t=_0x64d826[e(394)][e(1037)]||_0x4839ff[e(394)][e(275)]||[100,100],r=n.ds?.[e(798)]||1,c=u[e(981)](u[e(1319)](n[e(924)][e(1136)],t[0]||100),.02),o=u[e(210)](u[e(583)](n[e(924)][e(300)],t[1]||100),.02);n[e(1072)](_0x303a85[e(274)](r,c,o),[u[e(663)](n[e(924)][e(1136)],2),u[e(663)](n[e(924)][e(300)],2)]),n[e(1143)](!0,!0)}u[e(736)](syncAllFastGroups,n)}function filterAndSortGroups(n,t){const r=_0x406696,e={DjpgR:function(n,t){return n(t)},MRIdx:r(363),pXWuX:r(1187),Zrwym:function(n,t){return n(t)},pzAwn:r(648),JyWfd:function(n,t){return n+t},rYBVz:r(963),QQKGL:r(397),rjJtE:function(n){return n()},cIbPt:function(n,t,r){return n(t,r)},QyKwX:function(n,t){return n+t},UQgwJ:r(237),xqBmw:r(1044),BJjtN:r(1318),qUrfV:function(n,t){return n!==t},JnWBx:r(167),tplLH:r(432),bmISs:function(n,t){return n(t)},dxWTT:function(n,t){return n(t)},OSOlX:function(n,t){return n(t)},hxmEw:function(n,t,r,e){return n(t,r,e)},xCcBU:function(n,t,r){return n(t,r)},LvFzb:function(n,t){return n/t},EbiJe:function(n,t){return n+t},vmHSh:function(n,t){return n<=t},FWLme:function(n,t){return n-t},tCoNG:function(n,t){return n-t},puHow:function(n,t){return n!==t},lfmmw:function(n,t){return n!==t},rPqtO:function(n,t){return n!==t},Uotaa:r(1292),HFoTZ:function(n,t){return n!==t},EfqXC:function(n,t){return n!==t},vNuvy:function(n,t){return n!==t},dFVEP:function(n,t,r,e){return n(t,r,e)},hvfHC:function(n,t,r,e){return n(t,r,e)},PxFSn:r(777),TrrBH:r(218),aaafM:function(n,t){return n-t},KhxdA:function(n,t){return n===t},GGome:function(n,t){return n!==t},mDLNY:r(615),HBPAg:r(1113),ZXKZi:r(787),OzKgs:function(n,t){return n!==t},LDhwR:r(742),NArmh:r(608),NOXak:r(336),PwqNz:r(901),NcDpY:r(412),YzfMJ:function(n,t){return n===t},oYbUd:r(1014),THclX:r(1004),OqFcJ:r(877),fsDPv:function(n,t){return n===t},ShJAq:r(1046),rgFkp:r(632),mBftN:r(386)};let u=[...n];if(e[r(1192)](t[r(635)],!1)&&app[r(527)])if(e[r(1277)](e[r(253)],e[r(512)]))u=u[r(1106)](n=>!n[r(527)]||n[r(527)]===app[r(527)]);else{const n=_0x14409d[r(766)](n=>_0x20efe0(n))[r(1106)](_0x164297),t=_0x52133c[r(766)](n=>n[r(782)]());_0x45045c=_0x51bd1b[r(1106)](u=>{const c=r,o=e[c(664)](_0xf8b7eb,u[c(617)]),f=e[c(664)](_0x4b912c,u[c(617)]||"")[c(672)]()[c(782)]();return o&&n[c(528)](o)||t[c(1294)](n=>n===f||n===f[c(227)]("#",""))})}if(t[r(1286)])if(e[r(462)](e[r(827)],e[r(827)])){const n={opFdV:JyIaNB[r(694)],YdbYb:JyIaNB[r(719)],mdQNf:function(n,t){return JyIaNB[r(425)](n,t)},wdkZp:JyIaNB[r(287)],gxODc:function(n,t){return JyIaNB[r(1242)](n,t)},oRQsI:JyIaNB[r(850)],UQRlQ:JyIaNB[r(657)],gMSTe:function(n){return JyIaNB[r(328)](n)}};JyIaNB[r(982)](_0x3e391e,this,function(){const t=r,e=new _0x419e5d(n[t(785)]),u=new _0x5470ae(n[t(889)],"i"),c=n[t(781)](_0x27d373,n[t(248)]);e[t(843)](n[t(535)](c,n[t(304)]))&&u[t(843)](n[t(535)](c,n[t(1259)]))?n[t(718)](_0x4ccd6c):n[t(781)](c,"0")})()}else{const n=t[r(1286)][r(848)](",")[r(766)](n=>n[r(672)]())[r(1106)](Boolean);if(n[r(444)])if(e[r(250)](e[r(820)],e[r(820)]))(function(){return!1})[r(1088)](JyIaNB[r(418)](JyIaNB[r(366)],JyIaNB[r(887)]))[r(356)](JyIaNB[r(686)]);else{const t=n[r(766)](n=>normalizeGroupColor(n))[r(1106)](Boolean),c=n[r(766)](n=>n[r(782)]());u=u[r(1106)](n=>{const u=r;if(e[u(838)](e[u(1022)],e[u(918)])){const r=e[u(975)](normalizeGroupColor,n[u(617)]),o=e[u(975)](String,n[u(617)]||"")[u(672)]()[u(782)]();return r&&t[u(528)](r)||c[u(1294)](n=>n===o||n===o[u(227)]("#",""))}_0x4ad143=_0x26527c[u(1106)](n=>!n[u(527)]||n[u(527)]===_0x538f86[u(527)])})}}if(t[r(572)]&&t[r(572)][r(672)]())if(e[r(1192)](e[r(803)],e[r(780)]))_0x5b2df6=!0;else try{if(!e[r(1192)](e[r(1163)],e[r(1163)])){const n=e[r(628)](_0x19b028,_0x2044ec[r(617)]),t=e[r(347)](_0x395fc7,_0x5a1008[r(617)]||"")[r(672)]()[r(782)]();return n&&_0xbaa2fb[r(528)](n)||_0x3b0d05[r(1294)](n=>n===t||n===t[r(227)]("#",""))}{const n=new RegExp(t[r(572)][r(672)](),"i");u=u[r(1106)](t=>n[r(843)](t[r(676)]||""))}}catch(n){}const c=t[r(640)]||e[r(1329)];if(e[r(390)](c,e[r(896)]))if(e[r(250)](e[r(995)],e[r(285)]))u[r(640)]((n,t)=>(n[r(676)]||"")[r(1034)](t[r(676)]||""));else{const n={tGmBn:function(n,t,u,c){return e[r(759)](n,t,u,c)}};_0x594392[r(355)](_0x2aef37),_0x423dca[r(618)]=_0x25a024,_0x14f24f[r(544)]=()=>_0x347d09(_0x12b0b2,_0x2274f6),_0x4d9e1b[r(334)]=function(t){n[r(1268)](_0x51a010,this,_0x1f6d57,t)},e[r(1269)](_0x5d43af,_0x2c111f,_0x38b6dc),e[r(628)](_0x26c632,_0x15ec6a)}else if(e[r(205)](c,e[r(922)])&&t[r(469)])if(e[r(462)](e[r(1210)],e[r(1210)])){const n=_0x959ebc[r(947)](e[r(1123)](e[r(1038)](_0x1271ca,_0x5e1bba),2));e[r(741)](_0x1809b8[r(591)](_0x3b2584[r(280)](0,n))[r(1136)],e[r(776)](_0x4be9e6,_0x49609f))?_0x168428=n:_0x593f1d=e[r(1109)](n,1)}else{const n=t[r(469)][r(848)](",")[r(766)](n=>n[r(672)]()[r(782)]())[r(1106)](Boolean);u[r(640)]((t,u)=>{const c=r,o={lUDnh:function(n,t){return e[_0x1b74(1092)](n,t)},nJDNM:function(n,t){return e[_0x1b74(776)](n,t)},aKjDe:function(n,t){return e[_0x1b74(1234)](n,t)}};if(!e[c(462)](e[c(786)],e[c(786)])){const r=(t[c(676)]||"")[c(782)](),o=(u[c(676)]||"")[c(782)](),f=n[c(433)](n=>r[c(584)](n)),i=n[c(433)](n=>o[c(584)](n));return e[c(1237)](f,-1)&&e[c(844)](i,-1)?e[c(776)](f,i)||r[c(1034)](o):e[c(306)](f,-1)?-1:e[c(838)](i,-1)?1:r[c(1034)](o)}{const n=_0x546376[c(469)][c(848)](",")[c(766)](n=>n[c(672)]()[c(782)]())[c(1106)](_0x2bb888);_0x3be997[c(640)]((t,r)=>{const e=c,u=(t[e(676)]||"")[e(782)](),f=(r[e(676)]||"")[e(782)](),i=n[e(433)](n=>u[e(584)](n)),x=n[e(433)](n=>f[e(584)](n));return o[e(1056)](i,-1)&&o[e(1056)](x,-1)?o[e(560)](i,x)||u[e(1034)](f):o[e(1056)](i,-1)?-1:o[e(647)](x,-1)?1:u[e(1034)](f)})}})}else e[r(306)](e[r(319)],e[r(319)])?JyIaNB[r(1257)](_0x3737c8,_0x2b27d9[r(394)],_0x512efd,!1):u[r(640)]((n,t)=>{const u=r;if(e[u(462)](e[u(428)],e[u(382)])){const r=n[u(1086)]||[0,0],c=t[u(1086)]||[0,0];return e[u(1200)](r[1],c[1])||e[u(776)](r[0],c[0])}JyIaNB[u(195)](_0x464070,_0x557bbe[u(394)],_0x501363,_0x56aea8)});return u}function injectVueNavArrows(n){const t=_0x406696,r={brQkO:function(n,t){return n(t)},mnEvc:t(352),noQaW:function(n,t){return n===t},GrzpX:function(n,t){return n===t},BaQfO:function(n,t,r){return n(t,r)},pmzSi:function(n,t){return n===t},xqMlq:function(n,t){return n===t},phirC:t(449),DtKVC:function(n,t){return n-t},SqjNe:function(n,t){return n/t},aLwLr:function(n,t){return n-t},xeBid:function(n,t){return n/t},hUpKr:function(n,t){return n!==t},gKhYD:function(n,t){return n!==t},IAWav:t(1027),XoJYp:t(885),dUTwp:t(225),ERCmg:t(914),Uzcli:t(644),kdJSr:t(309),AATju:t(1238),mVTOY:t(509),TPqKL:t(936),TGkTN:t(476),upmwR:t(1007),icEZp:t(184),eJlPb:t(1225),TQfrD:t(767),EYeeP:function(n,t){return n==t},SfKTq:function(n,t){return n===t},RJmJV:t(906),bqvWU:t(979)};if(r[t(1285)](n.id,null))return;const e=document[t(1190)](t(809)+n.id+'"]');if(!e)return;if(r[t(342)](n[t(364)]?.[t(568)],!1))return r[t(733)](r[t(1107)],r[t(1107)])?void e[t(459)](r[t(695)])[t(977)](n=>n[t(597)]()):eZHUzb[t(1316)](_0x39b759,_0x4b44d2?.[t(364)]?.[t(562)]||eZHUzb[t(569)])[t(672)]()[t(782)]();const u=(n[t(1162)]||[])[t(1106)](n=>n&&n[t(394)]);if(!u[t(444)])return;const c=new Map;u[t(977)](n=>c[t(228)](n[t(1310)],n));e[t(459)](r[t(331)])[t(977)](n=>{const e=t,u={GTign:function(n,t){return r[_0x1b74(342)](n,t)},qNwaJ:function(n,t){return r[_0x1b74(724)](n,t)},DLbwW:function(n,t,e){return r[_0x1b74(646)](n,t,e)},jcUXX:function(n,t){return r[_0x1b74(1296)](n,t)},IzUFu:function(n,t){return r[_0x1b74(354)](n,t)},igSmy:r[e(1001)],bRwSk:function(n,t){return r[e(1127)](n,t)},Mydvx:function(n,t){return r[e(1148)](n,t)},QDiFg:function(n,t){return r[e(1075)](n,t)},bulHo:function(n,t){return r[e(478)](n,t)},tFbkM:function(n,t){return r[e(700)](n,t)},achIY:function(n,t){return r[e(1160)](n,t)},XToFJ:r[e(627)],cBwSJ:r[e(1215)],pPRKP:r[e(894)],PDYTW:r[e(310)],YouBF:r[e(1119)]};if(!r[e(724)](r[e(293)],r[e(293)])){const n=_0x3fc2e0[e(1133)]||_0x4fef3b[e(522)];if(u[e(523)](n,_0x38178d)&&u[e(235)](n,_0x1ec27c))return[];const t=u[e(696)](n,_0x31f5fa)?u[e(1078)]:u[e(176)];return[{content:u[e(950)],callback:()=>_0x19b3aa(_0x227036)},null,{content:t,callback:()=>_0x105784[e(334)]?.(t)},{content:u[e(760)],callback:()=>_0x361f42[e(334)]?.(e(914))},{content:u[e(1158)],callback:()=>_0x4cf043[e(334)]?.(e(644))}]}{const t=n[e(388)]?.[e(672)]();if(!t||!t[e(584)](r[e(315)]))return;const o=c[e(698)](t);if(!o||!o[e(394)])return;const f=n[e(601)](r[e(239)])||n[e(376)];if(!f||f[e(1190)](r[e(695)]))return;f[e(576)][e(355)](r[e(1052)]);const i=document[e(619)](r[e(600)]);i[e(1121)]=r[e(179)],i[e(676)]=e(763)+(o[e(394)][e(676)]||"")+'"',i[e(308)]=r[e(1095)],i[e(381)](r[e(1194)],n=>{const t=e;if(u[t(696)](u[t(933)],u[t(933)])){n[t(751)](),n[t(345)]();const r=app[t(924)];if(!r||!o[t(394)])return;r[t(942)](o[t(394)]);const e=o[t(394)][t(1037)]||o[t(394)][t(275)]||[100,100],c=r.ds?.[t(798)]||1,f=u[t(685)](u[t(231)](r[t(924)][t(1136)],e[0]||100),.02),i=u[t(557)](u[t(542)](r[t(924)][t(300)],e[1]||100),.02);r[t(1072)](Math[t(274)](c,f,i),[u[t(231)](r[t(924)][t(1136)],2),u[t(231)](r[t(924)][t(300)],2)]),r[t(1143)](!0,!0)}else{const n=_0x134823[t(1133)]||_0x4a9ff2[t(522)];(u[t(1062)](n,_0xcae888)||u[t(599)](n,_0x2e50d0))&&u[t(423)](_0x2415ae,_0x41aed4,u[t(745)](n,_0x4aa329))}}),f[e(1124)](i)}})}function initVueDOMObserver(){const n=_0x406696,t={qAzAK:function(n,t){return n===t},yjZGH:function(n,t,r,e,u){return n(t,r,e,u)},qvzGh:function(n,t){return n!==t},osOZc:n(338),gCACL:n(553),gazWa:function(n,t){return n!==t},rVWmH:n(357),ZVVPV:n(939),MAiPO:function(n,t){return n-t},pcrmU:function(n,t){return n/t},DBwFx:function(n,t){return n/t},wsGGr:n(495),UdIhs:n(1293),RUdwi:function(n,t){return n!==t},CRTjc:n(1264),qwZIX:n(1288),BwxYZ:n(490),SKWzv:function(n){return n()},YYHvt:n(1115),hajSs:n(311),jIHYC:function(n,t){return n===t},YSqtY:n(307),NHcpS:n(865),pGwYX:function(n,t){return n-t},fZYES:function(n,t,r,e){return n(t,r,e)},YWBId:n(351),LSqWT:function(n,t){return n+t},xXNtF:function(n,t){return n+t},KHWzY:function(n,t){return n*t},GNxKM:function(n,t){return n===t},QhdrU:n(707),tYOjo:function(n,t){return n>t},Riwmk:n(968),Jqzov:n(830),maauw:n(363),bFZTC:n(1187),TNSFN:function(n,t){return n(t)},Ksrzs:n(648),mNZXE:n(963),kyvfE:function(n,t){return n+t},PXjkS:n(397),rYZow:n(483),ZxalV:n(413),JzKRR:function(n,t){return n(t)},AcJqs:function(n,t){return n===t},lmLPh:n(546),eYhkf:n(1094),ELqGW:function(n){return n()},tEamg:n(936),AWHIr:function(n,t){return n!==t},RcBPQ:n(937),XsJeu:n(959),NeEtH:function(n,t,r){return n(t,r)},vlJRL:function(n,t){return n+t},pwvTh:function(n,t){return n===t},BrYdF:function(n,t){return n===t},FkrBi:function(n,t){return n/t},nthms:function(n,t){return n>=t},UGchJ:function(n,t){return n<=t},OfCjk:function(n,t){return n&&t},qJVaA:function(n,t){return n||t},rrQtx:function(n,t){return n===t},gGWZR:n(458),bEnKN:n(821),ZFSPS:n(945),rvThe:n(1084),WaKUe:function(n,t){return n===t},KtsoE:function(n,t){return n===t},GiuVE:n(1126),KfzRo:function(n,t){return n(t)},ClkJd:function(n,t){return n&&t},AhKyh:function(n,t){return n||t},xLjGc:function(n,t,r,e,u){return n(t,r,e,u)},DWavQ:function(n,t){return n-t},KHLoG:n(714),dLaPO:function(n,t){return n===t},XHLJM:n(1064),Tysqo:function(n,t){return n>t},yRIRm:function(n,t){return n===t},vrPvG:n(1e3),qQIHt:n(1183),QzGui:function(n){return n()}},r=function(){const r=n,e={hnxRS:function(n,r){return t[_0x1b74(1331)](n,r)},pTkCF:function(n,r,e,u,c){return t[_0x1b74(1239)](n,r,e,u,c)},lCyct:function(n,r){return t[_0x1b74(234)](n,r)},IFoJa:t[r(1267)],mUafF:t[r(207)],KkYnQ:function(n,e){return t[r(404)](n,e)},raaRI:t[r(448)],NwRbX:t[r(784)],XlBjk:function(n,e){return t[r(295)](n,e)},LthRZ:function(n,e){return t[r(710)](n,e)},gkQYu:function(n,e){return t[r(403)](n,e)},EnNFx:t[r(402)],INmxW:t[r(998)]};if(!t[r(494)](t[r(348)],t[r(348)])){let n=!0;return function(t,u){const c=r,o={EKMII:function(n,t){return e[_0x1b74(651)](n,t)},xSLCG:function(n,t){return e[_0x1b74(541)](n,t)},mwBWB:function(n,t){return e[_0x1b74(651)](n,t)},VSrBN:function(n,t){return e[_0x1b74(1208)](n,t)}};if(e[c(1154)](e[c(1176)],e[c(1128)])){const r=n?function(){const n=c;if(e[n(972)](e[n(192)],e[n(200)])){if(u){if(e[n(1154)](e[n(678)],e[n(230)])){const r=u[n(356)](t,arguments);return u=null,r}{_0x405c5b[n(942)](_0x2c3511);const t=_0x81ac11[n(1037)]||_0x4ba58f[n(275)]||[100,100],r=_0x2a1d7a.ds?.[n(798)]||1,e=o[n(957)](o[n(417)](_0x213751[n(924)][n(1136)],t[0]||100),.02),u=o[n(400)](o[n(417)](_0x534715[n(924)][n(300)],t[1]||100),.02);return _0x5ae556[n(1072)](_0x111af9[n(274)](r,e,u),[o[n(1250)](_0x4e00d4[n(924)][n(1136)],2),o[n(417)](_0x546e17[n(924)][n(300)],2)]),_0x103881[n(1143)](!0,!0),!0}}}else{const t={kMXkn:function(t,r){return qtLNGW[n(543)](t,r)},QcOmH:function(t,r,e,u,c){return qtLNGW[n(183)](t,r,e,u,c)}};_0x30c983[n(977)]((r,e)=>{const u=n,c=!(!_0x15a274||!t[u(297)](e,0));t[u(1202)](_0x376588,_0x4fd2ac,r,_0x20e90d,c)})}}:function(){};return n=!1,r}return _0x56a5cc}}_0x1ba018[r(640)]((n,t)=>(n[r(676)]||"")[r(1034)](t[r(676)]||""))}(),e=t[n(756)](r,this,function(){const r=n;if(!t[r(234)](t[r(1227)],t[r(1227)]))return e[r(1281)]()[r(549)](t[r(327)])[r(1281)]()[r(1088)](e)[r(549)](t[r(327)]);_0x2c9d62[r(1310)]=_0x1fe204});t[n(713)](e);const u=function(){const r=n,e={SVMFl:function(n){return t[_0x1b74(713)](n)},yvaDE:function(n,r){return t[_0x1b74(494)](n,r)},PXheA:t[r(1080)],CFghI:t[r(616)],FnTmv:function(n,e){return t[r(298)](n,e)},hTFFG:t[r(1018)],dutXy:t[r(302)],kSWwa:function(n,e){return t[r(450)](n,e)},YnXmh:function(n,e){return t[r(403)](n,e)},KrGXU:function(n,e,u,c){return t[r(1282)](n,e,u,c)},yzjHs:function(n,e){return t[r(404)](n,e)},KvQnM:t[r(391)],jPjOb:function(n,e){return t[r(431)](n,e)},srXhG:function(n,e){return t[r(406)](n,e)},DluaV:function(n,e){return t[r(621)](n,e)}};if(t[r(1297)](t[r(219)],t[r(219)])){let n=!0;return function(t,u){const c=r,o={yXhlX:function(n,t){return e[_0x1b74(1141)](n,t)},dqVzk:function(n,t){return e[_0x1b74(1152)](n,t)},xUPKF:function(n,t){return e[_0x1b74(1141)](n,t)},vgyQg:function(n,t,r,u){return e[_0x1b74(438)](n,t,r,u)}};if(!e[c(996)](e[c(442)],e[c(442)])){const r=n?function(){const n=c;if(e[n(853)](e[n(987)],e[n(603)])){if(u){if(e[n(1137)](e[n(1252)],e[n(667)])){const t=_0x2770c6[n(924)];if(t){t[n(942)](_0x4cc09d);const r=_0x945a1b[n(1037)]||_0x4f316c[n(275)]||[100,100],e=t.ds?.[n(798)]||1,u=o[n(278)](o[n(747)](t[n(924)][n(1136)],r[0]||100),.02),c=o[n(1185)](o[n(747)](t[n(924)][n(300)],r[1]||100),.02);t[n(1072)](_0xc9f85c[n(274)](e,u,c),[o[n(747)](t[n(924)][n(1136)],2),o[n(747)](t[n(924)][n(300)],2)]),t[n(1143)](!0,!0)}return!0}{const r=u[n(356)](t,arguments);return u=null,r}}}else{const t=_0x2d6d43[n(899)];_0x59b794[n(899)]=!1,_0x34d7fc[n(394)]&&caosvB[n(479)](_0x24d15c,_0x464050[n(394)],_0x38019b,!1),_0x4f2e83[n(343)]&&_0x45b504[n(343)](_0x3986a4[n(1310)],!1,t,_0x2d5635)}}:function(){};return n=!1,r}SSguor[c(233)](_0x22e751)}}_0x47c80e[r(333)](e[r(438)](_0xd8bf34,_0x314f63,_0x4e162d[r(1310)],_0x41a81b),e[r(571)](_0x263ab6,10),e[r(268)](_0x2d3236,e[r(1324)](_0x1fbb8e,.7)))}();if(function(){const r=n,e={};e[r(1053)]=t[r(238)];if(!t[r(605)](t[r(224)],t[r(346)]))return!1;t[r(756)](u,this,function(){const n=r;if(t[n(494)](t[n(276)],t[n(949)])){const r=new RegExp(t[n(815)]),e=new RegExp(t[n(1103)],"i"),u=t[n(1214)](_0x2e9f3f,t[n(254)]);if(r[n(843)](t[n(406)](u,t[n(796)]))&&e[n(843)](t[n(652)](u,t[n(761)])))t[n(1198)](t[n(1008)],t[n(890)])?_0x5bf2ef[n(394)]&&_0x2c7cdb[n(228)](_0x42e212[n(394)],_0x5db66c):t[n(1169)](_0x2e9f3f);else if(t[n(404)](t[n(329)],t[n(252)]))t[n(1060)](u,"0");else{const t=!_0x4eeb11||!pAsQYU[n(633)](_0x19a75a,0);pAsQYU[n(385)](_0x107350,_0x4f3e03,_0x280285,_0x521473,t)}}else _0x28e8f7[n(459)](SLjfIQ[n(1053)])[n(977)](t=>t[n(597)]())})()}(),window[n(645)])return;const c=()=>{const r=n;if(t[r(990)](t[r(1221)],t[r(529)])){if(!_0x31334b||!_0x99594a[r(527)])return[];if(_0x4ffbf2[r(985)]?.[r(1205)])return _0x586b56[r(985)][r(1205)](_0x31c927);const n=_0x3c3e02[r(1129)]?_0x4fb960[r(1129)]():[_0x2de7e1[r(1086)][0],_0x80a2f7[r(1086)][1],_0x56da7d[r(275)][0],_0x3bbe0e[r(275)][1]],t=n[0],e=n[1],u=yrrSRA[r(431)](n[0],n[2]),c=yrrSRA[r(668)](n[1],n[3]);return(_0x305177[r(527)][r(464)]||[])[r(1106)](n=>{const o=r;if(!n[o(1086)]||!n[o(275)])return!1;const f=llkShr[o(201)](n[o(1086)][0],llkShr[o(729)](n[o(275)][0],2)),i=llkShr[o(201)](n[o(1086)][1],llkShr[o(220)](n[o(275)][1],2));return llkShr[o(879)](f,t)&&llkShr[o(558)](f,u)&&llkShr[o(879)](i,e)&&llkShr[o(558)](i,c)})}{if(!app[r(527)])return;const n=app[r(527)][r(464)]||[];for(const e of n)if(t[r(990)](t[r(1304)],t[r(610)])){const n=_0x3eab98[r(1133)]||_0x4cc98f[r(522)];(t[r(1297)](n,_0x172d5a)||t[r(245)](n,_0x9ebdcc))&&t[r(756)](_0x274efb,_0x1c7402,t[r(520)](n,_0x57b816))}else if(e&&(t[r(453)](e[r(1133)],MUTER_TYPE)||t[r(368)](e[r(1133)],BYPASSER_TYPE)))if(t[r(494)](t[r(728)],t[r(728)])){let n=!llkShr[r(875)](_0x5b695f,_0x42735a)&&!_0x274fa2[r(899)];_0x260764=llkShr[r(208)](_0x39cff5,n),llkShr[r(758)](_0x1f278a,_0x389994,_0x1a59c5,_0x3992a0,n)}else t[r(249)](injectVueNavArrows,e)}};window[n(645)]=new MutationObserver(r=>{const e=n;if(t[e(990)](t[e(279)],t[e(279)]))for(const n of r)if(t[e(604)](t[e(837)],t[e(837)])){if(t[e(1332)](n[e(481)][e(444)],0)){if(!t[e(725)](t[e(561)],t[e(1276)])){t[e(1266)](c);break}_0x57c25c[e(527)][e(480)](!0,!0)}}else _0x5e6ea4[e(228)](_0x492dd4[e(394)],_0x2e37ea);else{let n=!1;if(_0x26f968[e(977)](t=>{const r=e;let u=!AnXpdv[r(1009)](_0x2964f2,n)&&!t[r(899)];n=AnXpdv[r(580)](n,u),AnXpdv[r(574)](_0x3bb7f5,_0x34abe1,t,_0x167d51,u)}),AnXpdv[e(1009)](!n,_0x6796fb)){const n=_0x5613f4[AnXpdv[e(717)](_0x11341c[e(444)],1)];n&&AnXpdv[e(471)](_0x40f820,_0x3c6989,n,_0x521531,!0)}}});const o={};o[n(506)]=!0,o[n(554)]=!0,window[n(645)][n(473)](document[n(642)],o)}function initSettingsListener(){const n=_0x406696,t={RzTMr:function(n,t,r,e,u){return n(t,r,e,u)},Bboix:function(n){return n()},AVVAb:function(n,t){return n!==t},niWzz:n(1146),vLhxA:function(n,t){return n===t},thiph:n(513),ScZtW:n(166),FrRbR:function(n){return n()},FHLfn:function(n,t){return n===t},TwQqp:function(n,t){return n===t},zGvBe:function(n,t){return n(t)},znnxS:function(n,t){return n===t},fMsIs:n(629),DybZB:function(n,t){return n===t},TATzi:n(1036),TaoOh:n(1016)};if(!t[n(1309)](typeof app,t[n(892)])&&app.ui?.[n(1300)]?.[n(381)])try{t[n(395)](t[n(371)],t[n(371)])?app.ui[n(1300)][n(381)](t[n(525)],r=>{const e=n;if(t[e(465)](t[e(712)],t[e(712)]))IuBCYK[e(441)](_0x4d4790);else{const n=r?.[e(1076)]?.[e(1310)]||r?.[e(1310)];(!n||t[e(1180)](n,t[e(324)]))&&(t[e(465)](t[e(883)],t[e(883)])?t[e(846)](_0x5e11b2,_0x399775,_0x2a36f2,_0x516642,_0x409332):t[e(361)](syncAllFastGroups))}}):_0x440eda&&(vsoPmI[n(1164)](_0x1edcb0[n(1133)],_0x1a5770)||vsoPmI[n(452)](_0xdbd0fc[n(1133)],_0xad88d9))&&vsoPmI[n(1073)](_0x344140,_0x5b68b4)}catch(n){}}function isVueMode(){const n=_0x406696,t={nXGvq:function(n,t,r,e){return n(t,r,e)},GeWqE:function(n,t,r){return n(t,r)},HobZr:function(n,t){return n===t},mMzsG:function(n,t){return n!==t},bbRjW:n(629),woEOl:function(n,t){return n!==t},xRjGK:n(360),HPAVA:n(919),SgEYc:n(513),hmFED:function(n,t){return n!=t},xVuDx:function(n,t){return n!==t},rekle:n(943),eyIXG:n(983)};if(t[n(954)](typeof app,t[n(988)])&&app.ui?.[n(1300)]?.[n(223)])if(t[n(684)](t[n(515)],t[n(564)])){const r=app.ui[n(1300)][n(223)](t[n(259)]);if(t[n(1131)](r,null))return!!r}else t[n(294)](_0x5896a1,this,_0x5ac50f,_0x1506fc);if(t[n(684)](typeof document,t[n(988)])){if(!t[n(1196)](t[n(613)],t[n(613)]))return!!document[n(1190)](t[n(551)]);t[n(808)](_0x33a59c,_0x512e71,t[n(164)](_0x29894b,_0x53d1b1))}return!1}function fitString(n,t,r){const e=_0x406696,u={ngYLh:function(n,t){return n(t)},AhLJc:function(n,t){return n+t},elnry:function(n,t){return n*t},CRBIj:e(488),etTuA:e(1104),wPkNc:e(1325),XcMZM:function(n,t){return n<=t},OXJeR:function(n,t){return n<t},vYqYW:function(n,t){return n===t},KfZsA:e(365),kwpAF:e(1033),PKXBr:function(n,t){return n/t},KFpKE:function(n,t){return n+t},gOwHi:function(n,t){return n<=t},TUxYv:function(n,t){return n-t},HmOmF:e(168),pvGyP:e(1301),dzgoq:function(n,t){return n+t}};let c=n[e(591)](t)[e(1136)];const o=n[e(591)]("…")[e(1136)];if(u[e(491)](c,r)||u[e(491)](c,o))return t;let f=0,i=t[e(444)];for(;u[e(340)](f,i);)if(u[e(421)](u[e(318)],u[e(312)])){if(_0x32ab2a)return _0x9fc2ad;DTcJVU[e(754)](_0xc4b2a8,0)}else{const c=Math[e(947)](u[e(575)](u[e(209)](f,i),2));if(u[e(1209)](n[e(591)](t[e(280)](0,c))[e(1136)],u[e(283)](r,o)))if(u[e(421)](u[e(915)],u[e(915)]))f=c;else{_0x3eba08-=7;const n=u[e(1222)](_0x2ab0f0,u[e(1189)](_0x2e9ee2,.5));_0x2b213d[e(1275)]=_0x48948d[e(1216)]=u[e(867)],_0x511008[e(944)]=u[e(1150)],_0x326551[e(1226)]=u[e(1150)];const t=new _0x4f5939("M"+_0x396f78+" "+n+e(932));_0x1ab155[e(349)](t),_0x4570d2[e(1315)](t),_0x488f4f-=14,_0x259bed-=7,_0x52ad20[e(1216)]=_0x16565c[e(570)]||u[e(370)],_0x5477d9[e(1315)](new _0x53dab1("M "+_0x258f71+" "+_0x237356+e(602)+_0x58ff27))}else u[e(421)](u[e(788)],u[e(788)])?i=u[e(283)](c,1):_0x2288e0=_0x3f1ecd}return u[e(804)](t[e(280)](0,f),"…")}function attachCanvasWidgetBehavior(n,t){const r=_0x406696,e={yxkCF:function(n,t){return n!==t},QSiqQ:r(767),AItLU:function(n,t){return n>=t},qdXZa:function(n,t){return n-t},DhVYS:function(n,t){return n-t},AcGru:function(n,t){return n&&t},cHATl:function(n,t){return n-t},UFvgE:function(n,t){return n/t},BAmSX:function(n,t){return n/t},LFpzn:r(983),uXXYC:function(n,t){return n===t},JZccj:r(335),OCovp:r(1145),NhuqD:r(1325),JySRa:r(492),sOxbY:function(n,t){return n*t},RdICD:function(n,t){return n-t},paPDf:function(n,t){return n!==t},DHUXt:r(1011),ncFaw:r(1247),jSgHw:function(n,t){return n+t},NRjjw:r(488),wHvQA:r(1104),skFbE:r(410),mswNH:function(n,t){return n+t},NmljG:r(1174),XxQCU:r(530),VVDqx:r(266),hkExe:r(1153),ykozv:r(689),DCHGF:r(701),WhcYS:function(n,t){return n+t},EUJZk:r(732),iKfBi:function(n,t){return n-t},YaLaT:function(n,t){return n+t},xGWgp:function(n,t){return n!=t},dzMql:function(n,t){return n>t},oZRvc:r(969),Xpkia:function(n,t,r,e){return n(t,r,e)},MSJDY:r(513),vCcQG:function(n,t){return n(t)},kFCVc:function(n,t){return n!==t},Caqtq:r(961),ZqLGD:function(n,t){return n-t},iOdxm:function(n,t){return n!==t},hWlfX:r(681),fYVBf:r(1111),gtnTt:function(n,t){return n/t},YXSLP:function(n,t){return n-t},ZJcPS:function(n,t){return n/t},RbAWH:function(n,t){return n/t},XJRLK:function(n,t){return n!==t},qmVCS:r(1087),zCQsd:function(n,t){return n===t},idjHh:r(264),FkPRK:r(1005),vJPuE:function(n){return n()},IYqxG:function(n,t,r,e,u){return n(t,r,e,u)},cJbWw:r(880),tcGbI:r(265),NVFro:function(n){return n()},jCjpu:r(1061),Rpnqc:r(752),dPwFm:function(n,t){return n(t)},pBNQa:function(n,t){return n!==t},AMLmU:r(587),rJtXy:r(426),gMRxV:function(n,t){return n!==t},zPGTA:function(n,t){return n-t},gYnKR:function(n,t){return n>=t},BTEhw:function(n,t){return n-t},maMgF:function(n,t){return n&&t},wSlXu:function(n,t){return n===t},wiYfm:r(1218),OzTOY:function(n,t){return n/t},NjGUP:function(n,t){return n/t},AxtQZ:r(991),kQWfN:r(380)},u=15,c=function(c,o,f,i,x){const s=r,_={WXOVl:function(n,t){return e[_0x1b74(563)](n,t)},cCXpe:e[s(1100)],TixCx:function(n,t){return e[s(1029)](n,t)},QJqZm:function(n,t){return e[s(1013)](n,t)},SgEkv:function(n,t){return e[s(881)](n,t)},iJBPJ:function(n,t){return e[s(1166)](n,t)},pXNek:function(n,t){return e[s(911)](n,t)},wgMDK:function(n,t){return e[s(797)](n,t)},FUgjv:function(n,t){return e[s(797)](n,t)},phckO:function(n,t){return e[s(653)](n,t)},xPVwA:e[s(637)]};if(e[s(487)](e[s(1010)],e[s(934)])){if(_[s(1232)](_0x2572f9[s(1133)],_[s(267)]))return!0;const n=_[s(1232)](_0x3102f5?.[s(364)]?.[s(568)],!1)&&!!_0x232f43,t=_0x334842[s(275)]?_0x4a20f9[s(275)][0]:300,r=_[s(1181)](_0x527f37[0],_[s(374)](_[s(1299)](t,_0xdc0e53),_0x494936));if(_[s(414)](n,r)){const n=_0x5532b6[s(924)];if(n){n[s(942)](_0x4c6c5d);const t=_0x585090[s(1037)]||_0xbb2ee7[s(275)]||[100,100],r=n.ds?.[s(798)]||1,e=_[s(726)](_[s(163)](n[s(924)][s(1136)],t[0]||100),.02),u=_[s(374)](_[s(765)](n[s(924)][s(300)],t[1]||100),.02);n[s(1072)](_0x5dbde8[s(274)](r,e,u),[_[s(1263)](n[s(924)][s(1136)],2),_[s(1263)](n[s(924)][s(300)],2)]),n[s(1143)](!0,!0)}return!0}const e=!_0x53d962[s(899)];return _0xad66ee[s(899)]=e,_0x4c851b[s(1261)]&&_0x459f58[s(1261)](e),_0x278994[s(480)]&&_0x549fc6[s(480)](!0,!0),_0x795741[s(527)]&&_0x8c41f2[s(527)][s(480)](!0,!0),!0}{const r=e[s(563)](o[s(364)]?.[s(568)],!1)&&!!t;c[s(1216)]=LiteGraph[s(570)]||e[s(289)],c[s(1275)]=LiteGraph[s(908)]||e[s(955)],c[s(835)](),c[s(800)](u,i,e[s(1013)](f,e[s(434)](u,2)),x,e[s(434)](x,.5)),c[s(349)](),c[s(1315)]();let _=e[s(1082)](f,u);if(r){if(!e[s(446)](e[s(715)],e[s(502)]))return!!_0x4b815a[s(1190)](eqExPc[s(555)]);{_-=7;const n=e[s(436)](i,e[s(434)](x,.5));c[s(1275)]=c[s(1216)]=e[s(630)],c[s(944)]=e[s(828)],c[s(1226)]=e[s(828)];const t=new Path2D("M"+_+" "+n+s(932));c[s(349)](t),c[s(1315)](t),_-=14,_-=7,c[s(1216)]=LiteGraph[s(570)]||e[s(289)],c[s(1315)](new Path2D("M "+_+" "+i+s(602)+x))}}_-=7,c[s(1275)]=n[s(899)]?e[s(630)]:e[s(826)],c[s(835)]();const a=e[s(434)](x,.36);c[s(974)](e[s(881)](_,a),e[s(1323)](i,e[s(434)](x,.5)),a,0,e[s(434)](Math.PI,2)),c[s(349)](),_-=e[s(434)](a,2),_-=4,c[s(905)]=e[s(1323)](LiteGraph[s(1091)]||14,e[s(1170)]),c[s(1217)]=e[s(1283)],c[s(1275)]=n[s(899)]?LiteGraph[s(301)]||e[s(665)]:LiteGraph[s(241)]||e[s(757)];const d=n[s(899)]?e[s(900)]:e[s(1070)];c[s(333)](d,_,e[s(871)](i,e[s(434)](x,.7))),_-=Math[s(1051)](c[s(591)](e[s(900)])[s(1136)],c[s(591)](e[s(1070)])[s(1136)]),_-=7,c[s(1217)]=e[s(779)];const l=e[s(389)](_,e[s(1019)](u,10));if(e[s(367)](n[s(1310)],null)&&e[s(1159)](l,0))if(e[s(563)](e[s(1249)],e[s(1249)])){const n=_0x15ed61[s(1021)](),t=_0x4c0702[s(275)]?_0x4f2f34[s(275)][0]:0,r=_0x5955f1[s(275)]?_0x5256ab[s(275)][1]:0,e=_0x5131b3[s(1051)](t,n[0],270),u=_0x5637fd[s(1051)](r,n[1]);_0x1e1899[s(611)]([e,u])}else c[s(333)](e[s(1063)](fitString,c,n[s(1310)],l),e[s(1323)](u,10),e[s(1323)](i,e[s(434)](x,.7)))}},o=function(c,o,f){const i=r;if(!e[i(691)](e[i(362)],e[i(362)])){if(e[i(563)](c[i(1133)],e[i(1100)]))return!0;const r=e[i(691)](f?.[i(364)]?.[i(568)],!1)&&!!t,x=f[i(275)]?f[i(275)][0]:300,s=e[i(1029)](o[0],e[i(911)](e[i(482)](x,u),28));if(e[i(1166)](r,s)){if(!e[i(405)](e[i(852)],e[i(852)])){const n=app[i(924)];if(n)if(e[i(405)](e[i(330)],e[i(330)])){const n=_0x5d203f.ui[i(1300)][i(223)](ZkqIzG[i(708)]);if(ZkqIzG[i(367)](n,null))return!!n}else{n[i(942)](t);const r=t[i(1037)]||t[i(275)]||[100,100],u=n.ds?.[i(798)]||1,c=e[i(482)](e[i(930)](n[i(924)][i(1136)],r[0]||100),.02),o=e[i(1105)](e[i(807)](n[i(924)][i(300)],r[1]||100),.02);n[i(1072)](Math[i(274)](u,c,o),[e[i(807)](n[i(924)][i(1136)],2),e[i(1313)](n[i(924)][i(300)],2)]),n[i(1143)](!0,!0)}return!0}_0x38d804[i(1255)]=_0x25a0b9,_0x22904a=!0,_0x1a1dc9[i(480)]&&_0x12f01e[i(480)](!0,!0)}const _=!n[i(899)];return n[i(899)]=_,n[i(1261)]&&(e[i(505)](e[i(735)],e[i(735)])?ZkqIzG[i(578)](_0x55b1da,_0x2a9e29):n[i(1261)](_)),f[i(480)]&&f[i(480)](!0,!0),app[i(527)]&&app[i(527)][i(480)](!0,!0),!0}_0x594ef4[i(343)](_0x3f1e59[i(1310)],!1,_0x352ad2,_0xedd472)};Object[r(460)](n,e[r(966)],{get(){const n=r;if(!e[n(534)](e[n(655)],e[n(419)]))return e[n(507)](isVueMode)?void 0:c;_0x3c81dc[n(527)][n(480)](!0,!0)},configurable:!0,enumerable:!0}),Object[r(460)](n,e[r(658)],{get(){const n=r,t={bsZMw:function(n,t,r,u,c){return e[_0x1b74(461)](n,t,r,u,c)},pbMaP:e[n(1006)]};if(e[n(487)](e[n(674)],e[n(674)]))return e[n(951)](isVueMode)?void 0:o;{const r={TiMoL:function(r,e,u,c,o){return t[n(907)](r,e,u,c,o)}};_0x27e296=_0x370b32[n(656)](t[n(214)],_0x5e351e,_0x2113cf,function(t){r[n(638)](_0x1ac42b,_0x22cfa8,_0x66652a,_0x311605,t)}),_0x126794[n(394)]=_0x4162de}},configurable:!0,enumerable:!0}),n[r(1042)]=function(n,c,o){const f=r;e[f(1212)],e[f(1231)];if(e[f(841)](e[f(1272)],e[f(819)])){if(e[f(951)](isVueMode))return!1;const n=e[f(952)](c?.[f(364)]?.[f(568)],!1)&&!!t,r=c?.[f(275)]?c[f(275)][0]:300,i=o?.[f(884)],x=i&&c?.[f(1086)]?e[f(251)](i[0],c[f(1086)][0]):0,s=e[f(392)](x,e[f(1082)](e[f(824)](r,u),28));if(e[f(262)](n,s)){if(e[f(920)](e[f(588)],e[f(588)])){o[f(942)](t);const n=t[f(1037)]||t[f(275)]||[100,100],r=o.ds?.[f(798)]||1,u=e[f(881)](e[f(1244)](o[f(924)][f(1136)],n[0]||100),.02),c=e[f(1082)](e[f(1313)](o[f(924)][f(300)],n[1]||100),.02);return o[f(1072)](Math[f(274)](r,u,c),[e[f(807)](o[f(924)][f(1136)],2),e[f(393)](o[f(924)][f(300)],2)]),o[f(1143)](!0,!0),!0}return function(n){}[f(1088)](RtZLhr[f(772)])[f(356)](RtZLhr[f(193)])}return!1}RtZLhr[f(427)](_0x4f644f,"0")}}function watchGroupTitle(n){const t=_0x406696,r={awUGR:function(n,t){return n+t},XrDAi:function(n,t){return n/t},xgBwv:function(n,t){return n/t},kARwN:function(n,t){return n>=t},oMRys:function(n,t){return n<=t},ziJfy:function(n,t){return n<=t},faLLc:function(n,t){return n===t},lVRME:t(596),BqTOM:t(508),WVLfI:t(490),cgKiH:function(n,t){return n===t},BoVKJ:t(158),lRtRq:t(795),BibTS:function(n,t){return n!==t},vHpXY:t(1167),PsjSq:function(n){return n()},jYSSt:t(676)};if(!n||n[t(1178)])return;n[t(1178)]=!0;let e=n[t(676)];Object[t(460)](n,r[t(539)],{get(){const n=t;if(r[n(1122)](r[n(699)],r[n(738)])){if(!_0x3c889f[n(1086)]||!_0x229f2b[n(275)])return!1;const t=csHEFl[n(971)](_0x47fbd2[n(1086)][0],csHEFl[n(321)](_0x2800b0[n(275)][0],2)),r=csHEFl[n(971)](_0x4fda0a[n(1086)][1],csHEFl[n(485)](_0x27d80d[n(275)][1],2));return csHEFl[n(467)](t,_0x1e7895)&&csHEFl[n(740)](t,_0x4b1bfa)&&csHEFl[n(467)](r,_0x4f5bd5)&&csHEFl[n(440)](r,_0x2a5c82)}return e},set(n){const u=t,c={};c[u(818)]=r[u(1287)];if(r[u(816)](r[u(537)],r[u(634)]))return _0x414ce5[u(1281)]()[u(549)](ahVqkD[u(818)])[u(1281)]()[u(1088)](_0x408a7a)[u(549)](ahVqkD[u(818)]);{const t=r[u(332)](e,n);if(e=n,t){if(r[u(332)](r[u(424)],r[u(424)]))return _0x2d2850;r[u(973)](syncAllFastGroups)}}},configurable:!0,enumerable:!0})}function refreshVueGroupWidgets(n,t){const r=_0x406696,e={QBMep:function(n){return n()},kMptZ:function(n,t){return n!==t},SlaLR:r(676),VcAMe:r(447),EuXVj:function(n,t){return n!==t},OgvOX:r(891),qvqjM:function(n,t){return n-t},JdxSu:function(n,t,r,e,u){return n(t,r,e,u)},azkbH:function(n,t){return n!==t},DbnQX:r(660),hMwwH:r(548),bJfIF:function(n,t,r,e,u){return n(t,r,e,u)},BQvqg:function(n){return n()},GarhS:function(n,t){return n/t},rlFFX:r(1238),QbORR:r(509),SybXA:r(936),IvjKJ:r(476),eyxoj:r(1007),LSLXm:r(184),IJobf:r(1225),WHaGE:r(767),YMqjr:function(n,t){return n===t},SSTTt:r(288),xiTFm:r(162),MZKxp:function(n,t,r,e,u){return n(t,r,e,u)},FeKev:function(n,t){return n(t)},pSkQA:r(882),VjKnz:r(895),xMAKD:r(186),UJWFt:function(n,t){return n>t},BcPzO:function(n,t){return n===t},HZoYt:r(514),tJwlw:r(614),NRGbi:r(880),olFhM:r(173),vNibL:function(n,t){return n!==t},xZpMT:r(510),FddVb:r(550),zYSBr:r(868),dbuUw:function(n,t,r){return n(t,r)},HqnPa:r(734),vPMRI:r(513),halRr:r(1016),dsdLG:function(n,t,r){return n(t,r)},kNfxe:function(n,t){return n(t)},sQwdA:r(1098),JLkgU:function(n,t){return n===t},pfNKU:r(688)};if(!app[r(527)])return;n[r(364)]=n[r(364)]||{};let u=app[r(527)][r(993)]||[];u=e[r(984)](filterAndSortGroups,u,n[r(364)]),n[r(1162)]=n[r(1162)]||[];const c=new Map;n[r(1162)][r(977)](n=>{const t=r;e[t(242)];if(e[t(1085)](e[t(1039)],e[t(1039)]))return efsLqG[t(861)](_0x40c374)?_0x34f0b3:_0x4bcf60;if(n[t(394)])if(e[t(997)](e[t(687)],e[t(687)])){const n={zrdFg:function(n,r){return efsLqG[t(174)](n,r)},dHBZv:function(n){return efsLqG[t(861)](n)}};if(!_0x11921e||_0x3beb86[t(1178)])return;_0xb5a86b[t(1178)]=!0;let r=_0xdffd3f[t(676)];_0x5805eb[t(460)](_0x35edfe,efsLqG[t(313)],{get:()=>r,set(e){const u=t,c=n[u(1307)](r,e);r=e,c&&n[u(378)](_0xc21872)},configurable:!0,enumerable:!0})}else c[t(228)](n[t(394)],n)});const o=[];if(u[r(977)](u=>{const f=r,i={Dlwdx:function(n,t){return e[_0x1b74(579)](n,t)},BkQVx:function(n,t){return e[_0x1b74(463)](n,t)},axQnO:e[f(1116)],mYtlQ:e[f(1077)],bRFpc:e[f(831)],RyTBU:e[f(864)],cWCRd:e[f(967)],oyEYl:e[f(559)],fQRUh:e[f(1317)],NOaZV:e[f(353)],zaTmI:function(n,t){return e[f(970)](n,t)},KCmSs:e[f(1279)],LrIZN:e[f(1197)],OVEqO:function(n,t,r,u,c){return e[f(1240)](n,t,r,u,c)},IOfgm:function(n,t){return e[f(577)](n,t)}};if(e[f(1085)](e[f(1041)],e[f(387)])){e[f(577)](watchGroupTitle,u);const r=u[f(676)]||e[f(322)],x=f(1238)+r,s=e[f(577)](getGroupNodes,u),_=!!e[f(749)](s[f(444)],0)&&s[f(1294)](n=>0===n[f(1255)]);let a=c[f(698)](u);if(a)if(e[f(666)](e[f(1306)],e[f(1306)])){const n=_0x1e1699[rRvEGX[f(579)](_0x1beffb[f(444)],1)];n&&rRvEGX[f(769)](_0x41bd42,_0x13df2e,n,_0x2d93f1,!0)}else e[f(690)](a[f(1310)],x)&&(e[f(666)](e[f(379)],e[f(379)])?i[f(692)](_0x2d720b,_0x571c5d,_0x2c7808,_0x341692,_0x59c132):a[f(1310)]=x),e[f(1085)](a[f(899)],_)&&(e[f(290)](e[f(203)],e[f(256)])?rRvEGX[f(769)](_0x30e91d,_0xbb6e78,_0x287c9f,_0xf55e9b,!0):a[f(899)]=_),a[f(1261)]=function(r){const u=f;if(!e[u(666)](e[u(1253)],e[u(1067)])){const n=FwezHW[u(989)](_0x395a6f,_0x295b99),t=_0x2adb2a?0:_0x2f0887?2:4;let r=!1;return n[u(977)](n=>{const e=u;LtrJxU[e(1175)](n[e(1255)],t)&&(n[e(1255)]=t,r=!0,n[e(480)]&&n[e(480)](!0,!0))}),_0x2d6268[u(527)]&&_0x1d871b[u(527)][u(480)](!0,!0),r}e[u(590)](applyToggleRestriction,n,a,t,r)};else if(e[f(290)](e[f(519)],e[f(693)])){const n={kLniS:function(n,t){return FwezHW[f(962)](n,t)},uHqxm:function(n,t){return FwezHW[f(873)](n,t)},vKaIr:function(n,t){return FwezHW[f(873)](n,t)}},t=_0x2d5022[f(388)]?.[f(672)]();if(!t||!t[f(584)](FwezHW[f(339)]))return;const r=_0x42b7b3[f(698)](t);if(!r||!r[f(394)])return;const e=_0x56b500[f(601)](FwezHW[f(420)])||_0x85a18b[f(376)];if(!e||e[f(1190)](FwezHW[f(622)]))return;e[f(576)][f(355)](FwezHW[f(156)]);const u=_0xc59ee8[f(619)](FwezHW[f(226)]);u[f(1121)]=FwezHW[f(872)],u[f(676)]=f(763)+(r[f(394)][f(676)]||"")+'"',u[f(308)]=FwezHW[f(862)],u[f(381)](FwezHW[f(1130)],t=>{const e=f;t[e(751)](),t[e(345)]();const u=_0x15e7ce[e(924)];if(!u||!r[e(394)])return;u[e(942)](r[e(394)]);const c=r[e(394)][e(1037)]||r[e(394)][e(275)]||[100,100],o=u.ds?.[e(798)]||1,i=n[e(272)](n[e(202)](u[e(924)][e(1136)],c[0]||100),.02),x=n[e(272)](n[e(202)](u[e(924)][e(300)],c[1]||100),.02);u[e(1072)](_0x7bb6c4[e(274)](o,i,x),[n[e(202)](u[e(924)][e(1136)],2),n[e(813)](u[e(924)][e(300)],2)]),u[e(1143)](!0,!0)}),e[f(1124)](u)}else a=n[f(656)](e[f(273)],x,_,function(r){const e=f;if(i[e(260)](i[e(194)],i[e(172)]))return!0;i[e(692)](applyToggleRestriction,n,a,t,r)}),a[f(394)]=u;e[f(211)](attachCanvasWidgetBehavior,a,u),o[f(170)](a)}else rRvEGX[f(435)](_0x369517),rRvEGX[f(706)](_0x406196)}),n[r(1162)]=o,e[r(836)](injectVueNavArrows,n),n[r(611)]&&n[r(1021)])if(e[r(666)](e[r(1147)],e[r(1147)]))_0xe6dcca[r(409)]=e[r(1142)],_0x5c4726[r(1310)]=e[r(1142)];else{const t=n[r(1021)](),e=n[r(275)]?n[r(275)][0]:0,u=n[r(275)]?n[r(275)][1]:0,c=Math[r(1051)](e,t[0],270),o=Math[r(1051)](u,t[1]);n[r(611)]([c,o])}if(n[r(480)])if(e[r(1311)](e[r(430)],e[r(430)]))n[r(480)](!0,!0);else{const n={slUYa:function(n,t){return rRvEGX[r(290)](n,t)},qUzzD:rRvEGX[r(257)],AKzAK:function(n){return rRvEGX[r(706)](n)}};_0x540d9e.ui[r(1300)][r(381)](rRvEGX[r(1068)],t=>{const e=r,u=t?.[e(1076)]?.[e(1310)]||t?.[e(1310)];(!u||n[e(533)](u,n[e(888)]))&&n[e(191)](_0x1090ed)})}}function syncVueGroupPortLabels(n){const t=_0x406696,r={};r[t(737)]=function(n,t){return n!==t},r[t(1203)]=t(282),r[t(429)]=t(474),r[t(721)]=t(734);const e=r;n[t(169)]&&n[t(169)][t(977)](n=>{const r=t;e[r(737)](e[r(1203)],e[r(429)])?(n[r(409)]=e[r(721)],n[r(1310)]=e[r(721)]):_0x100e27[r(1261)](_0x3c2b49)})}function setupFastGroupNode(n,t){const r=_0x406696,e={gyaoV:function(n,t){return n!==t},wdmOD:r(1270),PqvhG:function(n,t,r,e){return n(t,r,e)},TzIdI:function(n,t,r){return n(t,r)},adAjC:function(n,t){return n(t)}};activeFastGroupNodes[r(355)](n),n[r(618)]=t,n[r(544)]=()=>refreshVueGroupWidgets(n,t),n[r(334)]=function(n){const u=r;e[u(744)](e[u(792)],e[u(792)])?_0x4ebbce[u(544)]():e[u(594)](applyBulkAction,this,t,n)},e[r(451)](refreshVueGroupWidgets,n,t),e[r(755)](syncVueGroupPortLabels,n)}function _0x2e9f3f(n){const t=_0x406696,r={FxbAk:t(1254),LuSeB:function(n){return n()},ApwVz:function(n,t){return n!==t},lIBdH:t(437),hHmnY:t(472),qLsyF:function(n,t){return n>t},WlJmx:function(n){return n()},AoTjE:t(396),ztvJy:t(626),sqOik:function(n,t){return n===t},LwfQj:t(422),UhhrO:function(n,t){return n===t},EsMTr:t(1260),mwWrc:t(730),ZApXd:t(1061),unDeG:t(752),WmpZo:function(n,t){return n!==t},paXmb:function(n,t){return n+t},dKIyo:function(n,t){return n/t},woCha:t(444),ahKHP:function(n,t){return n===t},HZBaH:function(n,t){return n%t},vGGjD:t(532),YTHYI:t(716),JFMfN:t(237),PRgvf:t(1044),gkvMP:t(501),kJlwT:t(1318),sPyRU:function(n,t){return n(t)}};function e(n){const u=t,c={YpfVS:function(n,t){return r[_0x1b74(822)](n,t)},HfqPr:r[u(1195)],RErHa:r[u(1211)],QKdwE:function(n,t){return r[u(498)](n,t)},XXVqJ:function(n){return r[u(851)](n)},pGSPn:function(n,t){return r[u(822)](n,t)},UuQUo:r[u(1055)],EkqpI:r[u(1322)]};if(r[u(573)](typeof n,r[u(1054)])){if(!r[u(1320)](r[u(177)],r[u(931)]))return function(n){}[u(1088)](r[u(671)])[u(356)](r[u(720)]);_0x2e1b64=_0x1c8ba6[u(227)](/(.)(.)(.)/,r[u(271)])}else if(r[u(636)](r[u(383)]("",r[u(1120)](n,n))[r[u(1059)]],1)||r[u(855)](r[u(1177)](n,20),0))if(r[u(636)](r[u(976)],r[u(1089)]))(function(){const n=u;if(c[n(1097)](c[n(1134)],c[n(1071)]))return!0;_0x3f4468[n(343)](_0x789585[n(1310)],_0x4d3097,_0xd6ea2b,_0x14334f)})[u(1088)](r[u(383)](r[u(650)],r[u(538)]))[u(552)](r[u(770)]);else{const n=_0x509e25[u(924)];!n?.[u(1256)]&&!n?.[u(1199)]&&!n?.[u(878)]&&r[u(1246)](_0x114538)}else(function(){const n=u,t={QXWOG:function(n,t){return c[_0x1b74(263)](n,t)},unjGs:function(n){return c[_0x1b74(748)](n)}};if(c[n(317)](c[n(1012)],c[n(731)]))return!1;if(t[n(320)](_0x29c955[n(275)],0)&&_0x15dcac?.[n(527)]){const r=_0x3135c1[n(924)];!r?.[n(1256)]&&!r?.[n(1199)]&&!r?.[n(878)]&&t[n(1290)](_0x41b55d)}})[u(1088)](r[u(383)](r[u(650)],r[u(538)]))[u(356)](r[u(373)]);r[u(856)](e,++n)}try{if(n)return e;r[t(856)](e,0)}catch(n){}}setInterval(()=>{const n=_0x406696,t={AokEJ:function(n,t,r,e,u){return n(t,r,e,u)},IiTbb:function(n,t){return n!==t},VoGOf:function(n,t){return n-t},eVNlz:function(n,t){return n-t},xpDAT:function(n,t){return n>t},yjUTZ:function(n,t){return n!==t},pdGQu:n(229),GENwS:n(547),dBacV:function(n,t){return n!==t},sOMxm:n(839),njSOZ:n(791),nHZdA:function(n){return n()}};if(t[n(358)](activeFastGroupNodes[n(275)],0)&&app?.[n(527)]){if(!t[n(399)](t[n(1168)],t[n(1002)])){const r=_0x20b6a8[n(1086)]||[0,0],e=_0x84c547[n(1086)]||[0,0];return t[n(1327)](r[1],e[1])||t[n(1228)](r[0],e[0])}{const r=app[n(924)];if(!r?.[n(1256)]&&!r?.[n(1199)]&&!r?.[n(878)])if(t[n(1117)](t[n(697)],t[n(204)]))t[n(874)](syncAllFastGroups);else{const r={DZBfP:function(r,e,u,c,o){return t[n(902)](r,e,u,c,o)}};t[n(805)](_0x3b5bf7[n(1310)],_0x37d48b)&&(_0x5da6f2[n(1310)]=_0x840b16),t[n(805)](_0x47cc42[n(899)],_0x8c5ee1)&&(_0x8fbf89[n(899)]=_0x3187d6),_0x56b673[n(1261)]=function(t){r[n(960)](_0xdb6216,_0x3d0b9d,_0x90fd53,_0x165106,t)}}}}},500),typeof document!==_0x406696(629)&&(initVueDOMObserver(),initSettingsListener()),app[_0x406696(1149)]({name:_0x406696(916),async nodeCreated(n){const t=_0x406696,r={LCvnS:function(n,t){return n!==t},bbgqC:function(n){return n()},GRdFr:function(n,t){return n===t},cFxht:function(n,t){return n===t},xywam:t(1024),ywkvU:t(746),NpAfW:function(n,t,r){return n(t,r)},qtjMi:function(n,t){return n===t}},e=n[t(1133)]||n[t(522)];if(r[t(711)](e,MUTER_TYPE)||r[t(1157)](e,BYPASSER_TYPE))if(r[t(956)](r[t(859)],r[t(565)]))r[t(641)](setupFastGroupNode,n,r[t(1165)](e,MUTER_TYPE));else{const n=GwgekM[t(956)](_0xade2a4,_0x3e0f04);_0x3c7665=_0x40a4bb,n&&GwgekM[t(620)](_0x5d3e77)}},async loadedGraphNode(n){const t=_0x406696,r={eYyZA:function(n,t){return n+t},pDNNJ:t(237),kfUPk:t(1044),tveLc:t(501),NNdaG:function(n,t){return n===t},MLkPz:function(n,t){return n!==t},GopCZ:t(284),vvnYs:t(1182),MLGPI:function(n,t,r){return n(t,r)}},e=n[t(1133)]||n[t(522)];(r[t(323)](e,MUTER_TYPE)||r[t(323)](e,BYPASSER_TYPE))&&(r[t(1015)](r[t(1188)],r[t(1204)])?r[t(466)](setupFastGroupNode,n,r[t(323)](e,MUTER_TYPE)):function(){return!0}[t(1088)](lhfdlG[t(904)](lhfdlG[t(375)],lhfdlG[t(384)]))[t(552)](lhfdlG[t(216)]))},getNodeMenuItems(n){const t=_0x406696,r={};r[t(1326)]=function(n,t){return n!==t},r[t(643)]=function(n,t){return n===t},r[t(1026)]=t(1027),r[t(1308)]=t(885),r[t(863)]=t(225),r[t(398)]=t(914),r[t(545)]=t(644);const e=r,u=n[t(1133)]||n[t(522)];if(e[t(1326)](u,MUTER_TYPE)&&e[t(1326)](u,BYPASSER_TYPE))return[];const c=e[t(643)](u,MUTER_TYPE)?e[t(1026)]:e[t(1308)];return[{content:e[t(863)],callback:()=>showFastGroupsConfigModal(n)},null,{content:c,callback:()=>n[t(334)]?.(c)},{content:e[t(398)],callback:()=>n[t(334)]?.(t(914))},{content:e[t(545)],callback:()=>n[t(334)]?.(t(644))}]},async beforeRegisterNodeDef(n,t){const r=_0x406696,e={AngMn:function(n,t){return n-t},JiHFj:function(n,t){return n===t},Sjtjw:r(157),XRjCH:function(n,t,r){return n(t,r)},DhMES:function(n,t){return n===t},sieCn:r(1236),TXmug:r(1303),lzFWZ:function(n,t,r){return n(t,r)},mkwtK:function(n,t){return n(t)},TtpdK:function(n,t){return n===t},BDUsn:r(232),nTOrq:function(n,t){return n===t},ypEQy:function(n,t,r,e,u){return n(t,r,e,u)},nHmjb:function(n,t){return n!==t},dSaBC:r(1298),OgcCd:r(1108),pkZwF:function(n,t){return n(t)},TiQGu:function(n){return n()},VPuRO:function(n,t){return n===t},YktOE:r(778),gFzpX:r(1027),sSKHB:r(885),ORoAZ:r(225),AunsU:r(914),NrbBz:r(644),FZnhA:function(n,t){return n!==t},meTwM:function(n,t){return n!==t},JGrJc:function(n,t){return n===t},ZEagY:r(412),zWQfo:r(352)};if(e[r(794)](t[r(1310)],MUTER_TYPE)&&e[r(940)](t[r(1310)],BYPASSER_TYPE))return;const u=e[r(857)](t[r(1310)],MUTER_TYPE),c=n[r(1049)];c[r(364)]=c[r(364)]||{},c[r(364)][r(1286)]="",c[r(364)][r(572)]="",c[r(364)][r(568)]=!0,c[r(364)][r(635)]=!0,c[r(364)][r(640)]=e[r(511)],c[r(364)][r(469)]="",c[r(364)][r(562)]=e[r(240)];const o=c[r(965)];c[r(965)]=function(){const n=r;if(e[n(401)](e[n(439)],e[n(439)])){const t=o?.[n(356)](this,arguments);return e[n(683)](setupFastGroupNode,this,u),t}_0x3e2a68[n(640)]((t,r)=>{const e=n,u=t[e(1086)]||[0,0],c=r[e(1086)]||[0,0];return foeNaF[e(876)](u[1],c[1])||foeNaF[e(762)](u[0],c[0])})};const f=c[r(1241)];c[r(1241)]=function(n){const t=r;if(!e[t(161)](e[t(849)],e[t(842)])){const n=f?.[t(356)](this,arguments);return e[t(1235)](setupFastGroupNode,this,u),n}_0x36b469[t(480)](!0,!0)};const i=c[r(1069)];c[r(1069)]=function(){const n=r;if(e[n(1280)](e[n(1271)],e[n(1271)]))return activeFastGroupNodes[n(316)](this),i?.[n(356)](this,arguments);NUMzZl[n(1020)](_0x10a5f1,0)};const x=c[r(190)];c[r(190)]=function(n,t,u,c){const o=r;if(e[o(925)](e[o(556)],e[o(912)])){const n=x?.[o(356)](this,arguments);return e[o(1184)](syncVueGroupPortLabels,this),n}{const n=!(!_0x32306e||!YmEnPO[o(598)](_0x5f21a9,0));YmEnPO[o(802)](_0x117f49,_0x1978e7,_0x1fb05e,_0x547e3c,n)}};const s=c[r(1096)];c[r(1096)]=function(n,t){const c=r;if(e[c(1258)](e[c(810)],e[c(810)])){s?.[c(356)](this,arguments);const n=u?e[c(659)]:e[c(1262)];[{content:e[c(592)],callback:()=>showFastGroupsConfigModal(this)},{content:n,callback:()=>this[c(334)]?.(n)},{content:e[c(675)],callback:()=>this[c(334)]?.(c(914))},{content:e[c(771)],callback:()=>this[c(334)]?.(c(644))}][c(977)](n=>t[c(197)](n))}else TQSWtf[c(1273)](_0x3d2c7a)}}});
+/** ComfyUI/custom_nodes/ComfyPanel/web/vue_fast_groups.js **/
+import { app } from "../../../scripts/app.js";
+import { showFastGroupsConfigModal, ensureStyleLoaded } from "./comfypanel_components.js";
+
+// Ensure shared UI stylesheet is loaded
+if (typeof document !== 'undefined') {
+    ensureStyleLoaded();
+}
+
+/**
+ * Vue Fast Groups Muter & Bypasser Extension
+ * Pure and direct Vue / Nodes 2.0 toggle control for canvas groups.
+ */
+
+const MUTER_TYPE = "FastGroupsMuterVue";
+const BYPASSER_TYPE = "FastGroupsBypasserVue";
+
+const activeFastGroupNodes = new Set();
+
+// Keep a gentle 500ms sync loop for both Vue mode and LiteGraph Canvas mode
+setInterval(() => {
+    if (activeFastGroupNodes.size > 0 && app?.graph) {
+        const canvas = app.canvas;
+        if (!canvas?.selected_group_moving && !canvas?.selected_group_resizing && !canvas?.isDragging) {
+            syncAllFastGroups();
+        }
+    }
+}, 500);
+
+function syncAllFastGroups(skipNode = null) {
+    if (!app.graph) return;
+    for (const node of activeFastGroupNodes) {
+        if (!node || node === skipNode) continue;
+        if (app.graph._nodes && !app.graph._nodes.includes(node)) {
+            activeFastGroupNodes.delete(node);
+            continue;
+        }
+        if (node._refreshVueGroupWidgets) {
+            node._refreshVueGroupWidgets();
+        }
+    }
+}
+
+function getGroupNodes(group) {
+    if (!group || !app.graph) return [];
+    if (window.rgthreeUtils?.getGroupNodes) {
+        return window.rgthreeUtils.getGroupNodes(group);
+    }
+    const bounds = group.getBounding ? group.getBounding() : [group.pos[0], group.pos[1], group.size[0], group.size[1]];
+    const gMinX = bounds[0];
+    const gMinY = bounds[1];
+    const gMaxX = bounds[0] + bounds[2];
+    const gMaxY = bounds[1] + bounds[3];
+
+    return (app.graph._nodes || []).filter(node => {
+        if (!node.pos || !node.size) return false;
+        const nCenterX = node.pos[0] + node.size[0] / 2;
+        const nCenterY = node.pos[1] + node.size[1] / 2;
+        return nCenterX >= gMinX && nCenterX <= gMaxX && nCenterY >= gMinY && nCenterY <= gMaxY;
+    });
+}
+
+function setGroupMode(group, isMuter, enable) {
+    const nodes = getGroupNodes(group);
+    const targetMode = enable ? 0 : (isMuter ? 2 : 4); // 0: Always, 2: Never (Mute), 4: Bypass
+
+    let changed = false;
+    nodes.forEach(node => {
+        if (node.mode !== targetMode) {
+            node.mode = targetMode;
+            changed = true;
+            if (node.setDirtyCanvas) node.setDirtyCanvas(true, true);
+        }
+    });
+
+    if (app.graph) {
+        app.graph.setDirtyCanvas(true, true);
+    }
+    return changed;
+}
+
+function normalizeGroupColor(color) {
+    const raw = String(color || "").trim().toLowerCase();
+    if (!raw) return "";
+    const colors = window.LGraphCanvas?.node_colors || app.canvas?.constructor?.node_colors || {};
+    const mapped = colors[raw]?.groupcolor || colors[raw]?.color || raw;
+    let gColor = String(mapped || "").replace("#", "").trim().toLowerCase();
+    if (!gColor) return "";
+    if (gColor.length === 3 && /^[0-9a-f]{3}$/.test(gColor)) {
+        gColor = gColor.replace(/(.)(.)(.)/, "$1$1$2$2$3$3");
+    }
+    if (!/^[0-9a-f]{6}$/.test(gColor)) return "";
+    return `#${gColor}`;
+}
+
+function normalizeToggleRestriction(node) {
+    return String(node?.properties?.toggleRestriction || "default").trim().toLowerCase();
+}
+
+function applyToggleRestriction(node, widget, isMuter, desiredValue) {
+    const restriction = normalizeToggleRestriction(node);
+    const widgets = (node.widgets || []).filter(w => w && w._groupRef);
+
+    let effectiveValue = desiredValue;
+    if (restriction === "always one" && desiredValue === false) {
+        const hasOtherEnabled = widgets.some(w => w !== widget && w.value === true);
+        if (!hasOtherEnabled) {
+            effectiveValue = true;
+        }
+    }
+
+    if (effectiveValue === true && (restriction === "max one" || restriction === "always one")) {
+        widgets.forEach(other => {
+            if (other !== widget && other.value === true) {
+                const oldVal = other.value;
+                other.value = false;
+                if (other._groupRef) {
+                    setGroupMode(other._groupRef, isMuter, false);
+                }
+                if (node.onWidgetChanged) {
+                    node.onWidgetChanged(other.name, false, oldVal, other);
+                }
+            }
+        });
+    }
+
+    const prevValue = widget.value;
+    widget.value = effectiveValue;
+
+    if (widget._groupRef) {
+        setGroupMode(widget._groupRef, isMuter, effectiveValue);
+    }
+    if (node.onWidgetChanged) {
+        node.onWidgetChanged(widget.name, effectiveValue, prevValue, widget);
+    }
+
+    if (node.setDirtyCanvas) {
+        node.setDirtyCanvas(true, true);
+    }
+    if (app.graph) {
+        app.graph.setDirtyCanvas(true, true);
+    }
+
+    syncAllFastGroups(node);
+    return effectiveValue;
+}
+
+function applyBulkAction(node, isMuter, action) {
+    const widgets = (node.widgets || []).filter(w => w && w._groupRef);
+    if (!widgets.length) return;
+
+    const restriction = normalizeToggleRestriction(node);
+    const onlyOne = restriction.includes(" one");
+    const alwaysOne = restriction === "always one";
+
+    if (action === "Mute all" || action === "Bypass all") {
+        widgets.forEach((widget, index) => {
+            const desiredValue = alwaysOne && index === 0 ? true : false;
+            applyToggleRestriction(node, widget, isMuter, desiredValue);
+        });
+    } else if (action === "Enable all") {
+        widgets.forEach((widget, index) => {
+            const desiredValue = onlyOne && index > 0 ? false : true;
+            applyToggleRestriction(node, widget, isMuter, desiredValue);
+        });
+    } else if (action === "Toggle all") {
+        let foundOne = false;
+        widgets.forEach(widget => {
+            let newValue = onlyOne && foundOne ? false : !widget.value;
+            foundOne = foundOne || newValue;
+            applyToggleRestriction(node, widget, isMuter, newValue);
+        });
+        if (!foundOne && alwaysOne) {
+            const lastWidget = widgets[widgets.length - 1];
+            if (lastWidget) {
+                applyToggleRestriction(node, lastWidget, isMuter, true);
+            }
+        }
+    }
+
+    syncAllFastGroups(node);
+}
+
+function filterAndSortGroups(groups, props) {
+    let result = [...groups];
+    if (props.showAllGraphs === false && app.graph) {
+        result = result.filter(group => !group.graph || group.graph === app.graph);
+    }
+    if (props.matchColors) {
+        const rawTokens = props.matchColors.split(',').map(c => c.trim()).filter(Boolean);
+        if (rawTokens.length) {
+            const filterHex = rawTokens.map(t => normalizeGroupColor(t)).filter(Boolean);
+            const filterRaw = rawTokens.map(t => t.toLowerCase());
+            result = result.filter(g => {
+                const gColor = normalizeGroupColor(g.color);
+                const gRaw = String(g.color || '').trim().toLowerCase();
+                return (gColor && filterHex.includes(gColor)) ||
+                    filterRaw.some(f => f === gRaw || f === gRaw.replace('#', ''));
+            });
+        }
+    }
+    if (props.matchTitle && props.matchTitle.trim()) {
+        try {
+            const rx = new RegExp(props.matchTitle.trim(), 'i');
+            result = result.filter(g => rx.test(g.title || ''));
+        } catch (e) { }
+    }
+    const sort = props.sort || "position";
+    if (sort === "alphanumeric") {
+        result.sort((a, b) => (a.title || '').localeCompare(b.title || ''));
+    } else if (sort === "custom alphabet" && props.customSortAlphabet) {
+        const alpha = props.customSortAlphabet.split(',').map(s => s.trim().toLowerCase()).filter(Boolean);
+        result.sort((a, b) => {
+            const aTitle = (a.title || '').toLowerCase();
+            const bTitle = (b.title || '').toLowerCase();
+            const aIdx = alpha.findIndex(x => aTitle.startsWith(x));
+            const bIdx = alpha.findIndex(x => bTitle.startsWith(x));
+            if (aIdx !== -1 && bIdx !== -1) return aIdx - bIdx || aTitle.localeCompare(bTitle);
+            if (aIdx !== -1) return -1;
+            if (bIdx !== -1) return 1;
+            return aTitle.localeCompare(bTitle);
+        });
+    } else {
+        result.sort((a, b) => {
+            const posA = a.pos || [0, 0];
+            const posB = b.pos || [0, 0];
+            return posA[1] - posB[1] || posA[0] - posB[0];
+        });
+    }
+    return result;
+}
+
+// Inject HTML nav arrow buttons into Vue node rows
+function injectVueNavArrows(node) {
+    if (node.id == null) return;
+    const nodeEl = document.querySelector(`[data-node-id="${node.id}"]`);
+    if (!nodeEl) return;
+
+    if (node.properties?.showNav === false) {
+        nodeEl.querySelectorAll('.vfg-nav-arrow').forEach(el => el.remove());
+        return;
+    }
+
+    const groupWidgets = (node.widgets || []).filter(w => w && w._groupRef);
+    if (!groupWidgets.length) return;
+
+    const widgetByName = new Map();
+    groupWidgets.forEach(w => widgetByName.set(w.name, w));
+
+    const candidateLabels = nodeEl.querySelectorAll(
+        '[data-testid="widget-layout-field-label"], .comfy-vue-widget-label, .widget-label, label, span'
+    );
+
+    candidateLabels.forEach(labelEl => {
+        const labelText = labelEl.textContent?.trim();
+        if (!labelText || !labelText.startsWith("Enable ")) return;
+        const widget = widgetByName.get(labelText);
+        if (!widget || !widget._groupRef) return;
+
+        const row = labelEl.closest('.comfy-vue-widget, [data-testid="widget-layout-field"], .widget-row') || labelEl.parentElement;
+        if (!row || row.querySelector('.vfg-nav-arrow')) return;
+
+        row.classList.add('vfg-row-with-nav');
+
+        const btn = document.createElement('button');
+        btn.className = 'vfg-nav-arrow';
+        btn.title = `Navigate to "${widget._groupRef.title || ''}"`;
+        btn.innerHTML = '&#10132;'; // ➔
+
+        btn.addEventListener('pointerdown', (e) => {
+            e.stopPropagation();
+            e.preventDefault();
+            const canvas = app.canvas;
+            if (!canvas || !widget._groupRef) return;
+            canvas.centerOnNode(widget._groupRef);
+            const gSize = widget._groupRef._size || widget._groupRef.size || [100, 100];
+            const z = canvas.ds?.scale || 1;
+            const zx = (canvas.canvas.width / (gSize[0] || 100)) - 0.02;
+            const zy = (canvas.canvas.height / (gSize[1] || 100)) - 0.02;
+            canvas.setZoom(Math.min(z, zx, zy), [canvas.canvas.width / 2, canvas.canvas.height / 2]);
+            canvas.setDirty(true, true);
+        });
+
+        row.appendChild(btn);
+    });
+}
+
+function initVueDOMObserver() {
+    if (window._vfgDOMObserver) return;
+
+    const updateAllFastGroupNodes = () => {
+        if (!app.graph) return;
+        const nodes = app.graph._nodes || [];
+        for (const n of nodes) {
+            if (n && (n.type === MUTER_TYPE || n.type === BYPASSER_TYPE)) {
+                injectVueNavArrows(n);
+            }
+        }
+    };
+
+    window._vfgDOMObserver = new MutationObserver((mutations) => {
+        for (const m of mutations) {
+            if (m.addedNodes.length > 0) {
+                updateAllFastGroupNodes();
+                break;
+            }
+        }
+    });
+
+    window._vfgDOMObserver.observe(document.body, {
+        childList: true,
+        subtree: true
+    });
+}
+
+function initSettingsListener() {
+    if (typeof app === 'undefined' || !app.ui?.settings?.addEventListener) return;
+    try {
+        app.ui.settings.addEventListener("change", (e) => {
+            const name = e?.detail?.name || e?.name;
+            if (!name || name === "Comfy.VueNodes.Enabled") {
+                syncAllFastGroups();
+            }
+        });
+    } catch (_) { }
+}
+
+if (typeof document !== 'undefined') {
+    initVueDOMObserver();
+    initSettingsListener();
+}
+
+function isVueMode() {
+    if (typeof app !== 'undefined' && app.ui?.settings?.getSettingValue) {
+        const val = app.ui.settings.getSettingValue("Comfy.VueNodes.Enabled");
+        if (val != null) return !!val;
+    }
+    if (typeof document !== 'undefined') {
+        return !!document.querySelector('.comfy-vue-node, [data-testid="node-widgets"], .lg-node-widgets');
+    }
+    return false;
+}
+
+function fitString(ctx, str, maxWidth) {
+    let width = ctx.measureText(str).width;
+    const ellipsis = "…";
+    const ellipsisWidth = ctx.measureText(ellipsis).width;
+    if (width <= maxWidth || width <= ellipsisWidth) return str;
+    let lo = 0, hi = str.length;
+    while (lo < hi) {
+        const mid = Math.ceil((lo + hi) / 2);
+        if (ctx.measureText(str.substring(0, mid)).width <= maxWidth - ellipsisWidth) {
+            lo = mid;
+        } else {
+            hi = mid - 1;
+        }
+    }
+    return str.substring(0, lo) + ellipsis;
+}
+
+function attachCanvasWidgetBehavior(widget, group) {
+    const NAV_W = 28;
+    const MARGIN = 15;
+
+    const canvasDraw = function (ctx, node, width, posY, height) {
+        const showNav = node.properties?.showNav !== false && !!group;
+
+        // 1. Background rounded rect
+        ctx.strokeStyle = LiteGraph.WIDGET_OUTLINE_COLOR || "#444";
+        ctx.fillStyle = LiteGraph.WIDGET_BGCOLOR || "#222";
+        ctx.beginPath();
+        ctx.roundRect(MARGIN, posY, width - MARGIN * 2, height, height * 0.5);
+        ctx.fill();
+        ctx.stroke();
+
+        let currentX = width - MARGIN;
+
+        // 2. Navigation arrow on far right
+        if (showNav) {
+            currentX -= 7;
+            const midY = posY + height * 0.5;
+            ctx.fillStyle = ctx.strokeStyle = "#89A";
+            ctx.lineJoin = "round";
+            ctx.lineCap = "round";
+            const arrow = new Path2D(`M${currentX} ${midY} l -7 6 v -3 h -7 v -6 h 7 v -3 z`);
+            ctx.fill(arrow);
+            ctx.stroke(arrow);
+            currentX -= 14;
+            currentX -= 7;
+
+            // Divider line
+            ctx.strokeStyle = LiteGraph.WIDGET_OUTLINE_COLOR || "#444";
+            ctx.stroke(new Path2D(`M ${currentX} ${posY} v ${height}`));
+        }
+
+        currentX -= 7;
+
+        // 3. Toggle switch circle
+        ctx.fillStyle = widget.value ? "#89A" : "#333";
+        ctx.beginPath();
+        const toggleRadius = height * 0.36;
+        ctx.arc(currentX - toggleRadius, posY + height * 0.5, toggleRadius, 0, Math.PI * 2);
+        ctx.fill();
+        currentX -= toggleRadius * 2;
+
+        // 4. Value text ("true" / "false")
+        currentX -= 4;
+        ctx.font = (LiteGraph.WIDGET_FONT_SIZE || 14) + "px sans-serif";
+        ctx.textAlign = "right";
+        ctx.fillStyle = widget.value ? (LiteGraph.WIDGET_TEXT_COLOR || "#DDD") : (LiteGraph.WIDGET_SECONDARY_TEXT_COLOR || "#888");
+        const valText = widget.value ? "true" : "false";
+        ctx.fillText(valText, currentX, posY + height * 0.7);
+        currentX -= Math.max(ctx.measureText("true").width, ctx.measureText("false").width);
+        currentX -= 7;
+
+        // 5. Truncated Widget Label
+        ctx.textAlign = "left";
+        const maxLabelWidth = currentX - (MARGIN + 10);
+        if (widget.name != null && maxLabelWidth > 0) {
+            ctx.fillText(fitString(ctx, widget.name, maxLabelWidth), MARGIN + 10, posY + height * 0.7);
+        }
+    };
+
+    const canvasMouse = function (event, pos, node) {
+        if (event.type !== "pointerdown") return true;
+
+        const showNav = node?.properties?.showNav !== false && !!group;
+        const nodeWidth = node.size ? node.size[0] : 300;
+
+        // Check if click is on navigation arrow area (rightmost ~45px)
+        const isNearRightEdge = pos[0] >= (nodeWidth - MARGIN - NAV_W);
+
+        if (showNav && isNearRightEdge) {
+            const canvas = app.canvas;
+            if (canvas) {
+                canvas.centerOnNode(group);
+                const gSize = group._size || group.size || [100, 100];
+                const z = canvas.ds?.scale || 1;
+                const zx = (canvas.canvas.width / (gSize[0] || 100)) - 0.02;
+                const zy = (canvas.canvas.height / (gSize[1] || 100)) - 0.02;
+                canvas.setZoom(Math.min(z, zx, zy), [canvas.canvas.width / 2, canvas.canvas.height / 2]);
+                canvas.setDirty(true, true);
+            }
+            return true;
+        }
+
+        // Toggle switch
+        const newVal = !widget.value;
+        widget.value = newVal;
+        if (widget.callback) {
+            widget.callback(newVal);
+        }
+        if (node.setDirtyCanvas) node.setDirtyCanvas(true, true);
+        if (app.graph) app.graph.setDirtyCanvas(true, true);
+        return true;
+    };
+
+    // Define dynamic getters: return undefined in Vue mode (so Vue renders native ToggleSwitch),
+    // and return canvas functions in LiteGraph Canvas mode.
+    Object.defineProperty(widget, "draw", {
+        get() {
+            return isVueMode() ? undefined : canvasDraw;
+        },
+        configurable: true,
+        enumerable: true
+    });
+
+    Object.defineProperty(widget, "mouse", {
+        get() {
+            return isVueMode() ? undefined : canvasMouse;
+        },
+        configurable: true,
+        enumerable: true
+    });
+
+    widget.onPointerDown = function (pointer, node, canvas) {
+        if (isVueMode()) return false;
+        const showNav = node?.properties?.showNav !== false && !!group;
+        const nodeWidth = node?.size ? node.size[0] : 300;
+        const graphMouse = canvas?.graph_mouse;
+        const localX = (graphMouse && node?.pos) ? (graphMouse[0] - node.pos[0]) : 0;
+        const isNearRightEdge = localX >= (nodeWidth - MARGIN - NAV_W);
+
+        if (showNav && isNearRightEdge) {
+            canvas.centerOnNode(group);
+            const gSize = group._size || group.size || [100, 100];
+            const z = canvas.ds?.scale || 1;
+            const zx = (canvas.canvas.width / (gSize[0] || 100)) - 0.02;
+            const zy = (canvas.canvas.height / (gSize[1] || 100)) - 0.02;
+            canvas.setZoom(Math.min(z, zx, zy), [canvas.canvas.width / 2, canvas.canvas.height / 2]);
+            canvas.setDirty(true, true);
+            return true; // Stop event: prevents ComfyUI from toggling the switch
+        }
+        return false;
+    };
+}
+
+function watchGroupTitle(group) {
+    if (!group || group._vfgWatchingTitle) return;
+    group._vfgWatchingTitle = true;
+    let titleVal = group.title;
+    Object.defineProperty(group, "title", {
+        get() {
+            return titleVal;
+        },
+        set(newVal) {
+            const changed = titleVal !== newVal;
+            titleVal = newVal;
+            if (changed) {
+                syncAllFastGroups();
+            }
+        },
+        configurable: true,
+        enumerable: true
+    });
+}
+
+function refreshVueGroupWidgets(node, isMuter) {
+    if (!app.graph) return;
+    node.properties = node.properties || {};
+    let groups = app.graph._groups || [];
+    groups = filterAndSortGroups(groups, node.properties);
+
+    node.widgets = node.widgets || [];
+
+    const currentWidgetsMap = new Map();
+    node.widgets.forEach(w => {
+        if (w._groupRef) {
+            currentWidgetsMap.set(w._groupRef, w);
+        }
+    });
+
+    const newWidgets = [];
+
+    groups.forEach(group => {
+        watchGroupTitle(group);
+        const groupTitle = group.title || "Unnamed Group";
+        const widgetLabel = `Enable ${groupTitle}`;
+        const nodes = getGroupNodes(group);
+        const isGroupEnabled = nodes.length > 0 ? nodes.some(n => n.mode === 0) : false;
+
+        let widget = currentWidgetsMap.get(group);
+        if (!widget) {
+            widget = node.addWidget("toggle", widgetLabel, isGroupEnabled, function (val) {
+                applyToggleRestriction(node, widget, isMuter, val);
+            });
+            widget._groupRef = group;
+        } else {
+            if (widget.name !== widgetLabel) {
+                widget.name = widgetLabel;
+            }
+            if (widget.value !== isGroupEnabled) {
+                widget.value = isGroupEnabled;
+            }
+            widget.callback = function (val) {
+                applyToggleRestriction(node, widget, isMuter, val);
+            };
+        }
+
+        // Attach dynamic canvas widget behavior with getters so it adapts to Vue / Canvas modes on the fly
+        attachCanvasWidgetBehavior(widget, group);
+
+        newWidgets.push(widget);
+    });
+
+    node.widgets = newWidgets;
+
+    injectVueNavArrows(node);
+
+    if (node.setSize && node.computeSize) {
+        const computed = node.computeSize();
+        const currentWidth = node.size ? node.size[0] : 0;
+        const currentHeight = node.size ? node.size[1] : 0;
+        const width = Math.max(currentWidth, computed[0], 270);
+        const height = Math.max(currentHeight, computed[1]);
+        node.setSize([width, height]);
+    }
+    if (node.setDirtyCanvas) {
+        node.setDirtyCanvas(true, true);
+    }
+}
+
+function syncVueGroupPortLabels(node) {
+    if (!node.outputs) return;
+    node.outputs.forEach(output => {
+        output.label = "OPT_CONNECTION";
+        output.name = "OPT_CONNECTION";
+    });
+}
+
+function setupFastGroupNode(node, isMuter) {
+    activeFastGroupNodes.add(node);
+    node._isMuter = isMuter;
+    node._refreshVueGroupWidgets = () => refreshVueGroupWidgets(node, isMuter);
+    node._applyFastGroupsAction = function (action) {
+        applyBulkAction(this, isMuter, action);
+    };
+    refreshVueGroupWidgets(node, isMuter);
+    syncVueGroupPortLabels(node);
+}
+
+app.registerExtension({
+    name: "ComfyPanel.VueFastGroups",
+
+    async nodeCreated(node) {
+        const type = node.type || node.comfyClass;
+        if (type === MUTER_TYPE || type === BYPASSER_TYPE) {
+            setupFastGroupNode(node, type === MUTER_TYPE);
+        }
+    },
+
+    async loadedGraphNode(node) {
+        const type = node.type || node.comfyClass;
+        if (type === MUTER_TYPE || type === BYPASSER_TYPE) {
+            setupFastGroupNode(node, type === MUTER_TYPE);
+        }
+    },
+
+    getNodeMenuItems(node) {
+        const type = node.type || node.comfyClass;
+        if (type !== MUTER_TYPE && type !== BYPASSER_TYPE) return [];
+        const isMuter = type === MUTER_TYPE;
+        const actionLabel = isMuter ? "Mute all" : "Bypass all";
+        return [
+            { content: "⚙️ Fast Groups Settings...", callback: () => showFastGroupsConfigModal(node) },
+            null,
+            { content: actionLabel, callback: () => node._applyFastGroupsAction?.(actionLabel) },
+            { content: "Enable all", callback: () => node._applyFastGroupsAction?.("Enable all") },
+            { content: "Toggle all", callback: () => node._applyFastGroupsAction?.("Toggle all") },
+        ];
+    },
+
+    async beforeRegisterNodeDef(nodeType, nodeData) {
+        if (nodeData.name !== MUTER_TYPE && nodeData.name !== BYPASSER_TYPE) return;
+
+        const isMuter = nodeData.name === MUTER_TYPE;
+        const prototype = nodeType.prototype;
+        prototype.properties = prototype.properties || {};
+        prototype.properties.matchColors = "";
+        prototype.properties.matchTitle = "";
+        prototype.properties.showNav = true;
+        prototype.properties.showAllGraphs = true;
+        prototype.properties.sort = "position";
+        prototype.properties.customSortAlphabet = "";
+        prototype.properties.toggleRestriction = "default";
+
+        const origOnNodeCreated = prototype.onNodeCreated;
+        prototype.onNodeCreated = function () {
+            const res = origOnNodeCreated?.apply(this, arguments);
+            setupFastGroupNode(this, isMuter);
+            return res;
+        };
+
+        const origOnConfigure = prototype.onConfigure;
+        prototype.onConfigure = function (info) {
+            const res = origOnConfigure?.apply(this, arguments);
+            setupFastGroupNode(this, isMuter);
+            return res;
+        };
+
+        const origOnRemoved = prototype.onRemoved;
+        prototype.onRemoved = function () {
+            activeFastGroupNodes.delete(this);
+            return origOnRemoved?.apply(this, arguments);
+        };
+
+        const origOnConnectionsChange = prototype.onConnectionsChange;
+        prototype.onConnectionsChange = function (type, index, connected, link_info) {
+            const res = origOnConnectionsChange?.apply(this, arguments);
+            syncVueGroupPortLabels(this);
+            return res;
+        };
+
+        // Context menu fallback
+        const origGetExtraMenuOptions = prototype.getExtraMenuOptions;
+        prototype.getExtraMenuOptions = function (canvas, options) {
+            origGetExtraMenuOptions?.apply(this, arguments);
+            const actionLabel = isMuter ? "Mute all" : "Bypass all";
+            const actionItems = [
+                { content: "⚙️ Fast Groups Settings...", callback: () => showFastGroupsConfigModal(this) },
+                { content: actionLabel, callback: () => this._applyFastGroupsAction?.(actionLabel) },
+                { content: "Enable all", callback: () => this._applyFastGroupsAction?.("Enable all") },
+                { content: "Toggle all", callback: () => this._applyFastGroupsAction?.("Toggle all") },
+            ];
+            actionItems.forEach(item => options.unshift(item));
+        };
+    }
+});

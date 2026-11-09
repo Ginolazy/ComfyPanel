@@ -82,7 +82,8 @@
             'price_billing_reference': 'Billing Reference',
             'price_calculating': 'Calculating price...',
             'price_label': 'Price',
-            'price_est_prefix': 'Est. ≈ ',
+            'price_est_prefix': 'Est. ≥ ',
+            'price_unit_points': ' credits',
             'price_charged_by_actual_usage': 'Charged by actual usage',
             'price_free': 'Free',
 
@@ -233,6 +234,8 @@
             'log_task_success': 'Task completed successfully!',
             'log_task_failed': 'Task Failed: {error}',
             'log_task_canceled': 'Task was canceled on server.',
+            'log_rh_points_insufficient_fallback': '[RunningHub App] Paid points insufficient (821), automatically retried with Shared API Key.',
+            'rh_no_valid_apikey': 'No valid API Key or Shared API Key found on this account. Please check your account status.',
             'log_task_finished': '■ [100%] Task finished in {duration}s.',
             'log_auto_inserting': 'Auto-inserting result ({mode} mode)...',
             'log_loading_workflow': 'Loading Workflow...',
@@ -480,7 +483,8 @@
             'price_billing_reference': '计费参考',
             'price_calculating': '正在计算价格...',
             'price_label': '价格',
-            'price_est_prefix': '预估 ≈ ',
+            'price_est_prefix': '预估 ≥ ',
+            'price_unit_points': ' 积分',
             'price_charged_by_actual_usage': '按实际使用扣费',
             'price_free': '免费',
 
@@ -632,6 +636,8 @@
             'log_task_success': '任务执行成功！',
             'log_task_failed': '任务失败: {error}',
             'log_task_canceled': '任务在服务器上被取消。',
+            'log_rh_points_insufficient_fallback': '[RunningHub App] 付费积分不足(821)，已自动切换至企业共享 Key 重试',
+            'rh_no_valid_apikey': '当前账号未获取到有效 API Key，请检查账号状态后重试！',
             'log_task_finished': '■ [100%] 任务在 {duration}秒内完成。',
             'log_auto_inserting': '正在自动置回结果 ({mode} 模式)...',
             'log_loading_workflow': '正在加载工作流...',
@@ -803,22 +809,13 @@
     };
 
     /**
-     * Get system language fallback
-     */
-    window.getSystemLanguage = function () {
-        const lang = navigator.language || navigator.userLanguage || 'en';
-        return lang.startsWith('zh') ? 'zh' : 'en';
-    };
-
-    /**
-     * Current language resolver
+     * Current language resolver.
+     * Respects the user's explicit setting; defaults to English when unset or unknown.
      */
     window.getCurrentLang = function () {
-        let lang = state.uiLanguage || 'auto';
-        if (lang === 'auto') {
-            lang = window.getSystemLanguage();
-        }
-        return lang === 'chinese' ? 'zh' : (lang === 'english' ? 'en' : lang);
+        const lang = (window.state && window.state.uiLanguage) || 'english';
+        if (lang === 'chinese') return 'zh';
+        return 'en';
     };
 
     /**

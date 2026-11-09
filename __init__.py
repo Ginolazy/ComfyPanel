@@ -7,7 +7,7 @@ import importlib
 from .modules.utility import comfypanel_api, loader_enhancer
 
 WEB_DIRECTORY = "./web"
-__version__ = "2.4.0"
+__version__ = "2.4.1"
 
 plugin_dir = os.path.dirname(os.path.realpath(__file__))
 py_dir = os.path.join(plugin_dir, "modules")
@@ -18,6 +18,7 @@ NODE_CLASS_MAPPINGS = {
     "AnyPreview": None,
     "AnyPreviewPause": None,
     "AutoMute": None,
+    "isMaskEmptyThreshold": None,
     "MakeAnyList": None,
     "PrimitivePlus": None,
     "SwitchAny": None,

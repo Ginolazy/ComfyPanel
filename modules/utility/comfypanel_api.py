@@ -59,51 +59,24 @@ def _is_allowed_rh_host(base_url: str) -> bool:
     except Exception:
         return False
 
-def _install_comfypanel_cors():
-    if not hasattr(PromptServer, 'instance') or PromptServer.instance is None:
-        return
-    app = getattr(PromptServer.instance, 'app', None)
-    if not app:
-        return
-    for i, mw in enumerate(app.middlewares):
-        if getattr(mw, '__name__', '') == 'origin_only_middleware':
-            _orig = mw
+@web.middleware
+async def _uxp_file_origin_middleware(request: web.Request, handler) -> web.Response:
+    if request.headers.get("Origin") != "file://":
+        return await handler(request)
+    is_ws = request.headers.get("Upgrade", "").lower() == "websocket"
+    actual_handler = request.match_info.handler
+    if is_ws:
+        return await actual_handler(request)
+    if request.method == "OPTIONS":
+        resp = web.Response(status=200)
+        resp.headers["Access-Control-Allow-Methods"] = "GET, POST, OPTIONS"
+        resp.headers["Access-Control-Allow-Headers"] = "Content-Type, Authorization"
+    else:
+        resp = await actual_handler(request)
+    resp.headers["Access-Control-Allow-Origin"] = "file://"
+    return resp
 
-            @web.middleware
-            async def comfypanel_cors_middleware(request: web.Request, handler, _orig=_orig):
-                origin = request.headers.get('Origin', '')
-
-                def _apply_cors(resp):
-                    resp.headers['Access-Control-Allow-Origin'] = origin if origin else '*'
-                    resp.headers['Access-Control-Allow-Credentials'] = 'true'
-                    resp.headers['Access-Control-Allow-Headers'] = 'Content-Type, Authorization'
-                    resp.headers['Access-Control-Allow-Methods'] = 'GET, POST, OPTIONS, PUT, DELETE'
-                    return resp
-
-                is_uxp_or_local = (
-                    not origin
-                    or origin.startswith('file://')
-                    or origin.startswith('plugin-')
-                    or origin.startswith('http://localhost')
-                    or origin.startswith('http://127.0.0.1')
-                    or origin == 'null'
-                )
-
-                if request.method == "OPTIONS":
-                    if is_uxp_or_local:
-                        return _apply_cors(web.Response())
-
-                is_ws = request.headers.get('Upgrade', '').lower() == 'websocket'
-                if is_uxp_or_local or (is_ws and origin.startswith('file://')):
-                    resp = await handler(request)
-                    return _apply_cors(resp)
-
-                return await _orig(request, handler)
-
-            app.middlewares[i] = comfypanel_cors_middleware
-            return
-
-_install_comfypanel_cors()
+PromptServer.instance.app.middlewares.insert(0, _uxp_file_origin_middleware)
 
 def _get_uxp_dir(plugin_root):
     """
@@ -141,6 +114,9 @@ async def upload_from_local_path(request):
 
         if not src_path:
             return web.json_response({"success": False, "error": "filePath is required"}, status=400)
+
+        if src_path.startswith('\\\\') or src_path.startswith('//'):
+            return web.json_response({"success": False, "error": "Access denied: network paths are not allowed"}, status=403)
 
         abs_src = os.path.realpath(src_path)
         if not os.path.isfile(abs_src):
@@ -272,16 +248,21 @@ async def delete_output_file(request):
             return web.json_response({"success": False, "error": "No filename provided"}, status=400)
 
         output_dir = folder_paths.get_output_directory()
-        file_path = os.path.abspath(os.path.join(output_dir, name))
 
-        if not file_path.startswith(os.path.abspath(output_dir)):
+        if (os.path.isabs(name) or name.startswith('\\\\') or name.startswith('//')
+                or '..' in name.replace('\\', '/').split('/')):
+            return web.json_response({"success": False, "error": "Access denied"}, status=403)
+        file_path = os.path.realpath(os.path.join(output_dir, name))
+
+        if not _is_safe_path(file_path, output_dir):
             return web.json_response({"success": False, "error": "Access denied"}, status=403)
 
         if os.path.isfile(file_path):
             os.remove(file_path)
 
             parent_dir = os.path.dirname(file_path)
-            if parent_dir != os.path.abspath(output_dir):
+            real_output_dir = os.path.realpath(output_dir)
+            if parent_dir != real_output_dir:
                 try:
                     if not os.listdir(parent_dir):
                         os.rmdir(parent_dir)
@@ -338,22 +319,24 @@ async def open_user_config(request):
 
             if editor_cmd:
                 try:
-                    subprocess.Popen(editor_cmd, shell=True)
+                    subprocess.Popen(editor_cmd)
                 except Exception:
                     editor_cmd = None
 
             if not editor_cmd:
                 common_paths = [
-                    (os.path.expandvars(r"%LocalAppData%\Programs\Microsoft VS Code\bin\code.cmd"), True),
-                    (os.path.expandvars(r"%ProgramFiles%\Microsoft VS Code\bin\code.cmd"), True),
-                    (os.path.expandvars(r"%ProgramFiles(x86)%\Notepad++\notepad++.exe"), False),
-                    (os.path.expandvars(r"%ProgramFiles%\Notepad++\notepad++.exe"), False),
+                    os.path.expandvars(r"%LocalAppData%\Programs\Microsoft VS Code\bin\code.cmd"),
+                    os.path.expandvars(r"%ProgramFiles%\Microsoft VS Code\bin\code.cmd"),
+                    os.path.expandvars(r"%ProgramFiles(x86)%\Notepad++\notepad++.exe"),
+                    os.path.expandvars(r"%ProgramFiles%\Notepad++\notepad++.exe"),
                 ]
                 opened = False
-                for path, use_shell in common_paths:
+                for path in common_paths:
                     if os.path.exists(path):
                         try:
-                            subprocess.Popen([path, config_path], shell=use_shell)
+
+                            cmd = ["cmd.exe", "/c", path, config_path] if path.endswith(".cmd") else [path, config_path]
+                            subprocess.Popen(cmd)
                             opened = True
                             break
                         except Exception:
@@ -378,23 +361,29 @@ async def open_user_config(request):
 @PromptServer.instance.routes.get("/comfypanel/userdata")
 async def get_userdata_list(request):
     """
-    List files in a specific userdata directory (e.g., /comfypanel/userdata?dir=workflows).
-    Used by the logic bridge to populate the local workflows list.
+    List .json files in a ComfyPanel workflow directory (e.g., /comfypanel/userdata?dir=workflows).
+    Strictly confined to the plugin's own custom/ subdirectory.
     """
     try:
         directory = request.query.get("dir", "workflows")
         recurse = request.query.get("recurse", "false").lower() == "true"
 
-        plugin_root = os.path.dirname(os.path.dirname(os.path.dirname(os.path.realpath(__file__))))
+        norm_dir = directory.replace('\\', '/')
+        if (os.path.isabs(directory) or directory.startswith('\\\\')
+                or directory.startswith('//')
+                or (len(directory) >= 2 and directory[1] == ':')
+                or '..' in norm_dir.split('/')):
+            return web.json_response([], status=403)
 
-        target_dir = folder_paths.get_user_directory() if hasattr(folder_paths, 'get_user_directory') else os.path.join(folder_paths.base_path, "user", "default")
-        target_dir = os.path.join(target_dir, directory)
+        plugin_root = os.path.dirname(os.path.dirname(os.path.dirname(os.path.realpath(__file__))))
+        allowed_base = os.path.realpath(os.path.join(plugin_root, "custom"))
+        target_dir = os.path.realpath(os.path.join(allowed_base, directory))
+
+        if not _is_safe_path(target_dir, allowed_base):
+            return web.json_response([], status=403)
 
         if not os.path.exists(target_dir):
-
-            target_dir = os.path.join(plugin_root, directory)
-            if not os.path.exists(target_dir):
-                return web.json_response([])
+            return web.json_response([])
 
         files = []
         if recurse:
@@ -417,8 +406,9 @@ _CDN_WORKFLOWS_BASE = "https://cdn.jsdelivr.net/gh/Ginolazy/ComfyPanel-defaults@
 @PromptServer.instance.routes.get("/comfypanel/userdata/{filename:.*}")
 async def get_userdata_file(request):
     """
-    Read a specific JSON file from userdata (e.g., /comfypanel/userdata/workflows/my.json).
+    Read a specific JSON file from the plugin's own custom/ directory.
     Built-in workflows under default/workflows/ are served from CDN.
+    Strictly confined to the plugin's own directories; never reads ComfyUI's user folder.
     """
     try:
         path = request.match_info.get("filename", "")
@@ -427,6 +417,13 @@ async def get_userdata_file(request):
 
         if not path:
             return web.json_response({"error": "No filename specified"}, status=400)
+
+        norm_path = path.replace('\\', '/')
+        if (os.path.isabs(path) or path.startswith('\\\\')
+                or path.startswith('//')
+                or (len(path) >= 2 and path[1] == ':')
+                or '..' in norm_path.split('/')):
+            return web.json_response({"error": "Access denied"}, status=403)
 
         if path.startswith("default/workflows/"):
             filename = path[len("default/workflows/"):]
@@ -438,14 +435,10 @@ async def get_userdata_file(request):
 
         plugin_root = os.path.dirname(os.path.dirname(os.path.dirname(os.path.realpath(__file__))))
 
-        user_dir = folder_paths.get_user_directory() if hasattr(folder_paths, 'get_user_directory') else os.path.join(folder_paths.base_path, "user", "default")
-        full_path = os.path.realpath(os.path.join(user_dir, path))
-
-        if not (_is_safe_path(full_path, user_dir) and os.path.isfile(full_path)):
-
-            full_path = os.path.realpath(os.path.join(plugin_root, path))
-            if not (_is_safe_path(full_path, plugin_root) and os.path.isfile(full_path)):
-                return web.json_response({"error": f"File not found or access denied: {path}"}, status=404)
+        allowed_base = os.path.realpath(os.path.join(plugin_root, "custom"))
+        full_path = os.path.realpath(os.path.join(allowed_base, path))
+        if not (_is_safe_path(full_path, allowed_base) and os.path.isfile(full_path)):
+            return web.json_response({"error": f"File not found or access denied: {path}"}, status=404)
 
         with open(full_path, "r", encoding="utf-8") as f:
             data = json.load(f)
@@ -547,7 +540,7 @@ async def runninghub_proxy(request):
             proxy_headers[k] = v
 
         try:
-            async with aiohttp.ClientSession(trust_env=True) as session:
+            async with aiohttp.ClientSession() as session:
                 if method == "POST":
                     async with session.post(url, json=payload, headers=proxy_headers, timeout=30) as resp:
                         try:
@@ -636,14 +629,28 @@ async def runninghub_download_image(request):
         else:
             base_dir = folder_paths.get_output_directory()
 
+        filename = os.path.basename(filename)
+        if not filename:
+            return web.json_response({"success": False, "error": "Invalid filename"}, status=400)
+
+        if subfolder:
+            if (os.path.isabs(subfolder) or subfolder.startswith('\\\\') or subfolder.startswith('//')
+                    or '..' in subfolder.replace('\\', '/').split('/')):
+                return web.json_response({"success": False, "error": "Access denied"}, status=403)
+            subfolder = os.path.basename(subfolder.rstrip('/\\'))
+
         if not subfolder and img_type != "temp":
             subfolder = "comfypanel_results"
 
-        target_dir = os.path.abspath(os.path.join(base_dir, subfolder))
-        os.makedirs(target_dir, exist_ok=True)
-        file_path = os.path.abspath(os.path.join(target_dir, filename))
-        if not file_path.startswith(os.path.abspath(base_dir)):
+        real_base = os.path.realpath(base_dir)
+        target_dir = os.path.realpath(os.path.join(real_base, subfolder)) if subfolder else real_base
+        if not _is_safe_path(target_dir, real_base):
             return web.json_response({"success": False, "error": "Access denied"}, status=403)
+        file_path = os.path.realpath(os.path.join(target_dir, filename))
+        if not _is_safe_path(file_path, real_base):
+            return web.json_response({"success": False, "error": "Access denied"}, status=403)
+
+        os.makedirs(target_dir, exist_ok=True)
 
         headers = {}
         if api_key:
@@ -656,7 +663,8 @@ async def runninghub_download_image(request):
                         with open(file_path, "wb") as f:
                             f.write(data)
                         logging.info(f"[RH] Successfully downloaded {img_type} image to {file_path}")
-                        return web.json_response({"success": True, "localPath": file_path})
+
+                        return web.json_response({"success": True, "filename": filename, "subfolder": subfolder, "type": img_type})
                     else:
                         err_msg = f"Cloud download returned HTTP {resp.status}"
                         logging.error(f"[RH] Download failed: {err_msg}")
@@ -966,7 +974,9 @@ async def runninghub_upload_workflow(request):
         if not _is_safe_path(target_path, workflows_dir):
             return web.json_response({"success": False, "error": "Access denied: destination outside workflows directory"}, status=403)
 
-        file_data = file_field.file.read()
+        file_data = file_field.file.read(10 * 1024 * 1024 + 1)
+        if len(file_data) > 10 * 1024 * 1024:
+            return web.json_response({"success": False, "error": "File too large (max 10 MB)"}, status=413)
         with open(target_path, 'wb') as f:
             f.write(file_data)
 
@@ -982,10 +992,15 @@ _ext_active_workflow = {"name": "", "toolId": "", "alive": False}
 @PromptServer.instance.routes.get("/comfypanel/ws/ext_bridge")
 async def comfypanel_ws_ext_bridge(request):
     global _ext_browser_ws, _ext_uxp_ws, _ext_active_workflow
+
     ws = web.WebSocketResponse(heartbeat=30.0)
     await ws.prepare(request)
 
     role = request.query.get("role", "browser")
+
+    if role == "probe":
+        await ws.close()
+        return ws
 
     if role == "browser":
         _ext_browser_ws = ws

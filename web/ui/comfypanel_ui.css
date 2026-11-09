@@ -256,25 +256,7 @@
 
 
 /* ------ Adapted for ComfyPanel ------ */
-.comfy-menu-button-wrapper,
-.sidebar-item-group>button {
-    width: unset !important;
-}
 
-.p-tree {
-    padding-inline: 10px !important;
-}
-
-.sidebar-content-container {
-    font-size: 12px !important;
-}
-
-.min-w-78 {
-    min-width: unset !important;
-}
-[data-testid="workflows-sidebar"] .p-tree-node-toggle-button {
-    display: none !important;
-}
 @media (max-width: 1600px) {
 
     .rgthree-comfybar-top-button-group,
@@ -287,9 +269,14 @@
     [aria-label="Templates"],
     [aria-label="Enter app mode"],
     [aria-controls="bizyairplus-balance-popover"],
+    [role="treeitem"]>.size-5.shrink-0,
     [data-testid="workflows-sidebar"] .p-tree-node-toggle-button {
         display: none !important;
     }
+    [role="tree"] {padding-left: 0;padding-right: 0;}
+    [aria-label="Sidebar"]{flex: auto !important;}
+    [data-testid="side-toolbar"]{max-width: 40px !important;}
+    .comfyui-workflows-panel ul li{font-size: 12px !important;}
 }
 
 @media (max-width: 1200px) {
@@ -342,7 +329,10 @@
 }
 
 @media (max-width: 534px) {
-    [aria-label="BizyAirPlus"] {
+    .side-toolbar-container,
+    [aria-label="Sidebar"],
+    [aria-label="BizyAirPlus"],
+    [aria-label="Workflow actions"] {
         display: none !important;
     }
 }

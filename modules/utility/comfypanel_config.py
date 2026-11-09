@@ -103,9 +103,14 @@ def write_config(updates: dict) -> None:
         logging.error(f"[ComfyPanel] Failed to write settings to {settings_path}: {e}")
 
 def get_rh_config(provided_base_url: str = None) -> tuple[str, str]:
-    """Get RunningHub API key and base URL from comfy.settings.json."""
+    """Get RunningHub API key and base URL from comfy.settings.json.
+    The base URL is validated against the host allow-list; falls back to the
+    default host when the stored or provided value is not an official RunningHub endpoint."""
     cfg = read_config()
-    base_url = provided_base_url or cfg.get("ComfyPanel.RunningHub.baseUrl", "https://www.runninghub.cn")
+    _DEFAULT_RH_URL = "https://www.runninghub.cn"
+    raw_url = provided_base_url or cfg.get("ComfyPanel.RunningHub.baseUrl", _DEFAULT_RH_URL)
+
+    base_url = raw_url if is_allowed_rh_host(raw_url) else _DEFAULT_RH_URL
     is_en = "runninghub.ai" in base_url
     api_key_name = "ComfyPanel.RunningHubEn.apikey" if is_en else "ComfyPanel.RunningHubZh.apikey"
     api_key = cfg.get(api_key_name, "")

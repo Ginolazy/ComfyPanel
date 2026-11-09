@@ -4494,7 +4494,6 @@ body[data-backend][data-active-tab="engine"] div.engine-only-settings {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    margin-bottom: 6px;
 }
 
 .member-actions {
@@ -4503,13 +4502,28 @@ body[data-backend][data-active-tab="engine"] div.engine-only-settings {
     gap: 8px;
 }
 
-.member-email {
-    font-size: 13px;
-    font-weight: 600;
-    opacity: 0.9;
+.member-user-details {
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+    flex: 1;
+    margin-right: 8px;
+    line-height: 1.2;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
+}
+
+.member-name {
+    font-size: 13px;
+    font-weight: 600;
+    color: #ffffff;
+}
+
+.member-email {
+    font-size: 10px;
+    font-weight: 400;
+    opacity: 0.75;
 }
 
 .badge-pro.upgrade-trigger {
@@ -4722,6 +4736,8 @@ body:not(.is-pro) .brand .badge-pro {
     background: linear-gradient(90deg, #f8cd47 0%, #f7a01b 100%);
     box-shadow: 0 2px 5px rgba(248, 205, 71, 0.4);
     border-radius: 20px;
+    flex-shrink: 0;
+    white-space: nowrap;
 }
 
 /* Consolidated duplicate .locked-overlay into .pro-lock-overlay to maintain DRY styling */

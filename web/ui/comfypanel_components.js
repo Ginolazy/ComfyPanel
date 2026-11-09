@@ -1,1 +1,487 @@
-!function(){const e=_0x204e,t=_0x2c53();for(;;)try{if(905978===-parseInt(e(553))/1*(-parseInt(e(400))/2)+-parseInt(e(685))/3*(-parseInt(e(476))/4)+parseInt(e(985))/5*(parseInt(e(417))/6)+-parseInt(e(1082))/7*(-parseInt(e(665))/8)+parseInt(e(701))/9+-parseInt(e(421))/10+-parseInt(e(431))/11)break;t.push(t.shift())}catch(e){t.push(t.shift())}}();const _0x3169aa=function(){const e=_0x204e,t={chxEd:e(951),OowXI:e(541),HklyW:function(e,t){return e(t)},WDRbq:e(548),RidjE:function(e,t){return e+t},PxBHL:e(754),CCCmx:e(798),vUMOT:function(e){return e()},dhWIh:function(e,t,n){return e(t,n)},cFxeJ:e(729),zgPxt:e(593),ZVTsM:e(397),QQnCV:e(1012),okKxb:e(1044),LzGIC:e(1016),jFvMD:e(1014),OrhrN:e(443),qIxyu:e(988),CCpqN:function(e,t){return e===t},tMMtN:e(447),QHhdq:e(604),hGBwI:e(804),qTTRP:e(504),WlHsl:e(1015),clOXN:e(515),BFYlo:e(578),wXPql:e(531),wVlbP:e(428),HKmlQ:e(465),tlrNp:e(679),PDKAP:e(623),tmXRy:function(e,t){return e!==t},vckLj:e(495),ICvkK:e(1149),bXqwI:function(e,t){return e!==t},lDuyo:e(434)};let n=!0;return function(c,o){const r=e,a={CNCjY:t[r(727)],gCdHw:t[r(1064)],TNbSV:function(e,n){return t[r(594)](e,n)},JFoNW:t[r(992)],dbUer:function(e,n){return t[r(1043)](e,n)},QTKLz:t[r(1042)],boDTn:function(e,n){return t[r(1043)](e,n)},OKnUw:t[r(1001)],fjoNI:function(e,n){return t[r(594)](e,n)},vlHCo:function(e){return t[r(1008)](e)},fRlNR:function(e,n,c){return t[r(354)](e,n,c)},qLSTh:t[r(905)],IVRkv:t[r(887)],OiRky:t[r(730)],FQFOO:t[r(681)],WqQmD:t[r(918)],mHkSW:t[r(864)],CqQAS:t[r(1132)],aaYgH:t[r(405)],ZpNTg:t[r(753)],hxOmQ:function(e,n){return t[r(1056)](e,n)},evgRa:t[r(1155)],sCmvM:t[r(605)],snvaw:t[r(399)],qFzQB:t[r(499)],ciFkH:t[r(763)],UmwWg:t[r(839)],CtFrk:t[r(889)],ZZOPv:t[r(1027)],JtaSs:t[r(1072)],GzcPI:function(e,n){return t[r(1056)](e,n)},rVjBB:t[r(694)],qGEuh:function(e,n){return t[r(1056)](e,n)},RSKMn:t[r(941)],SSiSo:t[r(657)],semPA:function(e,n){return t[r(818)](e,n)},oypKQ:t[r(607)],tsFTn:t[r(630)]};if(!t[r(618)](t[r(407)],t[r(407)])){const e=n?function(){const e=r,t={};t[e(556)]=a[e(478)];const n=t;if(a[e(473)](a[e(1002)],a[e(838)]))_0x53778[e(536)]=n[e(556)],_0x260da8[e(721)]="🙈";else if(o){if(a[e(813)](a[e(917)],a[e(745)])){const t=o[e(614)](c,arguments);return o=null,t}{const t=_0x1d9e21[e(739)](a[e(736)])?.[e(628)]?.[e(787)]()||"",n=_0x27bd1f[e(739)](a[e(758)])?.[e(628)]?.[e(787)]()||"",c=!!_0x21b889[e(739)](a[e(876)])?.[e(949)],o=!!_0x2ed88c[e(739)](a[e(982)])?.[e(949)],r=_0xd691d7[e(739)](a[e(663)])?.[e(628)]||a[e(719)],u=_0x193087[e(739)](a[e(621)])?.[e(628)]?.[e(787)]()||"",i=_0x1d9de6[e(739)](a[e(987)])?.[e(628)]||a[e(790)];if(_0x13d3da[e(930)][e(1015)]=t,_0x20c81c[e(930)][e(428)]=n,_0x1405e5[e(930)][e(515)]=c,_0x387e57[e(930)][e(531)]=o,_0x5b8202[e(930)][e(504)]=r,_0x4aa84b[e(930)][e(804)]=u,_0x42ea85[e(930)][e(578)]=i,a[e(872)](typeof _0x12f7d6[e(545)],a[e(1041)])){const s=a[e(1071)][e(760)]("|");let f=0;for(;;){switch(s[f++]){case"0":_0x272b6c[e(545)](a[e(1018)],u);continue;case"1":_0x5cce40[e(545)](a[e(1028)],r);continue;case"2":_0x2fc196[e(545)](a[e(844)],t);continue;case"3":_0x276b4e[e(545)](a[e(1152)],c);continue;case"4":_0x5e9d4a[e(545)](a[e(761)],i);continue;case"5":_0x4a4c38[e(545)](a[e(856)],o);continue;case"6":_0x4a3882[e(545)](a[e(529)],n);continue}break}}a[e(898)](typeof _0x4ff4c9[e(613)],a[e(1041)])&&_0x296dfa[e(613)](),_0x584490[e(472)]&&_0x4fe17f[e(472)][e(368)](!0,!0)}}}:function(){};return n=!1,e}a[r(546)](_0x1efd17,this,function(){const e=r,t=new _0x526498(a[e(888)]),n=new _0x5080cf(a[e(425)],"i"),c=a[e(848)](_0x17723a,a[e(767)]);t[e(1097)](a[e(857)](c,a[e(564)]))&&n[e(1097)](a[e(571)](c,a[e(606)]))?a[e(480)](_0x388e27):a[e(398)](c,"0")})()}}(),_0x8547e9=_0x3169aa(this,function(){const e=_0x204e,t={};t[e(533)]=e(377);const n=t;return _0x8547e9[e(568)]()[e(516)](n[e(533)])[e(568)]()[e(832)](_0x8547e9)[e(516)](n[e(533)])});_0x8547e9();const _0x4f5401=function(){const e=_0x204e,t={};t[e(960)]=e(661),t[e(782)]=e(865),t[e(734)]=e(904),t[e(569)]=e(601),t[e(442)]=e(711),t[e(558)]=function(e,t){return e===t},t[e(512)]=e(447),t[e(364)]=e(428),t[e(503)]=e(636),t[e(955)]=e(900),t[e(766)]=e(440),t[e(586)]=function(e,t){return e===t},t[e(934)]=function(e,t){return e!==t},t[e(932)]=e(385),t[e(967)]=e(807),t[e(843)]=e(1108),t[e(892)]=e(1102),t[e(846)]=e(1140),t[e(367)]=e(583);const n=t;let c=!0;return function(t,o){const r=e,a={LLLJQ:function(e,t){return n[_0x204e(586)](e,t)},JVdQf:n[r(512)],mewrS:function(e,t){return n[r(558)](e,t)}};if(!n[r(586)](n[r(846)],n[r(367)])){const e=c?function(){const e=r;if(n[e(934)](n[e(932)],n[e(967)])){if(o){if(!n[e(558)](n[e(843)],n[e(892)])){const n=o[e(614)](t,arguments);return o=null,n}a[e(1058)](typeof _0x51c200[e(957)],a[e(654)])&&_0x24d6a3[e(957)](),a[e(878)](typeof _0x3dd52d[e(460)],a[e(654)])&&_0x4025c6[e(460)]()}}else _0x4bd214[e(1069)][e(597)]()}:function(){};return c=!1,e}{const e=_0x222b89[r(739)](n[r(960)]),t=_0x17182f[r(739)](n[r(782)]),c=_0x4d1ff4[r(739)](n[r(734)]),o=_0x2840cc[r(739)](n[r(569)]);if(_0x213c25&&_0x26e7f4[r(930)]){const a=n[r(442)][r(760)]("|");let u=0;for(;;){switch(a[u++]){case"0":_0x48ea02[r(930)][r(428)]=e?e[r(628)][r(787)]():"";continue;case"1":n[r(558)](typeof _0x546198[r(545)],n[r(512)])?(_0x4587e9[r(545)](n[r(364)],_0x594991[r(930)][r(428)]),_0x46a172[r(545)](n[r(503)],_0x4b9a12[r(930)][r(636)]),_0x4dc04a[r(545)](n[r(955)],_0x148639[r(930)][r(900)]),_0x37e0f6[r(545)](n[r(766)],_0x4d66e6[r(930)][r(440)])):(n[r(586)](typeof _0x27a022[r(957)],n[r(512)])&&_0x3171ce[r(957)](),n[r(558)](typeof _0x5ad196[r(460)],n[r(512)])&&_0x3923b5[r(460)]());continue;case"2":_0x39bcdf[r(930)][r(900)]=!!c&&c[r(949)];continue;case"3":_0x5133fa[r(930)][r(440)]=!o||o[r(949)];continue;case"4":_0x5ad485[r(930)][r(636)]=!!t&&t[r(949)];continue}break}}}}}();function _0x204e(e,t){e-=354;return _0x2c53()[e]}!function(){const e=_0x204e,t={XAPhK:e(1127),fNJUc:e(995),buqTV:e(755),tZJyM:e(949),vSNUQ:e(951),KLYjC:e(541),UbESR:function(e,t){return e(t)},SvFWX:e(548),BKZpT:function(e,t){return e+t},eXsfm:e(754),nUGMa:function(e,t){return e+t},OcPNr:e(798),otPze:function(e){return e()},zRrQv:function(e,t){return e===t},rKwph:e(718),mdMKL:e(875),NhdpH:function(e,t){return e!==t},zNIbV:e(1099),dxywD:function(e,t){return e(t)},bQoCr:function(e,t){return e===t},VzuAv:e(517),IPEHJ:function(e){return e()},qRofz:function(e,t,n){return e(t,n)}};t[e(687)](_0x4f5401,this,function(){const n=e,c={MNPWE:t[n(1038)],vsnOA:t[n(849)],xPpNL:t[n(713)],gsDTY:t[n(1117)],KzTkQ:t[n(1141)],GeMJf:t[n(1134)],BZpFl:function(e,c){return t[n(1068)](e,c)},EHenq:t[n(877)],PDGBt:function(e,c){return t[n(1006)](e,c)},GasmZ:t[n(738)],uQAsA:function(e,c){return t[n(1159)](e,c)},txtAo:t[n(615)],TGuoD:function(e){return t[n(1133)](e)}};if(t[n(741)](t[n(1011)],t[n(603)])){const e=_0x1a7d45[n(526)](c[n(868)]);return e[n(886)]=c[n(449)],e[n(386)][n(389)]=c[n(1046)],e[n(1022)]=n(626)+_0x46062b+n(733)+_0x2ff304+n(644)+(_0x1d26a3?c[n(869)]:"")+n(801),e}{const e=new RegExp(t[n(1141)]),o=new RegExp(t[n(1134)],"i"),r=t[n(1068)](_0xc2ea70,t[n(877)]);if(e[n(1097)](t[n(1159)](r,t[n(738)]))&&o[n(1097)](t[n(1006)](r,t[n(615)])))t[n(984)](t[n(853)],t[n(853)])?t[n(991)](_0xc2ea70):_0x3a0497[n(613)]();else if(t[n(1094)](t[n(822)],t[n(822)])){const e=new _0x4a876f(c[n(752)]),t=new _0x511ad3(c[n(1033)],"i"),o=c[n(989)](_0xe5d370,c[n(731)]);e[n(1097)](c[n(1115)](o,c[n(424)]))&&t[n(1097)](c[n(1032)](o,c[n(777)]))?c[n(1057)](_0x236eb0):c[n(989)](o,"0")}else t[n(696)](r,"0")}})()}();export function ensureStyleLoaded(){const e=_0x204e,t={};t[e(1076)]=e(496),t[e(530)]=e(598),t[e(1110)]=e(622),t[e(1095)]=e(1153),t[e(524)]=e(735);const n=t;if(document[e(964)](n[e(1076)]))return;const c=document[e(526)](n[e(530)]);c.id=n[e(1076)],c[e(926)]=n[e(1110)],c[e(536)]=n[e(1095)],c[e(765)]=new URL(n[e(524)],import.meta.url)[e(765)],document[e(549)][e(1144)](c)}function createModalBase(e={}){const t=_0x204e,n={QAWjQ:t(780),DtcLI:function(e){return e()},RgrEz:function(e,t){return e===t},xIJNe:t(1026),qPnxh:t(465),dPcNV:t(1067),yRnzG:function(e,t){return e(t)},daafE:function(e,t){return e!==t},HvWPc:t(426),LIcmh:t(447),Lozio:t(1147),MgWQI:t(1121),zIMsh:t(534),kJpEa:function(e,t){return e!==t},YADPA:t(776),WektO:t(484),AyuaT:function(e,t){return e(t)},yZxmR:t(511),GAZvh:t(759),yNqwW:t(470),ajlPE:function(e,t){return e!==t},BvTmK:t(914),FFxOx:t(378),TDXEn:t(675),LdEHZ:t(510),KEvUf:t(1009),WknTo:t(467),YKYNC:t(1127),mQKLU:t(938),hIyjW:t(475),jCgTg:t(433),WYwDy:t(669),PhmGH:t(821),oVBjM:t(1145),oIWwH:t(1025),zXvgt:t(919),NzlOI:t(362)};n[t(1126)](ensureStyleLoaded);const{id:c=n[t(809)],title:o=n[t(764)],badge:r=n[t(468)],saveText:a=n[t(393)],onSave:u=null}=e,i=document[t(964)](c);i&&i[t(774)]();const s=document[t(526)](n[t(359)]);s.id=c,s[t(886)]=n[t(1005)];const f=document[t(526)](n[t(359)]);f[t(886)]=n[t(572)];const l=document[t(526)](n[t(359)]);l[t(886)]=n[t(640)],l[t(1022)]=t(958)+o+t(432)+r+t(1154);const x=document[t(526)](n[t(359)]);x[t(886)]=n[t(477)];const p=document[t(526)](n[t(359)]);p[t(886)]=n[t(466)];const d=document[t(526)](n[t(677)]);d[t(886)]=n[t(915)],d[t(721)]=n[t(391)],d[t(863)]=()=>s[t(774)]();const b=document[t(526)](n[t(677)]);return b[t(886)]=n[t(567)],b[t(721)]=a,b[t(863)]=async()=>{const e=t;if(n[e(703)](n[e(1078)],n[e(1078)]))_0x40283d[e(973)](n[e(953)],_0x4d28e4);else{if(n[e(435)](typeof u,n[e(1150)]))if(n[e(703)](n[e(667)],n[e(1092)])){b[e(637)]=!0,b[e(721)]=n[e(629)];try{if(n[e(1098)](n[e(1039)],n[e(1054)])){const t={};t[e(971)]=f,t[e(1138)]=x,t[e(1050)]=b,t[e(1059)]=s,await n[e(356)](u,t)}else _0x2f20e0=_0x33a669[e(666)]}catch(t){n[e(1098)](n[e(768)],n[e(799)])?console[e(897)](n[e(651)],t):aIKjfa[e(1126)](_0x20caec)}finally{n[e(866)](n[e(461)],n[e(689)])?(b[e(637)]=!1,b[e(721)]=a):n[e(435)](_0x265018[e(536)],n[e(697)])?(_0x12e0c9[e(536)]=n[e(678)],_0x321682[e(721)]="🙈"):(_0x1f323b[e(536)]=n[e(697)],_0x488d73[e(721)]=n[e(471)])}}else{if(_0x564ee2)return _0x4333f8;aIKjfa[e(946)](_0x135f6d,0)}s[e(774)]()}},p[t(1144)](d),p[t(1144)](b),f[t(1144)](l),f[t(1144)](x),f[t(1144)](p),s[t(1144)](f),{overlay:s,modal:f,body:x,open:()=>document[t(1138)][t(1144)](s),close:()=>s[t(774)]()}}function createPasswordGroup(e={}){const t=_0x204e,n={};n[t(474)]=t(841),n[t(532)]=t(428),n[t(705)]=t(636),n[t(686)]=t(900),n[t(882)]=t(440),n[t(1118)]=t(805),n[t(410)]=t(366),n[t(520)]=function(e,t){return e!==t},n[t(456)]=t(771),n[t(1061)]=function(e,t){return e===t},n[t(500)]=t(1026),n[t(826)]=t(642),n[t(779)]=t(540),n[t(1103)]=t(465),n[t(1031)]=t(1088),n[t(998)]=t(1067),n[t(1123)]=t(747),n[t(646)]=t(893),n[t(638)]=t(748),n[t(580)]=t(560),n[t(633)]=t(1127),n[t(728)]=t(995),n[t(518)]=t(977);const c=n,{label:o=c[t(1123)],value:r="",placeholder:a=c[t(646)],tip:u=c[t(638)],inputId:i=c[t(580)]}=e,s=document[t(526)](c[t(633)]);s[t(886)]=c[t(728)],s[t(1022)]=t(674)+o+t(890)+i+t(479)+r+t(1148)+a+t(1070)+(u?t(811)+u+t(743):"")+t(940);const f=s[t(739)]("#"+i),l=s[t(739)](c[t(518)]);return l[t(863)]=()=>{const e=t,n={};n[e(422)]=c[e(532)],n[e(482)]=c[e(705)],n[e(610)]=c[e(686)],n[e(873)]=c[e(882)],n[e(993)]=c[e(1118)],n[e(1003)]=c[e(410)];const o=n;c[e(520)](c[e(456)],c[e(456)])?(_0x179631[e(545)](o[e(422)],_0xd894a1[e(930)][e(428)]),_0x4ebd8e[e(545)](o[e(482)],_0x2bcdf7[e(930)][e(636)]),_0x2a7c2b[e(545)](o[e(610)],_0x2c9ba8[e(930)][e(900)]),_0x45b876[e(545)](o[e(873)],_0x14aaf9[e(930)][e(440)])):c[e(1061)](f[e(536)],c[e(500)])?c[e(1061)](c[e(826)],c[e(779)])?(_0x1b677d=_0x260da1,_0x344789[e(851)]&&(_0x3576aa=_0x356bc5[e(851)]),_0x366630=_0x3c23c0[e(375)](c[e(474)])?_0x5e3803[e(587)]:_0x2adbb5[e(1074)]):(f[e(536)]=c[e(1103)],l[e(721)]="🙈"):c[e(1061)](c[e(1031)],c[e(1031)])?(f[e(536)]=c[e(500)],l[e(721)]=c[e(998)]):(_0x29d6e1[e(545)](o[e(993)],_0x1680d0),_0x8ae80d&&_0x56c78b[e(545)](o[e(1003)],_0x473c40))},s}export async function showConfigModal(e={}){const t=_0x204e,n={fivTl:function(e,t){return e===t},ojCEv:t(1026),fBKzU:t(465),fhJjw:t(1067),IuNXi:t(747),XVwWm:t(893),BolyU:t(748),qXlNu:t(560),uutSg:t(1127),PvNrn:t(995),ddCvd:t(977),yUktl:t(377),Jqmbo:t(447),dUIYA:t(805),Fmgmx:t(366),heFXx:t(1020),OQLpb:t(947),bSXpX:t(439),xwZmt:t(949),sOkGj:t(806),QTlCa:t(595),AaVTJ:t(1120),IIAMf:t(691),vumAL:t(929),hsHrQ:function(e,t){return e!==t},YlGYL:t(994),OMAUz:t(702),BVGKq:function(e,t){return e===t},DtBYU:t(1101),Ojike:t(1049),zxKcd:function(e,t,n){return e(t,n)},mljuz:t(653),ZDnYT:t(1030),fiayn:t(544),bsaFF:t(829),qXbDD:t(648),UZlRS:t(565),JnbJD:function(e,t){return e===t},ItybN:t(428),hbYto:t(636),iJyCI:t(900),sGBRE:t(440),YOqhI:function(e,t){return e===t},jFilB:function(e,t){return e===t},zlMzL:t(611),kaUvm:t(841),sVKRV:t(1131),gzxIv:t(1106),aGavd:t(1066),uNHnb:t(706),xMTHG:t(772),iYJRd:t(709),xsugD:function(e,t){return e(t)},TEQRE:t(833),tuuSD:function(e,t){return e===t},gLpSG:t(712),cJjdA:t(944),hIOGY:t(645),WlIeA:t(780),vfFVP:t(906),wGNAd:t(1009),SIMJg:t(948),OhaQu:t(795),OBYPP:t(1055),LMOVE:t(983),barCq:t(939),uGoKa:function(e,t){return e!==t},YdKjo:t(972),auqpR:function(e,t,n){return e(t,n)},yxSyV:function(e){return e()}},{node:c,title:o=n[t(1093)],showAppList:r=!1}=e;let a=c?.[t(930)]?.[t(975)]||"",u=c?.[t(930)]?.[t(805)]||n[t(413)],i=c?.[t(930)]?.[t(366)]||"";const s={};s[t(1074)]="",s[t(587)]="";let f=s;try{if(!n[t(487)](n[t(724)],n[t(895)]))return _0x4fa217[t(568)]()[t(516)](huxjsA[t(819)])[t(568)]()[t(832)](_0xb43f19)[t(516)](huxjsA[t(819)]);{const e=await n[t(419)](fetch,n[t(927)]),c=await e[t(617)]();if(c&&c[t(498)]){if(!n[t(717)](n[t(921)],n[t(921)])){const e={wOFgL:function(e,n){return huxjsA[t(910)](e,n)},eFnIu:huxjsA[t(1157)],gePrl:huxjsA[t(561)],LGaFm:huxjsA[t(401)]},{label:n=huxjsA[t(363)],value:c="",placeholder:o=huxjsA[t(901)],tip:r=huxjsA[t(577)],inputId:a=huxjsA[t(1080)]}=_0x2def76,u=_0x3c0859[t(526)](huxjsA[t(996)]);u[t(886)]=huxjsA[t(830)],u[t(1022)]=t(674)+n+t(890)+a+t(479)+c+t(1148)+o+t(1070)+(r?t(811)+r+t(743):"")+t(940);const i=u[t(739)]("#"+a),s=u[t(739)](huxjsA[t(1112)]);return s[t(863)]=()=>{const n=t;e[n(388)](i[n(536)],e[n(825)])?(i[n(536)]=e[n(446)],s[n(721)]="🙈"):(i[n(536)]=e[n(825)],s[n(721)]=e[n(656)])},u}f=c,c[t(851)]&&(u=c[t(851)]),a=u[t(375)](n[t(574)])?c[t(587)]:c[t(1074)]}}}catch(e){n[t(1113)](n[t(660)],n[t(695)])?(_0x434009[t(637)]=!1,_0x5199a9[t(721)]=_0x553c05):console[t(973)](n[t(802)],e)}const{overlay:l,body:x,open:p}=n[t(419)](createModalBase,{id:n[t(1019)],title:o,badge:c?.[t(536)]||n[t(716)],onSave:async({body:e})=>{const o=t,a={ZQcrB:n[o(996)],Bqqpx:n[o(501)],xFnNV:n[o(581)],HbfFz:function(e,t){return n[o(910)](e,t)},mTAGV:n[o(491)],VLGJQ:n[o(590)]};if(!n[o(910)](n[o(616)],n[o(616)]))return function(e){}[o(832)](huxjsA[o(396)])[o(614)](huxjsA[o(683)]);{const t=e[o(739)](n[o(797)]),u=e[o(739)](n[o(850)]),i=e[o(739)](n[o(627)]),s=t?t[o(628)][o(787)]():"",f=u?u[o(628)]:n[o(413)],l=i?i[o(628)][o(787)]():"";if(c&&c[o(930)])if(n[o(487)](n[o(384)],n[o(542)])){if(c[o(930)][o(805)]=f,r&&(c[o(930)][o(366)]=l),delete c[o(930)][o(975)],n[o(816)](typeof c[o(545)],n[o(491)])){if(n[o(816)](n[o(933)],n[o(925)])){const e=_0x1ca25e[o(526)](a[o(789)]);return e[o(886)]=a[o(867)],e[o(1022)]=o(737)+_0x2a68df+o(644)+(_0xe910aa?a[o(494)]:"")+o(647)+_0x4eb1c9+o(372),e}c[o(545)](n[o(1158)],f),r&&c[o(545)](n[o(590)],l)}}else _0xc7866e[o(930)][o(805)]=_0x10ff3b,_0x41e922&&(_0x7ccb9d[o(930)][o(366)]=_0x447b70),delete _0x32f2f6[o(930)][o(975)],n[o(910)](typeof _0x1b2e19[o(545)],n[o(491)])&&(_0x1aa102[o(545)](n[o(1158)],_0x3ff1ce),_0x43419b&&_0xb5d4b4[o(545)](n[o(590)],_0x26932e));const x={};x[o(666)]=s,x[o(851)]=f,await n[o(635)](fetch,n[o(538)],{method:n[o(997)],headers:{"Content-Type":n[o(986)]},body:JSON[o(527)](x)}),r&&window[o(1069)]&&(n[o(487)](n[o(726)],n[o(1034)])?window[o(1069)][o(597)]():(_0x965db7[o(930)][o(366)]=_0x352bb6,delete _0x57fe11[o(930)][o(1053)],a[o(884)](typeof _0x4f4cc9[o(545)],a[o(1151)])&&_0x49043b[o(545)](a[o(555)],_0x47e284)))}}}),d=n[t(419)](createPasswordGroup,{label:n[t(794)],value:a,placeholder:n[t(624)],inputId:n[t(894)]});x[t(1144)](d);const b=document[t(526)](n[t(996)]);b[t(886)]=n[t(830)],b[t(1022)]=t(962)+(u[t(375)](n[t(418)])?n[t(692)]:"")+t(1063)+(u[t(375)](n[t(574)])?n[t(692)]:"")+t(688),x[t(1144)](b);const _=d[t(739)](n[t(797)]),m=b[t(739)](n[t(850)]);if(m[t(908)]=()=>{const e=t;if(n[e(1113)](n[e(404)],n[e(404)]))_[e(628)]=m[e(628)][e(375)](n[e(574)])?f[e(587)]:f[e(1074)];else{const t=n[e(557)][e(760)]("|");let c=0;for(;;){switch(t[c++]){case"0":_0x32c14f[e(930)][e(428)]=_0x12a223?_0x3a045a[e(628)][e(787)]():"";continue;case"1":_0x36c313[e(930)][e(440)]=!_0xb3b6d3||_0x2f9050[e(949)];continue;case"2":_0x27b4d0[e(930)][e(636)]=!!_0x5d5194&&_0x2eb414[e(949)];continue;case"3":n[e(513)](typeof _0x2f465f[e(545)],n[e(491)])?(_0xc1c906[e(545)](n[e(1035)],_0x181fa1[e(930)][e(428)]),_0x44b648[e(545)](n[e(1023)],_0x77af8c[e(930)][e(636)]),_0x34b326[e(545)](n[e(429)],_0x61d6d[e(930)][e(900)]),_0x50c6e9[e(545)](n[e(968)],_0x5576de[e(930)][e(440)])):(n[e(824)](typeof _0x4c88ef[e(957)],n[e(491)])&&_0x2536af[e(957)](),n[e(513)](typeof _0x12fa60[e(460)],n[e(491)])&&_0x23ef5f[e(460)]());continue;case"4":_0x2003c[e(930)][e(900)]=!!_0x8aaa8f&&_0x4237df[e(949)];continue}break}}},r){if(n[t(1086)](n[t(935)],n[t(935)])){const e=_0x50a52f[t(526)](n[t(996)]);return e[t(886)]=n[t(830)],e[t(1022)]=t(639)+_0x2eabfd+t(733)+_0x1de36+t(871)+_0x2dcdb6+t(1148)+_0x3f202d+t(963),e}{const e=document[t(526)](n[t(996)]);e[t(886)]=n[t(830)],e[t(1022)]=t(508),x[t(1144)](e),n[t(420)](setTimeout,()=>{const c=t;if(n[c(824)](n[c(936)],n[c(525)])){const e=_0x32bad5[c(739)](n[c(1143)]);e&&(e[c(628)]=_0x3e411c)}else{const t=e[c(739)](n[c(627)]);t&&(t[c(628)]=i)}},0)}}n[t(390)](p)}export async function showAutoMuteConfigModal(e){const t=_0x204e,n={NgoZt:t(1127),YvJoI:t(995),hwrst:function(e,t){return e(t)},PXsqT:function(e,t){return e+t},ySIWA:t(784),iErXv:t(448),EfXbb:t(451),nPbiL:t(366),kWiNi:function(e,t){return e===t},BHJbJ:t(454),QUJLI:t(1077),ftOQp:t(661),RGaQL:t(865),cFsPY:t(904),grYHp:t(601),pdqVe:function(e,t){return e===t},pQOIH:t(749),XXRDB:t(582),ddqro:t(447),mwVLe:function(e,t){return e!==t},JcypW:t(990),fBsve:t(966),JwLTZ:t(428),Hrzbx:t(636),UDDHS:t(900),sDTlu:t(440),bTvpA:t(643),YFDZu:function(e,t){return e===t},XwgtU:function(e,t){return e===t},SXjdI:t(691),ElReT:function(e,t){return e===t},kPzNW:t(836),jOXbt:t(414),pHdDL:t(755),uYAeV:t(949),JyYYY:function(e,t){return e!==t},jWveu:t(490),bkcYc:t(612),hPERC:t(562),CdTcQ:t(924),lDaRi:function(e,t,n,c){return e(t,n,c)},vgPpb:t(455),AfeLW:t(383),ydNGf:function(e,t,n,c){return e(t,n,c)},IRXjB:t(1116),gHFVx:t(608),KmqxS:function(e,t,n,c){return e(t,n,c)},YuwSE:t(1007),uXgYe:t(907),vMPBN:function(e){return e()}},c=e?.[t(930)]||{},o=c[t(428)]||"",r=!!c[t(636)],a=!!c[t(900)],u=!n[t(1062)](c[t(440)],void 0)||!!c[t(440)],{body:i,open:s}=n[t(358)](createModalBase,{id:n[t(1051)],title:n[t(522)],badge:n[t(1111)],saveText:n[t(672)],onSave:async({body:c})=>{const o=t;if(n[o(374)](n[o(497)],n[o(714)])){const e=_0x4d8262[o(526)](n[o(427)]);e[o(886)]=n[o(1139)];const t=_0xef5d63[o(1137)](e=>o(566)+e[o(628)]+'" '+(e[o(628)]===_0x149d64?o(939):"")+">"+e[o(945)]+o(458))[o(394)]("");return e[o(1022)]=o(639)+_0xf16ab7+o(954)+_0x2bc3ec+o(371)+t+o(523),e}{const t=c[o(739)](n[o(357)]),r=c[o(739)](n[o(1146)]),a=c[o(739)](n[o(974)]),u=c[o(739)](n[o(862)]);e&&e[o(930)]&&(n[o(600)](n[o(387)],n[o(720)])?DYPmwd[o(358)](_0x3ad5a0,"0"):(e[o(930)][o(428)]=t?t[o(628)][o(787)]():"",e[o(930)][o(636)]=!!r&&r[o(949)],e[o(930)][o(900)]=!!a&&a[o(949)],e[o(930)][o(440)]=!u||u[o(949)],n[o(374)](typeof e[o(545)],n[o(770)])?n[o(632)](n[o(980)],n[o(457)])?(e[o(545)](n[o(831)],e[o(930)][o(428)]),e[o(545)](n[o(652)],e[o(930)][o(636)]),e[o(545)](n[o(881)],e[o(930)][o(900)]),e[o(545)](n[o(879)],e[o(930)][o(440)])):function(){return!0}[o(832)](DYPmwd[o(673)](DYPmwd[o(1029)],DYPmwd[o(436)]))[o(379)](DYPmwd[o(483)]):n[o(632)](n[o(1107)],n[o(1107)])?_0x52daf6[o(545)](n[o(769)],_0x102449):(n[o(602)](typeof e[o(957)],n[o(770)])&&e[o(957)](),n[o(528)](typeof e[o(460)],n[o(770)])&&e[o(460)]())))}}}),f=(e,c,o)=>{const r=t,a={};a[r(1100)]=n[r(559)];if(!n[r(575)](n[r(1079)],n[r(423)])){const t=document[r(526)](n[r(427)]);return t[r(886)]=n[r(1139)],t[r(386)][r(389)]=n[r(361)],t[r(1022)]=r(626)+c+r(733)+e+r(644)+(o?n[r(715)]:"")+r(801),t}{const e=_0x4963df[r(739)](yXgGcf[r(1100)]);e&&(e[r(628)]=_0x20d4f8)}},l=document[t(526)](n[t(427)]);l[t(886)]=n[t(1139)],l[t(1022)]=t(937)+o+t(1048),i[t(1144)](l),i[t(1144)](n[t(416)](f,n[t(620)],n[t(956)],r)),i[t(1144)](n[t(708)](f,n[t(463)],n[t(682)],a)),i[t(1144)](n[t(922)](f,n[t(785)],n[t(1065)],u)),n[t(589)](s)}export async function showBizyAirConfigModal(e){const t=_0x204e,n={cVRPT:function(e,t){return e+t},gelcF:t(784),kVgjB:t(448),cSELM:t(698),DDeDp:t(1026),VCrTj:t(1067),oaNMB:t(496),bYSpy:t(598),Guxsc:t(622),pWJMQ:t(1153),JWIPd:t(735),ZwSpA:function(e,t){return e!==t},jfrLd:t(808),idhdN:t(395),RlIdG:t(1131),KGLqy:t(625),RIhVP:function(e,t){return e===t},klRFT:t(447),VOyGz:function(e,t){return e!==t},ztOxp:t(668),bJuVg:t(366),YfuBh:function(e,t,n){return e(t,n)},OjtoC:t(641),zewgk:t(1030),SwDdI:t(544),UulsC:t(1045),aKTCu:function(e,t){return e!==t},YUkxQ:t(1119),TRqEj:t(1136),edDOr:function(e,t){return e===t},Bmuwx:t(596),ieLTK:t(631),BajHc:function(e,t){return e(t)},cicKT:t(859),hjOxY:t(464),XxoIH:function(e,t){return e!==t},AvpLB:t(1073),PgTbE:function(e,t){return e(t)},ucOQo:t(827),orykm:t(854),FkQHZ:t(1089),IWcYr:function(e,t){return e(t)},GMvzm:t(402),hjCfy:t(913),PgFmQ:t(360),tFlrQ:t(1127),tHrxe:t(995),wTCcK:function(e){return e()}};let c="",o=e?.[t(930)]?.[t(366)]||"";try{if(n[t(979)](n[t(744)],n[t(899)]))return!0;{const e=await n[t(978)](fetch,n[t(820)]),o=await e[t(617)]();o&&o[t(498)]&&o[t(666)]&&(n[t(979)](n[t(845)],n[t(845)])?c=o[t(666)]:_0xf64b4c[t(472)][t(368)](!0,!0))}}catch(e){if(n[t(896)](n[t(742)],n[t(742)]))return _0x208f17;console[t(973)](n[t(655)],e)}const{body:r,open:a}=n[t(891)](createModalBase,{id:n[t(909)],title:n[t(1021)],badge:e?.[t(536)]||n[t(563)],onSave:async({body:c})=>{const o=t;n[o(1004)],n[o(507)],n[o(459)],n[o(619)],n[o(847)],n[o(959)],n[o(828)],n[o(1013)],n[o(858)],n[o(842)];if(n[o(800)](n[o(547)],n[o(547)]))(function(){return!1})[o(832)](rHktKN[o(969)](rHktKN[o(916)],rHktKN[o(502)]))[o(614)](rHktKN[o(1096)]);else{const t=c[o(739)](n[o(1129)]),r=c[o(739)](n[o(880)]),a=t?t[o(628)][o(787)]():"",u=r?r[o(628)][o(787)]():"";if(e&&e[o(930)])if(n[o(800)](n[o(778)],n[o(778)]))_0x560a86[o(536)]=rHktKN[o(1083)],_0x550697[o(721)]=rHktKN[o(1052)];else if(e[o(930)][o(366)]=u,delete e[o(930)][o(1053)],n[o(923)](typeof e[o(545)],n[o(1037)]))if(n[o(740)](n[o(931)],n[o(931)])){if(_0x3e2b22[o(964)](rHktKN[o(411)]))return;const e=_0x2e9ebf[o(526)](rHktKN[o(450)]);e.id=rHktKN[o(411)],e[o(926)]=rHktKN[o(1109)],e[o(536)]=rHktKN[o(1036)],e[o(765)]=new _0x5a08b3(rHktKN[o(961)],import.meta.url)[o(765)],_0x2f595a[o(549)][o(1144)](e)}else e[o(545)](n[o(509)],u);const i={};i[o(666)]=a,await n[o(725)](fetch,n[o(788)],{method:n[o(492)],headers:{"Content-Type":n[o(870)]},body:JSON[o(527)](i)})}}}),u=n[t(469)](createPasswordGroup,{label:n[t(1114)],value:c,placeholder:n[t(903)],inputId:n[t(1128)]});r[t(1144)](u);const i=document[t(526)](n[t(537)]);i[t(886)]=n[t(723)],i[t(1022)]=t(452),r[t(1144)](i),n[t(725)](setTimeout,()=>{const e=t;if(n[e(1122)](n[e(481)],n[e(445)])){const t=i[e(739)](n[e(880)]);t&&(t[e(628)]=o)}else _0x9b2331[e(973)](n[e(655)],_0x37c4fe)},0),n[t(1124)](a)}export async function showFastGroupsConfigModal(e){const t=_0x204e,n={GdsgQ:t(691),lrAxz:t(1127),hAybC:t(995),bzRwa:function(e,t,n){return e(t,n)},vRNQU:t(408),cyVvf:t(531),pghLv:t(515),klFGV:t(578),kcHso:t(804),KJXcn:t(1015),EXkEQ:t(428),OcUBQ:t(504),jwljt:t(470),EQfow:function(e,t){return e===t},AIcjq:t(650),oNfjY:t(729),TsWlP:t(593),XfqOF:t(397),BWDDC:t(1012),Mfpyl:t(1044),tyDsZ:t(1016),dSAWK:t(1014),taLDV:t(443),DSeTD:t(988),kRCUZ:function(e,t){return e===t},cDcKo:t(447),YTSiQ:t(552),pHhxR:t(514),UlQZO:t(369),zpEnK:function(e,t){return e===t},HrWuH:function(e,t){return e===t},zZtfe:t(928),WKiGf:t(792),SOOID:function(e,t){return e(t)},XALZw:function(e,t){return e!==t},nHyuZ:t(1047),LqdNM:t(699),iwybB:t(841),ycLIM:function(e,t){return e!==t},DyzgW:t(855),nFrGT:t(439),zUYlk:t(949),wieAY:function(e,t){return e!==t},cfyWq:function(e,t){return e!==t},WyGeN:function(e,t){return e(t)},bIyIu:t(488),EeUvb:t(883),BYNLT:t(441),DlXhL:function(e,t,n,c,o){return e(t,n,c,o)},SkBzK:t(486),nKeSA:t(817),XGHnH:t(1104),RqBjR:function(e,t,n,c,o){return e(t,n,c,o)},ZGUqH:t(588),CZMaj:t(355),ZweMw:t(609),DARXq:function(e,t,n,c){return e(t,n,c)},zbBWM:t(519),xVfLM:t(1040),dkqDH:t(373),APTAN:t(911),Mhagx:t(573),HRUBZ:t(704),RJPRd:t(680),vSAGr:t(579),rmvps:t(732),vQaLF:t(693),KffNE:t(860),fjuOQ:t(746),lANqZ:t(409),lAkZe:t(756),XsQpk:t(430),ZLxxO:t(1024),aCxrc:t(814),BQwor:t(1125),EjVAD:t(837),FteKR:t(592),vwLcg:t(840),yFoZJ:function(e){return e()}};if(!e)return;e[t(930)]=e[t(930)]||{};const c=e[t(930)][t(1015)]||"",o=e[t(930)][t(428)]||"",r=!n[t(815)](e[t(930)][t(515)],void 0)||!!e[t(930)][t(515)],a=!n[t(676)](e[t(930)][t(531)],void 0)||!!e[t(930)][t(531)],u=e[t(930)][t(504)]||n[t(444)],i=e[t(930)][t(804)]||"",s=e[t(930)][t(578)]||n[t(535)],{body:f,open:l}=n[t(376)](createModalBase,{id:n[t(762)],title:n[t(1010)],badge:e[t(536)]||n[t(902)],onSave:async({body:c})=>{const o=t,r={};r[o(970)]=n[o(649)];if(n[o(1091)](n[o(1e3)],n[o(1e3)])){const t=c[o(739)](n[o(781)])?.[o(628)]?.[o(787)]()||"",r=c[o(739)](n[o(1075)])?.[o(628)]?.[o(787)]()||"",a=!!c[o(739)](n[o(812)])?.[o(949)],u=!!c[o(739)](n[o(823)])?.[o(949)],i=c[o(739)](n[o(861)])?.[o(628)]||n[o(444)],s=c[o(739)](n[o(659)])?.[o(628)]?.[o(787)]()||"",f=c[o(739)](n[o(981)])?.[o(628)]||n[o(535)];if(e[o(930)][o(1015)]=t,e[o(930)][o(428)]=r,e[o(930)][o(515)]=a,e[o(930)][o(531)]=u,e[o(930)][o(504)]=i,e[o(930)][o(804)]=s,e[o(930)][o(578)]=f,n[o(750)](typeof e[o(545)],n[o(539)]))if(n[o(1091)](n[o(1130)],n[o(690)]))_0x312e2d[o(897)](GXqLyl[o(970)],_0x1762b7);else{const c=n[o(403)][o(760)]("|");let l=0;for(;;){switch(c[l++]){case"0":e[o(545)](n[o(786)],a);continue;case"1":e[o(545)](n[o(920)],s);continue;case"2":e[o(545)](n[o(521)],i);continue;case"3":e[o(545)](n[o(885)],u);continue;case"4":e[o(545)](n[o(382)],t);continue;case"5":e[o(545)](n[o(392)],r);continue;case"6":e[o(545)](n[o(912)],f);continue}break}}if(n[o(591)](typeof e[o(613)],n[o(539)])){if(!n[o(700)](n[o(793)],n[o(793)]))return!1;e[o(613)]()}if(app[o(472)])if(n[o(700)](n[o(599)],n[o(599)]))app[o(472)][o(368)](!0,!0);else{const e={};e[o(1105)]=mhDFAW[o(662)];const t=e,n=_0x16071e[o(526)](mhDFAW[o(775)]);n[o(886)]=mhDFAW[o(505)],n[o(1022)]=o(508),_0x1f0ec4[o(1144)](n),mhDFAW[o(1087)](_0x5c173c,()=>{const e=o,c=n[e(739)](t[e(1105)]);c&&(c[e(628)]=_0x25ecac)},0)}}else{const e=n[o(1135)][o(760)]("|");let t=0;for(;;){switch(e[t++]){case"0":_0x5acd4f[o(545)](n[o(885)],_0x38cecb);continue;case"1":_0x297861[o(545)](n[o(786)],_0x537905);continue;case"2":_0x47e619[o(545)](n[o(912)],_0x5d806f);continue;case"3":_0x14d514[o(545)](n[o(920)],_0x2f738b);continue;case"4":_0x14ec84[o(545)](n[o(382)],_0x29b3ba);continue;case"5":_0x54df6e[o(545)](n[o(392)],_0x347503);continue;case"6":_0x15f836[o(545)](n[o(521)],_0x4cceb1);continue}break}}}}),x=(e,c,o,r="")=>{const a=t;if(n[a(437)](n[a(493)],n[a(1156)])){const t=document[a(526)](n[a(775)]);return t[a(886)]=n[a(505)],t[a(1022)]=a(639)+c+a(733)+e+a(871)+o+a(1148)+r+a(963),t}mhDFAW[a(554)](_0x2774eb,0)},p=(e,c,o,r)=>{const a=t,u={};u[a(671)]=n[a(543)];if(!n[a(415)](n[a(485)],n[a(485)])){const t=document[a(526)](n[a(775)]);t[a(886)]=n[a(505)];const u=o[a(1137)](e=>a(566)+e[a(628)]+'" '+(e[a(628)]===r?a(939):"")+">"+e[a(945)]+a(458))[a(394)]("");return t[a(1022)]=a(639)+c+a(954)+e+a(371)+u+a(523),t}_0x5b6b35[a(628)]=_0x5580b1[a(628)][a(375)](GpBeAw[a(671)])?_0x4416db[a(587)]:_0x353fdd[a(1074)]},d=(e,c,o)=>{const r=t,a=document[r(526)](n[r(775)]);return a[r(886)]=n[r(684)],a[r(1022)]=r(737)+e+r(644)+(o?n[r(438)]:"")+r(647)+c+r(372),a};f[t(1144)](n[t(942)](x,n[t(576)],n[t(810)],c,n[t(412)])),f[t(1144)](n[t(835)](x,n[t(506)],n[t(976)],o,n[t(1060)])),f[t(1144)](n[t(551)](d,n[t(570)],n[t(365)],r)),f[t(1144)](n[t(551)](d,n[t(1090)],n[t(550)],a)),f[t(1144)](n[t(942)](p,n[t(950)],n[t(852)],[{value:n[t(444)],label:n[t(584)]},{value:n[t(943)],label:n[t(791)]},{value:n[t(773)],label:n[t(783)]}],u)),f[t(1144)](n[t(835)](x,n[t(370)],n[t(1085)],i,n[t(489)])),f[t(1144)](n[t(942)](p,n[t(707)],n[t(634)],[{value:n[t(535)],label:n[t(380)]},{value:n[t(796)],label:n[t(406)]},{value:n[t(751)],label:n[t(453)]}],s)),n[t(874)](l)}function _0xc2ea70(e){const t=_0x204e,n={ODctH:function(e,t){return e===t},vFiPU:t(722),Klbmj:t(1020),HQPOI:t(947),tEWAo:function(e,t){return e!==t},zcChz:function(e,t){return e+t},NrSjQ:function(e,t){return e/t},EwtiF:t(710),yMBjZ:function(e,t){return e===t},CHnWj:function(e,t){return e%t},bnGIv:t(784),KpbRF:t(448),Nfdyw:t(451),OBivS:t(698),nLZHg:function(e,t){return e(t)}};function c(e){const o=t;if(n[o(952)](typeof e,n[o(803)]))return function(e){}[o(832)](n[o(1081)])[o(614)](n[o(834)]);n[o(1017)](n[o(1142)]("",n[o(658)](e,e))[n[o(1084)]],1)||n[o(664)](n[o(462)](e,20),0)?function(){return!0}[o(832)](n[o(1142)](n[o(381)],n[o(965)]))[o(379)](n[o(670)]):function(){return!1}[o(832)](n[o(1142)](n[o(381)],n[o(965)]))[o(614)](n[o(999)]),n[o(757)](c,++e)}try{if(e)return c;n[t(757)](c,0)}catch(e){}}function _0x2c53(){const e=["nFrGT","4987047euNefc","vBDnO","qRofz",">https://www.runninghub.ai (Global)</option>\n        </select>\n    ","FFxOx","pHhxR","#cp-modal-applist","barCq","custom alphabet","HKmlQ","hIOGY","dxywD","xIJNe","stateObject","Bbgdf","HrWuH","10439550weghUu","DUMsC","daafE","sort (Group sorting rule)","VtRWo","☁️ RunningHub Settings","XsQpk","ydNGf","PeYMK","length","0|4|2|3|1","WcHof","buqTV","QUJLI","uYAeV","wGNAd","tuuSD","pZlBG","mHkSW","XXRDB","textContent","string","tHrxe","xMTHG","YfuBh","bsaFF","chxEd","fyLmt","#cp-fg-matchcolors","ZVTsM","EHenq","alphanumeric (Alphabetical / numerical order)",'</label>\n            <input id="',"aUKTy","./comfypanel_ui.css","qLSTh",'\n            <label class="cp-checkbox-label">\n                <input id="',"eXsfm","querySelector","VOyGz","zRrQv","AvpLB","</span>","Bmuwx","tsFTn","cp-fg-customsort","API Key","Saved to comfy.settings.json","BiCvZ","kRCUZ","FteKR","KzTkQ","qIxyu","chain","flex-direction: row; align-items: center; justify-content: space-between;","e.g. sdxl,pro,sd,n,p","nLZHg","IVRkv","uLQiW","split","CtFrk","bIyIu","WlHsl","LdEHZ","href","PIVJB","JFoNW","yZxmR","nPbiL","ddqro","FEumc","TYiIU","vQaLF","remove","lrAxz","aAtUX","txtAo","KGLqy","VQSRK","[ComfyPanelUI] Failed to fetch RH config:","oNfjY","ZbwCk","KffNE","debu","YuwSE","pghLv","trim","OjtoC","ZQcrB","ZpNTg","rmvps","uoINW","zZtfe","SIMJg","Enter API Key...","BQwor","QTlCa","input","GAZvh","ZwSpA",' style="cursor:pointer;" />\n        ',"WlIeA","vFiPU","customSortAlphabet","runninghub_base_url","PTcVp","bBkzZ","eoCGE","TDXEn","nKeSA",'<span class="cp-form-tip">',"XfqOF","semPA","default (No restrictions)","wieAY","BVGKq","matchColors (Group colors filter, comma-separated)","tmXRy","yUktl","cicKT","cp-modal-footer","zNIbV","BWDDC","YOqhI","eFnIu","uwXzd","cp-bizyair-modal-overlay","bYSpy","gHWUh","PvNrn","JwLTZ","constructor","/comfypanel/runninghub/get_config","HQPOI","RqBjR","VGxJW","max one (At most one active)","SSiSo","clOXN","always one (Always keep exactly one active)",".ai","JWIPd","LAYXd","ciFkH","hjOxY","gnAYD","VCrTj","TNbSV","fNJUc","AaVTJ","baseUrl","HRUBZ","VzuAv","☁️ BizyAir App Settings","IOHdi","ZZOPv","dbUer","pWJMQ","/bizyair_webapp/get_config","custom alphabet (Custom alphabet rules)","Mfpyl","grYHp","onclick","LzGIC","#cp-automute-matchcase","ajlPE","Bqqpx","MNPWE","gsDTY","SwDdI",'" type="text" value="',"hxOmQ","WKdxA","yFoZJ","rAApU","OiRky","SvFWX","mewrS","sDTlu","RlIdG","UDDHS","ceXWe","⚙️ Fast Groups Settings","HbfFz","cyVvf","className","zgPxt","CNCjY","BFYlo",'</label>\n        <div class="cp-input-group">\n            <input id="',"PgTbE","OmFKm","Enter Key...","OBYPP","iYJRd","XxoIH","error","GzcPI","ieLTK","matchExact","XVwWm","BYNLT","hjCfy","#cp-automute-matchexact","cFxeJ","cp-config-modal-overlay","Control Links First","onchange","ucOQo","fivTl","showAllGraphs (Include groups in all subgraphs)","klFGV","Enter BizyAir API Key...","DpWhM","oIWwH","QcGpA","oypKQ","okKxb","Cancel","kcHso","gLpSG","KmqxS","RIhVP","💾 Save & Apply","Ojike","rel","TEQRE","KMcPN","https://www.runninghub.cn","properties","ztOxp","QjpCt","DtBYU","WnUvX","YdKjo","gzxIv",'\n        <label class="cp-form-label">Target Titles / Groups (Comma Separated)</label>\n        <input id="cp-automute-matchtitle" type="text" value="',"cp-modal-overlay","selected","\n    ","tlrNp","DlXhL","vSAGr","hHkvE","label","yRnzG","counter","RunningHub API Key","checked","Mhagx","function *\\( *\\)","ODctH","QAWjQ",'</label>\n            <select id="',"lhLmA","AfeLW","refreshMonitoredNodes",'\n        <span class="cp-modal-title">',"oaNMB","thARO","swfKp",'\n        <label class="cp-form-label">Base URL Domain</label>\n        <select id="cp-modal-baseurl" class="cp-select">\n            <option value="https://www.runninghub.cn" ','" class="cp-input" />\n        ',"getElementById","KpbRF","xoMOA","nmjaP","sGBRE","tmwQf","wjDBT","modal","Pocep","warn","cFsPY","runninghub_api_key","CZMaj",".cp-toggle-btn","BajHc","edDOr","JcypW","taLDV","FQFOO",".cn","bQoCr","95bMgRlq","fiayn","aaYgH","default","BZpFl","ZWyHj","IPEHJ","WDRbq","QIUUG","udWFB","cp-form-group","uutSg","ZDnYT","eAdzC","OBivS","AIcjq","CCCmx","RSKMn","VPFOW","gelcF","mQKLU","BKZpT","cp-automute-connectedonly","vUMOT","Node","EeUvb","rKwph","#cp-fg-showallgraphs","Guxsc","#cp-fg-customsort","matchColors","position","tEWAo","snvaw","vfFVP","while (true) {}","orykm","innerHTML","hbYto","toggleRestriction (Toggle restriction mode)","cp-btn-cancel","password","wXPql","qFzQB","ySIWA","POST","QKZru","uQAsA","GeMJf","qXbDD","ItybN","pmifg","klRFT","XAPhK","YADPA","showNav (Show quick navigation buttons)","evgRa","PxBHL","RidjE","#cp-fg-sort","[BizyAirUI] Failed to fetch config:","xPpNL","xLAWg",'" placeholder="e.g. Sampler, FLUX, KSampler" class="cp-input" />\n        <span class="cp-form-tip">Matches group titles or node names</span>\n    ',"tTjbO","saveBtn","jWveu","NKNJU","bizyair_api_key","WektO","cp-modal-apikey","CCpqN","TGuoD","LLLJQ","overlay","ZweMw","GOpab","JyYYY",'>https://www.runninghub.cn (China)</option>\n            <option value="https://www.runninghub.ai" ',"OowXI","uXgYe","lEUJN","👁️","UbESR","globalAppListManager",'" class="cp-input" />\n            <button type="button" class="cp-toggle-btn">👁️</button>\n        </div>\n        ',"sCmvM","wVlbP","eMYfc","apiKeyZh","TsWlP","jibCF","kLFHG","HvWPc","kPzNW","qXlNu","Klbmj","7490147duVoNP","EvCTf","EwtiF","lANqZ","uGoKa","bzRwa","gpLob","BizyAirWebApp","dkqDH","EQfow","MgWQI","uNHnb","NhdpH","KycfA","oWLON","test","kJpEa","DrGEs","sdVFC","fWefc","QfuUH","OUPpt","e.g. red, pale_blue, #a4d399","JcPAF","ylBCO","bTvpA","waZCV","ohCvg","VgDaz","hPERC","ddCvd","jFilB","GMvzm","PDGBt","cp-automute-matchexact","tZJyM","ndbhL","VtdHk","#cp-modal-baseurl","LvrET","aKTCu","xhlnu","wTCcK","max one","DtcLI","div","PgFmQ","idhdN","YTSiQ","#cp-bizyair-applist","jFvMD","otPze","KLYjC","vRNQU","ekJYR","map","body","YvJoI","nltaJ","vSNUQ","zcChz","sVKRV","appendChild","button","RGaQL","JJRMV",'" placeholder="',"JRKAq","LIcmh","mTAGV","UmwWg","text/css","</span>\n    ","tMMtN","LqdNM","ojCEv","dUIYA","nUGMa","dhWIh","matchTitle (Group title regex/string filter)","AyuaT","ftOQp","hwrst","YKYNC","cp-bizyair-apikey","pHdDL","cp-btn-save","IuNXi","Qgcfa","xVfLM","app_list","eVkyD","setDirtyCanvas","4|5|0|3|2|1|6","fjuOQ",'" class="cp-select">',"</span>\n            </label>\n        ","cp-fg-showallgraphs","kWiNi","includes","WyGeN","(((.+)+)+)+$","iCqHj","call","aCxrc","bnGIv","KJXcn","Match Case","YlGYL","Knopc","style","pQOIH","wOFgL","cssText","yxSyV","zXvgt","EXkEQ","WknTo","join","#cp-bizyair-apikey","heFXx","#cp-fg-shownav","fjoNI","hGBwI","3243794PxTcek","fhJjw","BizyAir API Key","UlQZO","zlMzL","OrhrN","EjVAD","lDuyo","4|5|1|0|6|3|2","customSortAlphabet (Custom alphabet order rules)","AlDtG","wEpRz","XGHnH","vumAL","WdTAL","ycLIM","lDaRi","434034vfUFIe","LMOVE","xsugD","auqpR","17378510uyEqlz","FZPzQ","jOXbt","GasmZ","gCdHw","ECqOG","NgoZt","matchTitle","iJyCI","cp-fg-restriction","46693119KgUixg",'</span>\n        <span class="cp-modal-badge">',"cp-modal-header","SplAG","RgrEz","iErXv","XALZw","zUYlk","cp-form-group cp-form-group-checkbox","connectedOnly","FastGroupsVue","mGjIR","#cp-fg-restriction","tyDsZ","TRqEj","gePrl","function","gger","vsnOA","OmShe","action",'\n        <label class="cp-form-label">Custom App ID List (Line/Comma Separated)</label>\n        <textarea id="cp-bizyair-applist" rows="4" placeholder="e.g. 56109&#10;56110" class="cp-textarea"></textarea>\n    ',"vwLcg","DrUim","cp-automute-matchcase","HXooQ","fBsve","</option>","cSELM","updateMuteState","BvTmK","CHnWj","IRXjB","DASEk","text","PhmGH","💾 Save & Close","KEvUf","IWcYr","[ComfyPanelUI] Modal save error:","dPcNV","graph","qGEuh","qqoXO","cp-modal","4XBNqCJ","WYwDy","rVjBB",'" type="password" value="',"vlHCo","YUkxQ","Pehqt","EfXbb","WxfAP","DyzgW","cp-fg-matchcolors","hsHrQ","cp-fast-groups-modal-overlay","lAkZe","cp-automute-modal-overlay","Jqmbo","zewgk","nHyuZ","xFnNV","DEUQU","comfypanel-ui-style","BHJbJ","success","qTTRP","dxdrW","bSXpX","TtSJF","LoVmV","sort","hAybC","ZGUqH","kVgjB",'\n            <label class="cp-form-label">Custom App ID List (Line/Comma Separated)</label>\n            <textarea id="cp-modal-applist" rows="4" placeholder="e.g. 1823912903123912039&#10;1920391203912039102" class="cp-textarea"></textarea>\n        ',"bJuVg","Settings","zuSxo","XnIHX","JnbJD","gALAz","showNav","search","sOjFa","OnNde","cp-fg-shownav","LLWcj","OcUBQ","bkcYc","</select>\n        ","CwfVC","aGavd","createElement","stringify","XwgtU","JtaSs","dEKyw","showAllGraphs","wXCsC","TNRLR","Saving...","DSeTD","type","tFlrQ","mljuz","cDcKo","JNdKC","\\+\\+ *(?:[a-zA-Z_$][0-9a-zA-Z_$]*)","OMAUz","iwybB","application/json","onPropertyChanged","fRlNR","jfrLd","init","head","APTAN","DARXq","YBZSQ","1ogjBSs","SOOID","VLGJQ","UPCHl","UZlRS","qfuoB","SXjdI","cp-input-key","fBKzU","AutoMute","FkQHZ","QTKLz","0|2|4|1|3",'<option value="',"NzlOI","toString","jZLFY","zbBWM","boDTn","hIyjW","cp-fg-sort","kaUvm","ElReT","SkBzK","BolyU","toggleRestriction","alphanumeric","apVkR","xwZmt","YTNYt","xSBKY","RJPRd","cVRPT","IJeky","apiKeyEn","cp-fg-matchtitle","vMPBN","Fmgmx","zpEnK","always one","#cp-fg-matchtitle","HklyW","#cp-modal-apikey","wqjZH","refresh","link","WKiGf","pdqVe","#cp-automute-connectedonly","YFDZu","mdMKL","2|6|3|5|1|0|4","QHhdq","OKnUw","vckLj","Match Exact Name","e.g. KSampler, FLUX","TlJFS","jjssM","🎛️ AutoMute Rules Config","_refreshVueGroupWidgets","apply","OcPNr","sOkGj","json","bXqwI","DDeDp","vgPpb","CqQAS","stylesheet","XPAZW","OhaQu","BZYqA",'\n            <label class="cp-form-label" style="margin:0;">',"IIAMf","value","zIMsh","ICvkK","yjsWr","mwVLe","yfwby","ZLxxO","zxKcd","matchCase","disabled","ApiMJ",'\n            <label class="cp-form-label">',"jCgTg","/bizyair_webapp/save_config","QGtkN","JFXbO",'" type="checkbox" ',"vuvTg","lqNeZ",' class="cp-checkbox" />\n                <span>',"dZOWu","jwljt","xsZJU","yNqwW","Hrzbx","/comfypanel/runninghub/save_config","JVdQf","UulsC","LGaFm","PDKAP","NrSjQ","dSAWK","cJjdA","#cp-automute-matchtitle","GdsgQ","WqQmD","yMBjZ","8ssBwmH","apiKey","Lozio","OVFfx","cp-modal-body","Nfdyw","qgkRW","CdTcQ","PXsqT",'\n        <label class="cp-form-label">',"cp-generic-modal","cfyWq","oVBjM","qPnxh","FTUvs","position (Canvas physical position)","QQnCV","gHFVx","OQLpb"];return(_0x2c53=function(){return e})()}
+/** ComfyUI/custom_nodes/ComfyPanel/web/ui/comfypanel_components.js **/
+
+// Automatically inject CSS into DOM
+export function ensureStyleLoaded() {
+    if (document.getElementById("comfypanel-ui-style")) return;
+    const link = document.createElement("link");
+    link.id = "comfypanel-ui-style";
+    link.rel = "stylesheet";
+    link.type = "text/css";
+    link.href = new URL("./comfypanel_ui.css", import.meta.url).href;
+    document.head.appendChild(link);
+}
+
+/**
+ * Generic base modal dialog factory
+ * @param {Object} options
+ * @param {String} options.id Unique ID for modal overlay
+ * @param {String} options.title Dialog title
+ * @param {String} options.badge Badge text in top right
+ * @param {String} options.saveText Save button text
+ * @param {Function} options.onSave Callback when save button clicked (receives { modal, body, saveBtn })
+ */
+function createModalBase(options = {}) {
+    ensureStyleLoaded();
+
+    const {
+        id = "cp-generic-modal",
+        title = "Settings",
+        badge = "Node",
+        saveText = "💾 Save & Close",
+        onSave = null
+    } = options;
+
+    // Remove existing modal with the same ID
+    const oldOverlay = document.getElementById(id);
+    if (oldOverlay) oldOverlay.remove();
+
+    const overlay = document.createElement("div");
+    overlay.id = id;
+    overlay.className = "cp-modal-overlay";
+
+    const modal = document.createElement("div");
+    modal.className = "cp-modal";
+
+    // Header
+    const header = document.createElement("div");
+    header.className = "cp-modal-header";
+    header.innerHTML = `
+        <span class="cp-modal-title">${title}</span>
+        <span class="cp-modal-badge">${badge}</span>
+    `;
+
+    // Form body container
+    const body = document.createElement("div");
+    body.className = "cp-modal-body";
+
+    // Footer actions
+    const footer = document.createElement("div");
+    footer.className = "cp-modal-footer";
+
+    const cancelBtn = document.createElement("button");
+    cancelBtn.className = "cp-btn-cancel";
+    cancelBtn.textContent = "Cancel";
+    cancelBtn.onclick = () => overlay.remove();
+
+    const saveBtn = document.createElement("button");
+    saveBtn.className = "cp-btn-save";
+    saveBtn.textContent = saveText;
+
+    saveBtn.onclick = async () => {
+        if (typeof onSave === "function") {
+            saveBtn.disabled = true;
+            saveBtn.textContent = "Saving...";
+            try {
+                await onSave({ modal, body, saveBtn, overlay });
+            } catch (e) {
+                console.error("[ComfyPanelUI] Modal save error:", e);
+            } finally {
+                saveBtn.disabled = false;
+                saveBtn.textContent = saveText;
+            }
+        }
+        overlay.remove();
+    };
+
+    footer.appendChild(cancelBtn);
+    footer.appendChild(saveBtn);
+    modal.appendChild(header);
+    modal.appendChild(body);
+    modal.appendChild(footer);
+    overlay.appendChild(modal);
+
+    return {
+        overlay,
+        modal,
+        body,
+        open: () => document.body.appendChild(overlay),
+        close: () => overlay.remove()
+    };
+}
+
+/**
+ * Password input group helper with plaintext/ciphertext (👁️/🙈) toggle
+ */
+function createPasswordGroup(options = {}) {
+    const {
+        label = "API Key",
+        value = "",
+        placeholder = "Enter Key...",
+        tip = "Saved to comfy.settings.json",
+        inputId = "cp-input-key"
+    } = options;
+
+    const group = document.createElement("div");
+    group.className = "cp-form-group";
+
+    group.innerHTML = `
+        <label class="cp-form-label">${label}</label>
+        <div class="cp-input-group">
+            <input id="${inputId}" type="password" value="${value}" placeholder="${placeholder}" class="cp-input" />
+            <button type="button" class="cp-toggle-btn">👁️</button>
+        </div>
+        ${tip ? `<span class="cp-form-tip">${tip}</span>` : ""}
+    `;
+
+    const input = group.querySelector(`#${inputId}`);
+    const toggleBtn = group.querySelector(".cp-toggle-btn");
+
+    toggleBtn.onclick = () => {
+        if (input.type === "password") {
+            input.type = "text";
+            toggleBtn.textContent = "🙈";
+        } else {
+            input.type = "password";
+            toggleBtn.textContent = "👁️";
+        }
+    };
+
+    return group;
+}
+
+// ============================================================================
+// Exported Configuration Modal Dialogs
+// ============================================================================
+
+/**
+ * Open RunningHub generic configuration modal dialog
+ */
+export async function showConfigModal(options = {}) {
+    const { node, title = "☁️ RunningHub Settings", showAppList = false } = options;
+
+    let currentApiKey = node?.properties?.runninghub_api_key || "";
+    let currentBaseUrl = node?.properties?.runninghub_base_url || "https://www.runninghub.cn";
+    let currentAppList = node?.properties?.app_list || "";
+
+    let configData = { apiKeyZh: "", apiKeyEn: "" };
+    try {
+        const res = await fetch("/comfypanel/runninghub/get_config");
+        const data = await res.json();
+        if (data && data.success) {
+            configData = data;
+            if (data.baseUrl) currentBaseUrl = data.baseUrl;
+            currentApiKey = currentBaseUrl.includes(".ai") ? data.apiKeyEn : data.apiKeyZh;
+        }
+    } catch (e) {
+        console.warn("[ComfyPanelUI] Failed to fetch RH config:", e);
+    }
+
+    const { overlay, body, open } = createModalBase({
+        id: "cp-config-modal-overlay",
+        title,
+        badge: node?.type || "Node",
+        onSave: async ({ body }) => {
+            const apiKeyInput = body.querySelector("#cp-modal-apikey");
+            const baseUrlSelect = body.querySelector("#cp-modal-baseurl");
+            const appListInput = body.querySelector("#cp-modal-applist");
+
+            const newApiKey = apiKeyInput ? apiKeyInput.value.trim() : "";
+            const newBaseUrl = baseUrlSelect ? baseUrlSelect.value : "https://www.runninghub.cn";
+            const newAppList = appListInput ? appListInput.value.trim() : "";
+
+            if (node && node.properties) {
+                node.properties.runninghub_base_url = newBaseUrl;
+                if (showAppList) node.properties.app_list = newAppList;
+                delete node.properties.runninghub_api_key;
+
+                if (typeof node.onPropertyChanged === "function") {
+                    node.onPropertyChanged("runninghub_base_url", newBaseUrl);
+                    if (showAppList) node.onPropertyChanged("app_list", newAppList);
+                }
+            }
+
+            await fetch("/comfypanel/runninghub/save_config", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ apiKey: newApiKey, baseUrl: newBaseUrl })
+            });
+
+            if (showAppList && window.globalAppListManager) {
+                window.globalAppListManager.refresh();
+            }
+        }
+    });
+
+    // 1. API Key
+    const keyGroup = createPasswordGroup({
+        label: "RunningHub API Key",
+        value: currentApiKey,
+        placeholder: "Enter API Key...",
+        inputId: "cp-modal-apikey"
+    });
+    body.appendChild(keyGroup);
+
+    // 2. Base URL
+    const urlGroup = document.createElement("div");
+    urlGroup.className = "cp-form-group";
+    urlGroup.innerHTML = `
+        <label class="cp-form-label">Base URL Domain</label>
+        <select id="cp-modal-baseurl" class="cp-select">
+            <option value="https://www.runninghub.cn" ${currentBaseUrl.includes(".cn") ? "selected" : ""}>https://www.runninghub.cn (China)</option>
+            <option value="https://www.runninghub.ai" ${currentBaseUrl.includes(".ai") ? "selected" : ""}>https://www.runninghub.ai (Global)</option>
+        </select>
+    `;
+    body.appendChild(urlGroup);
+
+    // Sync: Switching domain dropdown automatically updates API key input value
+    const keyInput = keyGroup.querySelector("#cp-modal-apikey");
+    const urlSelect = urlGroup.querySelector("#cp-modal-baseurl");
+    urlSelect.onchange = () => {
+        keyInput.value = urlSelect.value.includes(".ai") ? configData.apiKeyEn : configData.apiKeyZh;
+    };
+
+    // 3. Optional App List (RHWebApp)
+    if (showAppList) {
+        const appGroup = document.createElement("div");
+        appGroup.className = "cp-form-group";
+        appGroup.innerHTML = `
+            <label class="cp-form-label">Custom App ID List (Line/Comma Separated)</label>
+            <textarea id="cp-modal-applist" rows="4" placeholder="e.g. 1823912903123912039&#10;1920391203912039102" class="cp-textarea"></textarea>
+        `;
+        body.appendChild(appGroup);
+        setTimeout(() => {
+            const ta = appGroup.querySelector("#cp-modal-applist");
+            if (ta) ta.value = currentAppList;
+        }, 0);
+    }
+
+    open();
+}
+
+/**
+ * Open AutoMute configuration modal dialog
+ */
+export async function showAutoMuteConfigModal(node) {
+    const props = node?.properties || {};
+    const currentMatchTitle = props.matchTitle || "";
+    const currentMatchCase = !!props.matchCase;
+    const currentMatchExact = !!props.matchExact;
+    const currentConnectedOnly = props.connectedOnly !== undefined ? !!props.connectedOnly : true;
+
+    const { body, open } = createModalBase({
+        id: "cp-automute-modal-overlay",
+        title: "🎛️ AutoMute Rules Config",
+        badge: "AutoMute",
+        saveText: "💾 Save & Apply",
+        onSave: async ({ body }) => {
+            const titleInput = body.querySelector("#cp-automute-matchtitle");
+            const caseInput = body.querySelector("#cp-automute-matchcase");
+            const exactInput = body.querySelector("#cp-automute-matchexact");
+            const connectedInput = body.querySelector("#cp-automute-connectedonly");
+
+            if (node && node.properties) {
+                node.properties.matchTitle = titleInput ? titleInput.value.trim() : "";
+                node.properties.matchCase = caseInput ? caseInput.checked : false;
+                node.properties.matchExact = exactInput ? exactInput.checked : false;
+                node.properties.connectedOnly = connectedInput ? connectedInput.checked : true;
+
+                if (typeof node.onPropertyChanged === "function") {
+                    node.onPropertyChanged("matchTitle", node.properties.matchTitle);
+                    node.onPropertyChanged("matchCase", node.properties.matchCase);
+                    node.onPropertyChanged("matchExact", node.properties.matchExact);
+                    node.onPropertyChanged("connectedOnly", node.properties.connectedOnly);
+                } else {
+                    if (typeof node.refreshMonitoredNodes === "function") node.refreshMonitoredNodes();
+                    if (typeof node.updateMuteState === "function") node.updateMuteState();
+                }
+            }
+        }
+    });
+
+    const createCheckboxGroup = (id, labelText, checked) => {
+        const grp = document.createElement("div");
+        grp.className = "cp-form-group";
+        grp.style.cssText = "flex-direction: row; align-items: center; justify-content: space-between;";
+        grp.innerHTML = `
+            <label class="cp-form-label" style="margin:0;">${labelText}</label>
+            <input id="${id}" type="checkbox" ${checked ? "checked" : ""} style="cursor:pointer;" />
+        `;
+        return grp;
+    };
+
+    // 1. Match Title Group
+    const titleGroup = document.createElement("div");
+    titleGroup.className = "cp-form-group";
+    titleGroup.innerHTML = `
+        <label class="cp-form-label">Target Titles / Groups (Comma Separated)</label>
+        <input id="cp-automute-matchtitle" type="text" value="${currentMatchTitle}" placeholder="e.g. Sampler, FLUX, KSampler" class="cp-input" />
+        <span class="cp-form-tip">Matches group titles or node names</span>
+    `;
+
+    body.appendChild(titleGroup);
+    body.appendChild(createCheckboxGroup("cp-automute-matchcase", "Match Case", currentMatchCase));
+    body.appendChild(createCheckboxGroup("cp-automute-matchexact", "Match Exact Name", currentMatchExact));
+    body.appendChild(createCheckboxGroup("cp-automute-connectedonly", "Control Links First", currentConnectedOnly));
+
+    open();
+}
+
+/**
+ * Open BizyAir configuration modal dialog
+ */
+export async function showBizyAirConfigModal(node) {
+    let currentApiKey = "";
+    let currentAppList = node?.properties?.app_list || "";
+
+    try {
+        const res = await fetch("/bizyair_webapp/get_config");
+        const data = await res.json();
+        if (data && data.success && data.apiKey) {
+            currentApiKey = data.apiKey;
+        }
+    } catch (e) {
+        console.warn("[BizyAirUI] Failed to fetch config:", e);
+    }
+
+    const { body, open } = createModalBase({
+        id: "cp-bizyair-modal-overlay",
+        title: "☁️ BizyAir App Settings",
+        badge: node?.type || "BizyAirWebApp",
+        onSave: async ({ body }) => {
+            const apiKeyInput = body.querySelector("#cp-bizyair-apikey");
+            const appListInput = body.querySelector("#cp-bizyair-applist");
+
+            const newApiKey = apiKeyInput ? apiKeyInput.value.trim() : "";
+            const newAppList = appListInput ? appListInput.value.trim() : "";
+
+            if (node && node.properties) {
+                node.properties.app_list = newAppList;
+                delete node.properties.bizyair_api_key;
+
+                if (typeof node.onPropertyChanged === "function") {
+                    node.onPropertyChanged("app_list", newAppList);
+                }
+            }
+
+            await fetch("/bizyair_webapp/save_config", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ apiKey: newApiKey })
+            });
+        }
+    });
+
+    // 1. API Key
+    const keyGroup = createPasswordGroup({
+        label: "BizyAir API Key",
+        value: currentApiKey,
+        placeholder: "Enter BizyAir API Key...",
+        inputId: "cp-bizyair-apikey"
+    });
+    body.appendChild(keyGroup);
+
+    // 2. App List
+    const appGroup = document.createElement("div");
+    appGroup.className = "cp-form-group";
+    appGroup.innerHTML = `
+        <label class="cp-form-label">Custom App ID List (Line/Comma Separated)</label>
+        <textarea id="cp-bizyair-applist" rows="4" placeholder="e.g. 56109&#10;56110" class="cp-textarea"></textarea>
+    `;
+    body.appendChild(appGroup);
+
+    setTimeout(() => {
+        const ta = appGroup.querySelector("#cp-bizyair-applist");
+        if (ta) ta.value = currentAppList;
+    }, 0);
+
+    open();
+}
+
+/**
+ * Open Fast Groups (Vue) configuration modal dialog (supports all rgthree filter & sort options)
+ */
+export async function showFastGroupsConfigModal(node) {
+    if (!node) return;
+    node.properties = node.properties || {};
+    const currentMatchColors = node.properties.matchColors || "";
+    const currentMatchTitle = node.properties.matchTitle || "";
+    const currentShowNav = node.properties.showNav !== undefined ? !!node.properties.showNav : true;
+    const currentShowAllGraphs = node.properties.showAllGraphs !== undefined ? !!node.properties.showAllGraphs : true;
+    const currentSort = node.properties.sort || "position";
+    const currentCustomSortAlphabet = node.properties.customSortAlphabet || "";
+    const currentToggleRestriction = node.properties.toggleRestriction || "default";
+    const { body, open } = createModalBase({
+        id: "cp-fast-groups-modal-overlay",
+        title: "⚙️ Fast Groups Settings",
+        badge: node.type || "FastGroupsVue",
+        onSave: async ({ body }) => {
+            const matchColors = body.querySelector("#cp-fg-matchcolors")?.value?.trim() || "";
+            const matchTitle = body.querySelector("#cp-fg-matchtitle")?.value?.trim() || "";
+            const showNav = !!body.querySelector("#cp-fg-shownav")?.checked;
+            const showAllGraphs = !!body.querySelector("#cp-fg-showallgraphs")?.checked;
+            const sort = body.querySelector("#cp-fg-sort")?.value || "position";
+            const customSortAlphabet = body.querySelector("#cp-fg-customsort")?.value?.trim() || "";
+            const toggleRestriction = body.querySelector("#cp-fg-restriction")?.value || "default";
+            node.properties.matchColors = matchColors;
+            node.properties.matchTitle = matchTitle;
+            node.properties.showNav = showNav;
+            node.properties.showAllGraphs = showAllGraphs;
+            node.properties.sort = sort;
+            node.properties.customSortAlphabet = customSortAlphabet;
+            node.properties.toggleRestriction = toggleRestriction;
+            if (typeof node.onPropertyChanged === "function") {
+                node.onPropertyChanged("matchColors", matchColors);
+                node.onPropertyChanged("matchTitle", matchTitle);
+                node.onPropertyChanged("showNav", showNav);
+                node.onPropertyChanged("showAllGraphs", showAllGraphs);
+                node.onPropertyChanged("sort", sort);
+                node.onPropertyChanged("customSortAlphabet", customSortAlphabet);
+                node.onPropertyChanged("toggleRestriction", toggleRestriction);
+            }
+            if (typeof node._refreshVueGroupWidgets === "function") {
+                node._refreshVueGroupWidgets();
+            }
+            if (app.graph) {
+                app.graph.setDirtyCanvas(true, true);
+            }
+        }
+    });
+    const createInputGroup = (id, label, value, placeholder = "") => {
+        const div = document.createElement("div");
+        div.className = "cp-form-group";
+        div.innerHTML = `
+            <label class="cp-form-label">${label}</label>
+            <input id="${id}" type="text" value="${value}" placeholder="${placeholder}" class="cp-input" />
+        `;
+        return div;
+    };
+    const createSelectGroup = (id, label, options, selectedValue) => {
+        const div = document.createElement("div");
+        div.className = "cp-form-group";
+        const optsHtml = options.map(o => `<option value="${o.value}" ${o.value === selectedValue ? "selected" : ""}>${o.label}</option>`).join("");
+        div.innerHTML = `
+            <label class="cp-form-label">${label}</label>
+            <select id="${id}" class="cp-select">${optsHtml}</select>
+        `;
+        return div;
+    };
+    const createCheckboxGroup = (id, label, checked) => {
+        const div = document.createElement("div");
+        div.className = "cp-form-group cp-form-group-checkbox";
+        div.innerHTML = `
+            <label class="cp-checkbox-label">
+                <input id="${id}" type="checkbox" ${checked ? "checked" : ""} class="cp-checkbox" />
+                <span>${label}</span>
+            </label>
+        `;
+        return div;
+    };
+    body.appendChild(createInputGroup("cp-fg-matchcolors", "matchColors (Group colors filter, comma-separated)", currentMatchColors, "e.g. red, pale_blue, #a4d399"));
+    body.appendChild(createInputGroup("cp-fg-matchtitle", "matchTitle (Group title regex/string filter)", currentMatchTitle, "e.g. KSampler, FLUX"));
+    body.appendChild(createCheckboxGroup("cp-fg-shownav", "showNav (Show quick navigation buttons)", currentShowNav));
+    body.appendChild(createCheckboxGroup("cp-fg-showallgraphs", "showAllGraphs (Include groups in all subgraphs)", currentShowAllGraphs));
+
+    body.appendChild(createSelectGroup("cp-fg-sort", "sort (Group sorting rule)", [
+        { value: "position", label: "position (Canvas physical position)" },
+        { value: "alphanumeric", label: "alphanumeric (Alphabetical / numerical order)" },
+        { value: "custom alphabet", label: "custom alphabet (Custom alphabet rules)" }
+    ], currentSort));
+    body.appendChild(createInputGroup("cp-fg-customsort", "customSortAlphabet (Custom alphabet order rules)", currentCustomSortAlphabet, "e.g. sdxl,pro,sd,n,p"));
+
+    body.appendChild(createSelectGroup("cp-fg-restriction", "toggleRestriction (Toggle restriction mode)", [
+        { value: "default", label: "default (No restrictions)" },
+        { value: "max one", label: "max one (At most one active)" },
+        { value: "always one", label: "always one (Always keep exactly one active)" }
+    ], currentToggleRestriction));
+    open();
+}
