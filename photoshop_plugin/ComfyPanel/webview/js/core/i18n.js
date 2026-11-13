@@ -97,8 +97,6 @@
             'smart_loader_mode': 'Smart-Loader',
             'smart_previewer_mode': 'Smart-Previewer',
             'auto': 'Auto',
-            'chinese': 'Chinese',
-            'english': 'English',
             'select_ai_engine': 'Select AI Engine',
             'engine_comfyui_title': 'ComfyUI Engine',
             'engine_cloud_title': 'Cloud Engine',
@@ -244,7 +242,7 @@
             'log_no_params_found': 'Warning: No interactive parameters found in this workflow.',
             'log_import_success': 'Imported: {name}',
             'log_fetching': 'Fetching...',
-            'log_no_forked_tools': 'No forked tools found',
+            'log_no_apps': 'No apps found',
             'log_adding_tools': 'Adding {count} tools...',
             'log_scanning_local': 'Scanning Local Workflows...',
             'log_found_local': 'Found {count} local workflows.',
@@ -271,6 +269,7 @@
             'log_progress_info': '▶ [{percent}%] {node}',
             'log_video_progress': '{type} Node Progress: {value} / {max}',
             'log_switching_account': "Switched to account '{name}'",
+            'log_credentials_saved': "Credentials saved for: {name}",
             'log_sync_cloud': 'Syncing cloud apps...',
             'log_sync_success': 'Sync successful!',
             'log_account_removed': 'Account removed successfully',
@@ -497,9 +496,7 @@
             'ui_language': '界面语言',
             'smart_loader_mode': '智能加载器',
             'smart_previewer_mode': '智能预览器',
-            'auto': '跟随系统',
-            'chinese': '中文',
-            'english': '英文',
+            'auto': '自动检测',
             'select_ai_engine': '选择 AI 引擎',
             'engine_comfyui_title': 'ComfyUI 引擎',
             'engine_cloud_title': '云端引擎',
@@ -646,7 +643,7 @@
             'log_no_params_found': '警告：此工作流中未找到交互式参数。',
             'log_import_success': '已导入: {name}',
             'log_fetching': '获取中...',
-            'log_no_forked_tools': '未找到 Fork 的工具',
+            'log_no_apps': '未找到 App',
             'log_adding_tools': '正在添加 {count} 个工具...',
             'log_scanning_local': '正在扫描本地工作流...',
             'log_found_local': '找到 {count} 个本地工作流。',
@@ -673,6 +670,7 @@
             'log_progress_info': '▶ [{percent}%] {node}',
             'log_video_progress': '{type} 节点进度: {value} / {max}',
             'log_switching_account': "已切换至账号 '{name}'",
+            'log_credentials_saved': "账号 '{name}' 凭证已保存",
             'log_sync_cloud': '正在同步云端应用...',
             'log_sync_success': '同步成功！',
             'log_account_removed': '账号已成功移除',
@@ -810,15 +808,23 @@
 
     /**
      * Current language resolver.
-     * Respects the user's explicit setting; defaults to English when unset or unknown.
+     * Respects user's explicit setting ('english' / 'chinese'); defaults to 'auto' (detects host language).
      */
     window.getCurrentLang = function () {
-        const lang = (window.state && window.state.uiLanguage) || 'english';
+        const lang = (window.state && window.state.uiLanguage) || 'auto';
         if (lang === 'chinese') return 'zh';
+        if (lang === 'english') return 'en';
+
+        // Auto detect: check navigator/system language
+        try {
+            const navLang = (navigator.language || navigator.userLanguage || '').toLowerCase();
+            if (navLang.startsWith('zh')) return 'zh';
+        } catch (e) { }
+
+        // Fallback to English for any other language
         return 'en';
     };
 
-    /**
     /**
      * Translate a key with optional parameter replacement
      * Usage: window.t('log_task_finished', { duration: 5 })

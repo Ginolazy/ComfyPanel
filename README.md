@@ -100,7 +100,7 @@ ComfyPanel is a professional-grade, high-performance integration for **Adobe Pho
     * *Need help? See the [Full Setup Guide](https://lazyet.com/blogs/labs/comfypanel-tutorial).*
 
 ### ❓ AI-Assisted Troubleshooting & FAQ
-> **Q: Why does the plugin fail to load? / 为什么插件无法加载？**
+> **Q: Why does the plugin fail to load?**
 > **A:** For Photoshop 27.8 and later versions, you must be signed in to an Adobe account (Photoshop > Help) to load plugins properly. After signing in once, the plugin can still load normally even while offline, provided your Adobe account remains signed in. This is an Adobe Photoshop system requirement, not a plugin requirement.
 
 > **Q: How do I sync account balances and user info for BizyAir and RunningHub?**

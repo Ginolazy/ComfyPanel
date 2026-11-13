@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file.
 
+## [2.4.3] - 2026-11-13
+
+ComfyPanel v2.4.3
+
+• SSH Tunnel Cloud Server Support:
+  - Fixed image upload and download errors when connecting to a cloud GPU server via SSH tunnel.
+  - Fixed a spinner hang issue where the panel would stall after showing "Connected".
+
+• SSH 隧道云端服务器支持：
+  - 修复通过 SSH 隧道连接云端 GPU 服务器时，图片上传与下载报错的问题。
+  - 修复连接成功后面板仍卡在加载转圈的问题。
+
 ## [2.4.2] - 2026-11-09
 
 ComfyPanel v2.4.2
