@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file.
 
+## [2.5.0] - 2026-11-16
+
+ComfyPanel v2.5.0
+
+• RunningHub Engine & API Adaptation:
+  - Adapted to RunningHub's latest authentication changes: deprecated legacy password login and unified account management around standard official API Keys.
+  - Fixed an issue where MiniMax-H3-Image and similar multi-reference models failed price calculation due to array format mismatches.
+
+• RunningHub 引擎与接口适配：
+  - 适配 RunningHub 官方最新鉴权调整：废弃旧版密码登录方式，全面统一为官方标准 API Key 认证体系。
+  - 修复 MiniMax-H3-Image 等多图参考模型在算价预估时因参数结构不兼容报错的问题。
+
 ## [2.4.3] - 2026-11-13
 
 ComfyPanel v2.4.3
