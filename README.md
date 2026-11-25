@@ -2,7 +2,7 @@
 
 > **The Artisan’s Bridge between ComfyUI and Adobe Photoshop.**
 
-[English](#english) | [中文](#中文) | [📖 Detailed Tutorials](https://lazyet.com/blogs/labs/comfypanel-tutorial) | [⚡ ComfyPanel Turbo Bar](https://github.com/Ginolazy/ComfyPanel-Turbo-Bar) | [💎 ComfyPanel Pro](https://lazyet.com/products/comfypanel-pro)
+[English](#english) | [中文](#中文) | [📖 Detailed Tutorials](https://lazyet.com/blogs/labs/comfypanel-tutorial) | [⚡ ComfyPanel Turbo Bar](https://github.com/Ginolazy/ComfyPanel-Turbo-Bar) | [🎨 PhotoCraft Edition](https://github.com/Ginolazy/ComfyPanel-for-PhotoCraft) | [💎 ComfyPanel Pro](https://lazyet.com/products/comfypanel-pro)
 
 ---
 
@@ -10,6 +10,8 @@
 ## Photoshop AI Full-Featured Panel
 
 ComfyPanel is a professional Photoshop plugin built for designers and AI developers. Acting as a central hub, it seamlessly bridges **local ComfyUI computing power** with **cloud platforms (RunningHub, BizyAir)** to deliver a high-performance Edge-Cloud Hybrid workflow.
+
+> 💡 **Looking for PhotoCraft integration?** Check out [ComfyPanel for PhotoCraft](https://github.com/Ginolazy/ComfyPanel-for-PhotoCraft) — our high-performance desktop companion app tailored for the modern Rust-based creative canvas!
 
 ---
 
@@ -126,6 +128,8 @@ ComfyPanel is a professional-grade, high-performance integration for **Adobe Pho
 ## Photoshop AI 全功能面板
 
 ComfyPanel 是一款专为设计师与 AI 开发者打造的 Photoshop 插件。它以 Photoshop 为核心枢纽，完美打通了**本地 ComfyUI 算力**与**云端算力平台（RunningHub、BizyAir）**，实现跨平台的无缝混合渲染（Edge-Cloud Hybrid Layout）。
+
+> 💡 **正在寻找 PhotoCraft 支持？** 欢迎体验专为现代 Rust + wgpu 画布打造的桌面协同伴侣端：[ComfyPanel for PhotoCraft](https://github.com/Ginolazy/ComfyPanel-for-PhotoCraft)！
 
 ---
 

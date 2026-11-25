@@ -37,7 +37,8 @@
 body.is-loading::after {
     content: '';
     position: fixed;
-    top: 0;
+    top: 40px;
+    /* Leave header free for dragging */
     left: 0;
     right: 0;
     bottom: 0;
@@ -4123,6 +4124,12 @@ video.strip-thumb-img {
     transition: opacity var(--transition-fast) ease;
     position: absolute;
     right: 0;
+    background: rgba(0, 0, 0, 0.15);
+    border-radius: 4px;
+}
+
+.prompt-template-bar:hover {
+    background: rgb(0, 0, 0);
 }
 
 .param-row.label-hidden .prompt-template-bar {
@@ -4162,7 +4169,7 @@ video.strip-thumb-img {
 }
 
 .prompt-ver-btn {
-    opacity: 0.6;
+    opacity: 0.8;
     padding: 0;
     width: 15px;
 }

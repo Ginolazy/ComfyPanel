@@ -2,6 +2,28 @@
 
 All notable changes to this project will be documented in this file.
 
+## [2.6.0] - 2026-11-24
+
+ComfyPanel v2.6.0
+
+• PhotoCraft Ecosystem & Tauri Desktop Integration:
+  - Added dedicated bridge and SDK for PhotoCraft desktop environment (`photocraft_bridge.js` & `photocraft_sdk.js`), enabling direct canvas document reading, selection export, and result placement.
+  - Enhanced multi-host compatibility across Photoshop UXP, Tauri Desktop (PhotoCraft / Turbo Bar), and standalone Web environments.
+  - Improved data storage and config persistence with native file system synchronization in desktop mode.
+
+• Architecture & Workflow Stability:
+  - Standardized node registration and module mapping across logic switches, cloud engines, paired processors, and primitive nodes.
+  - Optimized task execution, bridge communication, and canvas state synchronization for smoother generation pipelines.
+
+• PhotoCraft 生态与桌面端环境适配：
+  - 新增面向 PhotoCraft 桌面宿主环境的原生桥接器与 SDK（`photocraft_bridge.js` 与 `photocraft_sdk.js`），支持画布文档信息直接读取、活动选区导出及生成图像一键回填。
+  - 增强跨平台宿主兼容性，无缝适配 Photoshop UXP 插件、Tauri 桌面端（PhotoCraft / Turbo Bar）及独立 Web 环境。
+  - 在桌面端模式下增强本地文件配置与原生存储同步，保证配置持久化更加稳定可靠。
+
+• 架构规范与工作流稳定性提升：
+  - 全面规范自定义节点静态注册声明与模块动态映射（覆盖逻辑开关、云端引擎、工作流成对节点与基础数值节点）。
+  - 优化任务执行器、跨窗口 Bridge 通信机制与画布状态同步逻辑，提升复杂生图链路的稳定性。
+
 ## [2.5.0] - 2026-11-16
 
 ComfyPanel v2.5.0

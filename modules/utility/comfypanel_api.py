@@ -63,8 +63,17 @@ def _is_allowed_rh_host(base_url: str) -> bool:
 
 @web.middleware
 async def _uxp_file_origin_middleware(request: web.Request, handler) -> web.Response:
-    if request.headers.get("Origin") != "file://":
+    origin = request.headers.get("Origin", "")
+
+    is_allowed = (
+        origin == "file://"
+        or origin.startswith("http://127.0.0.1:")
+        or origin.startswith("http://localhost:")
+        or origin.startswith("tauri://")
+    )
+    if not is_allowed:
         return await handler(request)
+
     is_ws = request.headers.get("Upgrade", "").lower() == "websocket"
     actual_handler = request.match_info.handler
     if is_ws:
@@ -75,7 +84,7 @@ async def _uxp_file_origin_middleware(request: web.Request, handler) -> web.Resp
         resp.headers["Access-Control-Allow-Headers"] = "Content-Type, Authorization"
     else:
         resp = await actual_handler(request)
-    resp.headers["Access-Control-Allow-Origin"] = "file://"
+    resp.headers["Access-Control-Allow-Origin"] = origin
     return resp
 
 PromptServer.instance.app.middlewares.insert(0, _uxp_file_origin_middleware)
@@ -1022,12 +1031,13 @@ async def runninghub_upload_workflow(request):
         return web.json_response({"success": False, "error": str(e)}, status=500)
 
 _ext_browser_ws = None
+_ext_embedded_ws = None
 _ext_uxp_ws = None
 _ext_active_workflow = {"name": "", "toolId": "", "alive": False}
 
 @PromptServer.instance.routes.get("/comfypanel/ws/ext_bridge")
 async def comfypanel_ws_ext_bridge(request):
-    global _ext_browser_ws, _ext_uxp_ws, _ext_active_workflow
+    global _ext_browser_ws, _ext_embedded_ws, _ext_uxp_ws, _ext_active_workflow
 
     ws = web.WebSocketResponse(heartbeat=30.0)
     await ws.prepare(request)
@@ -1051,6 +1061,8 @@ async def comfypanel_ws_ext_bridge(request):
                 })
             except Exception:
                 pass
+    elif role == "embedded":
+        _ext_embedded_ws = ws
     else:
         _ext_uxp_ws = ws
         logging.info("[ComfyPanel ExtBridge] UXP client connected")
@@ -1087,14 +1099,42 @@ async def comfypanel_ws_ext_bridge(request):
                         except Exception:
                             pass
 
-                elif role == "uxp" and _ext_browser_ws and not _ext_browser_ws.closed:
-                    try:
-                        await _ext_browser_ws.send_str(msg.data)
-                    except Exception:
-                        pass
+                elif role == "uxp":
+                    target_role = payload.get("bridgeTarget")
+
+                    if target_role == "external" and _ext_browser_ws and not _ext_browser_ws.closed:
+                        try:
+                            await _ext_browser_ws.send_str(msg.data)
+                        except Exception:
+                            pass
+                    elif _ext_embedded_ws and not _ext_embedded_ws.closed:
+                        try:
+                            await _ext_embedded_ws.send_str(msg.data)
+                        except Exception:
+                            pass
+                    elif _ext_browser_ws and not _ext_browser_ws.closed:
+                        try:
+                            await _ext_browser_ws.send_str(msg.data)
+                        except Exception:
+                            pass
                 elif role == "browser" and _ext_uxp_ws and not _ext_uxp_ws.closed:
                     try:
-                        await _ext_uxp_ws.send_str(msg.data)
+
+                        if isinstance(payload, dict):
+                            payload["_bridgeSource"] = "external"
+                            await _ext_uxp_ws.send_json(payload)
+                        else:
+                            await _ext_uxp_ws.send_str(msg.data)
+                    except Exception:
+                        pass
+                elif role == "embedded" and _ext_uxp_ws and not _ext_uxp_ws.closed:
+                    try:
+
+                        if isinstance(payload, dict):
+                            payload["_bridgeSource"] = "embedded"
+                            await _ext_uxp_ws.send_json(payload)
+                        else:
+                            await _ext_uxp_ws.send_str(msg.data)
                     except Exception:
                         pass
 
@@ -1113,6 +1153,8 @@ async def comfypanel_ws_ext_bridge(request):
                     })
                 except Exception:
                     pass
+        elif role == "embedded" and _ext_embedded_ws == ws:
+            _ext_embedded_ws = None
         elif role == "uxp" and _ext_uxp_ws == ws:
             _ext_uxp_ws = None
 
